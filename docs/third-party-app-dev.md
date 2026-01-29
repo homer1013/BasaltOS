@@ -118,6 +118,38 @@ Notes:
 - events are callback-based
 - touch input will map to widget events
 
+### Longer UI example (stub)
+This runs today (no-ops for UI), and will become interactive once UI lands.
+
+```python
+import basalt
+import basalt.ui as ui
+
+screen = ui.screen()
+ui.set_title("Demo")
+
+label = ui.label("LED: OFF", x=10, y=10)
+button = ui.button("Toggle LED", x=10, y=40, w=120, h=30)
+
+state = {"on": False}
+
+def on_press():
+    state["on"] = not state["on"]
+    label.set_text("LED: ON" if state["on"] else "LED: OFF")
+    if state["on"]:
+        basalt.led.set(1, 0, 0)
+    else:
+        basalt.led.off()
+
+button.on_press(on_press)
+screen.add(label)
+screen.add(button)
+screen.show()
+
+while True:
+    basalt.timer.sleep_ms(250)
+```
+
 ### Board/display configuration
 Display drivers and pin mappings are **board-specific**. Those live in board
 profiles and the TFT driver setup, not inside apps. App developers should

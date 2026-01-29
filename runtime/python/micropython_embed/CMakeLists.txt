@@ -2,6 +2,10 @@ file(GLOB_RECURSE MPY_SRCS
     "${CMAKE_CURRENT_LIST_DIR}/*.c"
 )
 
+list(APPEND MPY_SRCS
+    "${CMAKE_CURRENT_LIST_DIR}/port/modui.c"
+)
+
 idf_component_register(
     SRCS ${MPY_SRCS}
     INCLUDE_DIRS "." "port" "py" "extmod" "shared/runtime" "genhdr"
