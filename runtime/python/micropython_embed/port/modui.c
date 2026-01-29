@@ -1,6 +1,5 @@
 #include "py/obj.h"
 #include "py/runtime.h"
-#include "py/argcheck.h"
 
 #include "modui.h"
 
