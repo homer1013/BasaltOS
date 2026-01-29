@@ -1,0 +1,3 @@
+[submodule "runtime/python/micropython"]
+	path = runtime/python/micropython
+	url = https://github.com/micropython/micropython.git

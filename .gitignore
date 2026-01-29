@@ -1,0 +1,20 @@
+# Build outputs
+build/
+*/build/
+
+# Generated MicroPython embed artifacts
+runtime/python/embed_build/
+
+# Temp
+/tmp/
+
+# Python
+__pycache__/
+*.pyc
+
+# ESP-IDF
+sdkconfig.old
+
+# IDE
+.vscode/
+.idea/

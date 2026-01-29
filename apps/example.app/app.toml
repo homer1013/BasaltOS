@@ -1,0 +1,14 @@
+name = "Blink Demo"
+version = "0.1.0"
+entry = "main.py"
+runtime = "python"
+
+author = "Basalt OS"
+license = "MIT"
+
+[capabilities]
+gpio = ["read", "write"]
+timer = true
+ui = false
+audio = false
+net = false
