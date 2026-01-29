@@ -31,10 +31,26 @@
 - wifi_connect(ssid, passphrase)
 - http_get(url)
 
-## basalt.ui (future)
-- label(text)
-- button(text, on_click)
-- layout_vstack(items)
+## basalt.ui (current stub)
+All UI calls are no-ops for now. They are safe to call and provide a stable API.
+
+Functions:
+- screen()
+- button(text, x=0, y=0, w=0, h=0)
+- label(text, x=0, y=0)
+- set_title(text)
+
+Screen methods:
+- add(widget)
+- show()
+- clear()
+
+Button methods:
+- on_press(callback)
+- set_text(text)
+
+Label methods:
+- set_text(text)
 
 ## basalt.audio (future)
 - play_wav(path)

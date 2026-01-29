@@ -2,6 +2,7 @@
 #include "py/runtime.h"
 
 #include "board_config.h"
+#include "modui.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -115,12 +116,17 @@ void basalt_module_init(void) {
     mp_obj_dict_store(MP_OBJ_FROM_PTR(led_mod->globals), MP_OBJ_NEW_QSTR(qstr_from_str("off")),
         MP_OBJ_FROM_PTR(&basalt_led_off_obj));
 
+    mp_obj_module_t *ui_mod = mp_obj_new_module(qstr_from_str("basalt_ui"));
+    basalt_ui_init(ui_mod);
+
     mp_obj_dict_store(MP_OBJ_FROM_PTR(mod->globals), MP_OBJ_NEW_QSTR(qstr_from_str("gpio")),
         MP_OBJ_FROM_PTR(gpio_mod));
     mp_obj_dict_store(MP_OBJ_FROM_PTR(mod->globals), MP_OBJ_NEW_QSTR(qstr_from_str("timer")),
         MP_OBJ_FROM_PTR(timer_mod));
     mp_obj_dict_store(MP_OBJ_FROM_PTR(mod->globals), MP_OBJ_NEW_QSTR(qstr_from_str("led")),
         MP_OBJ_FROM_PTR(led_mod));
+    mp_obj_dict_store(MP_OBJ_FROM_PTR(mod->globals), MP_OBJ_NEW_QSTR(qstr_from_str("ui")),
+        MP_OBJ_FROM_PTR(ui_mod));
 
     mp_store_global(q_basalt, MP_OBJ_FROM_PTR(mod));
 }

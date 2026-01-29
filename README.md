@@ -92,6 +92,12 @@ install /sd/blink_rgb.zip blink_rgb
 - `docs/api-basalt.md` (Basalt APIs)
 - `docs/boards.md` (board profiles + pinouts)
 
+## App SDK (templates)
+Use `tools/new_app.py` to generate a minimal app skeleton under `apps/`:
+```
+python tools/new_app.py blink_rgb
+```
+
 ## Next steps (internal)
 1) Stabilize MicroPython embed and Basalt APIs.
 2) Formalize UI/graphics API and touch input.

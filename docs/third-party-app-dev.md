@@ -79,19 +79,19 @@ Additional modules will be added over time.
 
 ## Display / UI (current state)
 
-Right now, Basalt OS provides a **text console** on supported TFT boards.  
+Basalt OS provides a **text console** on supported TFT boards.  
 Anything printed to stdout is mirrored to the TFT console.
 
 That means for now:
 - Use `print(...)` for display output
 - Treat the TFT as a terminal (no graphics primitives yet)
 
-We will add a proper UI/graphics API later (widgets, drawing, touch, etc).
-When that lands, it will be exposed as a Basalt module (for example, `basalt.ui`).
+Basalt also exposes a **UI stub** so you can code against a stable API today.
+All UI calls are **no-ops** (they won’t draw yet), but they won’t crash.
+When the real UI/graphics layer lands, your code will already follow the API.
 
-### UI API stub (planned)
-Below is a **preview** of a possible UI API. This is **not implemented yet** and
-is provided so 3rd‑party developers can plan ahead.
+### UI API stub (available now)
+The API below is implemented as no-ops.
 
 ```python
 import basalt.ui as ui
