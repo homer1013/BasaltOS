@@ -38,6 +38,9 @@ Basalt OS is a lightweight, portable embedded OS focused on making **quick proje
 
 ## Quick start
 ```
+git clone https://github.com/homer1013/BasaltOS
+cd BasaltOS
+git submodule update --init --recursive
 source tools/env.sh
 idf.py build
 idf.py -p /dev/ttyUSB0 flash monitor
@@ -63,6 +66,17 @@ See `boards/README.md` for profiles and status.
 ## SPIFFS apps
 Files in `spiffs/` are baked into the `storage` partition at build time.
 Example: `spiffs/hello.py` can be run with `run /data/hello.py`.
+
+## MicroPython submodule
+Basalt OS tracks MicroPython as a git submodule at `runtime/python/micropython`.
+
+Initialize or update it:
+```
+git submodule update --init --recursive
+git submodule update --remote --merge
+```
+
+If you change the submodule revision, commit the submodule pointer update in this repo.
 
 ## SD card apps
 If the board has SD enabled, it mounts at `/sd`. You can install a store-only zip:
