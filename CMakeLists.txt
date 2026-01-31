@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
 set(EXTRA_COMPONENT_DIRS
-    ${CMAKE_SOURCE_DIR}/runtime/python
+    ${CMAKE_SOURCE_DIR}/runtime/python/micropython_embed
+    ${CMAKE_SOURCE_DIR}/basalt_hal
 )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)

@@ -2,6 +2,10 @@
 build/
 */build/
 
+# Release output (keep folder, ignore contents)
+dist/*
+!dist/.gitkeep
+
 # Generated MicroPython embed artifacts
 runtime/python/embed_build/
 

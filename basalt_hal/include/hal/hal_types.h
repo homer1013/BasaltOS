@@ -42,7 +42,7 @@ extern "C" {
  */
 
 #ifndef HAL_GPIO_HANDLE_BYTES
-#define HAL_GPIO_HANDLE_BYTES   16
+#define HAL_GPIO_HANDLE_BYTES   96
 #endif
 
 #ifndef HAL_UART_HANDLE_BYTES

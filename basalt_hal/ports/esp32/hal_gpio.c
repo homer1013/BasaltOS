@@ -11,6 +11,7 @@
 
 #include "driver/gpio.h"
 #include "esp_err.h"
+#include "esp_attr.h"
 
 // -----------------------------------------------------------------------------
 // Private implementation type stored inside hal_gpio_t opaque storage
