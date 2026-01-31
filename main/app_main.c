@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <errno.h>
 #include <unistd.h>
+#include "smoke_test.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -1244,6 +1245,9 @@ void app_main(void) {
     basalt_fs_init();
     basalt_sd_init();
     tft_console_init();
+
+    (void)basalt_smoke_test_run();
+    
     mpy_runtime_init();
 
     basalt_printf("Basalt OS booted. Type 'help'.\n");
