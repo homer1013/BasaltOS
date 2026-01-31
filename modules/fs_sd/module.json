@@ -1,0 +1,10 @@
+{
+  "id": "fs_sd",
+  "name": "SD Card Filesystem",
+  "category": "filesystem",
+  "provides": ["fs"],
+  "depends": ["spi"],
+  "conflicts": ["fs_spiffs"],
+  "constraints": {},
+  "defines": ["BASALT_ENABLE_FS_SD"]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "tft",
+  "name": "TFT Display",
+  "provides": ["display"],
+  "depends": ["spi"],
+  "conflicts": [],
+  "constraints": {},
+  "defines": ["BASALT_ENABLE_TFT"]
+}

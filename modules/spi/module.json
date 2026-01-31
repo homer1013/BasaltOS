@@ -1,0 +1,22 @@
+{
+  "id": "spi",
+  "name": "SPI Bus",
+  "category": "bus",
+  "description": "Serial Peripheral Interface bus support. Provides SPI master functionality for peripherals such as displays, SD cards, and sensors.",
+  "provides": ["spi"],
+  "depends": [],
+  "conflicts": [],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_SPI"
+  ],
+  "runtime": {
+    "max_buses": 2,
+    "default_bus": 0
+  },
+  "notes": [
+    "Provides SPI master initialization and bus management",
+    "Required by TFT displays, SD card interfaces, and many sensors",
+    "Bus and chip select configuration is board-dependent"
+  ]
+}

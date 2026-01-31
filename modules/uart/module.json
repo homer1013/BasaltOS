@@ -1,0 +1,22 @@
+{
+  "id": "uart",
+  "name": "UART",
+  "description": "Universal Asynchronous Receiver/Transmitter support. Provides serial communication for console, logging, debugging, and external devices.",
+  "provides": ["uart"],
+  "depends": [],
+  "conflicts": [],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_UART"
+  ],
+  "runtime": {
+    "max_ports": 3,
+    "default_port": 0,
+    "baudrate": 115200
+  },
+  "notes": [
+    "Typically used for system console and debug logging",
+    "May also be used for external serial peripherals (GPS, modems, sensors)",
+    "Port availability and pin assignments are board-dependent"
+  ]
+}

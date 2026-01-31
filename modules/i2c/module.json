@@ -1,0 +1,9 @@
+{
+  "id": "i2c",
+  "name": "I2C Core",
+  "provides": ["i2c"],
+  "depends": [],
+  "conflicts": [],
+  "constraints": {},
+  "defines": ["BASALT_ENABLE_I2C"]
+}

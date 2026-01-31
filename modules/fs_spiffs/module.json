@@ -1,0 +1,22 @@
+{
+  "id": "fs_spiffs",
+  "name": "SPIFFS Filesystem",
+  "category": "filesystem",
+  "description": "SPI Flash File System for internal flash storage. Used for app storage, configuration, and assets.",
+  "provides": ["fs"],
+  "depends": [],
+  "conflicts": ["fs_sd"],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_FS_SPIFFS"
+  ],
+  "runtime": {
+    "mount_point": "/spiffs",
+    "read_only": false
+  },
+  "notes": [
+    "Uses ESP-IDF SPIFFS backend on ESP32",
+    "Intended for small files, configuration, and app assets",
+    "Not suitable for high write endurance workloads"
+  ]
+}

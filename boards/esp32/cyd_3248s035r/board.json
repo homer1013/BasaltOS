@@ -1,0 +1,25 @@
+{
+  "id": "cyd",
+  "name": "Cheap Yellow Display (ESP32)",
+  "platform": "esp32",
+  "target": "esp32",
+  "defaults": {
+    "sdkconfig": "sdkconfig.defaults"
+  },
+  "pins": {
+    "i2c_sda": 21,
+    "i2c_scl": 22,
+    "uart0_tx": 1,
+    "uart0_rx": 3,
+    "tft_cs": 5,
+    "tft_dc": 2,
+    "tft_rst": 4,
+    "tft_mosi": 23,
+    "tft_sclk": 18,
+    "sd_mosi": 23,
+    "sd_miso": 19,
+    "sd_sclk": 18,
+    "sd_cs": 13
+  },
+  "capabilities": ["i2c", "spi", "uart", "tft", "fs_spiffs", "fs_sd"]
+}

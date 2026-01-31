@@ -1,3 +1,6 @@
+# BasaltOS generated configuration
+config/generated/
+
 # Build outputs
 build/
 */build/
@@ -17,6 +20,7 @@ __pycache__/
 *.pyc
 
 # ESP-IDF
+sdkconfig
 sdkconfig.old
 
 # IDE
