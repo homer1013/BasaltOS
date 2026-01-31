@@ -58,6 +58,14 @@ typedef struct {
     hal_uart_stop_bits_t stop_bits;
     hal_uart_parity_t parity;
     hal_uart_flow_t flow;
+
+    // Optional pin routing:
+    //  - Use -1 to leave at platform default / unchanged
+    //  - On platforms with fixed pins, ports may ignore these or return -ENOSYS/-EINVAL
+    int tx_pin;
+    int rx_pin;
+    int rts_pin;
+    int cts_pin;
 } hal_uart_config_t;
 
 /* Recommended default config */
@@ -68,8 +76,15 @@ static inline hal_uart_config_t hal_uart_config_default(uint32_t baud) {
     c.stop_bits = HAL_UART_STOP_BITS_1;
     c.parity = HAL_UART_PARITY_NONE;
     c.flow = HAL_UART_FLOW_NONE;
+
+    c.tx_pin = -1;
+    c.rx_pin = -1;
+    c.rts_pin = -1;
+    c.cts_pin = -1;
+
     return c;
 }
+
 
 /* ------------------------------------------------------------
  * API
