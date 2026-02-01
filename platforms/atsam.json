@@ -1,0 +1,13 @@
+{
+  "id": "atsam",
+  "name": "Microchip SAM (ASF/CMSIS + GCC)",
+  "description": "Microchip ARM-based SAM MCUs (SAMD/SAME/SAMC/SAM3/4/7) using CMSIS + vendor HAL (ASF/START) and arm-none-eabi GCC",
+  "toolchain": "arm-none-eabi-gcc",
+  "arch": "arm-cortex-m",
+  "family": "microchip-sam",
+  "sdk": "asf-atmel-start",
+  "build": {
+    "generator": "cmake",
+    "notes": "Projects often originate from Atmel START; ensure CMSIS packs/HAL are vendored into repo."
+  }
+}

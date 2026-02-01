@@ -1,0 +1,85 @@
+{
+  "name": "Raspberry Pi Pico (RP2040)",
+  "description": "Official Raspberry Pi Pico dev board (RP2040). GPIO numbers follow Pico SDK conventions.",
+  "platform": "rp2040",
+  "mcu": "RP2040",
+  "flash": "2MB (onboard)",
+  "ram": "264KB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "usb_device"
+  ],
+  "pins": {
+    "uart_tx": 0,
+    "uart_rx": 1,
+    "i2c_sda": 4,
+    "i2c_scl": 5,
+    "spi_mosi": 3,
+    "spi_miso": 0,
+    "spi_sclk": 2,
+    "spi_cs": 1,
+    "led": 25,
+    "button": -1
+  },
+  "pin_definitions": {
+    "uart_tx": {
+      "description": "UART0 TX (default on Pico)",
+      "alternatives": [
+        0,
+        12,
+        16
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "UART0 RX (default on Pico)",
+      "alternatives": [
+        1,
+        13,
+        17
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C0 SDA (example)",
+      "alternatives": [
+        4,
+        8,
+        12,
+        16,
+        20
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C0 SCL (example)",
+      "alternatives": [
+        5,
+        9,
+        13,
+        17,
+        21
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED (GP25)",
+      "alternatives": [
+        25
+      ],
+      "type": "output"
+    }
+  },
+  "sdkconfig": [
+    "# RP2040 (Pico SDK) doesn't use ESP-IDF sdkconfig.",
+    "# Keep this list for future BasaltOS build-hints; safe to ignore for now.",
+    "PICO_BOARD=pico",
+    "PICO_PLATFORM=rp2040"
+  ],
+  "notes": "SPI pin set shown corresponds to the Pico SDK SPI0 default signals (SCK=2, TX=3, RX=0, CSn=1). Adjust if you prefer SPI1 or different pin mappings."
+}

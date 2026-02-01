@@ -5,13 +5,13 @@
   "description": "SPI Flash File System for internal flash storage. Used for app storage, configuration, and assets.",
   "provides": ["fs"],
   "depends": [],
-  "conflicts": ["fs_sd"],
+  "conflicts": [],
   "constraints": {},
   "defines": [
     "BASALT_ENABLE_FS_SPIFFS"
   ],
   "runtime": {
-    "mount_point": "/spiffs",
+    "mount_point": "/data",
     "read_only": false
   },
   "notes": [

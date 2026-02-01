@@ -12,8 +12,13 @@
 #include "esp_heap_caps.h"
 #include "esp_log.h"
 #include "esp_system.h"
+#if BASALT_ENABLE_PSRAM
+#include "esp_psram.h"
+#endif
 
 #include "hal/hal_gpio.h"
+// Build-time feature gates / board config
+#include "basalt_config.h"
 // UART smoke test temporarily disabled:
 // #include "hal/hal_uart.h"
 
@@ -91,6 +96,12 @@ static int smoke_uart0_tx(void) {
 */
 
 static int smoke_data_rw(void) {
+#if !BASALT_ENABLE_FS_SPIFFS && !BASALT_ENABLE_FS_SD
+    // No filesystem backend enabled, so skip /data I/O and don't fail the smoke test.
+    ESP_LOGW(TAG, "FS smoke test skipped (no FS backend enabled)");
+    printf("[smoke] FS smoke test skipped (no FS backend enabled)\n");
+    return 0;
+#else
     // BasaltOS should already have SPIFFS (or other FS) mounted at /data.
     // So we just do normal POSIX file I/O here.
     const char *path = "/data/smoke.txt";
@@ -125,11 +136,12 @@ static int smoke_data_rw(void) {
     ESP_LOGI(TAG, "DATA read: %s", buf);
     printf("[smoke] DATA read: %s", buf);
     return 0;
+#endif
 }
 
 int basalt_smoke_test_run(void) {
-    ESP_LOGI(TAG, "=== BasaltOS smoke test start ===");
-    printf("[smoke] === BasaltOS smoke test start ===\n");
+    ESP_LOGI(TAG, "=== BasaltOS POST start ===");
+    printf("[smoke] === BasaltOS POST start ===\n");
 
     esp_chip_info_t info;
     esp_chip_info(&info);
@@ -150,13 +162,25 @@ int basalt_smoke_test_run(void) {
     // File I/O under /data (assumes FS already mounted by BasaltOS)
     rc |= smoke_data_rw();
 
+#if BASALT_ENABLE_PSRAM
+    if (!esp_psram_is_initialized()) {
+        ESP_LOGE(TAG, "PSRAM init: FAIL (not initialized)");
+        printf("[smoke] PSRAM init: FAIL (not initialized)\n");
+        rc |= -1;
+    } else {
+        size_t psram_free = heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
+        ESP_LOGI(TAG, "PSRAM init: OK (free=%u)", (unsigned)psram_free);
+        printf("[smoke] PSRAM init: OK (free=%u)\n", (unsigned)psram_free);
+    }
+#endif
+
     if (rc == 0) {
-        ESP_LOGI(TAG, "=== BasaltOS smoke test PASS ===");
-        printf("[smoke] === BasaltOS smoke test PASS ===\n");
+        ESP_LOGI(TAG, "=== BasaltOS POST PASS ===");
+        printf("[smoke] === BasaltOS POST PASS ===\n");
         return 0;
     }
 
-    ESP_LOGE(TAG, "=== BasaltOS smoke test FAIL ===");
-    printf("[smoke] === BasaltOS smoke test FAIL ===\n");
+    ESP_LOGE(TAG, "=== BasaltOS POST FAIL ===");
+    printf("[smoke] === BasaltOS POST FAIL ===\n");
     return -1;
 }

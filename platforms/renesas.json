@@ -1,0 +1,8 @@
+{
+  "id": "renesas",
+  "name": "Renesas MCUs",
+  "description": "Renesas RA / RX / RL microcontroller families",
+  "toolchain": "renesas-e2studio",
+  "vendor": "Renesas",
+  "arch": "arm-cortex-m / rx"
+}

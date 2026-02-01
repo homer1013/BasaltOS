@@ -1,0 +1,6 @@
+{
+  "id": "esp32",
+  "name": "ESP32 (ESP-IDF)",
+  "description": "Espressif ESP32 family using ESP-IDF toolchain",
+  "toolchain": "esp-idf"
+}

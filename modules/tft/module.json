@@ -1,9 +1,98 @@
 {
-  "id": "tft",
+  "id": "tft",  
   "name": "TFT Display",
+  "description": "Color TFT display driver supporting ST7796, ST7789, ILI9341",
+  "platforms": ["esp32", "stm32", "rp2040"],
+  "default_enabled": false,
   "provides": ["display"],
   "depends": ["spi"],
   "conflicts": [],
   "constraints": {},
-  "defines": ["BASALT_ENABLE_TFT"]
+  "defines": ["BASALT_ENABLE_TFT"],
+  "pins": [
+    "tft_mosi",
+    "tft_miso",
+    "tft_sclk",
+    "tft_cs",
+    "tft_dc",
+    "tft_rst",
+    "tft_bl"
+  ],
+  "pin_requirements": {
+    "tft_mosi": {
+      "required": true,
+      "description": "SPI Master Out Slave In"
+    },
+    "tft_miso": {
+      "required": false,
+      "description": "SPI Master In Slave Out (optional for display-only)"
+    },
+    "tft_sclk": {
+      "required": true,
+      "description": "SPI Clock"
+    },
+    "tft_cs": {
+      "required": true,
+      "description": "Chip Select"
+    },
+    "tft_dc": {
+      "required": true,
+      "description": "Data/Command signal"
+    },
+    "tft_rst": {
+      "required": false,
+      "description": "Reset pin (can be -1 if not used)"
+    },
+    "tft_bl": {
+      "required": false,
+      "description": "Backlight control (can be -1 if always on)"
+    }
+  },
+  "configuration_options": [
+    {
+      "id": "tft_driver",
+      "name": "Display Driver",
+      "type": "select",
+      "options": ["ST7796", "ST7789", "ST7789V2", "ILI9341"],
+      "default": "ST7796"
+    },
+    {
+      "id": "tft_width",
+      "name": "Display Width",
+      "type": "number",
+      "default": 320,
+      "min": 128,
+      "max": 480
+    },
+    {
+      "id": "tft_height",
+      "name": "Display Height",
+      "type": "number",
+      "default": 480,
+      "min": 128,
+      "max": 800
+    },
+    {
+      "id": "tft_spi_speed",
+      "name": "SPI Clock Speed (Hz)",
+      "type": "number",
+      "default": 10000000,
+      "min": 1000000,
+      "max": 80000000
+    }
+  ],
+  "sdkconfig": [
+    "# TFT Display Module",
+    "CONFIG_SPI_MASTER_IN_IRAM=y",
+    "CONFIG_SPI_MASTER_ISR_IN_IRAM=y"
+  ],
+  "source_files": [
+    "modules/tft/tft_driver.c",
+    "modules/tft/tft_console.c"
+  ],
+  "header_files": [
+    "modules/tft/tft_driver.h",
+    "modules/tft/tft_console.h"
+  ]
 }
+

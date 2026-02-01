@@ -1,7 +1,8 @@
 {
   "id": "uart",
   "name": "UART",
-  "description": "Universal Asynchronous Receiver/Transmitter support. Provides serial communication for console, logging, debugging, and external devices.",
+  "description": "Universal Asynchronous Receiver-Transmitter for serial communication for console, logging,      debugging, and external devices",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic"],
   "provides": ["uart"],
   "depends": [],
   "conflicts": [],
@@ -18,5 +19,76 @@
     "Typically used for system console and debug logging",
     "May also be used for external serial peripherals (GPS, modems, sensors)",
     "Port availability and pin assignments are board-dependent"
+  ],
+  "default_enabled": true,
+  "pins": [
+    "uart_tx",
+    "uart_rx"
+  ],
+  "pin_requirements": {
+    "uart_tx": {
+      "required": true,
+      "description": "UART Transmit"
+    },
+    "uart_rx": {
+      "required": true,
+      "description": "UART Receive"
+    }
+  },
+  "configuration_options": [
+    {
+      "id": "uart_num",
+      "name": "UART Port Number",
+      "type": "select",
+      "options": [0, 1, 2],
+      "default": 0
+    },
+    {
+      "id": "uart_baudrate",
+      "name": "Baud Rate",
+      "type": "select",
+      "options": [9600, 19200, 38400, 57600, 115200, 230400, 460800],
+      "default": 115200
+    },
+    {
+      "id": "uart_data_bits",
+      "name": "Data Bits",
+      "type": "select",
+      "options": [5, 6, 7, 8],
+      "default": 8
+    },
+    {
+      "id": "uart_stop_bits",
+      "name": "Stop Bits",
+      "type": "select",
+      "options": [1, 2],
+      "default": 1
+    },
+    {
+      "id": "uart_parity",
+      "name": "Parity",
+      "type": "select",
+      "options": ["none", "even", "odd"],
+      "default": "none"
+    },
+    {
+      "id": "uart_buffer_size",
+      "name": "Buffer Size (bytes)",
+      "type": "number",
+      "default": 256,
+      "min": 64,
+      "max": 2048
+    }
+  ],
+  "sdkconfig": [
+    "# UART Module",
+    "CONFIG_ESP_CONSOLE_UART_DEFAULT=y",
+    "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
+  ],
+  "source_files": [
+    "basalt_hal/hal_uart.c"
+  ],
+  "header_files": [
+    "basalt_hal/hal_uart.h"
   ]
 }

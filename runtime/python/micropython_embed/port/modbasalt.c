@@ -58,9 +58,15 @@ static void basalt_led_init(void) {
         .pull_down_en = GPIO_PULLDOWN_DISABLE,
         .intr_type = GPIO_INTR_DISABLE,
     };
-    if (BASALT_LED_R_PIN >= 0) io_conf.pin_bit_mask |= (1ULL << BASALT_LED_R_PIN);
-    if (BASALT_LED_G_PIN >= 0) io_conf.pin_bit_mask |= (1ULL << BASALT_LED_G_PIN);
-    if (BASALT_LED_B_PIN >= 0) io_conf.pin_bit_mask |= (1ULL << BASALT_LED_B_PIN);
+#if BASALT_LED_R_PIN >= 0
+    io_conf.pin_bit_mask |= (1ULL << BASALT_LED_R_PIN);
+#endif
+#if BASALT_LED_G_PIN >= 0
+    io_conf.pin_bit_mask |= (1ULL << BASALT_LED_G_PIN);
+#endif
+#if BASALT_LED_B_PIN >= 0
+    io_conf.pin_bit_mask |= (1ULL << BASALT_LED_B_PIN);
+#endif
     if (io_conf.pin_bit_mask) {
         gpio_config(&io_conf);
     }

@@ -1,0 +1,72 @@
+{
+  "name": "ESP32-WROVER-KIT (Generic)",
+  "description": "ESP32-WROVER dev kit style board with PSRAM (pin defaults may vary by revision).",
+  "platform": "esp32",
+  "mcu": "ESP32-WROVER (module)",
+  "flash": "4MB\u201316MB (varies)",
+  "ram": "520KB + PSRAM (varies)",
+  "capabilities": [
+    "wifi",
+    "bluetooth",
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "psram"
+  ],
+  "pins": {
+    "uart_tx": 1,
+    "uart_rx": 3,
+    "i2c_sda": 21,
+    "i2c_scl": 22,
+    "spi_mosi": 23,
+    "spi_miso": 19,
+    "spi_sclk": 18,
+    "spi_cs": 5,
+    "led": 2,
+    "button": 0
+  },
+  "pin_definitions": {
+    "psram": {
+      "description": "Board includes PSRAM; enabling PSRAM is via sdkconfig",
+      "alternatives": [],
+      "type": "feature"
+    },
+    "i2c_sda": {
+      "description": "I2C SDA (common default)",
+      "alternatives": [
+        21,
+        25,
+        26,
+        27,
+        32,
+        33
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL (common default)",
+      "alternatives": [
+        22,
+        14,
+        16,
+        17,
+        18,
+        19
+      ],
+      "type": "output"
+    }
+  },
+  "sdkconfig": [
+    "# ESP32-WROVER style defaults (PSRAM)",
+    "CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y",
+    "CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y",
+    "",
+    "# PSRAM (verify your module supports it)",
+    "CONFIG_ESP32_SPIRAM_SUPPORT=y",
+    "CONFIG_SPIRAM=y"
+  ],
+  "notes": "WROVER kits usually include PSRAM, but exact flash size and some pin peripherals differ by revision. Treat pins as placeholders unless verified."
+}

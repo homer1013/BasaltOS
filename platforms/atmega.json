@@ -1,0 +1,13 @@
+{
+  "id": "atmega",
+  "name": "AVR ATmega (avr-gcc)",
+  "description": "Microchip AVR ATmega family using avr-gcc / avr-libc",
+  "toolchain": "avr-gcc",
+  "arch": "avr8",
+  "family": "avr-atmega",
+  "sdk": "avr-libc",
+  "build": {
+    "generator": "make",
+    "notes": "Often built with Make; programmers via avrdude or vendor tools."
+  }
+}

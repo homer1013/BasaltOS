@@ -4,7 +4,11 @@
   "category": "filesystem",
   "provides": ["fs"],
   "depends": ["spi"],
-  "conflicts": ["fs_spiffs"],
+  "conflicts": [],
   "constraints": {},
   "defines": ["BASALT_ENABLE_FS_SD"]
+  ,
+  "runtime": {
+    "mount_point": "/sd"
+  }
 }

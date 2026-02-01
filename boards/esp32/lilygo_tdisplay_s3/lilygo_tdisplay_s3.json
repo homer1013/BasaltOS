@@ -1,0 +1,95 @@
+{
+  "name": "LilyGO T-Display S3 (Template)",
+  "description": "ESP32-S3 board with integrated small TFT. Pin values vary between T-Display S3 variants; update to match your board.",
+  "platform": "esp32",
+  "mcu": "ESP32-S3",
+  "flash": "16MB (common on some variants)",
+  "ram": "512KB + PSRAM (varies)",
+  "display": "TFT (variant-dependent)",
+  "capabilities": [
+    "wifi",
+    "bluetooth",
+    "tft",
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "usb_otg"
+  ],
+  "pins": {
+    "tft_mosi": 35,
+    "tft_miso": -1,
+    "tft_sclk": 36,
+    "tft_cs": 34,
+    "tft_dc": 37,
+    "tft_rst": 38,
+    "tft_bl": 33,
+    "i2c_sda": 43,
+    "i2c_scl": 44,
+    "uart_tx": 43,
+    "uart_rx": 44,
+    "led": -1,
+    "button": 0
+  },
+  "pin_definitions": {
+    "tft_mosi": {
+      "description": "TFT SPI MOSI (template)",
+      "alternatives": [
+        35,
+        11,
+        13
+      ],
+      "type": "output"
+    },
+    "tft_sclk": {
+      "description": "TFT SPI SCLK (template)",
+      "alternatives": [
+        36,
+        12
+      ],
+      "type": "output"
+    },
+    "tft_cs": {
+      "description": "TFT CS (template)",
+      "alternatives": [
+        34,
+        10
+      ],
+      "type": "output"
+    },
+    "tft_dc": {
+      "description": "TFT D/C (template)",
+      "alternatives": [
+        37,
+        9,
+        8
+      ],
+      "type": "output"
+    },
+    "tft_rst": {
+      "description": "TFT RST (template)",
+      "alternatives": [
+        38,
+        -1
+      ],
+      "type": "output"
+    },
+    "tft_bl": {
+      "description": "TFT Backlight (template)",
+      "alternatives": [
+        33,
+        21,
+        48
+      ],
+      "type": "output"
+    }
+  },
+  "sdkconfig": [
+    "# ESP32-S3 + TFT template",
+    "CONFIG_ESP_CONSOLE_UART_DEFAULT=y",
+    "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
+  ],
+  "notes": "This JSON is intentionally a template because LilyGO has multiple T-Display S3 pin maps. Replace TFT pins with the ones from your board\u2019s docs/schematic."
+}

@@ -1,0 +1,13 @@
+{
+  "id": "pic16",
+  "name": "PIC16 (MPLAB XC8)",
+  "description": "Microchip PIC16 family using MPLAB XC8 toolchain (or SDCC for some parts)",
+  "toolchain": "xc8",
+  "arch": "pic8",
+  "family": "pic16",
+  "sdk": "mplab",
+  "build": {
+    "generator": "mplab",
+    "notes": "Typically managed via MPLAB X. For CI, wrap xc8 invocation with a thin build script."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "stm32",
+  "name": "STM32 (STM32Cube + GCC)",
+  "description": "STMicroelectronics STM32 family using STM32Cube HAL/LL and arm-none-eabi GCC",
+  "toolchain": "stm32cube",
+  "arch": "arm-cortex-m",
+  "family": "stm32",
+  "sdk": "stm32cube",
+  "build": {
+    "generator": "cmake",
+    "notes": "Common choices: STM32CubeMX-generated project, Cube HAL/LL. Can be built via CMake or Make."
+  }
+}

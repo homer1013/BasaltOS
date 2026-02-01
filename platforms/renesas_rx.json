@@ -1,0 +1,13 @@
+{
+  "id": "renesas_rx",
+  "name": "Renesas RX (FIT/FSP + GCC/CC-RX)",
+  "description": "Renesas RX family (RXv1/2/3 cores) using FIT modules (or ecosystem tools) with GCC or CC-RX",
+  "toolchain": "renesas-rx",
+  "arch": "rx",
+  "family": "renesas-rx",
+  "sdk": "fit",
+  "build": {
+    "generator": "make",
+    "notes": "Tooling varies by series; pin down one 'official' build path per supported board."
+  }
+}

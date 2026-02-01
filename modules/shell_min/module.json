@@ -1,0 +1,17 @@
+{
+  "id": "shell_min",
+  "name": "Shell (Minimal)",
+  "description": "Minimal Basalt shell with basic navigation and run commands",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic"],
+  "provides": ["shell"],
+  "depends": ["uart"],
+  "conflicts": ["shell_full"],
+  "defines": [
+    "BASALT_ENABLE_SHELL_MIN"
+  ],
+  "default_enabled": false,
+  "notes": [
+    "Requires UART for input",
+    "Smaller feature set for memory-constrained builds"
+  ]
+}

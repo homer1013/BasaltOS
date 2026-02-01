@@ -1,0 +1,60 @@
+{
+  "name": "Arduino Zero (SAMD21G18)",
+  "description": "Arduino Zero-class board based on ATSAMD21G18 (Cortex-M0+). Pin labels follow Arduino numbering where applicable.",
+  "platform": "atsam",
+  "mcu": "ATSAMD21G18",
+  "flash": "256KB",
+  "ram": "32KB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "usb_device"
+  ],
+  "pins": {
+    "uart_tx": "D1",
+    "uart_rx": "D0",
+    "i2c_sda": "SDA",
+    "i2c_scl": "SCL",
+    "spi_mosi": "MOSI",
+    "spi_miso": "MISO",
+    "spi_sclk": "SCK",
+    "spi_cs": "D4",
+    "led": "D13",
+    "button": -1
+  },
+  "pin_definitions": {
+    "i2c_sda": {
+      "description": "I2C SDA (SERCOM)",
+      "alternatives": [
+        "SDA",
+        "PA22"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL (SERCOM)",
+      "alternatives": [
+        "SCL",
+        "PA23"
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED",
+      "alternatives": [
+        "D13"
+      ],
+      "type": "output"
+    }
+  },
+  "sdkconfig": [
+    "# SAMD build hints",
+    "MCU=atsamd21g18",
+    "USB_DEVICE=1"
+  ],
+  "notes": "Arduino-style labels (SDA/SCL/MOSI/MISO/SCK) map to SERCOM pads; for baremetal, use Atmel START/ASF pinmux outputs."
+}

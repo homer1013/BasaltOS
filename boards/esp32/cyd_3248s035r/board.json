@@ -1,25 +1,96 @@
 {
   "id": "cyd",
-  "name": "Cheap Yellow Display (ESP32)",
+  "name": "CYD ESP32-3248S035R",
+  "description": "Cheap Yellow Display - 3.5 inch TFT with resistive touch, ESP32 powered",
   "platform": "esp32",
   "target": "esp32",
-  "defaults": {
-    "sdkconfig": "sdkconfig.defaults"
-  },
+  "mcu": "ESP32-WROOM-32",
+  "flash": "4MB",
+  "ram": "520KB",
+  "display": "320x480 ST7796",
+  "capabilities": [
+    "wifi",
+    "bluetooth",
+    "tft",
+    "touch",
+    "sd_card",
+    "uart",
+    "spi",
+    "i2c"
+  ],
   "pins": {
-    "i2c_sda": 21,
-    "i2c_scl": 22,
-    "uart0_tx": 1,
-    "uart0_rx": 3,
-    "tft_cs": 5,
+    "tft_mosi": 13,
+    "tft_miso": 12,
+    "tft_sclk": 14,
+    "tft_cs": 15,
     "tft_dc": 2,
-    "tft_rst": 4,
-    "tft_mosi": 23,
-    "tft_sclk": 18,
+    "tft_rst": -1,
+    "tft_bl": 27,
+    "touch_cs": 33,
+    "touch_irq": -1,
     "sd_mosi": 23,
     "sd_miso": 19,
     "sd_sclk": 18,
-    "sd_cs": 13
+    "sd_cs": 5,
+    "i2c_sda": 21,
+    "i2c_scl": 22,
+    "uart_tx": 1,
+    "uart_rx": 3,
+    "led": 4,
+    "button": 0
   },
-  "capabilities": ["i2c", "spi", "uart", "tft", "fs_spiffs", "fs_sd"]
+  "pin_definitions": {
+    "tft_mosi": {
+      "description": "TFT SPI Master Out Slave In",
+      "alternatives": [13, 23],
+      "type": "output"
+    },
+    "tft_miso": {
+      "description": "TFT SPI Master In Slave Out",
+      "alternatives": [12, 19],
+      "type": "input"
+    },
+    "tft_sclk": {
+      "description": "TFT SPI Clock",
+      "alternatives": [14, 18],
+      "type": "output"
+    },
+    "tft_cs": {
+      "description": "TFT Chip Select",
+      "alternatives": [15, 5, 4],
+      "type": "output"
+    },
+    "tft_dc": {
+      "description": "TFT Data/Command",
+      "alternatives": [2, 4, 16],
+      "type": "output"
+    },
+    "tft_bl": {
+      "description": "TFT Backlight",
+      "alternatives": [21, 27],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED",
+      "alternatives": [16, 2],
+      "type": "output"
+    }
+  },
+  "sdkconfig": [
+    "# ESP32 Board Specific",
+    "CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y",
+    "CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y",
+    "CONFIG_PARTITION_TABLE_CUSTOM=y",
+    "CONFIG_PARTITION_TABLE_CUSTOM_FILENAME=\"partitions.csv\"",
+    "",
+    "# Console configuration",
+    "CONFIG_ESP_CONSOLE_UART_DEFAULT=y",
+    "CONFIG_ESP_CONSOLE_UART_NUM=0",
+    "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200",
+    "",
+    "# SPI Flash",
+    "CONFIG_ESPTOOLPY_FLASHMODE_DIO=y",
+    "CONFIG_ESPTOOLPY_FLASHFREQ_80M=y"
+  ],
+  "notes": "Popular development board with integrated TFT display. Commonly known as 'Cheap Yellow Display' or CYD."
 }

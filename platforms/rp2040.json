@@ -1,0 +1,13 @@
+{
+  "id": "rp2040",
+  "name": "RP2040 (Raspberry Pi Pico SDK)",
+  "description": "Raspberry Pi RP2040 (dual-core Cortex-M0+) using Pico SDK / CMake toolchain",
+  "toolchain": "pico-sdk",
+  "arch": "armv6-m",
+  "family": "rp2040",
+  "sdk": "pico-sdk",
+  "build": {
+    "generator": "cmake",
+    "notes": "Expect toolchain via arm-none-eabi + Pico SDK; integrates well with CMake-based projects."
+  }
+}

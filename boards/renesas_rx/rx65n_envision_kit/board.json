@@ -1,0 +1,65 @@
+{
+  "name": "Renesas RX65N Envision Kit",
+  "description": "Renesas RX65N Envision Kit (RXv2 core). Pin labels are placeholders; refine once you pick a concrete HAL/toolchain path.",
+  "platform": "renesas_rx",
+  "mcu": "Renesas RX65N",
+  "flash": "2MB (kit-dependent)",
+  "ram": "640KB (kit-dependent)",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "ethernet"
+  ],
+  "pins": {
+    "uart_tx": "P21",
+    "uart_rx": "P20",
+    "i2c_sda": "P16",
+    "i2c_scl": "P17",
+    "spi_mosi": "P23",
+    "spi_miso": "P22",
+    "spi_sclk": "P24",
+    "spi_cs": "P25",
+    "led": -1,
+    "button": -1
+  },
+  "pin_definitions": {
+    "uart_tx": {
+      "description": "SCI TX (example)",
+      "alternatives": [
+        "P21"
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "SCI RX (example)",
+      "alternatives": [
+        "P20"
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "RIIC SDA (example)",
+      "alternatives": [
+        "P16"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "RIIC SCL (example)",
+      "alternatives": [
+        "P17"
+      ],
+      "type": "output"
+    }
+  },
+  "sdkconfig": [
+    "# Renesas RX build hints",
+    "SDK=fit",
+    "MCU=rx65n"
+  ],
+  "notes": "This is intentionally a starter template. RX pin/peripheral mapping depends on the FIT project configuration (and exact kit revision)."
+}

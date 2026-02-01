@@ -1,0 +1,17 @@
+{
+  "id": "shell_full",
+  "name": "Shell (Full)",
+  "description": "Full Basalt shell with file management and install commands",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic"],
+  "provides": ["shell"],
+  "depends": ["uart"],
+  "conflicts": ["shell_min"],
+  "defines": [
+    "BASALT_ENABLE_SHELL_FULL"
+  ],
+  "default_enabled": false,
+  "notes": [
+    "Requires UART for input",
+    "Includes file management and install/remove commands"
+  ]
+}

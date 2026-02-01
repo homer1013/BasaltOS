@@ -1,0 +1,118 @@
+{
+  "name": "ESP32-DevKitC V4 (Generic)",
+  "description": "Generic ESP32-WROOM-32 DevKitC-style board (common pin defaults). Verify against your specific module revision.",
+  "platform": "esp32",
+  "mcu": "ESP32-WROOM-32",
+  "flash": "4MB (typical)",
+  "ram": "520KB",
+  "capabilities": [
+    "wifi",
+    "bluetooth",
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm"
+  ],
+  "pins": {
+    "uart_tx": 1,
+    "uart_rx": 3,
+    "i2c_sda": 21,
+    "i2c_scl": 22,
+    "spi_mosi": 23,
+    "spi_miso": 19,
+    "spi_sclk": 18,
+    "spi_cs": 5,
+    "led": 2,
+    "button": 0
+  },
+  "pin_definitions": {
+    "i2c_sda": {
+      "description": "I2C SDA (common default)",
+      "alternatives": [
+        21,
+        25,
+        26,
+        27,
+        32,
+        33
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL (common default)",
+      "alternatives": [
+        22,
+        14,
+        16,
+        17,
+        18,
+        19
+      ],
+      "type": "output"
+    },
+    "spi_mosi": {
+      "description": "SPI MOSI (VSPI default)",
+      "alternatives": [
+        23,
+        13
+      ],
+      "type": "output"
+    },
+    "spi_miso": {
+      "description": "SPI MISO (VSPI default)",
+      "alternatives": [
+        19,
+        12
+      ],
+      "type": "input"
+    },
+    "spi_sclk": {
+      "description": "SPI SCLK (VSPI default)",
+      "alternatives": [
+        18,
+        14
+      ],
+      "type": "output"
+    },
+    "spi_cs": {
+      "description": "SPI CS (example)",
+      "alternatives": [
+        5,
+        15,
+        4,
+        2
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED (often GPIO2; varies)",
+      "alternatives": [
+        2,
+        5,
+        4,
+        16
+      ],
+      "type": "output"
+    },
+    "button": {
+      "description": "Boot button (often GPIO0; varies)",
+      "alternatives": [
+        0
+      ],
+      "type": "input"
+    }
+  },
+  "sdkconfig": [
+    "# ESP32 DevKitC-style defaults",
+    "CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y",
+    "CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y",
+    "",
+    "# Console configuration",
+    "CONFIG_ESP_CONSOLE_UART_DEFAULT=y",
+    "CONFIG_ESP_CONSOLE_UART_NUM=0",
+    "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
+  ],
+  "notes": "This is a safe 'generic' baseline for many ESP32 DevKitC/NodeMCU-style boards. Confirm LED and SPI CS pins for your exact board."
+}

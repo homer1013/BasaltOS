@@ -1,0 +1,69 @@
+{
+  "name": "Curiosity Nano PIC16F13145",
+  "description": "Microchip Curiosity Nano board for PIC16F13145. Pin names follow PIC port labels; adjust as needed for your project.",
+  "platform": "pic16",
+  "mcu": "PIC16F13145",
+  "flash": "14KB (approx)",
+  "ram": "1KB (approx)",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "debug"
+  ],
+  "pins": {
+    "uart_tx": "RC4",
+    "uart_rx": "RC5",
+    "i2c_sda": "RC1",
+    "i2c_scl": "RC0",
+    "spi_mosi": "RC6",
+    "spi_miso": "RC7",
+    "spi_sclk": "RC3",
+    "spi_cs": "RA5",
+    "led": -1,
+    "button": -1
+  },
+  "pin_definitions": {
+    "uart_tx": {
+      "description": "EUSART TX (example)",
+      "alternatives": [
+        "RC4",
+        "RB5"
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "EUSART RX (example)",
+      "alternatives": [
+        "RC5",
+        "RB4"
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "MSSP SDA (example)",
+      "alternatives": [
+        "RC1",
+        "RB1"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "MSSP SCL (example)",
+      "alternatives": [
+        "RC0",
+        "RB0"
+      ],
+      "type": "output"
+    }
+  },
+  "sdkconfig": [
+    "# PIC build hints",
+    "TOOLCHAIN=xc8",
+    "MCU=pic16f13145"
+  ],
+  "notes": "PIC peripheral pin select (PPS) means UART/I2C/SPI can be remapped. Treat these pin assignments as a template."
+}

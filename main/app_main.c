@@ -1,3 +1,6 @@
+/* BasaltOS generated configuration (do not hardcode pins in app_main.c) */
+#include "../config/generated/basalt_config.h"  // generated: feature gates + board pins
+
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
@@ -7,6 +10,9 @@
 #include <errno.h>
 #include <unistd.h>
 #include "smoke_test.h"
+
+// Pull in CONFIG_* macros (e.g. CONFIG_CONSOLE_UART_NUM)
+#include "sdkconfig.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -18,7 +24,9 @@
 #include "esp_vfs.h"
 #include "esp_spiffs.h"
 #include "nvs_flash.h"
-#include "driver/uart.h"
+#include "esp_private/esp_clk.h"
+#include "esp_rom_uart.h"
+#include "hal/uart_ll.h"
 #include "driver/spi_master.h"
 #include "sdmmc_cmd.h"
 #include "esp_vfs_fat.h"
@@ -30,32 +38,72 @@
 #define BASALT_INPUT_MAX 128
 #define BASALT_PROMPT_COLOR "\x1b[34m"
 #define BASALT_COLOR_RESET "\x1b[0m"
+#define BASALT_TFT_LOGS 1
+
+#if BASALT_ENABLE_FS_SPIFFS
+#define BASALT_DATA_ROOT BASALT_FS_SPIFFS_MOUNT_POINT
+#else
+#define BASALT_DATA_ROOT "/data"
+#endif
+#define BASALT_APPS_ROOT BASALT_DATA_ROOT "/apps"
+#define BASALT_APPS_PREFIX BASALT_DATA_ROOT "/apps/"
+#if BASALT_ENABLE_FS_SPIFFS
+#define BASALT_HOME_VPATH BASALT_DATA_ROOT
+#else
+#define BASALT_HOME_VPATH "/"
+#endif
+
+#if defined(BASALT_ENABLE_SHELL_FULL)
+#define BASALT_SHELL_LEVEL 2
+#elif defined(BASALT_ENABLE_SHELL_MIN)
+#define BASALT_SHELL_LEVEL 1
+#else
+#define BASALT_SHELL_LEVEL 0
+#endif
+#define BASALT_ENABLE_SHELL (BASALT_SHELL_LEVEL > 0)
+#define BASALT_SHELL_BACKEND (BASALT_ENABLE_UART || BASALT_ENABLE_TFT)
 
 static const char *TAG = "basalt";
-static char g_cwd[64] = "/";
 static int g_uart_num = CONFIG_ESP_CONSOLE_UART_NUM;
+
+static void basalt_uart_write(const char *buf, int len) {
+    if (len <= 0) return;
+    for (int i = 0; i < len; ++i) {
+        esp_rom_uart_putc((char)buf[i]);
+    }
+}
 
 static int basalt_printf(const char *fmt, ...) {
     char buf[256];
     va_list ap;
-    va_list ap2;
     va_start(ap, fmt);
-    va_copy(ap2, ap);
-    int n = vprintf(fmt, ap);
-    vsnprintf(buf, sizeof(buf), fmt, ap2);
-    va_end(ap2);
+    int n = vsnprintf(buf, sizeof(buf), fmt, ap);
     va_end(ap);
+    if (n < 0) return n;
+    if (n >= (int)sizeof(buf)) n = (int)sizeof(buf) - 1;
+    if (g_uart_num >= 0) basalt_uart_write(buf, n);
+#if BASALT_TFT_LOGS
     if (tft_console_is_ready()) {
         tft_console_write(buf);
     }
+#endif
     return n;
 }
 
 static int basalt_uart_printf(const char *fmt, ...) {
+    // Avoid stdio/vfs path (can crash if VFS context is corrupted).
+    // Format into a small stack buffer and write directly via the UART driver.
+    char buf[256];
+
     va_list ap;
     va_start(ap, fmt);
-    int n = vprintf(fmt, ap);
+    int n = vsnprintf(buf, sizeof(buf), fmt, ap);
     va_end(ap);
+
+    if (n < 0) return n;
+    if (n >= (int)sizeof(buf)) n = (int)sizeof(buf) - 1;
+
+    basalt_uart_write(buf, n);
     return n;
 }
 
@@ -66,15 +114,69 @@ static void basalt_tft_print(const char *fmt, ...) {
     va_start(ap, fmt);
     vsnprintf(buf, sizeof(buf), fmt, ap);
     va_end(ap);
+#if BASALT_TFT_LOGS
     tft_console_write(buf);
+#endif
 }
+
+#if BASALT_ENABLE_SHELL
+
+typedef struct {
+    const char *name;
+    const char *usage;
+    const char *desc;
+} bsh_cmd_help_t;
+
+static const bsh_cmd_help_t k_bsh_help[] = {
+    {"help", "help [command|-commands]", "Show help, or details for one command"},
+    {"ls", "ls [path]", "List directory contents"},
+    {"cat", "cat <file>", "Print a file"},
+    {"cd", "cd [path|-|~]", "Change directory (use '-' for previous)"},
+    {"pwd", "pwd", "Print current directory"},
+#if BASALT_SHELL_LEVEL >= 2
+    {"mkdir", "mkdir <path>", "Create directory"},
+    {"cp", "cp [-r] <src> <dst>", "Copy file or directory"},
+    {"mv", "mv [-r] <src> <dst>", "Move/rename file or directory"},
+    {"rm", "rm [-r] <path>", "Remove file or directory"},
+#endif
+    {"apps", "apps", "List installed apps"},
+#if BASALT_SHELL_LEVEL >= 2
+    {"edit", "edit <file>", "Simple line editor (.save/.quit)"},
+#endif
+    {"run", "run <app|script>", "Run an app or script"},
+    {"stop", "stop", "Stop the running app"},
+    {"kill", "kill", "Force stop the running app"},
+#if BASALT_SHELL_LEVEL >= 2
+    {"install", "install <src> [name]", "Install app from folder or zip"},
+    {"remove", "remove <app>", "Remove installed app"},
+    {"logs", "logs", "Show logs (stub)"},
+    {"wifi", "wifi", "WiFi tools (stub)"},
+#endif
+    {"reboot", "reboot", "Restart the device"},
+};
+
+static const bsh_cmd_help_t *bsh_find_help(const char *name) {
+    if (!name) return NULL;
+    for (size_t i = 0; i < sizeof(k_bsh_help) / sizeof(k_bsh_help[0]); ++i) {
+        if (strcmp(k_bsh_help[i].name, name) == 0) return &k_bsh_help[i];
+    }
+    return NULL;
+}
+
+static char g_cwd[64] = "/";
+static char g_prev_cwd[64] = "/";
 
 static void bsh_print_help(bool verbose) {
     if (!verbose) {
-        basalt_printf("Basalt shell. Try 'help -commands' for a command list.\n");
+        basalt_printf("Basalt shell. Type 'help -commands' for the list, or 'help <cmd>' for details.\n");
         return;
     }
-    basalt_printf("Commands: help, ls, cat, cd, pwd, mkdir, cp, mv, rm, apps, edit, run, stop, kill, install, remove, logs, wifi, reboot\n");
+    basalt_printf("Shell level: %s\n\n", BASALT_SHELL_LEVEL >= 2 ? "full" : "minimal");
+    for (size_t i = 0; i < sizeof(k_bsh_help) / sizeof(k_bsh_help[0]); ++i) {
+        basalt_printf("%-8s  %-24s  %s\n", k_bsh_help[i].name, k_bsh_help[i].usage, k_bsh_help[i].desc);
+    }
+    basalt_printf("\nVirtual roots: /data (storage), /apps (apps), /sd (SD card)\n");
+    basalt_printf("Path tips: ~ (home), - (previous dir), ... (up multiple)\n");
 }
 
 static bool path_is_absolute(const char *path) {
@@ -259,14 +361,14 @@ static bool copy_app_prefix(const char *src_prefix, const char *dst_dir) {
 
     if (!ensure_dir(dst_dir)) return false;
 
-    DIR *dir = opendir("/data/apps");
+    DIR *dir = opendir(BASALT_APPS_ROOT);
     if (!dir) return false;
     bool copied = false;
     struct dirent *ent;
     while ((ent = readdir(dir)) != NULL) {
         if (strncmp(ent->d_name, prefix, prefix_len) != 0) continue;
         char src[256];
-        int src_len = snprintf(src, sizeof(src), "/data/apps/%s", ent->d_name);
+        int src_len = snprintf(src, sizeof(src), BASALT_APPS_ROOT "/%s", ent->d_name);
         if (src_len < 0 || src_len >= (int)sizeof(src)) continue;
         const char *rel = ent->d_name + prefix_len;
         char dst[256];
@@ -284,14 +386,14 @@ static bool remove_app_prefix(const char *src_prefix) {
     snprintf(prefix, sizeof(prefix), "%s/", app);
     size_t prefix_len = strlen(prefix);
 
-    DIR *dir = opendir("/data/apps");
+    DIR *dir = opendir(BASALT_APPS_ROOT);
     if (!dir) return false;
     bool removed = false;
     struct dirent *ent;
     while ((ent = readdir(dir)) != NULL) {
         if (strncmp(ent->d_name, prefix, prefix_len) != 0) continue;
         char full[256];
-        int full_len = snprintf(full, sizeof(full), "/data/apps/%s", ent->d_name);
+        int full_len = snprintf(full, sizeof(full), BASALT_APPS_ROOT "/%s", ent->d_name);
         if (full_len < 0 || full_len >= (int)sizeof(full)) {
             continue;
         }
@@ -404,7 +506,7 @@ static bool zip_install_store(const char *zip_path, const char *app_name, char *
         }
 
         char dst[256];
-        int dlen = snprintf(dst, sizeof(dst), "/data/apps/%s/%s", app_name, entry);
+        int dlen = snprintf(dst, sizeof(dst), BASALT_APPS_ROOT "/%s/%s", app_name, entry);
         if (dlen < 0 || dlen >= (int)sizeof(dst)) {
             fclose(f);
             if (err && err_len) snprintf(err, err_len, "zip path too long");
@@ -470,9 +572,16 @@ static void normalize_path(char *path) {
         if (strcmp(start, ".") == 0) {
             continue;
         }
-        if (strcmp(start, "..") == 0) {
-            if (count > 0) count--;
-            continue;
+        if (start[0] == '.' && start[1] == '.') {
+            bool all_dots = true;
+            for (char *s = start; *s; ++s) {
+                if (*s != '.') { all_dots = false; break; }
+            }
+            if (all_dots) {
+                int up = (int)strlen(start) - 1; // ".." -> 1, "..." -> 2
+                while (up-- > 0 && count > 0) count--;
+                continue;
+            }
         }
         if (count < (int)(sizeof(parts) / sizeof(parts[0]))) {
             parts[count++] = start;
@@ -496,6 +605,19 @@ static void resolve_virtual_path(const char *input, char *out, size_t out_len) {
     char tmp[128];
     const char *src = (input && input[0]) ? input : g_cwd;
 
+    if (src[0] == '~') {
+        if (src[1] == '\0') {
+            snprintf(tmp, sizeof(tmp), "%s", BASALT_HOME_VPATH);
+        } else if (src[1] == '/') {
+            snprintf(tmp, sizeof(tmp), "%s%s", BASALT_HOME_VPATH, src + 1);
+        } else {
+            snprintf(tmp, sizeof(tmp), "%s", src);
+        }
+        normalize_path(tmp);
+        snprintf(out, out_len, "%s", tmp);
+        return;
+    }
+
     if (path_is_absolute(src)) {
         snprintf(tmp, sizeof(tmp), "%s", src);
     } else {
@@ -511,20 +633,36 @@ static bool map_virtual_to_real(const char *vpath, char *out, size_t out_len) {
         return true;
     }
     if (strncmp(vpath, "/data", 5) == 0) {
-        snprintf(out, out_len, "%s", vpath);
+#if BASALT_ENABLE_FS_SPIFFS
+        if (vpath[5] == '\0') {
+            snprintf(out, out_len, "%s", BASALT_FS_SPIFFS_MOUNT_POINT);
+        } else {
+            snprintf(out, out_len, "%s%s", BASALT_FS_SPIFFS_MOUNT_POINT, vpath + 5);
+        }
         return true;
+#else
+        return false;
+#endif
     }
     if (strncmp(vpath, "/apps", 5) == 0) {
         if (vpath[5] == '\0') {
-            snprintf(out, out_len, "/data/apps");
+            snprintf(out, out_len, "%s", BASALT_APPS_ROOT);
         } else {
-            snprintf(out, out_len, "/data/apps%s", vpath + 5);
+            snprintf(out, out_len, "%s%s", BASALT_APPS_ROOT, vpath + 5);
         }
         return true;
     }
     if (strncmp(vpath, "/sd", 3) == 0) {
-        snprintf(out, out_len, "%s", vpath);
+#if BASALT_ENABLE_FS_SD
+        if (vpath[3] == '\0') {
+            snprintf(out, out_len, "%s", BASALT_FS_SD_MOUNT_POINT);
+        } else {
+            snprintf(out, out_len, "%s%s", BASALT_FS_SD_MOUNT_POINT, vpath + 3);
+        }
         return true;
+#else
+        return false;
+#endif
     }
     return false;
 }
@@ -538,6 +676,7 @@ static bool resolve_real_path(const char *input, char *out, size_t out_len) {
     return true;
 }
 
+#if BASALT_SHELL_LEVEL >= 2
 static void bsh_cmd_edit(const char *path) {
     if (!path || !path[0]) {
         basalt_printf("edit: missing file path\n");
@@ -577,6 +716,7 @@ static void bsh_cmd_edit(const char *path) {
         fputs(line, f);
     }
 }
+#endif
 
 static void bsh_cmd_ls(const char *path) {
     char vpath[128];
@@ -637,7 +777,20 @@ static void bsh_cmd_pwd(void) {
 
 static void bsh_cmd_cd(const char *path) {
     if (!path || !path[0]) {
-        strcpy(g_cwd, "/");
+        strncpy(g_prev_cwd, g_cwd, sizeof(g_prev_cwd) - 1);
+        g_prev_cwd[sizeof(g_prev_cwd) - 1] = '\0';
+        strncpy(g_cwd, BASALT_HOME_VPATH, sizeof(g_cwd) - 1);
+        g_cwd[sizeof(g_cwd) - 1] = '\0';
+        return;
+    }
+    if (strcmp(path, "-") == 0) {
+        char tmp[64];
+        strncpy(tmp, g_cwd, sizeof(tmp) - 1);
+        tmp[sizeof(tmp) - 1] = '\0';
+        strncpy(g_cwd, g_prev_cwd, sizeof(g_cwd) - 1);
+        g_cwd[sizeof(g_cwd) - 1] = '\0';
+        strncpy(g_prev_cwd, tmp, sizeof(g_prev_cwd) - 1);
+        g_prev_cwd[sizeof(g_prev_cwd) - 1] = '\0';
         return;
     }
     char vpath[128];
@@ -658,10 +811,13 @@ static void bsh_cmd_cd(const char *path) {
         return;
     }
     closedir(dir);
+    strncpy(g_prev_cwd, g_cwd, sizeof(g_prev_cwd) - 1);
+    g_prev_cwd[sizeof(g_prev_cwd) - 1] = '\0';
     strncpy(g_cwd, vpath, sizeof(g_cwd) - 1);
     g_cwd[sizeof(g_cwd) - 1] = '\0';
 }
 
+#if BASALT_SHELL_LEVEL >= 2
 static void bsh_cmd_mkdir(const char *path) {
     if (!path || !path[0]) {
         basalt_printf("mkdir: missing path\n");
@@ -709,7 +865,7 @@ static void bsh_cmd_cp(const char *src, const char *dst, bool recursive) {
     }
 
     // SPIFFS flat app prefix copy: cp /apps/<name> /sd/<name>
-    if (!path_is_file(src_real) && strncmp(src_real, "/data/apps/", 11) == 0) {
+    if (!path_is_file(src_real) && strncmp(src_real, BASALT_APPS_PREFIX, strlen(BASALT_APPS_PREFIX)) == 0) {
         if (!copy_app_prefix(src_real, dst_real)) {
             basalt_printf("cp: failed %s\n", src);
             return;
@@ -762,7 +918,7 @@ static void bsh_cmd_mv(const char *src, const char *dst, bool recursive) {
     }
 
     // SPIFFS flat app prefix move: mv /apps/<name> <dst>
-    if (!path_is_file(src_real) && strncmp(src_real, "/data/apps/", 11) == 0) {
+    if (!path_is_file(src_real) && strncmp(src_real, BASALT_APPS_PREFIX, strlen(BASALT_APPS_PREFIX)) == 0) {
         char dst_dir[128];
         if (path_is_dir(dst_real)) {
             int n = snprintf(dst_dir, sizeof(dst_dir), "%s/%s", dst_real, path_basename(src_real));
@@ -839,9 +995,10 @@ static void bsh_cmd_rm(const char *path, bool recursive) {
     }
     basalt_printf("deleted %s\n", path);
 }
+#endif
 
 static void bsh_cmd_apps(void) {
-    DIR *dir = opendir("/data/apps");
+    DIR *dir = opendir(BASALT_APPS_ROOT);
     if (!dir) {
         basalt_printf("apps: /apps not found\n");
         return;
@@ -880,7 +1037,7 @@ static void bsh_cmd_apps(void) {
     closedir(dir);
     for (int i = 0; i < seen_count; i++) {
         char toml[128];
-        snprintf(toml, sizeof(toml), "/data/apps/%s/app.toml", seen[i]);
+        snprintf(toml, sizeof(toml), BASALT_APPS_ROOT "/%s/app.toml", seen[i]);
         char name[64] = {0};
         char version[32] = {0};
         toml_get_value(toml, "name", name, sizeof(name));
@@ -897,6 +1054,7 @@ static void bsh_cmd_apps(void) {
     }
 }
 
+#if BASALT_SHELL_LEVEL >= 2
 static void bsh_cmd_install(const char *src, const char *name) {
     if (!src || !src[0]) {
         basalt_printf("install: missing source path\n");
@@ -927,7 +1085,7 @@ static void bsh_cmd_install(const char *src, const char *name) {
     }
     if (path_is_dir(src_real)) {
         char dst_real[128];
-        snprintf(dst_real, sizeof(dst_real), "/data/apps/%s", app_name);
+        snprintf(dst_real, sizeof(dst_real), BASALT_APPS_ROOT "/%s", app_name);
         if (!copy_dir(src_real, dst_real)) {
             basalt_printf("install: failed to copy %s\n", app_name);
             return;
@@ -940,7 +1098,7 @@ static void bsh_cmd_install(const char *src, const char *name) {
         return;
     }
     char dst_file[128];
-    snprintf(dst_file, sizeof(dst_file), "/data/apps/%s/main.py", app_name);
+    snprintf(dst_file, sizeof(dst_file), BASALT_APPS_ROOT "/%s/main.py", app_name);
     if (!copy_file(src_real, dst_file)) {
         basalt_printf("install: failed to copy %s\n", app_name);
         return;
@@ -973,7 +1131,7 @@ static void bsh_cmd_remove(const char *target) {
         return;
     }
     // SPIFFS flat path: remove any file with prefix "<app>/"
-    DIR *dir = opendir("/data/apps");
+    DIR *dir = opendir(BASALT_APPS_ROOT);
     if (!dir) {
         basalt_printf("remove: /apps not found\n");
         return;
@@ -987,7 +1145,7 @@ static void bsh_cmd_remove(const char *target) {
     while ((ent = readdir(dir)) != NULL) {
         if (strncmp(ent->d_name, prefix, prefix_len) == 0) {
             char full[256];
-            int full_len = snprintf(full, sizeof(full), "/data/apps/%s", ent->d_name);
+            int full_len = snprintf(full, sizeof(full), BASALT_APPS_ROOT "/%s", ent->d_name);
             if (full_len < 0 || full_len >= (int)sizeof(full)) {
                 continue;
             }
@@ -1001,6 +1159,7 @@ static void bsh_cmd_remove(const char *target) {
     }
     basalt_printf("removed %s\n", vpath);
 }
+#endif
 
 static void bsh_handle_line(char *line) {
     char *cmd = strtok(line, " \t\r\n");
@@ -1008,8 +1167,20 @@ static void bsh_handle_line(char *line) {
 
     if (strcmp(cmd, "help") == 0) {
         char *arg = strtok(NULL, " \t\r\n");
-        bool verbose = (arg && (strcmp(arg, "-commands") == 0 || strcmp(arg, "commands") == 0));
-        bsh_print_help(verbose);
+        if (!arg) {
+            bsh_print_help(false);
+            return;
+        }
+        if (strcmp(arg, "-commands") == 0 || strcmp(arg, "commands") == 0) {
+            bsh_print_help(true);
+            return;
+        }
+        const bsh_cmd_help_t *h = bsh_find_help(arg);
+        if (h) {
+            basalt_printf("%s\n  %s\n  %s\n", h->name, h->usage, h->desc);
+        } else {
+            basalt_printf("help: unknown command: %s\n", arg);
+        }
     } else if (strcmp(cmd, "ls") == 0) {
         char *arg = strtok(NULL, " \t\r\n");
         bsh_cmd_ls(arg);
@@ -1022,9 +1193,14 @@ static void bsh_handle_line(char *line) {
         char *arg = strtok(NULL, " \t\r\n");
         bsh_cmd_cd(arg);
     } else if (strcmp(cmd, "mkdir") == 0) {
+#if BASALT_SHELL_LEVEL >= 2
         char *arg = strtok(NULL, " \t\r\n");
         bsh_cmd_mkdir(arg);
+#else
+        basalt_printf("mkdir: disabled in minimal shell\n");
+#endif
     } else if (strcmp(cmd, "cp") == 0) {
+#if BASALT_SHELL_LEVEL >= 2
         bool recursive = false;
         char *src = strtok(NULL, " \t\r\n");
         if (src && (strcmp(src, "-r") == 0 || strcmp(src, "-R") == 0)) {
@@ -1033,7 +1209,11 @@ static void bsh_handle_line(char *line) {
         }
         char *dst = strtok(NULL, " \t\r\n");
         bsh_cmd_cp(src, dst, recursive);
+#else
+        basalt_printf("cp: disabled in minimal shell\n");
+#endif
     } else if (strcmp(cmd, "mv") == 0) {
+#if BASALT_SHELL_LEVEL >= 2
         bool recursive = false;
         char *src = strtok(NULL, " \t\r\n");
         if (src && (strcmp(src, "-r") == 0 || strcmp(src, "-R") == 0)) {
@@ -1042,7 +1222,11 @@ static void bsh_handle_line(char *line) {
         }
         char *dst = strtok(NULL, " \t\r\n");
         bsh_cmd_mv(src, dst, recursive);
+#else
+        basalt_printf("mv: disabled in minimal shell\n");
+#endif
     } else if (strcmp(cmd, "rm") == 0) {
+#if BASALT_SHELL_LEVEL >= 2
         char *arg = strtok(NULL, " \t\r\n");
         bool recursive = false;
         if (arg && strcmp(arg, "-r") == 0) {
@@ -1050,11 +1234,18 @@ static void bsh_handle_line(char *line) {
             arg = strtok(NULL, " \t\r\n");
         }
         bsh_cmd_rm(arg, recursive);
+#else
+        basalt_printf("rm: disabled in minimal shell\n");
+#endif
     } else if (strcmp(cmd, "apps") == 0) {
         bsh_cmd_apps();
     } else if (strcmp(cmd, "edit") == 0) {
+#if BASALT_SHELL_LEVEL >= 2
         char *arg = strtok(NULL, " \t\r\n");
         bsh_cmd_edit(arg);
+#else
+        basalt_printf("edit: disabled in minimal shell\n");
+#endif
     } else if (strcmp(cmd, "run") == 0) {
         char *arg = strtok(NULL, " \t\r\n");
         if (!arg) {
@@ -1105,16 +1296,32 @@ static void bsh_handle_line(char *line) {
             basalt_printf("killed\n");
         }
     } else if (strcmp(cmd, "install") == 0) {
+#if BASALT_SHELL_LEVEL >= 2
         char *src = strtok(NULL, " \t\r\n");
         char *name = strtok(NULL, " \t\r\n");
         bsh_cmd_install(src, name);
+#else
+        basalt_printf("install: disabled in minimal shell\n");
+#endif
     } else if (strcmp(cmd, "remove") == 0) {
+#if BASALT_SHELL_LEVEL >= 2
         char *name = strtok(NULL, " \t\r\n");
         bsh_cmd_remove(name);
+#else
+        basalt_printf("remove: disabled in minimal shell\n");
+#endif
     } else if (strcmp(cmd, "logs") == 0) {
+#if BASALT_SHELL_LEVEL >= 2
         basalt_printf("logs: (stub)\n");
+#else
+        basalt_printf("logs: disabled in minimal shell\n");
+#endif
     } else if (strcmp(cmd, "wifi") == 0) {
+#if BASALT_SHELL_LEVEL >= 2
         basalt_printf("wifi: (stub)\n");
+#else
+        basalt_printf("wifi: disabled in minimal shell\n");
+#endif
     } else if (strcmp(cmd, "reboot") == 0) {
         basalt_printf("rebooting...\n");
         fflush(stdout);
@@ -1124,115 +1331,164 @@ static void bsh_handle_line(char *line) {
     }
 }
 
+static int basalt_uart_readline(char *out, size_t out_len) {
+    if (!out || out_len == 0) return 0;
+    size_t n = 0;
+    while (n + 1 < out_len) {
+        uint8_t ch = 0;
+        if (esp_rom_uart_rx_one_char(&ch) != 0) {
+            vTaskDelay(pdMS_TO_TICKS(10));
+            continue;
+        }
+        if (ch == '\r' || ch == '\n') {
+            out[n++] = '\n';
+            out[n] = '\0';
+            return (int)n;
+        }
+        if (ch == 0x08 || ch == 0x7f) { // backspace/delete
+            if (n > 0) n--;
+            continue;
+        }
+        out[n++] = (char)ch;
+    }
+    out[n] = '\0';
+    return (int)n;
+}
+
 static void bsh_task(void *arg) {
     char line[BASALT_INPUT_MAX];
 
     while (true) {
         basalt_uart_printf(BASALT_PROMPT_COLOR BASALT_PROMPT BASALT_COLOR_RESET);
+#if BASALT_TFT_LOGS
         tft_console_set_color(0x001F);
         basalt_tft_print(BASALT_PROMPT);
         tft_console_set_color(0xFFFF);
-        if (!fgets(line, sizeof(line), stdin)) {
-            vTaskDelay(pdMS_TO_TICKS(50));
+#endif
+        int got = basalt_uart_readline(line, sizeof(line));
+        if (got <= 0) {
+            vTaskDelay(pdMS_TO_TICKS(10));
             continue;
         }
-        // Echo user input to both UART and TFT.
+        // Echo user input to UART (TFT echo can be enabled via BASALT_TFT_LOGS).
         basalt_uart_printf("%s", line);
+#if BASALT_TFT_LOGS
         basalt_tft_print("%s", line);
+#endif
         bsh_handle_line(line);
     }
 }
 
+#endif // BASALT_ENABLE_SHELL
+
 static void basalt_console_init(void) {
+#if BASALT_ENABLE_UART
+    // Console over UART0 (ESP-IDF console config)
     const int uart_num = CONFIG_ESP_CONSOLE_UART_NUM;
     const int baud = CONFIG_ESP_CONSOLE_UART_BAUDRATE;
     g_uart_num = uart_num;
 
-    uart_driver_install(uart_num, 256, 0, 0, NULL, 0);
-    uart_param_config(uart_num, &(uart_config_t){
-        .baud_rate = baud,
-        .data_bits = UART_DATA_8_BITS,
-        .parity = UART_PARITY_DISABLE,
-        .stop_bits = UART_STOP_BITS_1,
-        .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
-    });
+    // Use ROM UART routines and disable UART interrupts to avoid driver ISR crashes.
+    esp_rom_uart_set_as_console(uart_num);
+    esp_rom_uart_set_clock_baudrate(uart_num, esp_clk_apb_freq(), baud);
+    uart_ll_disable_intr_mask(UART_LL_GET_HW(uart_num), UINT32_MAX);
+    uart_ll_clr_intsts_mask(UART_LL_GET_HW(uart_num), UINT32_MAX);
 
-    esp_vfs_dev_uart_use_driver(uart_num);
+    ESP_LOGI(TAG, "Console: UART%d @ %d", uart_num, baud);
+#else
+    // UART module disabled by configurator: keep app running, but warn.
+    g_uart_num = -1;
+    ESP_LOGW(TAG, "Console UART disabled (BASALT_ENABLE_UART=0).");
+#endif
 }
 
+
 static void basalt_fs_init(void) {
+#if BASALT_ENABLE_FS_SPIFFS
     esp_vfs_spiffs_conf_t conf = {
-        .base_path = "/data",
+        .base_path = BASALT_FS_SPIFFS_MOUNT_POINT,
         .partition_label = "storage",
-        .max_files = 5,
+        .max_files = 8,
         .format_if_mount_failed = true,
     };
 
     esp_err_t ret = esp_vfs_spiffs_register(&conf);
     if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "SPIFFS mount failed: %s", esp_err_to_name(ret));
+        ESP_LOGE(TAG, "SPIFFS mount failed (%s)", esp_err_to_name(ret));
         return;
     }
 
-    DIR *dir = opendir("/data");
-    if (dir) {
-        closedir(dir);
+    size_t total = 0, used = 0;
+    ret = esp_spiffs_info(conf.partition_label, &total, &used);
+    if (ret == ESP_OK) {
+        ESP_LOGI(TAG, "SPIFFS mounted: total=%u, used=%u", (unsigned)total, (unsigned)used);
     } else {
-        ESP_LOGW(TAG, "SPIFFS not accessible at /data");
+        ESP_LOGW(TAG, "SPIFFS info failed (%s)", esp_err_to_name(ret));
     }
-
-    // Ensure /apps exists for listing apps (virtual /apps maps to /data/apps)
-    DIR *apps = opendir("/data/apps");
-    if (!apps) {
-        mkdir("/data/apps", 0775);
-    } else {
-        closedir(apps);
-    }
+#else
+    ESP_LOGI(TAG, "SPIFFS disabled (BASALT_ENABLE_FS_SPIFFS=0)");
+#endif
 }
 
-static void basalt_sd_init(void) {
-    // Default SPI SD pins (VSPI): MOSI=23, MISO=19, SCLK=18, CS=5
-    const int sd_mosi = 23;
-    const int sd_miso = 19;
-    const int sd_sclk = 18;
-    const int sd_cs = 5;
 
+static void basalt_sd_init(void) {
+#if BASALT_ENABLE_FS_SD
+    // BasaltOS expects the board profile to provide SD card SPI pins.
+    // If you enable fs_sd but your board.json doesn't define these, fail fast at compile time.
+    #ifndef BASALT_PIN_SD_MOSI
+    #error "fs_sd enabled but BASALT_PIN_SD_MOSI is not defined (board.json missing sd_mosi pin)."
+    #endif
+    #ifndef BASALT_PIN_SD_MISO
+    #error "fs_sd enabled but BASALT_PIN_SD_MISO is not defined (board.json missing sd_miso pin)."
+    #endif
+    #ifndef BASALT_PIN_SD_SCLK
+    #error "fs_sd enabled but BASALT_PIN_SD_SCLK is not defined (board.json missing sd_sclk pin)."
+    #endif
+    #ifndef BASALT_PIN_SD_CS
+    #error "fs_sd enabled but BASALT_PIN_SD_CS is not defined (board.json missing sd_cs pin)."
+    #endif
+
+    sdmmc_host_t host = SDSPI_HOST_DEFAULT();
     spi_bus_config_t bus_cfg = {
-        .mosi_io_num = sd_mosi,
-        .miso_io_num = sd_miso,
-        .sclk_io_num = sd_sclk,
+        .mosi_io_num = BASALT_PIN_SD_MOSI,
+        .miso_io_num = BASALT_PIN_SD_MISO,
+        .sclk_io_num = BASALT_PIN_SD_SCLK,
         .quadwp_io_num = -1,
         .quadhd_io_num = -1,
-        .max_transfer_sz = 4000,
+        .max_transfer_sz = 4096,
     };
 
-    esp_err_t ret = spi_bus_initialize(VSPI_HOST, &bus_cfg, SDSPI_DEFAULT_DMA);
-    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
-        ESP_LOGW(TAG, "SD SPI bus init failed: %s", esp_err_to_name(ret));
+    esp_err_t ret = spi_bus_initialize(host.slot, &bus_cfg, SDSPI_DEFAULT_DMA);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "SD SPI bus init failed (%s)", esp_err_to_name(ret));
         return;
     }
 
-    sdmmc_host_t host = SDSPI_HOST_DEFAULT();
-    host.slot = VSPI_HOST;
+    sdspi_device_config_t slot_cfg = SDSPI_DEVICE_CONFIG_DEFAULT();
+    slot_cfg.gpio_cs = BASALT_PIN_SD_CS;
+    slot_cfg.host_id = host.slot;
 
-    sdspi_device_config_t slot_config = SDSPI_DEVICE_CONFIG_DEFAULT();
-    slot_config.gpio_cs = sd_cs;
-    slot_config.host_id = VSPI_HOST;
-
-    esp_vfs_fat_mount_config_t mount_config = {
+    esp_vfs_fat_sdmmc_mount_config_t mount_cfg = {
         .format_if_mount_failed = false,
         .max_files = 5,
         .allocation_unit_size = 16 * 1024,
     };
 
     sdmmc_card_t *card = NULL;
-    ret = esp_vfs_fat_sdspi_mount("/sd", &host, &slot_config, &mount_config, &card);
+    ret = esp_vfs_fat_sdspi_mount(BASALT_FS_SD_MOUNT_POINT, &host, &slot_cfg, &mount_cfg, &card);
     if (ret != ESP_OK) {
-        ESP_LOGW(TAG, "SD mount failed: %s", esp_err_to_name(ret));
+        ESP_LOGE(TAG, "SD mount failed (%s)", esp_err_to_name(ret));
+        spi_bus_free(host.slot);
         return;
     }
-    ESP_LOGI(TAG, "SD card mounted at /sd");
+
+    sdmmc_card_print_info(stdout, card);
+    ESP_LOGI(TAG, "SD mounted at %s", BASALT_FS_SD_MOUNT_POINT);
+#else
+    ESP_LOGI(TAG, "SD disabled (BASALT_ENABLE_FS_SD=0)");
+#endif
 }
+
 
 void app_main(void) {
     esp_err_t ret = nvs_flash_init();
@@ -1244,15 +1500,26 @@ void app_main(void) {
     basalt_console_init();
     basalt_fs_init();
     basalt_sd_init();
+#if BASALT_ENABLE_TFT
     tft_console_init();
+#else
+    ESP_LOGI(TAG, "TFT disabled (BASALT_ENABLE_TFT=0)");
+#endif
 
     (void)basalt_smoke_test_run();
-    
-    mpy_runtime_init();
 
-    basalt_printf("Basalt OS booted. Type 'help'.\n");
-
-    xTaskCreate(bsh_task, "bsh", 4096, NULL, 5, NULL);
+#if BASALT_ENABLE_SHELL
+    if (BASALT_SHELL_BACKEND) {
+        basalt_printf("Basalt OS booted. Type 'help'.\n");
+        xTaskCreate(bsh_task, "bsh", 8192, NULL, 5, NULL);
+    } else {
+        basalt_printf("Basalt OS booted.\n");
+        ESP_LOGI(TAG, "Shell disabled (no backend enabled)");
+    }
+#else
+    basalt_printf("Basalt OS booted.\n");
+    ESP_LOGI(TAG, "Shell disabled (BASALT_ENABLE_SHELL=0)");
+#endif
 
     // Keep app_main alive so the main task doesn't exit.
     while (true) {

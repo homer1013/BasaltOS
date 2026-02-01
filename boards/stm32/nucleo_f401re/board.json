@@ -1,0 +1,84 @@
+{
+  "name": "ST Nucleo-F401RE",
+  "description": "STM32 Nucleo board with STM32F401RE (Cortex-M4F). Pin names are STM32 port/pin labels.",
+  "platform": "stm32",
+  "mcu": "STM32F401RE",
+  "flash": "512KB",
+  "ram": "96KB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "debug_swd"
+  ],
+  "pins": {
+    "uart_tx": "PA2",
+    "uart_rx": "PA3",
+    "i2c_sda": "PB9",
+    "i2c_scl": "PB8",
+    "spi_mosi": "PA7",
+    "spi_miso": "PA6",
+    "spi_sclk": "PA5",
+    "spi_cs": "PB6",
+    "led": "PA5",
+    "button": "PC13"
+  },
+  "pin_definitions": {
+    "uart_tx": {
+      "description": "USART2 TX (VCP)",
+      "alternatives": [
+        "PA2",
+        "PA9"
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "USART2 RX (VCP)",
+      "alternatives": [
+        "PA3",
+        "PA10"
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C1 SDA",
+      "alternatives": [
+        "PB9",
+        "PB7"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C1 SCL",
+      "alternatives": [
+        "PB8",
+        "PB6"
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "User LED (LD2)",
+      "alternatives": [
+        "PA5"
+      ],
+      "type": "output"
+    },
+    "button": {
+      "description": "User button (B1)",
+      "alternatives": [
+        "PC13"
+      ],
+      "type": "input"
+    }
+  },
+  "sdkconfig": [
+    "# STM32 build hints (not ESP-IDF)",
+    "STM32CUBE_FAMILY=F4",
+    "STM32CUBE_MCU=STM32F401RE",
+    "CONSOLE_UART=USART2"
+  ],
+  "notes": "Nucleo pin mapping depends on CubeMX project configuration; treat as a good default for quick bring-up."
+}

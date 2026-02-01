@@ -1,0 +1,8 @@
+{
+  "id": "linux-sbc",
+  "name": "Linux SBC",
+  "description": "Linux-based single board computers (Raspberry Pi, BeagleBone, etc.)",
+  "toolchain": "gcc",
+  "vendor": "Various",
+  "arch": "arm64 / armhf / x86"
+}

@@ -8,7 +8,7 @@ list(APPEND MPY_SRCS
 
 idf_component_register(
     SRCS ${MPY_SRCS}
-    INCLUDE_DIRS "." "port" "py" "extmod" "shared/runtime" "genhdr"
+    INCLUDE_DIRS "." "port" "py" "extmod" "shared/runtime" "genhdr" "${PROJECT_DIR}/config/generated"
     REQUIRES driver freertos
 )
 

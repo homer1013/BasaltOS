@@ -1,0 +1,57 @@
+{
+  "name": "Arduino Uno R4 Minima (RA4M1)",
+  "description": "Arduino Uno R4 Minima uses Renesas RA4M1 (Cortex-M4). Pin labels follow Arduino numbering.",
+  "platform": "renesas_ra",
+  "mcu": "Renesas RA4M1",
+  "flash": "256KB (typical for RA4M1 variants)",
+  "ram": "32KB (typical for RA4M1 variants)",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm"
+  ],
+  "pins": {
+    "uart_tx": "D1",
+    "uart_rx": "D0",
+    "i2c_sda": "SDA",
+    "i2c_scl": "SCL",
+    "spi_mosi": "MOSI",
+    "spi_miso": "MISO",
+    "spi_sclk": "SCK",
+    "spi_cs": "D10",
+    "led": "D13",
+    "button": -1
+  },
+  "pin_definitions": {
+    "i2c_sda": {
+      "description": "I2C SDA (Arduino header)",
+      "alternatives": [
+        "SDA"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL (Arduino header)",
+      "alternatives": [
+        "SCL"
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED",
+      "alternatives": [
+        "D13"
+      ],
+      "type": "output"
+    }
+  },
+  "sdkconfig": [
+    "# Renesas RA build hints",
+    "SDK=fsp",
+    "MCU=ra4m1"
+  ],
+  "notes": "Pin mapping depends on Arduino core/FSP config. Use this as a starting point; later we can map RA port pins (Pxxx) if you want baremetal."
+}

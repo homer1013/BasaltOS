@@ -1,0 +1,43 @@
+{
+  "id": "m5stickc_plus2",
+  "name": "M5StickC Plus2 (ESP32-PICO-V3-02)",
+  "platform": "esp32",
+  "target": "esp32",
+  "defaults": {
+    "sdkconfig": "sdkconfig.defaults"
+  },
+  "pins": {
+    "i2c_sda": 21,
+    "i2c_scl": 22,
+    "uart0_tx": 1,
+    "uart0_rx": 3,
+    "tft_cs": 5,
+    "tft_dc": 14,
+    "tft_rst": 12,
+    "tft_mosi": 15,
+    "tft_sclk": 13,
+    "tft_bl": 27,
+    "buzzer": 2,
+    "ir_led": 19,
+    "pwr_hold": 4,
+    "btn_a": 37,
+    "btn_b": 39,
+    "btn_c": 35,
+    "mic_clk": 0,
+    "mic_data": 34,
+    "grove_yellow": 32,
+    "grove_white": 33,
+    "stickio_gpio25": 25,
+    "stickio_gpio26": 26,
+    "stickio_gpio36": 36,
+    "bat_adc": 38
+  },
+  "capabilities": [
+    "i2c",
+    "spi",
+    "uart",
+    "tft",
+    "fs_spiffs",
+    "psram"
+  ]
+}

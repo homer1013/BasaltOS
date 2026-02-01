@@ -6,6 +6,7 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/semphr.h"
 
 #include "driver/gpio.h"
 #include "driver/spi_master.h"
@@ -13,24 +14,75 @@
 #include "esp_log.h"
 #include "esp_err.h"
 
-// --- User tweakables (ST7796 over SPI, 320x480) ---
-#define BASALT_TFT_ENABLE 1
-#define BASALT_TFT_WIDTH  320
-#define BASALT_TFT_HEIGHT 480
+// Board-generated pin assignments and feature gates
+#include "basalt_config.h"
 
-#define BASALT_TFT_HOST   SPI2_HOST
-#define BASALT_TFT_MOSI   13
-#define BASALT_TFT_MISO   12
-#define BASALT_TFT_SCLK   14
-#define BASALT_TFT_CS     15
-#define BASALT_TFT_DC     2
-#define BASALT_TFT_RST    -1
-#define BASALT_TFT_BCKL   27
+// -----------------------------------------------------------------------------
+// Display selection
+// -----------------------------------------------------------------------------
+// BasaltOS currently supports two common TFT families:
+//   - ST7796 (e.g. CYD_3248S035R / ESP32-3248S035R) 320x480
+//   - ST7789V2 (e.g. M5StickC Plus2) 135x240 (panel is a window into a larger
+//     internal GRAM, so we use offsets)
+//
+// Long-term: move these into a generic panel driver layer and select via boards
+// JSON. For now we select based on the board macro.
+
+#if defined(BASALT_BOARD_M5STICKC_PLUS2)
+    #define BASALT_TFT_DRIVER_ST7789V2 1
+    #define BASALT_TFT_WIDTH   135
+    #define BASALT_TFT_HEIGHT  240
+    // Common offsets for 135x240 ST7789 panels (M5StickC family)
+    #define BASALT_TFT_X_OFFSET 52
+    #define BASALT_TFT_Y_OFFSET 40
+#elif defined(BASALT_BOARD_CYD_3248S035R)
+    #define BASALT_TFT_DRIVER_ST7796 1
+    #define BASALT_TFT_WIDTH   320
+    #define BASALT_TFT_HEIGHT  480
+    #define BASALT_TFT_X_OFFSET 0
+    #define BASALT_TFT_Y_OFFSET 0
+#else
+    // Safe default (keeps existing behaviour)
+    #define BASALT_TFT_DRIVER_ST7796 1
+    #define BASALT_TFT_WIDTH   320
+    #define BASALT_TFT_HEIGHT  480
+    #define BASALT_TFT_X_OFFSET 0
+    #define BASALT_TFT_Y_OFFSET 0
+#endif
+
+// --- Pins (generated from boards JSON) ---
+#define BASALT_TFT_ENABLE 1
+
+#define BASALT_TFT_HOST   SPI3_HOST
+#define BASALT_TFT_MOSI   BASALT_PIN_TFT_MOSI
+#ifdef BASALT_PIN_TFT_MISO
+    #define BASALT_TFT_MISO BASALT_PIN_TFT_MISO
+#else
+    #define BASALT_TFT_MISO -1
+#endif
+#define BASALT_TFT_SCLK   BASALT_PIN_TFT_SCLK
+#define BASALT_TFT_CS     BASALT_PIN_TFT_CS
+#define BASALT_TFT_DC     BASALT_PIN_TFT_DC
+#ifdef BASALT_PIN_TFT_RST
+    #define BASALT_TFT_RST BASALT_PIN_TFT_RST
+#else
+    #define BASALT_TFT_RST -1
+#endif
+#ifdef BASALT_PIN_TFT_BL
+    #define BASALT_TFT_BCKL BASALT_PIN_TFT_BL
+#else
+    #define BASALT_TFT_BCKL -1
+#endif
 
 #define BASALT_TFT_CLK_HZ 10000000
 #define BASALT_TFT_SPI_MODE 0
 #define BASALT_TFT_TEST_PATTERN 0
-#define BASALT_TFT_MADCTL 0x48
+#if defined(BASALT_TFT_DRIVER_ST7789V2)
+    // ST7789V2 on M5StickC Plus2 needs no MX to avoid left-right mirroring.
+    #define BASALT_TFT_MADCTL 0x08
+#else
+    #define BASALT_TFT_MADCTL 0x48
+#endif
 #define BASALT_TFT_PIXFMT 0x55 // 16-bit (RGB565) for ST7796
 
 #define FONT_W 6
@@ -49,6 +101,7 @@ static uint16_t s_fg = 0xFFFF;
 static uint16_t s_bg = 0x0000;
 static int s_row = 0;
 static int s_col = 0;
+static SemaphoreHandle_t s_tft_lock = NULL;
 
 // 5x7 ASCII font, characters 32..127 (96 glyphs). Public domain style.
 static const uint8_t font5x7[96][5] = {
@@ -167,6 +220,11 @@ static void tft_write_data(const uint8_t *data, int len) {
     spi_device_polling_transmit(s_spi, &t);
 }
 
+// Convenience for single-byte data writes
+static inline void tft_write_u8(uint8_t v) {
+    tft_write_data(&v, 1);
+}
+
 static void tft_reset(void) {
     if (BASALT_TFT_RST < 0) return;
     gpio_set_level(BASALT_TFT_RST, 0);
@@ -236,7 +294,77 @@ static void tft_st7796_init(void) {
     tft_write_data(f0_4, sizeof(f0_4));
 }
 
+// Minimal init for ST7789V2 (as used on M5StickC Plus2 and similar 135x240 panels).
+// This is intentionally conservative; we can tune gamma/power settings later.
+static void tft_st7789v2_init(void) {
+    // Porch setting
+    tft_write_cmd(0xB2);
+    uint8_t b2[] = {0x0C, 0x0C, 0x00, 0x33, 0x33};
+    tft_write_data(b2, sizeof(b2));
+
+    // Gate control
+    tft_write_cmd(0xB7);
+    uint8_t b7 = 0x35;
+    tft_write_data(&b7, 1);
+
+    // VCOM setting
+    tft_write_cmd(0xBB);
+    uint8_t bb = 0x19;
+    tft_write_data(&bb, 1);
+
+    // LCM control
+    tft_write_cmd(0xC0);
+    uint8_t c0 = 0x2C;
+    tft_write_data(&c0, 1);
+
+    // VDV and VRH command enable
+    tft_write_cmd(0xC2);
+    uint8_t c2 = 0x01;
+    tft_write_data(&c2, 1);
+
+    // VRH set
+    tft_write_cmd(0xC3);
+    uint8_t c3 = 0x12;
+    tft_write_data(&c3, 1);
+
+    // VDV set
+    tft_write_cmd(0xC4);
+    uint8_t c4 = 0x20;
+    tft_write_data(&c4, 1);
+
+    // Frame rate control
+    tft_write_cmd(0xC6);
+    uint8_t c6 = 0x0F;
+    tft_write_data(&c6, 1);
+
+    // Power control 1
+    tft_write_cmd(0xD0);
+    uint8_t d0[] = {0xA4, 0xA1};
+    tft_write_data(d0, sizeof(d0));
+
+    // Positive gamma
+    tft_write_cmd(0xE0);
+    uint8_t e0[] = {0xD0, 0x04, 0x0D, 0x11, 0x13, 0x2B, 0x3F, 0x54,
+                    0x4C, 0x18, 0x0D, 0x0B, 0x1F, 0x23};
+    tft_write_data(e0, sizeof(e0));
+
+    // Negative gamma
+    tft_write_cmd(0xE1);
+    uint8_t e1[] = {0xD0, 0x04, 0x0C, 0x11, 0x13, 0x2C, 0x3F, 0x44,
+                    0x51, 0x2F, 0x1F, 0x1F, 0x20, 0x23};
+    tft_write_data(e1, sizeof(e1));
+
+    // Inversion on (common for these small IPS panels)
+    tft_write_cmd(0x21);
+}
+
 static void tft_set_addr_window(int x0, int y0, int x1, int y1) {
+    // Some panels (notably 135x240 ST7789 variants) use an internal GRAM
+    // that is larger than the visible area; Basalt uses per-board offsets.
+    x0 += BASALT_TFT_X_OFFSET;
+    x1 += BASALT_TFT_X_OFFSET;
+    y0 += BASALT_TFT_Y_OFFSET;
+    y1 += BASALT_TFT_Y_OFFSET;
     uint8_t data[4];
     tft_write_cmd(0x2A);
     data[0] = (x0 >> 8) & 0xFF;
@@ -333,6 +461,9 @@ static void tft_scroll(void) {
 
 void tft_console_write(const char *text) {
     if (!s_ready || !text) return;
+    if (s_tft_lock) {
+        xSemaphoreTake(s_tft_lock, portMAX_DELAY);
+    }
     bool dirty = false;
 
     for (const char *p = text; *p; p++) {
@@ -350,6 +481,20 @@ void tft_console_write(const char *text) {
         }
 
         if (ch == '\r') continue;
+
+        if (s_row < 0) s_row = 0;
+        if (s_row >= MAX_ROWS) s_row = MAX_ROWS - 1;
+        if (s_col < 0) s_col = 0;
+        if (s_col >= MAX_COLS) {
+            tft_draw_line(s_row);
+            s_row++;
+            s_col = 0;
+            dirty = false;
+            if (s_row >= MAX_ROWS) {
+                s_row = MAX_ROWS - 1;
+                tft_scroll();
+            }
+        }
 
         s_screen[s_row][s_col] = ch;
         s_color[s_row][s_col] = s_fg;
@@ -371,6 +516,9 @@ void tft_console_write(const char *text) {
     if (dirty) {
         tft_draw_line(s_row);
     }
+    if (s_tft_lock) {
+        xSemaphoreGive(s_tft_lock);
+    }
 }
 
 bool tft_console_is_ready(void) {
@@ -383,6 +531,9 @@ void tft_console_set_color(uint16_t fg) {
 
 bool tft_console_init(void) {
 #if BASALT_TFT_ENABLE
+    if (!s_tft_lock) {
+        s_tft_lock = xSemaphoreCreateMutex();
+    }
     uint64_t pin_mask = (1ULL << BASALT_TFT_DC);
 #if BASALT_TFT_RST >= 0
     pin_mask |= (1ULL << BASALT_TFT_RST);
@@ -433,10 +584,24 @@ bool tft_console_init(void) {
 
     tft_write_cmd(0x01); // software reset
     vTaskDelay(pdMS_TO_TICKS(120));
+    // MADCTL default: BGR, no mirroring (panel-specific rotations can override later).
+    tft_write_cmd(0x36);
+    tft_write_u8(0x08);
+    // Memory access control (MADCTL): fix left-right mirroring on some ST7789 panels.
+    // 0x08 = BGR color order, no MX/MY/MV (rotation handled by offsets in set_window).
+    tft_write_cmd(0x36);
+    tft_write_u8(0x08);
     tft_write_cmd(0x11); // sleep out
     vTaskDelay(pdMS_TO_TICKS(120));
 
+    // Panel-specific init sequence
+#if BASALT_TFT_DRIVER_ST7796
     tft_st7796_init();
+#elif BASALT_TFT_DRIVER_ST7789V2
+    tft_st7789v2_init();
+#else
+    tft_st7796_init();
+#endif
 
     tft_write_cmd(0x3A); // pixel format
     uint8_t pf = BASALT_TFT_PIXFMT;

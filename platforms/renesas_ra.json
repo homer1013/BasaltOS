@@ -1,0 +1,13 @@
+{
+  "id": "renesas_ra",
+  "name": "Renesas RA (FSP + GCC)",
+  "description": "Renesas RA Cortex-M family using Flexible Software Package (FSP) and GCC/LLVM toolchains",
+  "toolchain": "renesas-fsp",
+  "arch": "arm-cortex-m",
+  "family": "renesas-ra",
+  "sdk": "fsp",
+  "build": {
+    "generator": "cmake",
+    "notes": "Often created via e2 studio/FSP configurator; for BasaltOS, vendor generated sources + define a consistent build."
+  }
+}

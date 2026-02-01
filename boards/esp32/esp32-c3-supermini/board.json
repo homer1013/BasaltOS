@@ -1,0 +1,98 @@
+{
+  "name": "ESP32-C3 SuperMini (Generic)",
+  "description": "Small ESP32-C3 board (RISC-V). Pinout varies by vendor; this template provides common-safe assignments.",
+  "platform": "esp32",
+  "mcu": "ESP32-C3",
+  "flash": "4MB (typical)",
+  "ram": "400KB (typical)",
+  "capabilities": [
+    "wifi",
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm"
+  ],
+  "pins": {
+    "uart_tx": 21,
+    "uart_rx": 20,
+    "i2c_sda": 8,
+    "i2c_scl": 9,
+    "spi_mosi": 7,
+    "spi_miso": 2,
+    "spi_sclk": 6,
+    "spi_cs": 10,
+    "led": 8,
+    "button": 9
+  },
+  "pin_definitions": {
+    "uart_tx": {
+      "description": "UART TX (often on 21 for C3 boards)",
+      "alternatives": [
+        21,
+        4,
+        5
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "UART RX (often on 20 for C3 boards)",
+      "alternatives": [
+        20,
+        4,
+        5
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C SDA (example)",
+      "alternatives": [
+        8,
+        4,
+        5,
+        6,
+        7,
+        10
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL (example)",
+      "alternatives": [
+        9,
+        4,
+        5,
+        6,
+        7,
+        10
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED (varies a lot on SuperMini clones)",
+      "alternatives": [
+        8,
+        2,
+        3,
+        10
+      ],
+      "type": "output"
+    },
+    "button": {
+      "description": "User/boot button (varies)",
+      "alternatives": [
+        9,
+        0
+      ],
+      "type": "input"
+    }
+  },
+  "sdkconfig": [
+    "# ESP32-C3 defaults (verify flash size and CPU freq for your build target)",
+    "CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y",
+    "CONFIG_ESP_CONSOLE_UART_DEFAULT=y",
+    "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
+  ],
+  "notes": "ESP32-C3 boards are wildly inconsistent across sellers. Confirm UART/LED/button pins with your board\u2019s silkscreen or schematic."
+}

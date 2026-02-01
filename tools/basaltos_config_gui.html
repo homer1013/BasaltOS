@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BasaltOS Configurator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .wizard-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            padding: 15px;
+        }
+
+        .step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+            font-size: 24px;
+        }
+
+        .step.active {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .step.completed {
+            color: #48bb78;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            line-height: 30px;
+            margin-bottom: 5px;
+        }
+
+        .step.active .step-number {
+            background: #667eea;
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: #48bb78;
+            color: white;
+        }
+
+        .config-panel {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .board-list, .module-list {
+            list-style: none;
+        }
+
+        .board-item, .module-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f7fafc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .board-item:hover, .module-item:hover {
+            background: #edf2f7;
+        }
+
+        .board-item.selected {
+            background: #ebf4ff;
+            border-color: #667eea;
+            font-weight: 600;
+        }
+
+        .main-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .board-details {
+            margin-bottom: 30px;
+        }
+
+        .board-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .board-image {
+            width: 150px;
+            height: 150px;
+            background: #f7fafc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a0aec0;
+            font-size: 48px;
+        }
+
+        .board-info h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+
+        .board-specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .spec-item {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+        }
+
+        .spec-label {
+            font-size: 12px;
+            color: #718096;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .spec-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .module-card {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .module-card:hover {
+            border-color: #cbd5e0;
+        }
+
+        .module-card.enabled {
+            background: #ebf4ff;
+            border-color: #667eea;
+        }
+
+        .module-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .module-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2d3748;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e0;
+            transition: .3s;
+            border-radius: 26px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .module-description {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+
+        .module-pins {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .pin-config {
+            margin-top: 30px;
+        }
+
+        .pin-config h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .pin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .pin-table th {
+            background: #f7fafc;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #4a5568;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .pin-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .pin-table input, .pin-table select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .pin-table input:focus, .pin-table select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+        }
+
+        .code-preview {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .code-preview pre {
+            margin: 0;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .alert-info {
+            background: #bee3f8;
+            border-left: 4px solid #3182ce;
+            color: #2c5282;
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            border-left: 4px solid #38a169;
+            color: #22543d;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏔️ BasaltOS Configurator</h1>
+            <p>Configure your embedded system with ease - from ESP32 to ATtiny85</p>
+        </header>
+
+        <div class="wizard-steps">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div>Platform & Board</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div>Modules</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div>Pin Configuration</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div>Generate</div>
+            </div>
+        </div>
+
+        <div class="config-panel">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div id="platform-selection">
+                    <h3>Platform</h3>
+                    <select id="platform-select" class="search-box">
+                        <!-- populated by JS from /api/platforms -->
+                    </select>
+                </div>
+
+                <div id="board-selection" style="margin-top: 20px;">
+                    <h3>Boards</h3>
+                    <input type="text" class="search-box" placeholder="Search boards..." id="board-search">
+                    <ul class="board-list" id="board-list">
+                        <!-- Populated by JavaScript -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Step 1: Board Selection -->
+                <div id="step-1" class="content-section active">
+                    <div class="alert alert-info">
+                        <strong>Welcome!</strong> Select a platform and board to get started with your BasaltOS configuration.
+                    </div>
+                    
+                    <div id="board-details" style="display: none;">
+                        <div class="board-header">
+                            <div class="board-image">📟</div>
+                            <div class="board-info">
+                                <h2 id="board-name">CYD ESP32-3248S035R</h2>
+                                <p id="board-description">3.5" TFT display with resistive touch, ESP32 powered</p>
+                            </div>
+                        </div>
+
+                        <div class="board-specs">
+                            <div class="spec-item">
+                                <div class="spec-label">MCU</div>
+                                <div class="spec-value" id="spec-mcu">ESP32-WROOM-32</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Flash</div>
+                                <div class="spec-value" id="spec-flash">4MB</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">RAM</div>
+                                <div class="spec-value" id="spec-ram">520KB</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Display</div>
+                                <div class="spec-value" id="spec-display">320x480 ST7796</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Module Selection -->
+                <div id="step-2" class="content-section">
+                    <h2 style="margin-bottom: 20px;">Select Modules</h2>
+                    <div class="alert alert-info">
+                        Enable or disable modules based on your application needs. Pin assignments will be configured in the next step.
+                    </div>
+                    
+                    <div class="module-grid" id="module-grid">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Step 3: Pin Configuration -->
+                <div id="step-3" class="content-section">
+                    <h2 style="margin-bottom: 20px;">Pin Configuration</h2>
+                    <div class="alert alert-info">
+                        Configure pin assignments for enabled modules. Default values are provided based on your board.
+                    </div>
+
+                    <div class="pin-config">
+                        <h3>Pin Assignments</h3>
+                        <table class="pin-table" id="pin-table">
+                            <thead>
+                                <tr>
+                                    <th>Module</th>
+                                    <th>Signal</th>
+                                    <th>Pin</th>
+                                    <th>Alternative Pins</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pin-table-body">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Step 4: Generate -->
+                <div id="step-4" class="content-section">
+                    <h2 style="margin-bottom: 20px;">Generate Configuration</h2>
+                    <div class="alert alert-success">
+                        <strong>Configuration Complete!</strong> Review your settings and generate the configuration files.
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <h3>Configuration Summary</h3>
+                        <div id="config-summary" style="margin-top: 15px;">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <h3>Preview: basalt_config.h</h3>
+                        <div class="code-preview">
+                            <pre id="config-preview">/* Generated configuration will appear here */</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="btn-prev" style="display: none;">← Previous</button>
+                    <button class="btn btn-primary" id="btn-next">Next →</button>
+                    <button class="btn btn-success" id="btn-generate" style="display: none;">Generate Files</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data structures
+        let platforms = [];
+        let boards = {};
+        let modules = [];
+        let boardDetails = {};
+
+        async function loadFromApi() {
+            const isHttp = window.location.protocol.startsWith('http');
+            if (!isHttp) {
+                console.warn('Running from file:// - start the server and open http://localhost:5000');
+                return false;
+            }
+
+            try {
+                const pRes = await fetch('/api/platforms');
+                platforms = await pRes.json();
+
+                boards = {};
+                for (const p of platforms) {
+                    const bRes = await fetch(`/api/boards/${p.id}`);
+                    boards[p.id] = await bRes.json();
+                }
+
+                await refreshModulesForPlatform(selectedPlatform);
+                modules.forEach(m => { if (!Array.isArray(m.pins)) m.pins = []; });
+
+                return true;
+            } catch (err) {
+                console.error('Failed to load from API:', err);
+                return false;
+            }
+        }
+
+        function populatePlatformSelect() {
+            const sel = document.getElementById('platform-select');
+            sel.innerHTML = '';
+
+            platforms.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = p.name || p.id;
+                sel.appendChild(opt);
+            });
+
+            if (platforms.length > 0) {
+                selectedPlatform = platforms[0].id;
+                sel.value = selectedPlatform;
+            }
+        }
+
+        async function refreshModulesForPlatform(platformId) {
+            const url = platformId ? `/api/modules?platform=${platformId}` : '/api/modules';
+            const mRes = await fetch(url);
+            modules = await mRes.json();
+            modules.forEach(m => { if (!Array.isArray(m.pins)) m.pins = []; });
+        }
+
+        
+
+        // State
+        let currentStep = 1;
+        let selectedPlatform = 'esp32';
+        let selectedBoard = null;
+        let moduleStates = {};
+
+        // Initialize
+        async function init() {
+            await loadFromApi();
+            populatePlatformSelect();
+            populateBoardList();
+            populateModuleGrid();
+            updateWizardSteps();
+            attachEventListeners();
+        }
+
+        function populateBoardList() {
+            const boardList = document.getElementById('board-list');
+            boardList.innerHTML = '';
+            
+            const platformBoards = boards[selectedPlatform] || [];
+            platformBoards.forEach(board => {
+                const li = document.createElement('li');
+                li.className = 'board-item';
+                li.textContent = board.name;
+                li.dataset.boardId = board.id;
+                li.onclick = () => selectBoard(board);
+                boardList.appendChild(li);
+            });
+        }
+
+        function selectBoard(board) {
+            selectedBoard = board;
+            
+            // Update UI
+            document.querySelectorAll('.board-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            // Show board details
+            document.getElementById('board-details').style.display = 'block';
+            document.getElementById('board-name').textContent = board.name;
+            document.getElementById('board-description').textContent = board.description;
+            document.getElementById('spec-mcu').textContent = board.mcu;
+            document.getElementById('spec-flash').textContent = board.flash;
+            document.getElementById('spec-ram').textContent = board.ram;
+            document.getElementById('spec-display').textContent = board.display;
+            
+            // Auto-enable modules based on board capabilities
+            autoEnableByBoardCapabilities(board);
+            populateModuleGrid();
+        }
+
+        function autoEnableByBoardCapabilities(board) {
+            const caps = new Set(board.capabilities || []);
+            const enable = (id) => {
+                const mod = modules.find(m => m.id === id);
+                if (mod) mod.enabled = true;
+            };
+            if (caps.has('spi')) enable('spi');
+            if (caps.has('uart')) enable('uart');
+            if (caps.has('tft')) enable('tft');
+            // Default to SPIFFS for internal storage
+            enable('fs_spiffs');
+            if (caps.has('psram')) enable('psram');
+            if (caps.has('uart')) enable('shell_full');
+        }
+
+        function moduleAllowed(module, caps) {
+            if (module.platforms && !module.platforms.includes(selectedPlatform)) return false;
+            if (caps.size === 0) return true;
+            if (caps.has(module.id)) return true;
+            if (module.id.startsWith('shell_')) return caps.has('uart');
+            if (module.id === 'fs_spiffs') return true; // internal storage
+            if (module.id === 'fs_sd') return caps.has('sd_card');
+            if (module.id === 'psram') return caps.has('psram');
+            return caps.has(module.id.replace('fs_', ''));
+        }
+
+        function populateModuleGrid() {
+            const grid = document.getElementById('module-grid');
+            grid.innerHTML = '';
+
+            const caps = new Set(selectedBoard?.capabilities || []);
+
+            modules.forEach(module => {
+                const enabled = !!module.enabled;
+                moduleStates[module.id] = enabled;
+
+                const allowed = moduleAllowed(module, caps);
+
+                const card = document.createElement('div');
+                card.className = `module-card ${enabled ? 'enabled' : ''}`;
+                if (!allowed) card.classList.add('disabled');
+                card.innerHTML = `
+                    <div class="module-header">
+                        <div class="module-name">${module.name}</div>
+                        <label class="toggle">
+                            <input type="checkbox" ${enabled ? 'checked' : ''} data-module="${module.id}" ${allowed ? '' : 'disabled'}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="module-description">${module.description || ""}</div>
+                    ${(module.pins && module.pins.length > 0) ? `<div class="module-pins">Pins: ${module.pins.join(', ')}</div>` : ''}
+                `;
+
+                const toggle = card.querySelector('input[type="checkbox"]');
+                if (allowed) {
+                    toggle.onchange = () => toggleModule(module.id, toggle.checked, card);
+                }
+
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleModule(moduleId, enabled, card) {
+            moduleStates[moduleId] = enabled;
+            card.classList.toggle('enabled', enabled);
+            const module = modules.find(m => m.id === moduleId);
+            if (module) module.enabled = enabled;
+        }
+
+        function populatePinTable() {
+            const tbody = document.getElementById('pin-table-body');
+            tbody.innerHTML = '';
+
+            const boardPins = selectedBoard ? (selectedBoard.pins || {}) : {};
+            const derivePinsForModule = (moduleId) => {
+                const derived = [];
+                const prefixes = [];
+                if (moduleId === 'i2c') prefixes.push('i2c_');
+                if (moduleId === 'fs_sd') prefixes.push('sd_');
+                if (moduleId === 'spi') prefixes.push('spi_');
+                prefixes.forEach(prefix => {
+                    Object.keys(boardPins).forEach(p => {
+                        if (p.startsWith(prefix)) derived.push(p);
+                    });
+                });
+                return derived;
+            };
+
+            const enabledWithPins = modules.filter(m => m.enabled && Array.isArray(m.pins) && m.pins.length > 0);
+            const enabledDerived = modules
+                .filter(m => m.enabled && (!Array.isArray(m.pins) || m.pins.length === 0))
+                .map(m => ({ module: m, pins: derivePinsForModule(m.id) }))
+                .filter(x => x.pins.length > 0);
+
+            if (enabledWithPins.length === 0 && enabledDerived.length === 0 && selectedBoard) {
+                const pinDefs = selectedBoard.pin_definitions || {};
+                const pins = selectedBoard.pins || {};
+                const entries = Object.keys(pinDefs).length > 0
+                    ? Object.entries(pinDefs)
+                    : Object.entries(pins).map(([k]) => [k, {}]);
+
+                entries.forEach(([pin, def]) => {
+                    const tr = document.createElement('tr');
+                    const defaultPin = selectedBoard.pins && selectedBoard.pins[pin] !== undefined
+                        ? selectedBoard.pins[pin]
+                        : -1;
+                    const alternatives = def.alternatives ? def.alternatives.join(', ') : '';
+                    tr.innerHTML = `
+                        <td>board</td>
+                        <td>${pin.toUpperCase()}</td>
+                        <td><input type="number" value="${defaultPin}" data-pin="${pin}" min="-1" max="40"></td>
+                        <td>${alternatives}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                return;
+            }
+
+            enabledWithPins.forEach(module => {
+                module.pins.forEach(pin => {
+                    const tr = document.createElement('tr');
+                    const defaultPin = selectedBoard && selectedBoard.pins[pin] !== undefined 
+                        ? selectedBoard.pins[pin] 
+                        : -1;
+                    
+                    tr.innerHTML = `
+                        <td>${module.name}</td>
+                        <td>${pin.toUpperCase()}</td>
+                        <td><input type="number" value="${defaultPin}" data-pin="${pin}" min="-1" max="40"></td>
+                        <td><select><option>Default</option><option>Custom</option></select></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+
+            enabledDerived.forEach(({ module, pins }) => {
+                pins.forEach(pin => {
+                    const tr = document.createElement('tr');
+                    const defaultPin = selectedBoard && selectedBoard.pins[pin] !== undefined
+                        ? selectedBoard.pins[pin]
+                        : -1;
+                    tr.innerHTML = `
+                        <td>${module.name}</td>
+                        <td>${pin.toUpperCase()}</td>
+                        <td><input type="number" value="${defaultPin}" data-pin="${pin}" min="-1" max="40"></td>
+                        <td>Board default</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        async function generateConfigPreview() {
+            const previewEl = document.getElementById('config-preview');
+
+            // Summary
+            const summary = document.getElementById('config-summary');
+            summary.innerHTML = `
+                <div class="board-specs">
+                    <div class="spec-item">
+                        <div class="spec-label">Board</div>
+                        <div class="spec-value">${selectedBoard ? selectedBoard.name : 'None'}</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Platform</div>
+                        <div class="spec-value">${selectedPlatform.toUpperCase()}</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Modules Enabled</div>
+                        <div class="spec-value">${modules.filter(m => m.enabled).length}</div>
+                    </div>
+                </div>
+            `;
+
+            const isHttp = window.location.protocol.startsWith('http');
+            if (!isHttp || !selectedBoard) {
+                previewEl.textContent = 'Select a board to preview configuration.';
+                return;
+            }
+
+            const enabled_modules = modules.filter(m => m.enabled).map(m => m.id);
+            const custom_pins = {};
+            document.querySelectorAll('#pin-table-body input[data-pin]').forEach(input => {
+                const key = input.dataset.pin;
+                const val = parseInt(input.value, 10);
+                if (!Number.isNaN(val)) custom_pins[key] = val;
+            });
+
+            try {
+                const resp = await fetch('/api/preview/basalt_config_h', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        platform: selectedPlatform,
+                        board_id: selectedBoard.id,
+                        enabled_modules,
+                        custom_pins
+                    })
+                });
+                const data = await resp.json();
+                if (!data.success) throw new Error(data.error || 'Preview failed');
+                previewEl.textContent = data.content;
+            } catch (err) {
+                previewEl.textContent = `Preview failed: ${err}`;
+            }
+            
+        }
+
+        function updateWizardSteps() {
+            document.querySelectorAll('.step').forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                } else if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                }
+            });
+            
+            // Show/hide content sections
+            document.querySelectorAll('.content-section').forEach((section, index) => {
+                section.classList.remove('active');
+                if (index + 1 === currentStep) {
+                    section.classList.add('active');
+                }
+            });
+            
+            // Update buttons
+            document.getElementById('btn-prev').style.display = currentStep > 1 ? 'block' : 'none';
+            document.getElementById('btn-next').style.display = currentStep < 4 ? 'block' : 'none';
+            document.getElementById('btn-generate').style.display = currentStep === 4 ? 'block' : 'none';
+            
+            // Populate data for current step
+            if (currentStep === 3) {
+                if (selectedBoard && modules.every(m => !m.enabled)) {
+                    autoEnableByBoardCapabilities(selectedBoard);
+                    populateModuleGrid();
+                }
+                populatePinTable();
+            } else if (currentStep === 4) {
+                generateConfigPreview();
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < 4) {
+                currentStep++;
+                updateWizardSteps();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateWizardSteps();
+            }
+        }
+
+        async function generateFiles() {
+            if (!selectedBoard) {
+                alert('Select a board first.');
+                return;
+            }
+
+            const enabled_modules = modules.filter(m => m.enabled).map(m => m.id);
+            const custom_pins = {};
+            document.querySelectorAll('#pin-table-body input[data-pin]').forEach(input => {
+                const key = input.dataset.pin;
+                const val = parseInt(input.value, 10);
+                if (!Number.isNaN(val)) custom_pins[key] = val;
+            });
+
+            const payload = {
+                platform: selectedPlatform,
+                board_id: selectedBoard.id,
+                enabled_modules,
+                custom_pins
+            };
+
+            try {
+                const resp = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await resp.json();
+                if (!data.success) throw new Error(data.error || 'Generate failed');
+
+                const msg = [
+                    'Generated configuration files:',
+                    data.files['basalt_config.h'],
+                    data.files['sdkconfig.defaults'],
+                    data.files['basalt.features.json'],
+                    data.files['basalt_config.json'],
+                    '',
+                    'Build with:',
+                    'SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build flash monitor'
+                ].join('\n');
+
+                alert(msg);
+            } catch (err) {
+                alert(`Generate failed: ${err}`);
+            }
+        }
+
+        function attachEventListeners() {
+            document.getElementById('platform-select').onchange = async (e) => {
+                selectedPlatform = e.target.value;
+                populateBoardList();
+                await refreshModulesForPlatform(selectedPlatform);
+                populateModuleGrid();
+            };
+            
+            document.getElementById('board-search').oninput = (e) => {
+                const search = e.target.value.toLowerCase();
+                document.querySelectorAll('.board-item').forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    item.style.display = text.includes(search) ? 'block' : 'none';
+                });
+            };
+            
+            document.getElementById('btn-next').onclick = nextStep;
+            document.getElementById('btn-prev').onclick = prevStep;
+            document.getElementById('btn-generate').onclick = generateFiles;
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
