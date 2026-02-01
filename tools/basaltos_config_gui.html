@@ -313,6 +313,182 @@
             color: #a0aec0;
         }
 
+        .module-options {
+            margin-top: 15px;
+            padding: 15px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .module-options.active {
+            display: block;
+        }
+
+        .option-field {
+            margin-bottom: 12px;
+        }
+
+        .option-field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+
+        .option-field input,
+        .option-field select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .btn-config {
+            margin-top: 10px;
+            padding: 6px 12px;
+            background: #e2e8f0;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-config:hover {
+            background: #cbd5e0;
+        }
+
+        .btn-config.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .module-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-dep {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-provides {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-conflict {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-platform {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .module-icon {
+            font-size: 22px;
+            margin-right: 10px;
+        }
+
+        .pin-input.conflict {
+            border-color: #f87171;
+            background: #fef2f2;
+        }
+
+        .pin-input.valid {
+            border-color: #34d399;
+        }
+
+        .pin-status {
+            margin-left: 8px;
+            font-size: 16px;
+        }
+
+        .pin-status.ok {
+            color: #10b981;
+        }
+
+        .pin-status.warning {
+            color: #f59e0b;
+        }
+
+        .pin-status.error {
+            color: #ef4444;
+        }
+
+        .validation-panel {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .validation-item {
+            display: flex;
+            align-items: start;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+        }
+
+        .validation-item.error {
+            background: #fef2f2;
+            border-left: 3px solid #ef4444;
+        }
+
+        .validation-item.warning {
+            background: #fffbeb;
+            border-left: 3px solid #f59e0b;
+        }
+
+        .validation-item.info {
+            background: #eff6ff;
+            border-left: 3px solid #3b82f6;
+        }
+
+        .validation-icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .module-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .module-filters input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+        }
+
+        .module-filters label {
+            font-size: 13px;
+            color: #4a5568;
+        }
+
         .pin-config {
             margin-top: 30px;
         }
@@ -416,6 +592,212 @@
             margin: 0;
         }
 
+        .templates-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .templates-section h3 {
+            margin-bottom: 20px;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .template-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .template-card.popular::before {
+            content: '⭐ Popular';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fbbf24;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .template-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .template-card h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .template-card p {
+            font-size: 13px;
+            color: #718096;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .template-modules {
+            font-size: 12px;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .template-modules strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .template-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .template-tag {
+            font-size: 11px;
+            padding: 3px 8px;
+            background: #e0e7ff;
+            color: #4338ca;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .template-quick-actions {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-template {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-template-preview {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-template-preview:hover {
+            background: #cbd5e0;
+        }
+
+        .btn-template-use {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-template-use:hover {
+            background: #5568d3;
+        }
+
+        .template-filter {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .filter-tag:hover {
+            border-color: #cbd5e0;
+        }
+
+        .filter-tag.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .template-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .template-modal.active {
+            display: flex;
+        }
+
+        .template-modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .template-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+
+        .template-modal-close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #718096;
+        }
+
+        .template-modal-close:hover {
+            color: #2d3748;
+        }
+
         .alert {
             padding: 15px;
             border-radius: 6px;
@@ -480,6 +862,7 @@
             <div class="sidebar">
                 <div id="platform-selection">
                     <h3>Platform</h3>
+                    <div class="alert alert-danger" id="platform-load-error" style="display:none; margin-bottom: 10px;"></div>
                     <select id="platform-select" class="search-box">
                         <!-- populated by JS from /api/platforms -->
                     </select>
@@ -500,6 +883,16 @@
                 <div id="step-1" class="content-section active">
                     <div class="alert alert-info">
                         <strong>Welcome!</strong> Select a platform and board to get started with your BasaltOS configuration.
+                    </div>
+
+                    <div class="templates-section">
+                        <h3>🚀 Quick Start Templates</h3>
+                        <div class="template-filter" id="template-filters">
+                            <!-- Filter tags populated by JS -->
+                        </div>
+                        <div class="template-grid" id="templates-grid">
+                            <!-- Templates populated by JS -->
+                        </div>
                     </div>
                     
                     <div id="board-details" style="display: none;">
@@ -528,6 +921,10 @@
                                 <div class="spec-label">Display</div>
                                 <div class="spec-value" id="spec-display">320x480 ST7796</div>
                             </div>
+                            <div class="spec-item">
+                                <div class="spec-label">Target Profile</div>
+                                <div class="spec-value" id="spec-target">—</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -538,8 +935,27 @@
                     <div class="alert alert-info">
                         Enable or disable modules based on your application needs. Pin assignments will be configured in the next step.
                     </div>
+
+                    <div class="module-filters">
+                        <input type="text" id="module-search" placeholder="🔍 Search modules...">
+                        <label>
+                            <input type="checkbox" id="show-enabled-only"> Show enabled only
+                        </label>
+                    </div>
+
+                    <div class="validation-panel" id="validation-warnings">
+                        <!-- Validation messages appear here -->
+                    </div>
                     
                     <div class="module-grid" id="module-grid">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                    <h3 style="margin-top: 30px;">Applets</h3>
+                    <div class="alert alert-info">
+                        Optional example applets compiled into the generated project (codegen targets).
+                    </div>
+                    <div class="module-grid" id="applet-grid">
                         <!-- Populated by JavaScript -->
                     </div>
                 </div>
@@ -549,6 +965,10 @@
                     <h2 style="margin-bottom: 20px;">Pin Configuration</h2>
                     <div class="alert alert-info">
                         Configure pin assignments for enabled modules. Default values are provided based on your board.
+                    </div>
+
+                    <div class="validation-panel" id="pin-validation">
+                        <!-- Pin conflict warnings appear here -->
                     </div>
 
                     <div class="pin-config">
@@ -584,6 +1004,13 @@
                     </div>
 
                     <div style="margin-top: 30px;">
+                        <h3>Validation Report</h3>
+                        <div class="validation-panel" id="validation-report">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
                         <h3>Preview: basalt_config.h</h3>
                         <div class="code-preview">
                             <pre id="config-preview">/* Generated configuration will appear here */</pre>
@@ -601,17 +1028,115 @@
         </div>
     </div>
 
+    <div class="template-modal" id="template-modal">
+        <div class="template-modal-content" id="template-modal-body">
+            <!-- Modal content populated by JS -->
+        </div>
+    </div>
+
     <script>
+        function showPlatformError(msg) {
+            const errorEl = document.getElementById('platform-load-error');
+            if (!errorEl) return;
+            errorEl.style.display = 'block';
+            errorEl.textContent = msg;
+        }
+
+        window.addEventListener('error', (e) => {
+            showPlatformError(`UI error: ${e.message}`);
+        });
+
         // Data structures
         let platforms = [];
         let boards = {};
         let modules = [];
+        let applets = [];
+        let appletStates = {};
+        let targets = {};
         let boardDetails = {};
+        let moduleConfigs = {};
+        let projectTemplates = [];
+
+        const MODULE_ICONS = {
+            uart: '📡',
+            spi: '🔄',
+            i2c: '↔️',
+            tft: '🖥️',
+            fs_spiffs: '💾',
+            fs_sd: '💿',
+            wifi: '📶',
+            bluetooth: '📘',
+            shell_full: '⌨️',
+            shell_min: '⌨️',
+            psram: '🧠'
+        };
+
+        const APPLET_META = {
+            blink: { name: 'Blink', description: 'Toggle a pin/LED repeatedly.', icon: '💡' },
+            uart_echo: { name: 'UART Echo', description: 'Echo bytes over UART.', icon: '🛰️' },
+            remote_node: { name: 'Remote Node', description: 'Simple UART remote node protocol.', icon: '📡' }
+        };
+
+        function getModuleIcon(moduleId) {
+            return MODULE_ICONS[moduleId] || '📦';
+        }
+
+        function getAppletMeta(appletId) {
+            return APPLET_META[appletId] || { name: appletId, description: '', icon: '🧩' };
+        }
+        
+        function populateAppletGrid() {
+            const grid = document.getElementById('applet-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const targetId = selectedBoard?.target_profile;
+            const target = targetId ? targets[targetId] : null;
+            const available = Array.isArray(target?.applets) ? target.applets : [];
+            applets = available;
+
+            if (!available.length) {
+                const empty = document.createElement('div');
+                empty.className = 'module-description';
+                empty.textContent = 'No applets available for this target.';
+                grid.appendChild(empty);
+                return;
+            }
+
+            available.forEach(appletId => {
+                const meta = getAppletMeta(appletId);
+                const enabled = !!appletStates[appletId];
+                const card = document.createElement('div');
+                card.className = `module-card ${enabled ? 'enabled' : ''}`;
+                card.id = `applet-card-${appletId}`;
+                card.innerHTML = `
+                    <div class="module-header">
+                        <div style="display:flex; align-items:center;">
+                            <span class="module-icon">${meta.icon}</span>
+                            <div class="module-name">${meta.name}</div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" ${enabled ? 'checked' : ''} data-applet="${appletId}">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="module-description">${meta.description}</div>
+                `;
+
+                const toggle = card.querySelector('input[type="checkbox"]');
+                toggle.onchange = () => {
+                    appletStates[appletId] = toggle.checked;
+                    card.classList.toggle('enabled', toggle.checked);
+                };
+
+                grid.appendChild(card);
+            });
+        }
 
         async function loadFromApi() {
             const isHttp = window.location.protocol.startsWith('http');
             if (!isHttp) {
-                console.warn('Running from file:// - start the server and open http://localhost:5000');
+                showPlatformError('Running from file:// - start the server and open http://localhost:5000');
                 return false;
             }
 
@@ -628,17 +1153,61 @@
                 await refreshModulesForPlatform(selectedPlatform);
                 modules.forEach(m => { if (!Array.isArray(m.pins)) m.pins = []; });
 
+                try {
+                    const tRes = await fetch('/api/targets');
+                    const tList = await tRes.json();
+                    targets = {};
+                    tList.forEach(t => { if (t && t.id) targets[t.id] = t; });
+                } catch (err) {
+                    console.warn('Failed to load targets:', err);
+                }
+
                 return true;
             } catch (err) {
                 console.error('Failed to load from API:', err);
+                showPlatformError(`Failed to load /api/platforms: ${err}`);
                 return false;
             }
         }
 
-        function populatePlatformSelect() {
+        async function populatePlatformSelect() {
             const sel = document.getElementById('platform-select');
             sel.innerHTML = '';
+            const errorEl = document.getElementById('platform-load-error');
 
+            if (!platforms || platforms.length === 0) {
+                try {
+                    const url = `${window.location.origin}/api/platforms`;
+                    const resp = await fetch(url);
+                    if (resp.ok) {
+                        platforms = await resp.json();
+                    } else {
+                        const text = await resp.text();
+                        if (errorEl) {
+                            errorEl.style.display = 'block';
+                            errorEl.textContent = `Failed to load platforms (${resp.status}). ${text.slice(0, 120)}`;
+                        }
+                    }
+                } catch (err) {
+                    console.error('Failed to load platforms:', err);
+                    if (errorEl) {
+                        errorEl.style.display = 'block';
+                        errorEl.textContent = `Failed to load platforms: ${err}`;
+                    }
+                }
+            }
+
+            if (!platforms || platforms.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'No platforms loaded (check /api/platforms)';
+                sel.appendChild(opt);
+                sel.disabled = true;
+                return;
+            }
+
+            sel.disabled = false;
+            if (errorEl) errorEl.style.display = 'none';
             platforms.forEach(p => {
                 const opt = document.createElement('option');
                 opt.value = p.id;
@@ -659,6 +1228,524 @@
             modules.forEach(m => { if (!Array.isArray(m.pins)) m.pins = []; });
         }
 
+        async function loadTemplates() {
+            try {
+                const response = await fetch('/api/templates');
+                if (response.ok) {
+                    const data = await response.json();
+                    projectTemplates = data.templates || data;
+                } else {
+                    projectTemplates = [];
+                }
+            } catch (error) {
+                console.warn('Using embedded templates, API unavailable.');
+                projectTemplates = [];
+            }
+
+            if (projectTemplates.length === 0) {
+                projectTemplates = [
+                    {
+                        id: 'display_app',
+                        name: 'Display Application',
+                        description: 'Basic TFT display application with console output and file storage',
+                        icon: '🖥️',
+                        platforms: ['esp32'],
+                        recommended_boards: ['cyd', 'm5stickc_plus2'],
+                        enabled_modules: ['uart', 'spi', 'tft', 'fs_spiffs', 'shell_full'],
+                        module_config: {},
+                        tags: ['display', 'beginner', 'popular']
+                    },
+                    {
+                        id: 'cyd_full_stack',
+                        name: 'CYD Full Stack',
+                        description: 'TFT console + SPIFFS + SD for the CYD display',
+                        icon: '🟨',
+                        platforms: ['esp32'],
+                        recommended_boards: ['cyd'],
+                        enabled_modules: ['uart', 'spi', 'i2c', 'tft', 'fs_spiffs', 'fs_sd', 'shell_full'],
+                        module_config: {},
+                        tags: ['display', 'storage', 'popular']
+                    },
+                    {
+                        id: 'iot_sensor',
+                        name: 'IoT Sensor Hub',
+                        description: 'WiFi-enabled sensor hub with I2C sensors and SD card data logging',
+                        icon: '🌡️',
+                        platforms: ['esp32'],
+                        recommended_boards: ['esp32-devkitc_v4', 'cyd'],
+                        enabled_modules: ['uart', 'i2c', 'wifi', 'fs_sd', 'shell_min'],
+                        module_config: {},
+                        tags: ['iot', 'sensors', 'wifi']
+                    },
+                    {
+                        id: 'minimal_embedded',
+                        name: 'Minimal System',
+                        description: 'Bare minimum configuration for resource-constrained applications',
+                        icon: '⚡',
+                        platforms: ['esp32'],
+                        recommended_boards: ['esp32-c3-supermini'],
+                        enabled_modules: ['uart', 'shell_min'],
+                        module_config: {},
+                        tags: ['minimal', 'low-power', 'beginner']
+                    },
+                    {
+                        id: 'mega2560_bringup',
+                        name: 'Mega 2560 Bring-up',
+                        description: 'GPIO + UART + Timer baseline for Arduino Mega 2560',
+                        icon: '🧰',
+                        platforms: ['avr'],
+                        recommended_boards: ['mega2560'],
+                        enabled_modules: ['gpio', 'uart', 'timer'],
+                        module_config: { uart: { uart_num: 0, uart_baudrate: 115200 } },
+                        tags: ['avr', 'baseline']
+                    },
+                    {
+                        id: 'uno_minimal',
+                        name: 'Uno Minimal',
+                        description: 'ATmega328P minimal config (GPIO + UART)',
+                        icon: '🧱',
+                        platforms: ['atmega'],
+                        recommended_boards: ['arduino_uno_r3'],
+                        enabled_modules: ['gpio', 'uart'],
+                        module_config: { uart: { uart_num: 0, uart_baudrate: 115200 } },
+                        tags: ['avr', 'minimal']
+                    },
+                    {
+                        id: 'pico_sensors',
+                        name: 'Pico Sensor Core',
+                        description: 'RP2040 sensor-ready baseline (I2C + UART)',
+                        icon: '🧪',
+                        platforms: ['rp2040'],
+                        recommended_boards: ['raspberry_pi_pico'],
+                        enabled_modules: ['gpio', 'uart', 'i2c', 'timer'],
+                        module_config: {},
+                        tags: ['rp2040', 'sensors']
+                    },
+                    {
+                        id: 'nucleo_console',
+                        name: 'Nucleo Console',
+                        description: 'STM32 console + GPIO baseline',
+                        icon: '🧭',
+                        platforms: ['stm32'],
+                        recommended_boards: ['nucleo_f401re'],
+                        enabled_modules: ['gpio', 'uart', 'timer'],
+                        module_config: {},
+                        tags: ['stm32', 'baseline']
+                    }
+                ];
+            }
+
+            renderTemplateFilters();
+            renderTemplates();
+        }
+
+        function renderTemplateFilters() {
+            const allTags = new Set(['all']);
+            projectTemplates.forEach(t => (t.tags || []).forEach(tag => allTags.add(tag)));
+
+            const filterContainer = document.getElementById('template-filters');
+            if (!filterContainer) return;
+
+            filterContainer.innerHTML = Array.from(allTags).map(tag => `
+                <span class="filter-tag ${tag === 'all' ? 'active' : ''}"
+                      onclick="selectTemplateFilter('${tag}')">
+                    ${tag.charAt(0).toUpperCase() + tag.slice(1)}
+                </span>
+            `).join('');
+        }
+
+        function selectTemplateFilter(tag) {
+            document.querySelectorAll('.filter-tag').forEach(el => {
+                el.classList.toggle('active', el.textContent.toLowerCase() === tag);
+            });
+            renderTemplates(tag);
+        }
+
+        function renderTemplates(filterTag = 'all') {
+            const container = document.getElementById('templates-grid');
+            if (!container) return;
+
+            let filtered = projectTemplates;
+            if (filterTag !== 'all') {
+                filtered = projectTemplates.filter(t => t.tags && t.tags.includes(filterTag));
+            }
+            if (selectedPlatform && selectedPlatform !== 'all') {
+                filtered = filtered.filter(t => t.platforms && t.platforms.includes(selectedPlatform));
+            }
+
+            container.innerHTML = filtered.map(template => `
+                <div class="template-card ${template.tags?.includes('popular') ? 'popular' : ''}"
+                     onclick="showTemplatePreview('${template.id}')">
+                    <span class="template-icon">${template.icon || '📦'}</span>
+                    <h4>${template.name}</h4>
+                    <p>${template.description}</p>
+                    <div class="template-modules">
+                        <strong>Modules:</strong>
+                        ${template.enabled_modules.slice(0, 3).join(', ')}
+                        ${template.enabled_modules.length > 3 ? ` +${template.enabled_modules.length - 3} more` : ''}
+                    </div>
+                    <div class="template-tags">
+                        ${(template.tags || []).map(tag =>
+                            `<span class="template-tag">${tag}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="template-quick-actions" onclick="event.stopPropagation()">
+                        <button class="btn-template btn-template-preview"
+                                onclick="showTemplatePreview('${template.id}')">
+                            Preview
+                        </button>
+                        <button class="btn-template btn-template-use"
+                                onclick="applyTemplate('${template.id}')">
+                            Use Template
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showTemplatePreview(templateId) {
+            const template = projectTemplates.find(t => t.id === templateId);
+            if (!template) return;
+
+            const modal = document.getElementById('template-modal');
+            const content = document.getElementById('template-modal-body');
+
+            content.innerHTML = `
+                <div class="template-modal-header">
+                    <div>
+                        <h2>${template.icon || '📦'} ${template.name}</h2>
+                        <p style="color: #718096; margin-top: 5px;">${template.description}</p>
+                    </div>
+                    <span class="template-modal-close" onclick="closeTemplateModal()">×</span>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 10px;">Enabled Modules (${template.enabled_modules.length})</h3>
+                    <div class="module-badges" style="margin-bottom: 20px;">
+                        ${template.enabled_modules.map(m =>
+                            `<span class="badge badge-provides">${m}</span>`
+                        ).join('')}
+                    </div>
+
+                    <h3 style="margin-bottom: 10px;">Recommended Boards</h3>
+                    <div class="module-badges" style="margin-bottom: 20px;">
+                        ${(template.recommended_boards || []).map(b =>
+                            `<span class="badge badge-platform">${b}</span>`
+                        ).join('')}
+                    </div>
+
+                    ${Object.keys(template.module_config || {}).length > 0 ? `
+                        <h3 style="margin-bottom: 10px;">Module Configuration</h3>
+                        <pre style="background: #f7fafc; padding: 15px; border-radius: 6px; overflow-x: auto;">
+${JSON.stringify(template.module_config, null, 2)}</pre>
+                    ` : ''}
+
+                    <div style="margin-top: 30px; display: flex; gap: 15px;">
+                        <button class="btn btn-secondary" onclick="closeTemplateModal()">
+                            Cancel
+                        </button>
+                        <button class="btn btn-success" onclick="applyTemplate('${template.id}'); closeTemplateModal();">
+                            Apply Template
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function closeTemplateModal() {
+            document.getElementById('template-modal').classList.remove('active');
+        }
+
+        function applyTemplate(templateId) {
+            const template = projectTemplates.find(t => t.id === templateId);
+            if (!template) return;
+
+            modules.forEach(module => {
+                const shouldEnable = template.enabled_modules.includes(module.id);
+                module.enabled = shouldEnable;
+                moduleStates[module.id] = shouldEnable;
+            });
+
+            if (template.module_config) {
+                Object.entries(template.module_config).forEach(([moduleId, config]) => {
+                    moduleConfigs[moduleId] = { ...(moduleConfigs[moduleId] || {}), ...config };
+                });
+            }
+
+            populateModuleGrid();
+            updateValidation();
+        }
+
+        function renderModuleOptions(module) {
+            if (!module.configuration_options) return '';
+
+            return module.configuration_options.map(option => {
+                const value = moduleConfigs[module.id]?.[option.id] ?? option.default;
+
+                if (option.type === 'select') {
+                    return `
+                        <div class="option-field">
+                            <label>${option.name}</label>
+                            <select data-module="${module.id}" data-option="${option.id}">
+                                ${option.options.map(opt =>
+                                    `<option value="${opt}" ${String(opt) === String(value) ? 'selected' : ''}>${opt}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                    `;
+                }
+                if (option.type === 'number') {
+                    return `
+                        <div class="option-field">
+                            <label>${option.name}</label>
+                            <input type="number"
+                                   value="${value}"
+                                   min="${option.min ?? ''}"
+                                   max="${option.max ?? ''}"
+                                   data-module="${module.id}"
+                                   data-option="${option.id}">
+                        </div>
+                    `;
+                }
+                if (option.type === 'text') {
+                    return `
+                        <div class="option-field">
+                            <label>${option.name}</label>
+                            <input type="text"
+                                   value="${value}"
+                                   data-module="${module.id}"
+                                   data-option="${option.id}">
+                        </div>
+                    `;
+                }
+                return '';
+            }).join('');
+        }
+
+        function toggleModuleOptions(moduleId, buttonEl) {
+            const optionsPanel = document.getElementById(`options-${moduleId}`);
+            const btn = buttonEl || event.target;
+
+            if (optionsPanel.classList.contains('active')) {
+                optionsPanel.classList.remove('active');
+                btn.classList.remove('active');
+                btn.textContent = '⚙️ Configure';
+            } else {
+                optionsPanel.classList.add('active');
+                btn.classList.add('active');
+                btn.textContent = '⚙️ Hide Config';
+            }
+        }
+
+        function wireModuleOptionInputs(container) {
+            container.querySelectorAll('.module-options input, .module-options select').forEach(el => {
+                el.addEventListener('change', () => {
+                    const moduleId = el.dataset.module;
+                    const optionId = el.dataset.option;
+                    if (!moduleId || !optionId) return;
+                    if (!moduleConfigs[moduleId]) moduleConfigs[moduleId] = {};
+                    const raw = el.value;
+                    const num = Number(raw);
+                    moduleConfigs[moduleId][optionId] = Number.isFinite(num) && String(raw) === String(num) ? num : raw;
+                    updateValidation();
+                });
+            });
+        }
+
+        function collectModuleConfigFromUI() {
+            document.querySelectorAll('.module-options input, .module-options select').forEach(el => {
+                const moduleId = el.dataset.module;
+                const optionId = el.dataset.option;
+                if (!moduleId || !optionId) return;
+                if (!moduleConfigs[moduleId]) moduleConfigs[moduleId] = {};
+                const raw = el.value;
+                const num = Number(raw);
+                moduleConfigs[moduleId][optionId] = Number.isFinite(num) && String(raw) === String(num) ? num : raw;
+            });
+            return moduleConfigs;
+        }
+
+        function handleModuleToggle(moduleId, enabled) {
+            const module = modules.find(m => m.id === moduleId);
+            if (!module) return;
+
+            module.enabled = enabled;
+            moduleStates[moduleId] = enabled;
+
+            const card = document.getElementById(`module-card-${moduleId}`);
+            if (card) card.classList.toggle('enabled', enabled);
+
+            if (enabled) {
+                const depends = Array.isArray(module.depends) ? module.depends : [];
+                depends.forEach(depId => {
+                    const depModule = modules.find(m => m.id === depId);
+                    if (depModule && !depModule.enabled) {
+                        depModule.enabled = true;
+                        moduleStates[depId] = true;
+
+                        const depCard = document.getElementById(`module-card-${depId}`);
+                        if (depCard) {
+                            depCard.classList.add('enabled');
+                            const checkbox = depCard.querySelector('input[type="checkbox"]');
+                            if (checkbox) checkbox.checked = true;
+                        }
+                    }
+                });
+
+                const conflicts = Array.isArray(module.conflicts) ? module.conflicts : [];
+                conflicts.forEach(conflictId => {
+                    const conflictModule = modules.find(m => m.id === conflictId);
+                    if (conflictModule && conflictModule.enabled) {
+                        showWarning(`Module "${module.name}" conflicts with "${conflictModule.name}".`);
+                    }
+                });
+            }
+
+            updateValidation();
+        }
+
+        function syncModuleStatesFromUI() {
+            document.querySelectorAll('#module-grid input[type="checkbox"][data-module]').forEach(input => {
+                const moduleId = input.dataset.module;
+                const module = modules.find(m => m.id === moduleId);
+                if (module) module.enabled = input.checked;
+            });
+        }
+
+        function checkPinConflicts() {
+            const pinUsage = {};
+            const conflicts = [];
+
+            document.querySelectorAll('.pin-input').forEach(input => {
+                const raw = (input.value || '').trim();
+                const signal = input.dataset.pin;
+
+                input.classList.remove('conflict', 'valid');
+                const oldStatus = input.nextElementSibling;
+                if (oldStatus && oldStatus.classList.contains('pin-status')) {
+                    oldStatus.remove();
+                }
+
+                if (!raw) return;
+
+                let key;
+                if (/^-?\d+$/.test(raw)) {
+                    const pinNum = parseInt(raw, 10);
+                    if (Number.isNaN(pinNum) || pinNum < 0) return;
+                    key = pinNum;
+                } else {
+                    key = raw;
+                }
+
+                if (pinUsage[key]) {
+                    conflicts.push({
+                        pin: key,
+                        signals: [pinUsage[key], signal]
+                    });
+                    input.classList.add('conflict');
+                    const status = document.createElement('span');
+                    status.className = 'pin-status error';
+                    status.textContent = '❌';
+                    status.title = `Conflict with ${pinUsage[key]}`;
+                    input.after(status);
+                } else {
+                    pinUsage[key] = signal;
+                    input.classList.add('valid');
+                    const status = document.createElement('span');
+                    status.className = 'pin-status ok';
+                    status.textContent = '✓';
+                    input.after(status);
+                }
+            });
+
+            const pinPanel = document.getElementById('pin-validation');
+            if (pinPanel) {
+                if (conflicts.length === 0) {
+                    pinPanel.innerHTML = `
+                        <div class="validation-item info">
+                            <span class="validation-icon">✅</span>
+                            <div>No pin conflicts detected.</div>
+                        </div>
+                    `;
+                } else {
+                    pinPanel.innerHTML = conflicts.map(conflict => `
+                        <div class="validation-item error">
+                            <span class="validation-icon">❌</span>
+                            <div>Pin ${conflict.pin} is assigned to ${conflict.signals.join(' and ')}</div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            return conflicts;
+        }
+
+        function updateValidation() {
+            const validationPanel = document.getElementById('validation-warnings');
+            if (!validationPanel) return;
+
+            const issues = buildValidationIssues({ includePins: true });
+
+            if (issues.length === 0) {
+                validationPanel.innerHTML = `
+                    <div class="validation-item info">
+                        <span class="validation-icon">✅</span>
+                        <div>Configuration is valid!</div>
+                    </div>
+                `;
+            } else {
+                validationPanel.innerHTML = issues.map(issue => `
+                    <div class="validation-item ${issue.type}">
+                        <span class="validation-icon">
+                            ${issue.type === 'error' ? '❌' : issue.type === 'warning' ? '⚠️' : 'ℹ️'}
+                        </span>
+                        <div>${issue.message}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function showWarning(message) {
+            console.warn(message);
+            alert(message);
+        }
+
+        function initModuleFilters() {
+            const searchInput = document.getElementById('module-search');
+            const showEnabledOnly = document.getElementById('show-enabled-only');
+
+            function filterModules() {
+                const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+                const enabledOnly = showEnabledOnly ? showEnabledOnly.checked : false;
+
+                document.querySelectorAll('.module-card').forEach(card => {
+                    const moduleId = card.id.replace('module-card-', '');
+                    const module = modules.find(m => m.id === moduleId);
+                    if (!module) return;
+
+                    let show = true;
+
+                    if (searchTerm) {
+                        const matchesSearch =
+                            (module.name || '').toLowerCase().includes(searchTerm) ||
+                            (module.description || '').toLowerCase().includes(searchTerm) ||
+                            module.id.toLowerCase().includes(searchTerm);
+                        if (!matchesSearch) show = false;
+                    }
+
+                    if (enabledOnly && !module.enabled) {
+                        show = false;
+                    }
+
+                    card.style.display = show ? 'block' : 'none';
+                });
+            }
+
+            if (searchInput) searchInput.addEventListener('input', filterModules);
+            if (showEnabledOnly) showEnabledOnly.addEventListener('change', filterModules);
+        }
         
 
         // State
@@ -669,10 +1756,14 @@
 
         // Initialize
         async function init() {
-            await loadFromApi();
-            populatePlatformSelect();
+            const ok = await loadFromApi();
+            await populatePlatformSelect();
+            if (!ok || !platforms || platforms.length === 0) {
+                showPlatformError('No platforms loaded. Check http://localhost:5000/api/platforms');
+            }
             populateBoardList();
             populateModuleGrid();
+            loadTemplates();
             updateWizardSteps();
             attachEventListeners();
         }
@@ -709,10 +1800,32 @@
             document.getElementById('spec-flash').textContent = board.flash;
             document.getElementById('spec-ram').textContent = board.ram;
             document.getElementById('spec-display').textContent = board.display;
+            const targetId = board.target_profile;
+            const targetName = targetId && targets[targetId] ? targets[targetId].name : (targetId || '—');
+            document.getElementById('spec-target').textContent = targetName;
             
             // Auto-enable modules based on board capabilities
-            autoEnableByBoardCapabilities(board);
+            if (board.defaults && Array.isArray(board.defaults.modules)) {
+                modules.forEach(m => { m.enabled = false; });
+                board.defaults.modules.forEach(id => {
+                    const mod = modules.find(m => m.id === id);
+                    if (mod) mod.enabled = true;
+                });
+            } else {
+                autoEnableByBoardCapabilities(board);
+            }
+            
+            const target = targetId ? targets[targetId] : null;
+            const availableApplets = Array.isArray(target?.applets) ? target.applets : [];
+            appletStates = {};
+            if (board.defaults && Array.isArray(board.defaults.applets)) {
+                board.defaults.applets.forEach(id => { appletStates[id] = true; });
+            } else {
+                availableApplets.forEach(id => { appletStates[id] = false; });
+            }
+
             populateModuleGrid();
+            populateAppletGrid();
         }
 
         function autoEnableByBoardCapabilities(board) {
@@ -732,6 +1845,15 @@
 
         function moduleAllowed(module, caps) {
             if (module.platforms && !module.platforms.includes(selectedPlatform)) return false;
+            const targetId = selectedBoard?.target_profile;
+            const target = targetId ? targets[targetId] : null;
+            const policy = target?.module_policy;
+            if (policy && policy.mode === 'allowlist' && Array.isArray(policy.allowed)) {
+                if (!policy.allowed.includes(module.id)) return false;
+            }
+            if (policy && policy.mode === 'denylist' && Array.isArray(policy.denied)) {
+                if (policy.denied.includes(module.id)) return false;
+            }
             if (caps.size === 0) return true;
             if (caps.has(module.id)) return true;
             if (module.id.startsWith('shell_')) return caps.has('uart');
@@ -755,33 +1877,55 @@
 
                 const card = document.createElement('div');
                 card.className = `module-card ${enabled ? 'enabled' : ''}`;
+                card.id = `module-card-${module.id}`;
                 if (!allowed) card.classList.add('disabled');
+                const hasOptions = module.configuration_options && module.configuration_options.length > 0;
+                const depends = Array.isArray(module.depends) ? module.depends : [];
+                const provides = Array.isArray(module.provides) ? module.provides : [];
+                const conflicts = Array.isArray(module.conflicts) ? module.conflicts : [];
                 card.innerHTML = `
                     <div class="module-header">
+                        <div style="display:flex; align-items:center;">
+                            <span class="module-icon">${getModuleIcon(module.id)}</span>
                         <div class="module-name">${module.name}</div>
+                        </div>
                         <label class="toggle">
                             <input type="checkbox" ${enabled ? 'checked' : ''} data-module="${module.id}" ${allowed ? '' : 'disabled'}>
                             <span class="slider"></span>
                         </label>
                     </div>
                     <div class="module-description">${module.description || ""}</div>
-                    ${(module.pins && module.pins.length > 0) ? `<div class="module-pins">Pins: ${module.pins.join(', ')}</div>` : ''}
+                    <div class="module-badges">
+                        ${depends.length ? `<span class="badge badge-dep">Requires: ${depends.join(', ')}</span>` : ''}
+                        ${provides.length ? `<span class="badge badge-provides">Provides: ${provides.join(', ')}</span>` : ''}
+                        ${conflicts.length ? `<span class="badge badge-conflict">Conflicts: ${conflicts.join(', ')}</span>` : ''}
+                    </div>
+                    ${(module.pins && module.pins.length > 0) ? `<div class="module-pins">📌 ${module.pins.length} pins required</div>` : ''}
+                    ${hasOptions ? `
+                        <button class="btn-config" data-module="${module.id}">⚙️ Configure</button>
+                        <div class="module-options" id="options-${module.id}">
+                            ${renderModuleOptions(module)}
+                        </div>
+                    ` : ''}
                 `;
 
                 const toggle = card.querySelector('input[type="checkbox"]');
                 if (allowed) {
-                    toggle.onchange = () => toggleModule(module.id, toggle.checked, card);
+                    toggle.onchange = () => handleModuleToggle(module.id, toggle.checked);
                 }
+
+                const configBtn = card.querySelector('.btn-config');
+                if (configBtn) {
+                    configBtn.onclick = () => toggleModuleOptions(module.id, configBtn);
+                }
+
+                wireModuleOptionInputs(card);
 
                 grid.appendChild(card);
             });
-        }
 
-        function toggleModule(moduleId, enabled, card) {
-            moduleStates[moduleId] = enabled;
-            card.classList.toggle('enabled', enabled);
-            const module = modules.find(m => m.id === moduleId);
-            if (module) module.enabled = enabled;
+            initModuleFilters();
+            updateValidation();
         }
 
         function populatePinTable() {
@@ -789,24 +1933,50 @@
             tbody.innerHTML = '';
 
             const boardPins = selectedBoard ? (selectedBoard.pins || {}) : {};
-            const derivePinsForModule = (moduleId) => {
-                const derived = [];
-                const prefixes = [];
-                if (moduleId === 'i2c') prefixes.push('i2c_');
-                if (moduleId === 'fs_sd') prefixes.push('sd_');
-                if (moduleId === 'spi') prefixes.push('spi_');
-                prefixes.forEach(prefix => {
-                    Object.keys(boardPins).forEach(p => {
-                        if (p.startsWith(prefix)) derived.push(p);
+            const getModulePinSignals = (module) => {
+                const signals = new Set();
+                if (Array.isArray(module.pins) && module.pins.length > 0) {
+                    module.pins.forEach(p => signals.add(p));
+                }
+                if (module.pin_requirements && typeof module.pin_requirements === 'object') {
+                    Object.keys(module.pin_requirements).forEach(p => signals.add(p));
+                }
+                const prefixes = new Set();
+                if (module.id) prefixes.add(`${module.id}_`);
+                if (module.id && module.id.startsWith('fs_')) {
+                    prefixes.add(`${module.id.replace('fs_', '')}_`);
+                }
+                if (module.id === 'fs_sd') prefixes.add('sd_');
+                if (module.id === 'i2c') prefixes.add('i2c_');
+                if (module.id === 'spi') prefixes.add('spi_');
+                if (module.id === 'uart') prefixes.add('uart_');
+                if (module.id === 'uart') {
+                    prefixes.add('uart0_');
+                    prefixes.add('uart1_');
+                    prefixes.add('uart2_');
+                    prefixes.add('uart3_');
+                }
+                if (module.id === 'tft') prefixes.add('tft_');
+                if (module.id === 'touch') prefixes.add('touch_');
+                if (Array.isArray(module.provides)) {
+                    module.provides.forEach(p => prefixes.add(`${p}_`));
+                }
+                if (Array.isArray(module.depends)) {
+                    module.depends.forEach(p => prefixes.add(`${p}_`));
+                }
+                Object.keys(boardPins).forEach(key => {
+                    prefixes.forEach(prefix => {
+                        if (key.startsWith(prefix)) signals.add(key);
                     });
                 });
-                return derived;
+                return Array.from(signals);
             };
 
-            const enabledWithPins = modules.filter(m => m.enabled && Array.isArray(m.pins) && m.pins.length > 0);
-            const enabledDerived = modules
-                .filter(m => m.enabled && (!Array.isArray(m.pins) || m.pins.length === 0))
-                .map(m => ({ module: m, pins: derivePinsForModule(m.id) }))
+            const enabledModules = modules.filter(m => m.enabled);
+            const enabledWithPins = enabledModules.filter(m => Array.isArray(m.pins) && m.pins.length > 0);
+            const enabledDerived = enabledModules
+                .filter(m => !Array.isArray(m.pins) || m.pins.length === 0)
+                .map(m => ({ module: m, pins: getModulePinSignals(m) }))
                 .filter(x => x.pins.length > 0);
 
             if (enabledWithPins.length === 0 && enabledDerived.length === 0 && selectedBoard) {
@@ -822,14 +1992,16 @@
                         ? selectedBoard.pins[pin]
                         : -1;
                     const alternatives = def.alternatives ? def.alternatives.join(', ') : '';
+                    const isNumeric = typeof defaultPin === 'number' && Number.isFinite(defaultPin);
                     tr.innerHTML = `
                         <td>board</td>
                         <td>${pin.toUpperCase()}</td>
-                        <td><input type="number" value="${defaultPin}" data-pin="${pin}" min="-1" max="40"></td>
+                        <td><input type="${isNumeric ? 'number' : 'text'}" class="pin-input" value="${defaultPin}" data-pin="${pin}" data-pin-type="${isNumeric ? 'number' : 'text'}" ${isNumeric ? 'min="-1" max="40"' : ''}></td>
                         <td>${alternatives}</td>
                     `;
                     tbody.appendChild(tr);
                 });
+                checkPinConflicts();
                 return;
             }
 
@@ -839,15 +2011,50 @@
                     const defaultPin = selectedBoard && selectedBoard.pins[pin] !== undefined 
                         ? selectedBoard.pins[pin] 
                         : -1;
+                    const pinDef = selectedBoard?.pin_definitions?.[pin] || {};
+                    const altPins = Array.isArray(pinDef.alternatives) ? pinDef.alternatives : [];
+                    const isNumeric = typeof defaultPin === 'number' && Number.isFinite(defaultPin);
                     
                     tr.innerHTML = `
                         <td>${module.name}</td>
                         <td>${pin.toUpperCase()}</td>
-                        <td><input type="number" value="${defaultPin}" data-pin="${pin}" min="-1" max="40"></td>
-                        <td><select><option>Default</option><option>Custom</option></select></td>
+                        <td><input type="${isNumeric ? 'number' : 'text'}" class="pin-input" value="${defaultPin}" data-pin="${pin}" data-pin-type="${isNumeric ? 'number' : 'text'}" ${isNumeric ? 'min="-1" max="40"' : ''}></td>
+                        <td>
+                            <select class="pin-alt" data-pin="${pin}">
+                                <option value="${defaultPin}">Default</option>
+                                ${altPins.map(p => `<option value="${p}">${p}</option>`).join('')}
+                                <option value="-1">Disabled</option>
+                            </select>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
+
+                if (module.id === 'uart') {
+                    const extraPins = getModulePinSignals(module).filter(p => !module.pins.includes(p));
+                    extraPins.forEach(pin => {
+                        const tr = document.createElement('tr');
+                        const defaultPin = selectedBoard && selectedBoard.pins[pin] !== undefined
+                            ? selectedBoard.pins[pin]
+                            : -1;
+                        const pinDef = selectedBoard?.pin_definitions?.[pin] || {};
+                        const altPins = Array.isArray(pinDef.alternatives) ? pinDef.alternatives : [];
+                        const isNumeric = typeof defaultPin === 'number' && Number.isFinite(defaultPin);
+                        tr.innerHTML = `
+                            <td>${module.name}</td>
+                            <td>${pin.toUpperCase()}</td>
+                            <td><input type="${isNumeric ? 'number' : 'text'}" class="pin-input" value="${defaultPin}" data-pin="${pin}" data-pin-type="${isNumeric ? 'number' : 'text'}" ${isNumeric ? 'min="-1" max="40"' : ''}></td>
+                            <td>
+                                <select class="pin-alt" data-pin="${pin}">
+                                    <option value="${defaultPin}">Default</option>
+                                    ${altPins.map(p => `<option value="${p}">${p}</option>`).join('')}
+                                    <option value="-1">Disabled</option>
+                                </select>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
             });
 
             enabledDerived.forEach(({ module, pins }) => {
@@ -856,19 +2063,48 @@
                     const defaultPin = selectedBoard && selectedBoard.pins[pin] !== undefined
                         ? selectedBoard.pins[pin]
                         : -1;
+                    const pinDef = selectedBoard?.pin_definitions?.[pin] || {};
+                    const altPins = Array.isArray(pinDef.alternatives) ? pinDef.alternatives : [];
+                    const isNumeric = typeof defaultPin === 'number' && Number.isFinite(defaultPin);
                     tr.innerHTML = `
                         <td>${module.name}</td>
                         <td>${pin.toUpperCase()}</td>
-                        <td><input type="number" value="${defaultPin}" data-pin="${pin}" min="-1" max="40"></td>
-                        <td>Board default</td>
+                        <td><input type="${isNumeric ? 'number' : 'text'}" class="pin-input" value="${defaultPin}" data-pin="${pin}" data-pin-type="${isNumeric ? 'number' : 'text'}" ${isNumeric ? 'min="-1" max="40"' : ''}></td>
+                        <td>
+                            <select class="pin-alt" data-pin="${pin}">
+                                <option value="${defaultPin}">Default</option>
+                                ${altPins.map(p => `<option value="${p}">${p}</option>`).join('')}
+                                <option value="-1">Disabled</option>
+                            </select>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
             });
+
+            tbody.querySelectorAll('.pin-alt').forEach(select => {
+                select.addEventListener('change', () => {
+                    const pin = select.dataset.pin;
+                    const input = tbody.querySelector(`.pin-input[data-pin="${pin}"]`);
+                    if (input) {
+                        input.value = select.value;
+                        checkPinConflicts();
+                    }
+                });
+            });
+
+            tbody.querySelectorAll('.pin-input').forEach(input => {
+                input.addEventListener('change', () => {
+                    checkPinConflicts();
+                });
+            });
+
+            checkPinConflicts();
         }
 
         async function generateConfigPreview() {
             const previewEl = document.getElementById('config-preview');
+            renderValidationReport();
 
             // Summary
             const summary = document.getElementById('config-summary');
@@ -883,8 +2119,16 @@
                         <div class="spec-value">${selectedPlatform.toUpperCase()}</div>
                     </div>
                     <div class="spec-item">
+                        <div class="spec-label">Target</div>
+                        <div class="spec-value">${selectedBoard?.target_profile || '—'}</div>
+                    </div>
+                    <div class="spec-item">
                         <div class="spec-label">Modules Enabled</div>
                         <div class="spec-value">${modules.filter(m => m.enabled).length}</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Applets Enabled</div>
+                        <div class="spec-value">${applets.filter(a => appletStates[a]).length}</div>
                     </div>
                 </div>
             `;
@@ -896,11 +2140,19 @@
             }
 
             const enabled_modules = modules.filter(m => m.enabled).map(m => m.id);
+            const module_config = collectModuleConfigFromUI();
+            const enabled_applets = applets.filter(a => appletStates[a]);
             const custom_pins = {};
             document.querySelectorAll('#pin-table-body input[data-pin]').forEach(input => {
                 const key = input.dataset.pin;
-                const val = parseInt(input.value, 10);
-                if (!Number.isNaN(val)) custom_pins[key] = val;
+                const raw = (input.value || '').trim();
+                if (!raw) return;
+                if (input.dataset.pinType === 'number') {
+                    const val = parseInt(raw, 10);
+                    if (!Number.isNaN(val)) custom_pins[key] = val;
+                } else {
+                    custom_pins[key] = raw;
+                }
             });
 
             try {
@@ -910,7 +2162,10 @@
                     body: JSON.stringify({
                         platform: selectedPlatform,
                         board_id: selectedBoard.id,
+                        target_profile: selectedBoard.target_profile || null,
                         enabled_modules,
+                        applets: enabled_applets,
+                        module_config,
                         custom_pins
                     })
                 });
@@ -921,6 +2176,162 @@
                 previewEl.textContent = `Preview failed: ${err}`;
             }
             
+        }
+
+        function buildValidationIssues({ includePins = true } = {}) {
+            const issues = [];
+
+            modules.filter(m => m.enabled).forEach(module => {
+                const depends = Array.isArray(module.depends) ? module.depends : [];
+                depends.forEach(depId => {
+                    const depModule = modules.find(m => m.id === depId);
+                    if (!depModule || !depModule.enabled) {
+                        issues.push({
+                            type: 'error',
+                            message: `Module "${module.name}" requires "${depId}" which is not enabled`
+                        });
+                    }
+                });
+
+                const conflicts = Array.isArray(module.conflicts) ? module.conflicts : [];
+                conflicts.forEach(conflictId => {
+                    const conflictModule = modules.find(m => m.id === conflictId);
+                    if (conflictModule && conflictModule.enabled) {
+                        issues.push({
+                            type: 'warning',
+                            message: `Module "${module.name}" conflicts with "${conflictModule.name}"`
+                        });
+                    }
+                });
+            });
+
+            if (includePins) {
+                const pinConflicts = checkPinConflicts();
+                if (pinConflicts.length > 0) {
+                    issues.push({
+                        type: 'error',
+                        message: `${pinConflicts.length} pin conflict(s) detected`
+                    });
+                }
+            }
+
+            const targetId = selectedBoard?.target_profile;
+            const target = targetId ? targets[targetId] : null;
+            const enabledModules = modules.filter(m => m.enabled).map(m => m.id);
+
+            if (target?.module_policy?.allowed?.length) {
+                const allowed = new Set(target.module_policy.allowed);
+                const blocked = enabledModules.filter(m => !allowed.has(m));
+                if (blocked.length > 0) {
+                    issues.push({
+                        type: 'error',
+                        message: `Target "${targetId}" does not allow: ${blocked.join(', ')}.`
+                    });
+                }
+            }
+
+            if (selectedBoard?.capabilities?.length) {
+                const caps = new Set(selectedBoard.capabilities);
+                const requires = {
+                    wifi: 'wifi',
+                    bluetooth: 'bluetooth',
+                    tft: 'tft',
+                    touch: 'touch',
+                    psram: 'psram',
+                    fs_sd: 'sd_card'
+                };
+
+                Object.entries(requires).forEach(([moduleId, cap]) => {
+                    if (enabledModules.includes(moduleId) && !caps.has(cap)) {
+                        issues.push({
+                            type: 'warning',
+                            message: `Board capabilities do not list "${cap}" but module "${moduleId}" is enabled.`
+                        });
+                    }
+                });
+            }
+
+            if (target?.applets?.length) {
+                const allowedApplets = new Set(target.applets);
+                const enabledApplets = applets.filter(a => appletStates[a]);
+                const invalid = enabledApplets.filter(a => !allowedApplets.has(a));
+                if (invalid.length > 0) {
+                    issues.push({
+                        type: 'warning',
+                        message: `Selected applets not supported by target: ${invalid.join(', ')}.`
+                    });
+                }
+            }
+
+            const module_config = collectModuleConfigFromUI();
+            const uartAssignments = [];
+            Object.entries(module_config).forEach(([modId, opts]) => {
+                if (!opts || typeof opts !== 'object') return;
+                const port = opts.uart_port !== undefined ? opts.uart_port : opts.uart_num;
+                if (port === undefined || port === null || port === '') return;
+                uartAssignments.push({ modId, port: Number(port) });
+            });
+
+            if (targetId === 'mega2560' && uartAssignments.length > 0) {
+                const invalid = uartAssignments.filter(a => Number.isNaN(a.port) || a.port < 0 || a.port > 3);
+                if (invalid.length > 0) {
+                    issues.push({
+                        type: 'warning',
+                        message: 'UART port must be 0-3 on Mega 2560.'
+                    });
+                }
+                const seen = {};
+                uartAssignments.forEach(a => {
+                    const key = String(a.port);
+                    if (!seen[key]) seen[key] = [];
+                    seen[key].push(a.modId);
+                });
+                Object.entries(seen).forEach(([port, mods]) => {
+                    if (mods.length > 1) {
+                        issues.push({
+                            type: 'warning',
+                            message: `UART${port} is selected by multiple modules: ${mods.join(', ')}.`
+                        });
+                    }
+                });
+            }
+
+            return issues;
+        }
+
+        function renderValidationReport() {
+            const reportEl = document.getElementById('validation-report');
+            if (!reportEl) return;
+
+            if (!selectedBoard) {
+                reportEl.innerHTML = `
+                    <div class="validation-item info">
+                        <span class="validation-icon">ℹ️</span>
+                        <div>Select a board to view validation status.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const issues = buildValidationIssues({ includePins: true });
+            if (issues.length === 0) {
+                reportEl.innerHTML = `
+                    <div class="validation-item info">
+                        <span class="validation-icon">✅</span>
+                        <div>All checks passed for this configuration.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            reportEl.innerHTML = issues.map(issue => `
+                <div class="validation-item ${issue.type}">
+                    <span class="validation-icon">
+                        ${issue.type === 'error' ? '❌' : issue.type === 'warning' ? '⚠️' : 'ℹ️'}
+                    </span>
+                    <div>${issue.message}</div>
+                </div>
+            `).join('');
         }
 
         function updateWizardSteps() {
@@ -948,11 +2359,14 @@
             
             // Populate data for current step
             if (currentStep === 3) {
+                syncModuleStatesFromUI();
                 if (selectedBoard && modules.every(m => !m.enabled)) {
                     autoEnableByBoardCapabilities(selectedBoard);
                     populateModuleGrid();
                 }
                 populatePinTable();
+            } else if (currentStep === 2) {
+                updateValidation();
             } else if (currentStep === 4) {
                 generateConfigPreview();
             }
@@ -979,17 +2393,28 @@
             }
 
             const enabled_modules = modules.filter(m => m.enabled).map(m => m.id);
+            const module_config = collectModuleConfigFromUI();
+            const enabled_applets = applets.filter(a => appletStates[a]);
             const custom_pins = {};
             document.querySelectorAll('#pin-table-body input[data-pin]').forEach(input => {
                 const key = input.dataset.pin;
-                const val = parseInt(input.value, 10);
-                if (!Number.isNaN(val)) custom_pins[key] = val;
+                const raw = (input.value || '').trim();
+                if (!raw) return;
+                if (input.dataset.pinType === 'number') {
+                    const val = parseInt(raw, 10);
+                    if (!Number.isNaN(val)) custom_pins[key] = val;
+                } else {
+                    custom_pins[key] = raw;
+                }
             });
 
             const payload = {
                 platform: selectedPlatform,
                 board_id: selectedBoard.id,
+                target_profile: selectedBoard.target_profile || null,
                 enabled_modules,
+                applets: enabled_applets,
+                module_config,
                 custom_pins
             };
 
@@ -1002,15 +2427,25 @@
                 const data = await resp.json();
                 if (!data.success) throw new Error(data.error || 'Generate failed');
 
+                const fileLines = Object.keys(data.files || {}).map(k => `${k}: ${data.files[k]}`).join('\n');
+                const buildMsg = selectedPlatform === 'avr'
+                    ? [
+                        'Build with (Arduino CLI):',
+                        'arduino-cli compile --fqbn arduino:avr:mega .',
+                        '',
+                        'Upload with (Arduino CLI):',
+                        'arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:mega .'
+                    ]
+                    : [
+                        'Build with (ESP32 targets):',
+                        'SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build flash monitor'
+                    ];
+
                 const msg = [
                     'Generated configuration files:',
-                    data.files['basalt_config.h'],
-                    data.files['sdkconfig.defaults'],
-                    data.files['basalt.features.json'],
-                    data.files['basalt_config.json'],
+                    fileLines || '(none)',
                     '',
-                    'Build with:',
-                    'SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build flash monitor'
+                    ...buildMsg
                 ].join('\n');
 
                 alert(msg);
@@ -1025,6 +2460,8 @@
                 populateBoardList();
                 await refreshModulesForPlatform(selectedPlatform);
                 populateModuleGrid();
+                renderTemplateFilters();
+                renderTemplates();
             };
             
             document.getElementById('board-search').oninput = (e) => {

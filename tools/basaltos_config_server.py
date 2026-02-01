@@ -17,15 +17,19 @@ app = Flask(__name__)
 CORS(app)
 
 # Configuration paths (adjust based on your BasaltOS structure)
-BASALTOS_ROOT = Path(__file__).parent.parent
+TOOLS_DIR = Path(__file__).resolve().parent
+BASALTOS_ROOT = TOOLS_DIR.parent
 BOARDS_DIR = BASALTOS_ROOT / "boards"
 MODULES_DIR = BASALTOS_ROOT / "modules"
 PLATFORMS_DIR = BASALTOS_ROOT / "platforms"
+TARGETS_DIR = BASALTOS_ROOT / "targets"
 CONFIG_OUTPUT_DIR = BASALTOS_ROOT / "config" / "generated"
 
 # Reuse core configurator logic for correctness
 sys.path.append(str(BASALTOS_ROOT / "tools"))
 import configure as cfg
+from pic_codegen import generate_pic16_project, render_basalt_config_preview as render_pic16_preview
+from avr_codegen import generate_avr_project, render_basalt_config_preview as render_avr_preview
 
 
 class ConfigGenerator:
@@ -35,6 +39,7 @@ class ConfigGenerator:
         self.boards = {}
         self.modules = {}
         self.platforms = {}
+        self.targets = {}
         self.load_all_configs()
     
     def load_all_configs(self):
@@ -42,6 +47,7 @@ class ConfigGenerator:
         self.load_boards()
         self.load_modules()
         self.load_platforms()
+        self.load_targets()
     
     def load_boards(self):
         """Load board configurations from boards/ directory (recursively).
@@ -152,6 +158,21 @@ class ConfigGenerator:
             except Exception as e:
                 print(f"Error loading platform {platform_file}: {e}")
 
+    def load_targets(self):
+        """Load target profile configurations from targets/ directory."""
+        if not TARGETS_DIR.exists():
+            return
+
+        for target_file in TARGETS_DIR.glob("*.json"):
+            try:
+                with open(target_file, "r", encoding="utf-8") as f:
+                    target_data = json.load(f)
+                    target_id = target_data.get("id") or target_file.stem
+                    target_data["id"] = target_id
+                    self.targets[target_id] = target_data
+            except Exception as e:
+                print(f"Error loading target {target_file}: {e}")
+
 
     def get_boards_by_platform(self, platform_id: str):
         """Return list of boards matching the given platform_id."""
@@ -205,9 +226,53 @@ class ConfigGenerator:
                 board_profile, allow = cfg.select_board_noninteractive(boards, platform, board_id)
             except cfg.ConfigError as ex:
                 raise ValueError(str(ex))
+            if allow is not None:
+                # Always allow internal SPIFFS on boards with defined capabilities
+                allow.add("fs_spiffs")
+                board_caps = board_profile.data.get("capabilities") if board_profile else None
+                if isinstance(board_caps, list) and "sd_card" in board_caps:
+                    allow.add("fs_sd")
 
         enabled_list = cfg.resolve_modules(modules, set(enabled_modules), allow=allow)
         return platform, board_profile, enabled_list, modules
+
+
+    def _select_target(self, config_data: dict) -> dict | None:
+        target_id = config_data.get("target_profile")
+        if not target_id:
+            board = self.boards.get(config_data.get("board_id"))
+            target_id = board.get("target_profile") if board else None
+        if not target_id:
+            return None
+        return self.targets.get(target_id)
+
+
+    def _validate_module_policy(self, target: dict, enabled_modules: List[str]) -> None:
+        policy = target.get("module_policy") if isinstance(target, dict) else None
+        if not policy:
+            return
+        mode = policy.get("mode")
+        if mode == "allowlist":
+            allowed = set(policy.get("allowed") or [])
+            disallowed = [m for m in enabled_modules if m not in allowed]
+            if disallowed:
+                raise ValueError(f"Module '{disallowed[0]}' is not supported by selected board/capabilities.")
+        elif mode == "denylist":
+            denied = set(policy.get("denied") or [])
+            disallowed = [m for m in enabled_modules if m in denied]
+            if disallowed:
+                raise ValueError(f"Module '{disallowed[0]}' is not supported by selected board/capabilities.")
+
+
+    def _merge_pins(self, board: dict | None, custom_pins: dict | None) -> dict:
+        pins = dict((board or {}).get("pins", {}) or {})
+        if isinstance(custom_pins, dict):
+            for k, v in custom_pins.items():
+                if v in (-1, None, ""):
+                    pins.pop(k, None)
+                else:
+                    pins[k] = v
+        return pins
 
 
     def _board_data_with_pins(self, board_profile: cfg.BoardProfile | None, custom_pins: dict | None) -> dict | None:
@@ -222,7 +287,38 @@ class ConfigGenerator:
         return data
 
 
-    def generate_basalt_config_h(self, board_id: str | None, enabled_modules: List[str], custom_pins: dict | None, platform: str | None) -> str:
+    def _append_module_config_macros(self, out_path: Path, module_config: dict | None) -> None:
+        if not module_config or not isinstance(module_config, dict):
+            return
+
+        lines: List[str] = []
+        lines.append("")
+        lines.append("/* Module configuration options */")
+        for module_id, options in module_config.items():
+            if not isinstance(options, dict):
+                continue
+            for key, val in options.items():
+                macro = f"BASALT_CFG_{cfg.slug_to_macro(str(module_id))}_{cfg.slug_to_macro(str(key))}"
+                if isinstance(val, bool):
+                    lines.append(f"#define {macro} {1 if val else 0}")
+                elif isinstance(val, (int, float)) and int(val) == val:
+                    lines.append(f"#define {macro} {int(val)}")
+                elif isinstance(val, (int, float)):
+                    lines.append(f"#define {macro} {val}")
+                else:
+                    lines.append(f"#define {macro} \"{val}\"")
+
+        out_path.write_text(out_path.read_text(encoding="utf-8") + "\n".join(lines) + "\n", encoding="utf-8")
+
+
+    def generate_basalt_config_h(
+        self,
+        board_id: str | None,
+        enabled_modules: List[str],
+        custom_pins: dict | None,
+        platform: str | None,
+        module_config: dict | None = None,
+    ) -> str:
         platform, board_profile, enabled_list, modules = self._resolve({
             "platform": platform,
             "board_id": board_id,
@@ -242,6 +338,7 @@ class ConfigGenerator:
                 board_define_name=board_define_name,
                 board_data=board_data,
             )
+            self._append_module_config_macros(out_path, module_config)
             return out_path.read_text(encoding="utf-8")
 
 
@@ -266,8 +363,90 @@ class ConfigGenerator:
 
 
     def save_configuration(self, config_data: dict) -> Dict[str, str]:
+        target = self._select_target(config_data)
+        backend = target.get("codegen", {}).get("backend") if target else None
+        if backend == "basalt_codegen_pic16_xc8":
+            board_id = config_data.get("board_id")
+            board = self.boards.get(board_id)
+            if not board:
+                raise ValueError("Board not found.")
+
+            enabled_modules = config_data.get("enabled_modules", []) or []
+            self._validate_module_policy(target, enabled_modules)
+            custom_pins = config_data.get("custom_pins") or {}
+            module_config = config_data.get("module_config") or {}
+            applets = config_data.get("applets")
+            if not applets:
+                applets = (board.get("defaults") or {}).get("applets", [])
+            pins = self._merge_pins(board, custom_pins)
+
+            outdir = CONFIG_OUTPUT_DIR / "pic16" / board_id
+            outdir.mkdir(parents=True, exist_ok=True)
+            files = generate_pic16_project(
+                out_dir=outdir,
+                board_id=board_id,
+                target_id=target.get("id", "pic16"),
+                enabled_modules=enabled_modules,
+                pins=pins,
+                module_config=module_config,
+                clock=(board.get("defaults") or {}).get("clock"),
+                fuses=(board.get("defaults") or {}).get("fuses"),
+                has_interrupts=bool((target.get("capabilities") or {}).get("has_interrupts", True)),
+            )
+
+            config_json = outdir / "basalt_config.json"
+            payload = dict(config_data)
+            payload["resolved_modules"] = enabled_modules
+            payload["target_profile"] = target.get("id")
+            payload["pins"] = pins
+            payload["applets"] = applets
+            config_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+            files["basalt_config.json"] = str(config_json)
+
+            return files
+
+        if backend == "basalt_codegen_avr_arduino":
+            board_id = config_data.get("board_id")
+            board = self.boards.get(board_id)
+            if not board:
+                raise ValueError("Board not found.")
+
+            enabled_modules = config_data.get("enabled_modules", []) or []
+            self._validate_module_policy(target, enabled_modules)
+            custom_pins = config_data.get("custom_pins") or {}
+            module_config = config_data.get("module_config") or {}
+            applets = config_data.get("applets")
+            if not applets:
+                applets = (board.get("defaults") or {}).get("applets", [])
+            pins = self._merge_pins(board, custom_pins)
+
+            outdir = CONFIG_OUTPUT_DIR / "avr" / board_id
+            outdir.mkdir(parents=True, exist_ok=True)
+            files = generate_avr_project(
+                out_dir=outdir,
+                board_id=board_id,
+                target_id=target.get("id", "avr"),
+                enabled_modules=enabled_modules,
+                pins=pins,
+                module_config=module_config,
+                clock=(board.get("defaults") or {}).get("clock"),
+                applets=applets,
+            )
+
+            config_json = outdir / "basalt_config.json"
+            payload = dict(config_data)
+            payload["resolved_modules"] = enabled_modules
+            payload["target_profile"] = target.get("id")
+            payload["pins"] = pins
+            payload["applets"] = applets
+            config_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+            files["basalt_config.json"] = str(config_json)
+
+            return files
+
         platform, board_profile, enabled_list, modules = self._resolve(config_data)
         custom_pins = config_data.get("custom_pins") or {}
+        module_config = config_data.get("module_config") or {}
 
         board_define_name = board_profile.id if board_profile else config_data.get("board_id")
         board_id = board_profile.id if board_profile else config_data.get("board_id")
@@ -290,6 +469,7 @@ class ConfigGenerator:
             board_define_name=board_define_name,
             board_data=board_data,
         )
+        self._append_module_config_macros(basalt_h, module_config)
         cfg.emit_features_json(
             out_path=features_j,
             enabled_modules=enabled_list,
@@ -343,6 +523,12 @@ def get_boards(platform):
     return jsonify(boards)
 
 
+@app.route('/api/targets', methods=['GET'])
+def get_targets():
+    """Get target profiles"""
+    return jsonify(list(config_gen.targets.values()))
+
+
 @app.route('/api/modules', methods=['GET'])
 def get_modules():
     """Get available modules"""
@@ -367,9 +553,20 @@ def get_board_details(board_id):
         'flash': board.get('flash', 'Unknown'),
         'ram': board.get('ram', 'Unknown'),
         'display': board.get('display', 'None'),
+        'target_profile': board.get('target_profile'),
         'pins': board.get('pins', {}),
         'capabilities': board.get('capabilities', [])
     })
+
+
+@app.route('/api/templates', methods=['GET'])
+def get_templates():
+    """Get project templates"""
+    templates_file = BASALTOS_ROOT / "config" / "templates" / "project_templates.json"
+    if templates_file.exists():
+        with open(templates_file, "r", encoding="utf-8") as f:
+            return jsonify(json.load(f))
+    return jsonify({"templates": []})
 
 
 @app.route('/api/generate', methods=['POST'])
@@ -404,13 +601,58 @@ def preview_config(config_type):
     config_data = request.json
     
     try:
+        target = config_gen._select_target(config_data)
         if config_type == 'basalt_config_h':
-            content = config_gen.generate_basalt_config_h(
-                config_data['board_id'],
-                config_data['enabled_modules'],
-                config_data.get('custom_pins', {}),
-                config_data.get('platform')
-            )
+            backend = target.get("codegen", {}).get("backend") if target else None
+            if backend == "basalt_codegen_pic16_xc8":
+                board_id = config_data.get("board_id")
+                board = config_gen.boards.get(board_id)
+                if not board:
+                    raise ValueError("Board not found.")
+
+                enabled_modules = config_data.get("enabled_modules", []) or []
+                config_gen._validate_module_policy(target, enabled_modules)
+                custom_pins = config_data.get("custom_pins") or {}
+                module_config = config_data.get("module_config") or {}
+                pins = config_gen._merge_pins(board, custom_pins)
+
+                content = render_pic16_preview(
+                    board_id=board_id,
+                    target_id=target.get("id", "pic16"),
+                    enabled_modules=enabled_modules,
+                    pins=pins,
+                    module_config=module_config,
+                    clock=(board.get("defaults") or {}).get("clock"),
+                    fuses=(board.get("defaults") or {}).get("fuses"),
+                )
+            elif backend == "basalt_codegen_avr_arduino":
+                board_id = config_data.get("board_id")
+                board = config_gen.boards.get(board_id)
+                if not board:
+                    raise ValueError("Board not found.")
+
+                enabled_modules = config_data.get("enabled_modules", []) or []
+                config_gen._validate_module_policy(target, enabled_modules)
+                custom_pins = config_data.get("custom_pins") or {}
+                module_config = config_data.get("module_config") or {}
+                pins = config_gen._merge_pins(board, custom_pins)
+
+                content = render_avr_preview(
+                    board_id=board_id,
+                    target_id=target.get("id", "avr"),
+                    enabled_modules=enabled_modules,
+                    pins=pins,
+                    module_config=module_config,
+                    clock=(board.get("defaults") or {}).get("clock"),
+                )
+            else:
+                content = config_gen.generate_basalt_config_h(
+                    config_data['board_id'],
+                    config_data['enabled_modules'],
+                    config_data.get('custom_pins', {}),
+                    config_data.get('platform'),
+                    config_data.get('module_config', {})
+                )
         elif config_type == 'sdkconfig':
             content = config_gen.generate_sdkconfig_defaults(
                 config_data['board_id'],
@@ -435,7 +677,7 @@ def preview_config(config_type):
 @app.route('/')
 def index():
     """Serve the HTML GUI"""
-    return send_from_directory('.', 'basaltos_config_gui.html')
+    return send_from_directory(str(TOOLS_DIR), 'basaltos_config_gui.html')
 
 
 if __name__ == '__main__':

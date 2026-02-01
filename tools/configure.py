@@ -369,7 +369,11 @@ def resolve_modules(
     for mid in enabled:
         for c in modules[mid].conflicts:
             c = c.strip()
-            if c and c in enabled:
+            if not c:
+                continue
+            if {mid, c} == {"fs_spiffs", "fs_sd"}:
+                continue
+            if c in enabled:
                 raise ConfigError(f"Conflict: '{mid}' conflicts with '{c}' (both enabled).")
 
     # topo-ish stable order: deps first, otherwise alpha
@@ -462,6 +466,22 @@ def emit_basalt_config_h(
         lines.append("/* Module runtime settings */")
         lines.extend(runtime_lines)
         lines.append("")
+
+    if board_data and isinstance(board_data, dict):
+        board_setting_lines: List[str] = []
+
+        led_mode = str(board_data.get("led_mode", "")).strip().lower()
+        if led_mode in {"single", "rgb"}:
+            board_setting_lines.append(f"#define BASALT_LED_MODE_{slug_to_macro(led_mode)} 1")
+
+        if "led_active_low" in board_data:
+            led_active_low = bool(board_data.get("led_active_low"))
+            board_setting_lines.append(f"#define BASALT_LED_ACTIVE_LOW {1 if led_active_low else 0}")
+
+        if board_setting_lines:
+            lines.append("/* Board-level settings */")
+            lines.extend(board_setting_lines)
+            lines.append("")
 
     if board_data and isinstance(board_data.get("pins"), dict):
         lines.append("/* Board pin bindings */")
