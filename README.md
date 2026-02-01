@@ -6,24 +6,39 @@ The long-term goal is an “Android-light” experience on microcontrollers: a f
 
 ---
 
-## Status (v0.0.3)
+## Status (v0.0.5)
 
 What’s working today:
 
-- **Basalt Shell (`bsh`)** over UART (and evolving toward richer UI targets)
+- **Basalt Shell (`bsh`)** over UART + TFT console output
+  - `help -commands` with clearer usage text
+  - improved path handling (`cd`, virtual roots, app/dev roots)
+  - app commands: `run`, `run_dev`, `stop`, `kill`, `apps`, `apps_dev`
+  - diagnostics: `led_test`, `devcheck`
 - **Filesystem support**
   - SPIFFS internal flash (“storage” partition baked from `spiffs/`)
   - Optional SD card filesystem (board/module dependent)
-- **App lifecycle in progress**
+- **App lifecycle (early)**
   - install/run/remove concepts
   - “store-only zip” packaging tools (`tools/pack_app.py`)
+  - dev app workflow under `dev/apps_dev` with shell execution via `run_dev`
 - **Embedded MicroPython runtime**
   - MicroPython is integrated as a submodule/runtime
-  - `basalt.*` APIs exist and will expand over time
-- **New configuration system**
-  - **Boards + Modules + Platforms** and a **wizard** to generate build configuration
+  - `basalt.*` APIs exist and are expanding
+  - UI stub now draws basic text/widgets through TFT console bridge
+- **Configuration system (CLI + Web)**
+  - **Boards + Modules + Platforms** model
+  - CLI wizard: `python tools/configure.py --wizard`
+  - Local web configurator: `python tools/basaltos_config_server.py`
+  - generated outputs:
+    - `config/generated/basalt_config.h`
+    - `config/generated/basalt.features.json`
+    - `config/generated/sdkconfig.defaults`
+- **Multi-target backend groundwork**
+  - runtime-capable flow for ESP32/IDF boards
+  - generated-firmware profile flow started for constrained targets (PIC/AVR direction)
 
-This release is about **workflow**: selecting a board + features cleanly, generating config, and building repeatably.
+This release is about **workflow + foundation**: select board/features cleanly, generate config repeatably, run apps/dev-apps faster, and start a cross-target generation model.
 
 ---
 
@@ -79,6 +94,38 @@ SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build
 idf.py -B build -p /dev/ttyUSB0 flash monitor
 ```
 
+### 5) Optional: run the local web configurator
+```bash
+python tools/basaltos_config_server.py
+```
+
+Then open:
+```
+http://localhost:5000
+```
+
+This is intended for local workflow right now (no hosting/deployment required).
+
+---
+
+## Local dev apps workflow (ESP32 shell)
+
+Dev app examples live in:
+```
+dev/apps_dev/
+```
+
+Typical flow:
+1. copy a dev app onto device storage (`/apps_dev`) or SD (`/sd/apps_dev`)
+2. from shell, run:
+   - `apps_dev`
+   - `run_dev <name>`
+   - `kill` (to stop a running app)
+
+For hardware sanity checks:
+- `led_test` (or `led_test <pin>`)
+- `devcheck` / `devcheck full`
+
 ---
 
 ## Repository layout (current)
@@ -88,11 +135,13 @@ apps/
 basalt_hal/
 boards/
 config/
+dev/
 docs/
 main/
 modules/
 platforms/
 runtime/
+targets/
 sdk/
 spiffs/
 tools/
@@ -103,18 +152,21 @@ tools/
 ## Roadmap
 
 Near-term:
-- Stabilize and expand `basalt.*` APIs
-- Harden module gating and capability checks
-- Improve CLI UX
+- Stabilize and expand `basalt.*` APIs (UI, IO, runtime ergonomics)
+- Continue shell UX polish and command safety
+- Harden module gating + board capability constraints
+- Complete board metadata (pins, flash/ram, LED mode/polarity, module support)
 
 Mid-term:
-- GUI frontend for board/module selection
-- Repeatable saved configurations
+- Full-featured configurator UX (validation, conflict hints, profile export/import)
+- Better generated-project outputs for non-runtime targets
+- Repeatable saved configurations and build profiles
 
 Long-term:
 - Stable SDK feel
 - Signed packages and permissions
 - Multiple runtimes
+- Hosted configurator + broader target support
 
 ---
 
