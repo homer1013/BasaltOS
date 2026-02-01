@@ -529,6 +529,40 @@ void tft_console_set_color(uint16_t fg) {
     s_fg = fg;
 }
 
+void tft_console_clear(void) {
+    if (!s_ready) return;
+    if (s_tft_lock) {
+        xSemaphoreTake(s_tft_lock, portMAX_DELAY);
+    }
+    tft_clear_screen();
+    s_row = 0;
+    s_col = 0;
+    if (s_tft_lock) {
+        xSemaphoreGive(s_tft_lock);
+    }
+}
+
+void tft_console_write_at(int x, int y, const char *text) {
+    if (!s_ready || !text) return;
+    int row = y / FONT_H;
+    int col = x / FONT_W;
+    if (row < 0) row = 0;
+    if (col < 0) col = 0;
+    if (row >= MAX_ROWS) return;
+    if (s_tft_lock) {
+        xSemaphoreTake(s_tft_lock, portMAX_DELAY);
+    }
+    int c = col;
+    for (const char *p = text; *p && c < MAX_COLS; ++p, ++c) {
+        s_screen[row][c] = *p;
+        s_color[row][c] = s_fg;
+    }
+    tft_draw_line(row);
+    if (s_tft_lock) {
+        xSemaphoreGive(s_tft_lock);
+    }
+}
+
 bool tft_console_init(void) {
 #if BASALT_TFT_ENABLE
     if (!s_tft_lock) {

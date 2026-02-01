@@ -7,3 +7,5 @@ bool tft_console_init(void);
 bool tft_console_is_ready(void);
 void tft_console_write(const char *text);
 void tft_console_set_color(uint16_t fg);
+void tft_console_clear(void);
+void tft_console_write_at(int x, int y, const char *text);

@@ -10,6 +10,7 @@ idf_component_register(
     SRCS ${MPY_SRCS}
     INCLUDE_DIRS "." "port" "py" "extmod" "shared/runtime" "genhdr" "${PROJECT_DIR}/config/generated"
     REQUIRES driver freertos
+    PRIV_REQUIRES main
 )
 
 # Reduce warnings from upstream MicroPython sources
