@@ -1,0 +1,27 @@
+{
+  "id": "eeprom",
+  "name": "EEPROM",
+  "description": "Non-volatile EEPROM access",
+  "platforms": [
+    "esp32",
+    "stm32",
+    "rp2040",
+    "avr",
+    "pic",
+    "pic16"
+  ],
+  "provides": [
+    "eeprom"
+  ],
+  "depends": [],
+  "conflicts": [],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_EEPROM"
+  ],
+  "default_enabled": false,
+  "pins": [],
+  "notes": [
+    "Uses on-chip EEPROM where available"
+  ]
+}

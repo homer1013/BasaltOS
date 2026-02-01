@@ -1,0 +1,27 @@
+{
+  "id": "timer",
+  "name": "Timer",
+  "description": "Basic timer/tick support",
+  "platforms": [
+    "esp32",
+    "stm32",
+    "rp2040",
+    "avr",
+    "pic",
+    "pic16"
+  ],
+  "provides": [
+    "timer"
+  ],
+  "depends": [],
+  "conflicts": [],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_TIMER"
+  ],
+  "default_enabled": false,
+  "pins": [],
+  "notes": [
+    "Provides basic timing/tick helpers"
+  ]
+}

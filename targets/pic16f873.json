@@ -1,0 +1,172 @@
+{
+  "id": "pic16f873",
+  "kind": "target_profile",
+  "name": "Microchip PIC16F873",
+  "vendor": "microchip",
+  "arch": "pic16",
+  "toolchain": {
+    "family": "xc8",
+    "ide": "mplabx",
+    "min_version": "2.40"
+  },
+  "capabilities": {
+    "runtime_os": false,
+    "dynamic_apps": false,
+    "max_flash_bytes": 14336,
+    "max_ram_bytes": 368,
+    "has_interrupts": true,
+    "has_eeprom": true,
+    "has_adc": true,
+    "has_uart": true,
+    "has_spi": true,
+    "has_i2c_hw": true
+  },
+  "limits": {
+    "max_modules": 6,
+    "max_tasks": 0,
+    "max_timers": 2,
+    "max_uart_ports": 1,
+    "max_i2c_buses": 1,
+    "max_spi_buses": 1,
+    "max_gpio_pins": 22
+  },
+  "module_policy": {
+    "mode": "allowlist",
+    "allowed": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "timer",
+      "eeprom",
+      "remote_node"
+    ],
+    "notes": "PIC16 targets compile features into a single firmware image; no runtime services."
+  },
+  "config_schema": {
+    "clock": {
+      "required": true,
+      "fields": {
+        "source": { "enum": ["HS", "XT", "LP", "RC"] },
+        "freq_hz": { "type": "integer", "min": 32000, "max": 20000000 }
+      }
+    },
+    "fuses": {
+      "required": true,
+      "fields": {
+        "wdt": { "type": "boolean" },
+        "bor": { "type": "boolean" },
+        "lvp": { "type": "boolean" },
+        "mclr": { "type": "boolean" },
+        "cp": { "type": "boolean" },
+        "cpd": { "type": "boolean" }
+      }
+    },
+    "pins": {
+      "required": true,
+      "fields": {
+        "map": { "type": "object" }
+      }
+    }
+  },
+  "codegen": {
+    "backend": "basalt_codegen_pic16_xc8",
+    "output": {
+      "project_type": "mplabx_skeleton",
+      "language": "c",
+      "layout": "flat_src"
+    },
+    "emit": [
+      {
+        "path": "include/basalt_config.h",
+        "template": "pic16/basalt_config.h.j2",
+        "when": "always"
+      },
+      {
+        "path": "src/main.c",
+        "template": "pic16/main.c.j2",
+        "when": "always"
+      },
+      {
+        "path": "src/mcu_init.c",
+        "template": "pic16/mcu_init.c.j2",
+        "when": "always"
+      },
+      {
+        "path": "src/interrupts.c",
+        "template": "pic16/interrupts.c.j2",
+        "when": "capabilities.has_interrupts == true"
+      },
+      {
+        "path": "src/drivers/gpio.c",
+        "template": "pic16/drivers/gpio.c.j2",
+        "when": "module_enabled('gpio')"
+      },
+      {
+        "path": "src/drivers/uart.c",
+        "template": "pic16/drivers/uart.c.j2",
+        "when": "module_enabled('uart')"
+      },
+      {
+        "path": "src/drivers/i2c_hw.c",
+        "template": "pic16/drivers/i2c_hw.c.j2",
+        "when": "module_enabled('i2c')"
+      },
+      {
+        "path": "src/drivers/spi.c",
+        "template": "pic16/drivers/spi.c.j2",
+        "when": "module_enabled('spi')"
+      },
+      {
+        "path": "src/drivers/adc.c",
+        "template": "pic16/drivers/adc.c.j2",
+        "when": "module_enabled('adc')"
+      },
+      {
+        "path": "src/drivers/eeprom.c",
+        "template": "pic16/drivers/eeprom.c.j2",
+        "when": "module_enabled('eeprom')"
+      },
+      {
+        "path": "src/drivers/timer.c",
+        "template": "pic16/drivers/timer.c.j2",
+        "when": "module_enabled('timer')"
+      },
+      {
+        "path": "src/apps/applet_blink.c",
+        "template": "pic16/applets/blink.c.j2",
+        "when": "applet_enabled('blink')"
+      },
+      {
+        "path": "src/apps/applet_uart_echo.c",
+        "template": "pic16/applets/uart_echo.c.j2",
+        "when": "applet_enabled('uart_echo')"
+      },
+      {
+        "path": "src/apps/applet_remote_node.c",
+        "template": "pic16/applets/remote_node.c.j2",
+        "when": "module_enabled('remote_node')"
+      },
+      {
+        "path": "README.md",
+        "template": "pic16/README.md.j2",
+        "when": "always"
+      }
+    ],
+    "reports": [
+      {
+        "id": "baud_error_uart1",
+        "kind": "analysis",
+        "template": "pic16/reports/uart_baud_error.md.j2",
+        "when": "module_enabled('uart')"
+      },
+      {
+        "id": "fuse_summary",
+        "kind": "summary",
+        "template": "pic16/reports/fuse_summary.md.j2",
+        "when": "always"
+      }
+    ]
+  }
+}

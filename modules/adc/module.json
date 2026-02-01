@@ -1,0 +1,35 @@
+{
+  "id": "adc",
+  "name": "ADC",
+  "description": "Analog-to-digital converter input support",
+  "platforms": [
+    "esp32",
+    "stm32",
+    "rp2040",
+    "avr",
+    "pic",
+    "pic16"
+  ],
+  "provides": [
+    "adc"
+  ],
+  "depends": [],
+  "conflicts": [],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_ADC"
+  ],
+  "default_enabled": false,
+  "pins": [
+    "adc_in"
+  ],
+  "pin_requirements": {
+    "adc_in": {
+      "required": false,
+      "description": "ADC input channel"
+    }
+  },
+  "notes": [
+    "ADC channel assignment is board-dependent"
+  ]
+}

@@ -1,7 +1,9 @@
 {
+  "id": "curiosity_nano_pic16f13145",
   "name": "Curiosity Nano PIC16F13145",
   "description": "Microchip Curiosity Nano board for PIC16F13145. Pin names follow PIC port labels; adjust as needed for your project.",
   "platform": "pic16",
+  "target_profile": "pic16f13145",
   "mcu": "PIC16F13145",
   "flash": "14KB (approx)",
   "ram": "1KB (approx)",
@@ -65,5 +67,29 @@
     "TOOLCHAIN=xc8",
     "MCU=pic16f13145"
   ],
+  "defaults": {
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "timer",
+      "pwm",
+      "eeprom"
+    ],
+    "clock": {
+      "source": "HS",
+      "freq_hz": 8000000
+    },
+    "fuses": {
+      "wdt": false,
+      "bor": true,
+      "lvp": false,
+      "mclr": true,
+      "cp": false,
+      "cpd": false
+    }
+  },
   "notes": "PIC peripheral pin select (PPS) means UART/I2C/SPI can be remapped. Treat these pin assignments as a template."
 }

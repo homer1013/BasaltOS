@@ -1,0 +1,63 @@
+{
+  "id": "mega2560",
+  "kind": "board",
+  "name": "Arduino Mega 2560 (Generic)",
+  "platform": "avr",
+  "target_profile": "mega2560",
+  "mcu": "ATmega2560",
+  "flash": "256KB",
+  "ram": "8KB",
+  "variant": {
+    "clock_default_hz": 16000000
+  },
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "timer",
+    "pwm",
+    "eeprom"
+  ],
+  "pins": {
+    "uart0_tx": 1,
+    "uart0_rx": 0,
+    "uart1_tx": 18,
+    "uart1_rx": 19,
+    "uart2_tx": 16,
+    "uart2_rx": 17,
+    "uart3_tx": 14,
+    "uart3_rx": 15,
+    "i2c_scl": 21,
+    "i2c_sda": 20,
+    "spi_sclk": 52,
+    "spi_mosi": 51,
+    "spi_miso": 50,
+    "spi_cs": 53,
+    "led": 13
+  },
+  "pin_definitions": {
+    "uart0_tx": { "description": "Serial0 TX", "alternatives": [1], "type": "output" },
+    "uart0_rx": { "description": "Serial0 RX", "alternatives": [0], "type": "input" },
+    "uart1_tx": { "description": "Serial1 TX", "alternatives": [18], "type": "output" },
+    "uart1_rx": { "description": "Serial1 RX", "alternatives": [19], "type": "input" },
+    "uart2_tx": { "description": "Serial2 TX", "alternatives": [16], "type": "output" },
+    "uart2_rx": { "description": "Serial2 RX", "alternatives": [17], "type": "input" },
+    "uart3_tx": { "description": "Serial3 TX", "alternatives": [14], "type": "output" },
+    "uart3_rx": { "description": "Serial3 RX", "alternatives": [15], "type": "input" },
+    "i2c_scl": { "description": "I2C SCL", "alternatives": [21], "type": "output" },
+    "i2c_sda": { "description": "I2C SDA", "alternatives": [20], "type": "bidirectional" },
+    "spi_sclk": { "description": "SPI SCK", "alternatives": [52], "type": "output" },
+    "spi_mosi": { "description": "SPI MOSI", "alternatives": [51], "type": "output" },
+    "spi_miso": { "description": "SPI MISO", "alternatives": [50], "type": "input" },
+    "spi_cs": { "description": "SPI CS", "alternatives": [53], "type": "output" },
+    "led": { "description": "Onboard LED", "alternatives": [13], "type": "output" }
+  },
+  "defaults": {
+    "clock": { "freq_hz": 16000000 },
+    "modules": ["gpio", "uart", "timer"],
+    "applets": ["blink"]
+  },
+  "notes": "Arduino Mega 2560 board definition with 4 UARTs exposed."
+}

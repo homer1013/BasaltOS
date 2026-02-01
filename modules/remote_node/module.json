@@ -1,0 +1,52 @@
+{
+  "id": "remote_node",
+  "name": "Remote Node",
+  "description": "Simple remote I/O node protocol over UART",
+  "platforms": [
+    "esp32",
+    "stm32",
+    "rp2040",
+    "avr",
+    "pic",
+    "pic16"
+  ],
+  "provides": [
+    "remote_node"
+  ],
+  "depends": [
+    "uart"
+  ],
+  "conflicts": [],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_REMOTE_NODE"
+  ],
+  "default_enabled": false,
+  "pins": [],
+  "configuration_options": [
+    {
+      "id": "node_id",
+      "name": "Node ID",
+      "type": "number",
+      "default": 1,
+      "min": 1,
+      "max": 255
+    },
+    {
+      "id": "protocol",
+      "name": "Protocol",
+      "type": "select",
+      "options": [
+        "basalt-simple-v1"
+      ],
+      "default": "basalt-simple-v1"
+    },
+    {
+      "id": "uart_port",
+      "name": "UART Port",
+      "type": "select",
+      "options": [0, 1, 2, 3],
+      "default": 0
+    }
+  ]
+}

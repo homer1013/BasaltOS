@@ -1,0 +1,9 @@
+{
+  "id": "avr",
+  "name": "AVR (Arduino/avr-gcc)",
+  "description": "AVR 8-bit microcontrollers (Arduino toolchain / avr-gcc)",
+  "toolchain": "avr-gcc",
+  "arch": "avr8",
+  "family": "avr",
+  "sdk": "avr-libc"
+}

@@ -1,0 +1,82 @@
+{
+  "id": "pic16f873-minimal",
+  "kind": "board",
+  "name": "PIC16F873 Minimal (Generic)",
+  "platform": "pic16",
+  "target_profile": "pic16f873",
+  "mcu": "PIC16F873",
+  "flash": "14KB (approx)",
+  "ram": "368B (approx)",
+  "variant": {
+    "package": "DIP-28",
+    "clock_default_hz": 20000000
+  },
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "timer",
+    "eeprom"
+  ],
+  "pins": {
+    "uart_tx": "RC6",
+    "uart_rx": "RC7",
+    "i2c_scl": "RC3",
+    "i2c_sda": "RC4",
+    "spi_sclk": "RC3",
+    "spi_mosi": "RC5",
+    "spi_miso": "RC4",
+    "led": "RB0"
+  },
+  "pin_definitions": {
+    "uart_tx": {
+      "description": "USART TX",
+      "alternatives": ["RC6"],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "USART RX",
+      "alternatives": ["RC7"],
+      "type": "input"
+    },
+    "i2c_scl": {
+      "description": "MSSP SCL",
+      "alternatives": ["RC3"],
+      "type": "output"
+    },
+    "i2c_sda": {
+      "description": "MSSP SDA",
+      "alternatives": ["RC4"],
+      "type": "bidirectional"
+    },
+    "spi_sclk": {
+      "description": "SPI SCK",
+      "alternatives": ["RC3"],
+      "type": "output"
+    },
+    "spi_mosi": {
+      "description": "SPI SDO",
+      "alternatives": ["RC5"],
+      "type": "output"
+    },
+    "spi_miso": {
+      "description": "SPI SDI",
+      "alternatives": ["RC4"],
+      "type": "input"
+    },
+    "led": {
+      "description": "Status LED",
+      "alternatives": ["RB0", "RA0"],
+      "type": "output"
+    }
+  },
+  "defaults": {
+    "clock": { "source": "HS", "freq_hz": 20000000 },
+    "fuses": { "wdt": false, "bor": true, "lvp": false, "mclr": true, "cp": false, "cpd": false },
+    "modules": ["gpio", "timer"],
+    "applets": ["blink"]
+  },
+  "notes": "Generic PIC16F873 template. Pins use PORT labels; adjust for your PCB."
+}

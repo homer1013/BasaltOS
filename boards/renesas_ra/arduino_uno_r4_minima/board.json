@@ -1,4 +1,5 @@
 {
+  "id": "arduino_uno_r4_minima",
   "name": "Arduino Uno R4 Minima (RA4M1)",
   "description": "Arduino Uno R4 Minima uses Renesas RA4M1 (Cortex-M4). Pin labels follow Arduino numbering.",
   "platform": "renesas_ra",
@@ -53,5 +54,19 @@
     "SDK=fsp",
     "MCU=ra4m1"
   ],
+  "defaults": {
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "pwm",
+      "timer"
+    ],
+    "clock": {
+      "freq_hz": 48000000
+    }
+  },
   "notes": "Pin mapping depends on Arduino core/FSP config. Use this as a starting point; later we can map RA port pins (Pxxx) if you want baremetal."
 }

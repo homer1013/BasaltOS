@@ -1,4 +1,5 @@
 {
+  "id": "raspberry_pi_pico",
   "name": "Raspberry Pi Pico (RP2040)",
   "description": "Official Raspberry Pi Pico dev board (RP2040). GPIO numbers follow Pico SDK conventions.",
   "platform": "rp2040",
@@ -81,5 +82,19 @@
     "PICO_BOARD=pico",
     "PICO_PLATFORM=rp2040"
   ],
+  "defaults": {
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "pwm",
+      "timer"
+    ],
+    "clock": {
+      "freq_hz": 133000000
+    }
+  },
   "notes": "SPI pin set shown corresponds to the Pico SDK SPI0 default signals (SCK=2, TX=3, RX=0, CSn=1). Adjust if you prefer SPI1 or different pin mappings."
 }

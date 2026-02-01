@@ -1,4 +1,5 @@
 {
+  "id": "rx65n_envision_kit",
   "name": "Renesas RX65N Envision Kit",
   "description": "Renesas RX65N Envision Kit (RXv2 core). Pin labels are placeholders; refine once you pick a concrete HAL/toolchain path.",
   "platform": "renesas_rx",
@@ -61,5 +62,16 @@
     "SDK=fit",
     "MCU=rx65n"
   ],
+  "defaults": {
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "pwm",
+      "timer"
+    ]
+  },
   "notes": "This is intentionally a starter template. RX pin/peripheral mapping depends on the FIT project configuration (and exact kit revision)."
 }

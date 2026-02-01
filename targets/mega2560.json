@@ -1,0 +1,133 @@
+{
+  "id": "mega2560",
+  "kind": "target_profile",
+  "name": "Arduino Mega 2560",
+  "vendor": "atmel",
+  "arch": "avr",
+  "toolchain": {
+    "family": "avr-gcc",
+    "ide": "arduino",
+    "min_version": "1.8.0"
+  },
+  "capabilities": {
+    "runtime_os": false,
+    "dynamic_apps": false,
+    "max_flash_bytes": 262144,
+    "max_ram_bytes": 8192,
+    "has_interrupts": true,
+    "has_eeprom": true,
+    "has_adc": true,
+    "has_uart": true,
+    "has_spi": true,
+    "has_i2c_hw": true,
+    "uart_ports": 4
+  },
+  "limits": {
+    "max_modules": 8,
+    "max_tasks": 0,
+    "max_timers": 4,
+    "max_uart_ports": 4,
+    "max_i2c_buses": 1,
+    "max_spi_buses": 1,
+    "max_gpio_pins": 54
+  },
+  "applets": [
+    "blink",
+    "uart_echo",
+    "remote_node"
+  ],
+  "module_policy": {
+    "mode": "allowlist",
+    "allowed": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "timer",
+      "pwm",
+      "eeprom",
+      "remote_node"
+    ],
+    "notes": "Mega 2560 targets generate Arduino-style firmware (no Basalt runtime)."
+  },
+  "config_schema": {
+    "clock": {
+      "required": true,
+      "fields": {
+        "freq_hz": { "type": "integer", "min": 1000000, "max": 20000000 }
+      }
+    },
+    "pins": {
+      "required": true,
+      "fields": {
+        "map": { "type": "object" }
+      }
+    }
+  },
+  "codegen": {
+    "backend": "basalt_codegen_avr_arduino",
+    "output": {
+      "project_type": "arduino_sketch",
+      "language": "cpp",
+      "layout": "flat_src"
+    },
+    "emit": [
+      {
+        "path": "include/basalt_config.h",
+        "template": "avr/basalt_config.h.j2",
+        "when": "always"
+      },
+      {
+        "path": "src/main.cpp",
+        "template": "avr/main.cpp.j2",
+        "when": "always"
+      },
+      {
+        "path": "src/drivers/gpio.cpp",
+        "template": "avr/drivers/gpio.cpp.j2",
+        "when": "module_enabled('gpio')"
+      },
+      {
+        "path": "src/drivers/uart.cpp",
+        "template": "avr/drivers/uart.cpp.j2",
+        "when": "module_enabled('uart')"
+      },
+      {
+        "path": "src/drivers/i2c.cpp",
+        "template": "avr/drivers/i2c.cpp.j2",
+        "when": "module_enabled('i2c')"
+      },
+      {
+        "path": "src/drivers/spi.cpp",
+        "template": "avr/drivers/spi.cpp.j2",
+        "when": "module_enabled('spi')"
+      },
+      {
+        "path": "src/drivers/adc.cpp",
+        "template": "avr/drivers/adc.cpp.j2",
+        "when": "module_enabled('adc')"
+      },
+      {
+        "path": "src/drivers/pwm.cpp",
+        "template": "avr/drivers/pwm.cpp.j2",
+        "when": "module_enabled('pwm')"
+      },
+      {
+        "path": "src/drivers/timer.cpp",
+        "template": "avr/drivers/timer.cpp.j2",
+        "when": "module_enabled('timer')"
+      },
+      {
+        "path": "src/drivers/eeprom.cpp",
+        "template": "avr/drivers/eeprom.cpp.j2",
+        "when": "module_enabled('eeprom')"
+      },
+      {
+        "path": "README.md",
+        "template": "avr/README.md.j2",
+        "when": "always"
+      }
+    ]
+  }
+}

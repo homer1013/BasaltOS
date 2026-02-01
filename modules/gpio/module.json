@@ -1,0 +1,27 @@
+{
+  "id": "gpio",
+  "name": "GPIO",
+  "description": "General-purpose digital input/output",
+  "platforms": [
+    "esp32",
+    "stm32",
+    "rp2040",
+    "avr",
+    "pic",
+    "pic16"
+  ],
+  "provides": [
+    "gpio"
+  ],
+  "depends": [],
+  "conflicts": [],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_GPIO"
+  ],
+  "default_enabled": true,
+  "pins": [],
+  "notes": [
+    "Core GPIO helpers for digital read/write and mode control"
+  ]
+}
