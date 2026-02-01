@@ -1,0 +1,14 @@
+name = "C UI Demo"
+version = "0.1.0"
+entry = "main.c"
+runtime = "native"
+
+author = "BasaltOS"
+license = "MIT"
+
+description = "Native C app stub with a basic app loop."
+
+[capabilities]
+ui = true
+gpio = ["read", "write"]
+timer = true

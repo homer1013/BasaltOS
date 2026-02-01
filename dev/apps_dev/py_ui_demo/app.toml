@@ -1,0 +1,14 @@
+name = "Python UI Demo"
+version = "0.1.0"
+entry = "main.py"
+runtime = "python"
+
+author = "BasaltOS"
+license = "MIT"
+
+description = "Simple UI demo using basalt.ui + LED/timer logic."
+
+[capabilities]
+ui = true
+gpio = ["read", "write"]
+timer = true

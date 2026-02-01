@@ -1,4 +1,5 @@
 {
+  "id": "esp32-c3-supermini",
   "name": "ESP32-C3 SuperMini (Generic)",
   "description": "Small ESP32-C3 board (RISC-V). Pinout varies by vendor; this template provides common-safe assignments.",
   "platform": "esp32",
@@ -94,5 +95,18 @@
     "CONFIG_ESP_CONSOLE_UART_DEFAULT=y",
     "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
   ],
+  "defaults": {
+    "modules": [
+      "gpio",
+      "uart",
+      "spi",
+      "i2c",
+      "fs_spiffs",
+      "shell_full"
+    ],
+    "clock": {
+      "freq_hz": 160000000
+    }
+  },
   "notes": "ESP32-C3 boards are wildly inconsistent across sellers. Confirm UART/LED/button pins with your board\u2019s silkscreen or schematic."
 }

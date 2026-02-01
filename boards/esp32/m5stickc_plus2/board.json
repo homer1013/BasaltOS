@@ -4,7 +4,19 @@
   "platform": "esp32",
   "target": "esp32",
   "defaults": {
-    "sdkconfig": "sdkconfig.defaults"
+    "sdkconfig": "sdkconfig.defaults",
+    "modules": [
+      "gpio",
+      "uart",
+      "spi",
+      "i2c",
+      "fs_spiffs",
+      "tft",
+      "shell_full"
+    ],
+    "clock": {
+      "freq_hz": 240000000
+    }
   },
   "pins": {
     "i2c_sda": 21,

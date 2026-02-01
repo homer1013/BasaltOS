@@ -2,8 +2,17 @@
   "id": "uart",
   "name": "UART",
   "description": "Universal Asynchronous Receiver-Transmitter for serial communication for console, logging,      debugging, and external devices",
-  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic"],
-  "provides": ["uart"],
+  "platforms": [
+    "esp32",
+    "stm32",
+    "rp2040",
+    "avr",
+    "pic",
+    "pic16"
+  ],
+  "provides": [
+    "uart"
+  ],
   "depends": [],
   "conflicts": [],
   "constraints": {},
@@ -40,35 +49,60 @@
       "id": "uart_num",
       "name": "UART Port Number",
       "type": "select",
-      "options": [0, 1, 2],
+      "options": [
+        0,
+        1,
+        2,
+        3
+      ],
       "default": 0
     },
     {
       "id": "uart_baudrate",
       "name": "Baud Rate",
       "type": "select",
-      "options": [9600, 19200, 38400, 57600, 115200, 230400, 460800],
+      "options": [
+        9600,
+        19200,
+        38400,
+        57600,
+        115200,
+        230400,
+        460800
+      ],
       "default": 115200
     },
     {
       "id": "uart_data_bits",
       "name": "Data Bits",
       "type": "select",
-      "options": [5, 6, 7, 8],
+      "options": [
+        5,
+        6,
+        7,
+        8
+      ],
       "default": 8
     },
     {
       "id": "uart_stop_bits",
       "name": "Stop Bits",
       "type": "select",
-      "options": [1, 2],
+      "options": [
+        1,
+        2
+      ],
       "default": 1
     },
     {
       "id": "uart_parity",
       "name": "Parity",
       "type": "select",
-      "options": ["none", "even", "odd"],
+      "options": [
+        "none",
+        "even",
+        "odd"
+      ],
       "default": "none"
     },
     {

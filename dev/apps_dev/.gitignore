@@ -1,0 +1,7 @@
+# Keep sample apps committed; ignore everything else by default
+*
+!.gitignore
+!py_ui_demo/
+!py_ui_demo/**
+!c_ui_demo/
+!c_ui_demo/**
