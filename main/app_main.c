@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
 #include "smoke_test.h"
@@ -27,6 +28,7 @@
 #include "esp_private/esp_clk.h"
 #include "esp_rom_uart.h"
 #include "hal/uart_ll.h"
+#include "driver/gpio.h"
 #include "driver/spi_master.h"
 #include "sdmmc_cmd.h"
 #include "esp_vfs_fat.h"
@@ -47,6 +49,8 @@
 #endif
 #define BASALT_APPS_ROOT BASALT_DATA_ROOT "/apps"
 #define BASALT_APPS_PREFIX BASALT_DATA_ROOT "/apps/"
+#define BASALT_DEV_APPS_ROOT BASALT_DATA_ROOT "/apps_dev"
+#define BASALT_DEV_APPS_PREFIX BASALT_DATA_ROOT "/apps_dev/"
 #if BASALT_ENABLE_FS_SPIFFS
 #define BASALT_HOME_VPATH BASALT_DATA_ROOT
 #else
@@ -140,10 +144,14 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"rm", "rm [-r] <path>", "Remove file or directory"},
 #endif
     {"apps", "apps", "List installed apps"},
+    {"apps_dev", "apps_dev", "List dev apps in /apps_dev"},
+    {"led_test", "led_test [pin]", "Blink/test LED pins (helps identify working LED pin)"},
+    {"devcheck", "devcheck [full]", "Quick sanity checks for LED, UI, and filesystems"},
 #if BASALT_SHELL_LEVEL >= 2
     {"edit", "edit <file>", "Simple line editor (.save/.quit)"},
 #endif
     {"run", "run <app|script>", "Run an app or script"},
+    {"run_dev", "run_dev <app|script>", "Run a dev app from /apps_dev"},
     {"stop", "stop", "Stop the running app"},
     {"kill", "kill", "Force stop the running app"},
 #if BASALT_SHELL_LEVEL >= 2
@@ -175,7 +183,7 @@ static void bsh_print_help(bool verbose) {
     for (size_t i = 0; i < sizeof(k_bsh_help) / sizeof(k_bsh_help[0]); ++i) {
         basalt_printf("%-8s  %-24s  %s\n", k_bsh_help[i].name, k_bsh_help[i].usage, k_bsh_help[i].desc);
     }
-    basalt_printf("\nVirtual roots: /data (storage), /apps (apps), /sd (SD card)\n");
+    basalt_printf("\nVirtual roots: /data (storage), /apps (apps), /apps_dev (dev apps), /sd (SD card)\n");
     basalt_printf("Path tips: ~ (home), - (previous dir), ... (up multiple)\n");
 }
 
@@ -191,6 +199,7 @@ static void bsh_list_root(void) {
     basalt_printf("data\n");
     basalt_printf("apps\n");
     basalt_printf("sd\n");
+    basalt_printf("apps_dev\n");
 }
 
 static bool path_is_dir(const char *path) {
@@ -206,6 +215,46 @@ static bool path_is_file(const char *path) {
 static const char *path_basename(const char *path) {
     const char *slash = strrchr(path, '/');
     return slash ? slash + 1 : path;
+}
+
+static size_t normalize_name_key(const char *in, char *out, size_t out_len) {
+    if (!in || !out || out_len == 0) return 0;
+    size_t n = 0;
+    for (const char *p = in; *p && n + 1 < out_len; ++p) {
+        char c = *p;
+        if (c == '~') break;
+        if (c >= 'a' && c <= 'z') c = (char)(c - 'a' + 'A');
+        if ((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
+            out[n++] = c;
+        }
+    }
+    out[n] = '\0';
+    return n;
+}
+
+static bool resolve_dev_app_in_dir(const char *dir, const char *name, char *out, size_t out_len) {
+    if (!dir || !name || !out || out_len == 0) return false;
+    DIR *d = opendir(dir);
+    if (!d) return false;
+    char want[32];
+    normalize_name_key(name, want, sizeof(want));
+    struct dirent *ent;
+    bool found = false;
+    while ((ent = readdir(d)) != NULL) {
+        if (ent->d_name[0] == '.') continue;
+        char cand[32];
+        normalize_name_key(ent->d_name, cand, sizeof(cand));
+        if (cand[0] == '\0') continue;
+        if (strcmp(cand, want) == 0 ||
+            (strncmp(cand, want, strlen(cand)) == 0) ||
+            (strncmp(want, cand, strlen(want)) == 0)) {
+            snprintf(out, out_len, "%s/%s", dir, ent->d_name);
+            found = true;
+            break;
+        }
+    }
+    closedir(d);
+    return found;
 }
 
 static void trim_ws(char *s) {
@@ -652,6 +701,14 @@ static bool map_virtual_to_real(const char *vpath, char *out, size_t out_len) {
         }
         return true;
     }
+    if (strncmp(vpath, "/apps_dev", 9) == 0) {
+        if (vpath[9] == '\0') {
+            snprintf(out, out_len, "%s", BASALT_DEV_APPS_ROOT);
+        } else {
+            snprintf(out, out_len, "%s%s", BASALT_DEV_APPS_ROOT, vpath + 9);
+        }
+        return true;
+    }
     if (strncmp(vpath, "/sd", 3) == 0) {
 #if BASALT_ENABLE_FS_SD
         if (vpath[3] == '\0') {
@@ -1054,6 +1111,181 @@ static void bsh_cmd_apps(void) {
     }
 }
 
+static void bsh_cmd_apps_dev(void) {
+    DIR *dir = opendir(BASALT_DEV_APPS_ROOT);
+    if (!dir) {
+        basalt_printf("apps_dev: /apps_dev not found\n");
+    } else {
+        struct dirent *ent;
+        while ((ent = readdir(dir)) != NULL) {
+            if (ent->d_name[0] == '.') continue;
+            basalt_printf("%s\n", ent->d_name);
+        }
+        closedir(dir);
+    }
+    char sd_root[64];
+    if (map_virtual_to_real("/sd", sd_root, sizeof(sd_root))) {
+        char sd_apps[96];
+        snprintf(sd_apps, sizeof(sd_apps), "%s/apps_dev", sd_root);
+        DIR *sd_dir = opendir(sd_apps);
+        if (sd_dir) {
+            basalt_printf("sd/apps_dev:\n");
+            struct dirent *ent;
+            while ((ent = readdir(sd_dir)) != NULL) {
+                if (ent->d_name[0] == '.') continue;
+                basalt_printf("%s\n", ent->d_name);
+            }
+            closedir(sd_dir);
+        }
+    }
+}
+
+static bool bsh_is_number(const char *s) {
+    if (!s || !*s) return false;
+    char *end = NULL;
+    (void)strtol(s, &end, 10);
+    return end && *end == '\0';
+}
+
+static bool bsh_add_pin_unique(int *pins, int *count, int max_count, int pin) {
+    if (!pins || !count || *count >= max_count || pin < 0) return false;
+    for (int i = 0; i < *count; ++i) {
+        if (pins[i] == pin) return false;
+    }
+    pins[*count] = pin;
+    (*count)++;
+    return true;
+}
+
+static void bsh_led_test_one_pin(int pin) {
+    gpio_config_t io_conf = {
+        .pin_bit_mask = (1ULL << pin),
+        .mode = GPIO_MODE_OUTPUT,
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+        .intr_type = GPIO_INTR_DISABLE,
+    };
+    if (gpio_config(&io_conf) != ESP_OK) {
+        basalt_printf("led_test: failed to configure GPIO%d\n", pin);
+        return;
+    }
+
+    basalt_printf("led_test: GPIO%d phase A (HIGH then LOW)\n", pin);
+    gpio_set_level(pin, 1);
+    vTaskDelay(pdMS_TO_TICKS(1500));
+    gpio_set_level(pin, 0);
+    vTaskDelay(pdMS_TO_TICKS(1500));
+
+    basalt_printf("led_test: GPIO%d phase B (LOW then HIGH)\n", pin);
+    gpio_set_level(pin, 0);
+    vTaskDelay(pdMS_TO_TICKS(1500));
+    gpio_set_level(pin, 1);
+    vTaskDelay(pdMS_TO_TICKS(1500));
+
+    gpio_set_level(pin, 0);
+    basalt_printf("led_test: GPIO%d done\n", pin);
+}
+
+static void bsh_cmd_led_test(const char *arg) {
+    int pins[12];
+    int count = 0;
+
+    if (arg && arg[0]) {
+        if (!bsh_is_number(arg)) {
+            basalt_printf("led_test: invalid pin '%s'\n", arg);
+            basalt_printf("usage: led_test [pin]\n");
+            return;
+        }
+        bsh_add_pin_unique(pins, &count, (int)(sizeof(pins) / sizeof(pins[0])), (int)strtol(arg, NULL, 10));
+    } else {
+#if defined(BASALT_PIN_LED)
+        bsh_add_pin_unique(pins, &count, (int)(sizeof(pins) / sizeof(pins[0])), BASALT_PIN_LED);
+#endif
+#if defined(BASALT_PIN_LED_R)
+        bsh_add_pin_unique(pins, &count, (int)(sizeof(pins) / sizeof(pins[0])), BASALT_PIN_LED_R);
+#endif
+#if defined(BASALT_PIN_LED_G)
+        bsh_add_pin_unique(pins, &count, (int)(sizeof(pins) / sizeof(pins[0])), BASALT_PIN_LED_G);
+#endif
+#if defined(BASALT_PIN_LED_B)
+        bsh_add_pin_unique(pins, &count, (int)(sizeof(pins) / sizeof(pins[0])), BASALT_PIN_LED_B);
+#endif
+#if defined(BASALT_BOARD_CYD)
+        // Known common LED pins on CYD variants.
+        bsh_add_pin_unique(pins, &count, (int)(sizeof(pins) / sizeof(pins[0])), 4);
+        bsh_add_pin_unique(pins, &count, (int)(sizeof(pins) / sizeof(pins[0])), 16);
+        bsh_add_pin_unique(pins, &count, (int)(sizeof(pins) / sizeof(pins[0])), 17);
+#endif
+    }
+
+    if (count == 0) {
+        basalt_printf("led_test: no candidate pins available\n");
+        return;
+    }
+
+    basalt_printf("led_test: testing %d pin(s)\n", count);
+    for (int i = 0; i < count; ++i) {
+        bsh_led_test_one_pin(pins[i]);
+    }
+    basalt_printf("led_test: complete\n");
+}
+
+static void bsh_cmd_devcheck(const char *arg) {
+    const bool full = (arg && strcmp(arg, "full") == 0);
+    basalt_printf("devcheck: begin%s\n", full ? " (full)" : "");
+
+    // UI sanity
+    basalt_printf("devcheck: tft_console=%s\n", tft_console_is_ready() ? "ready" : "not-ready");
+
+    // Filesystem sanity
+    char rpath[128];
+    if (map_virtual_to_real(BASALT_DATA_ROOT, rpath, sizeof(rpath)) && path_is_dir(rpath)) {
+        basalt_printf("devcheck: %s -> %s [ok]\n", BASALT_DATA_ROOT, rpath);
+    } else {
+        basalt_printf("devcheck: %s [missing]\n", BASALT_DATA_ROOT);
+    }
+    if (map_virtual_to_real(BASALT_APPS_ROOT, rpath, sizeof(rpath)) && path_is_dir(rpath)) {
+        basalt_printf("devcheck: /apps -> %s [ok]\n", rpath);
+    } else {
+        basalt_printf("devcheck: /apps [missing]\n");
+    }
+    if (map_virtual_to_real(BASALT_DEV_APPS_ROOT, rpath, sizeof(rpath)) && path_is_dir(rpath)) {
+        basalt_printf("devcheck: /apps_dev -> %s [ok]\n", rpath);
+    } else {
+        basalt_printf("devcheck: /apps_dev [missing]\n");
+    }
+    if (map_virtual_to_real("/sd", rpath, sizeof(rpath)) && path_is_dir(rpath)) {
+        basalt_printf("devcheck: /sd -> %s [ok]\n", rpath);
+    } else {
+        basalt_printf("devcheck: /sd [missing or unmounted]\n");
+    }
+
+    // LED sanity
+    if (full) {
+        basalt_printf("devcheck: running led_test full sweep\n");
+        bsh_cmd_led_test(NULL);
+    } else {
+        int pin = -1;
+#if defined(BASALT_PIN_LED)
+        pin = BASALT_PIN_LED;
+#elif defined(BASALT_PIN_LED_G)
+        pin = BASALT_PIN_LED_G;
+#elif defined(BASALT_PIN_LED_B)
+        pin = BASALT_PIN_LED_B;
+#elif defined(BASALT_PIN_LED_R)
+        pin = BASALT_PIN_LED_R;
+#endif
+        if (pin >= 0) {
+            basalt_printf("devcheck: quick LED pulse on GPIO%d\n", pin);
+            bsh_led_test_one_pin(pin);
+        } else {
+            basalt_printf("devcheck: no default LED pin configured\n");
+        }
+    }
+
+    basalt_printf("devcheck: done\n");
+}
+
 #if BASALT_SHELL_LEVEL >= 2
 static void bsh_cmd_install(const char *src, const char *name) {
     if (!src || !src[0]) {
@@ -1239,6 +1471,14 @@ static void bsh_handle_line(char *line) {
 #endif
     } else if (strcmp(cmd, "apps") == 0) {
         bsh_cmd_apps();
+    } else if (strcmp(cmd, "apps_dev") == 0) {
+        bsh_cmd_apps_dev();
+    } else if (strcmp(cmd, "led_test") == 0) {
+        char *arg = strtok(NULL, " \t\r\n");
+        bsh_cmd_led_test(arg);
+    } else if (strcmp(cmd, "devcheck") == 0) {
+        char *arg = strtok(NULL, " \t\r\n");
+        bsh_cmd_devcheck(arg);
     } else if (strcmp(cmd, "edit") == 0) {
 #if BASALT_SHELL_LEVEL >= 2
         char *arg = strtok(NULL, " \t\r\n");
@@ -1279,6 +1519,85 @@ static void bsh_handle_line(char *line) {
             char err[128];
             if (!mpy_runtime_start_file(script, err, sizeof(err))) {
                 basalt_printf("run: %s\n", err);
+            }
+        }
+    } else if (strcmp(cmd, "run_dev") == 0) {
+        char *arg = strtok(NULL, " \t\r\n");
+        if (!arg) {
+            basalt_printf("run_dev: missing script path\n");
+        } else {
+            const bool is_name = !path_is_absolute(arg) && !strchr(arg, '/') && !strstr(arg, ".py");
+            char vpath[128];
+            if (path_is_absolute(arg)) {
+                resolve_virtual_path(arg, vpath, sizeof(vpath));
+            } else if (is_name) {
+                snprintf(vpath, sizeof(vpath), "/apps_dev/%s", arg);
+            } else {
+                resolve_virtual_path(arg, vpath, sizeof(vpath));
+            }
+            if (strncmp(vpath, "/apps_dev", 9) != 0 && strncmp(vpath, "/sd/apps_dev", 12) != 0) {
+                basalt_printf("run_dev: path must be under /apps_dev or /sd/apps_dev\n");
+                return;
+            }
+            char rpath[128];
+            if (!map_virtual_to_real(vpath, rpath, sizeof(rpath))) {
+                basalt_printf("run_dev: invalid path %s\n", vpath);
+                return;
+            }
+            char script[128];
+            if (path_is_dir(rpath)) {
+                app_entry_path_flat(rpath, script, sizeof(script));
+            } else {
+                app_entry_path_flat(rpath, script, sizeof(script));
+                if (!path_is_file(script)) {
+                    snprintf(script, sizeof(script), "%s", rpath);
+                }
+            }
+            bool tried_sd = false;
+            if (!path_is_file(script) && is_name) {
+                char vpath_sd[128];
+                snprintf(vpath_sd, sizeof(vpath_sd), "/sd/apps_dev/%s", arg);
+                char rpath_sd[128];
+                if (map_virtual_to_real(vpath_sd, rpath_sd, sizeof(rpath_sd))) {
+                    tried_sd = true;
+                    if (path_is_dir(rpath_sd)) {
+                        app_entry_path_flat(rpath_sd, script, sizeof(script));
+                    } else {
+                        app_entry_path_flat(rpath_sd, script, sizeof(script));
+                        if (!path_is_file(script)) {
+                            snprintf(script, sizeof(script), "%s", rpath_sd);
+                        }
+                    }
+                }
+            }
+            if (!path_is_file(script) && is_name) {
+                char rpath_sd_root[128];
+                if (map_virtual_to_real("/sd/apps_dev", rpath_sd_root, sizeof(rpath_sd_root))) {
+                    char match[128];
+                    if (resolve_dev_app_in_dir(rpath_sd_root, arg, match, sizeof(match))) {
+                        if (path_is_dir(match)) {
+                            app_entry_path_flat(match, script, sizeof(script));
+                        } else {
+                            app_entry_path_flat(match, script, sizeof(script));
+                            if (!path_is_file(script)) {
+                                snprintf(script, sizeof(script), "%s", match);
+                            }
+                        }
+                        tried_sd = true;
+                    }
+                }
+            }
+            if (!path_is_file(script)) {
+                if (tried_sd) {
+                    basalt_printf("run_dev: no entry script in %s or /sd/apps_dev/%s\n", vpath, arg);
+                } else {
+                    basalt_printf("run_dev: no entry script in %s\n", vpath);
+                }
+                return;
+            }
+            char err[128];
+            if (!mpy_runtime_start_file(script, err, sizeof(err))) {
+                basalt_printf("run_dev: %s\n", err);
             }
         }
     } else if (strcmp(cmd, "stop") == 0) {
