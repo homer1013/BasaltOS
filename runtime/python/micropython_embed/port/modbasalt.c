@@ -72,6 +72,16 @@ static void basalt_led_init(void) {
     }
 }
 
+static void basalt_led_set_unique_pin(int pin, int r, int g, int b) {
+    if (pin < 0) return;
+    int want_on = 0;
+    if (BASALT_LED_R_PIN >= 0 && BASALT_LED_R_PIN == pin) want_on |= r;
+    if (BASALT_LED_G_PIN >= 0 && BASALT_LED_G_PIN == pin) want_on |= g;
+    if (BASALT_LED_B_PIN >= 0 && BASALT_LED_B_PIN == pin) want_on |= b;
+    int level = BASALT_LED_ACTIVE_LOW ? !want_on : want_on;
+    gpio_set_level(pin, level);
+}
+
 // basalt.led.set(r, g, b)
 static mp_obj_t basalt_led_set(mp_obj_t r_obj, mp_obj_t g_obj, mp_obj_t b_obj) {
     basalt_led_init();
@@ -79,13 +89,14 @@ static mp_obj_t basalt_led_set(mp_obj_t r_obj, mp_obj_t g_obj, mp_obj_t b_obj) {
     int g = mp_obj_is_true(g_obj) ? 1 : 0;
     int b = mp_obj_is_true(b_obj) ? 1 : 0;
 
-    int on_r = BASALT_LED_ACTIVE_LOW ? !r : r;
-    int on_g = BASALT_LED_ACTIVE_LOW ? !g : g;
-    int on_b = BASALT_LED_ACTIVE_LOW ? !b : b;
-
-    if (BASALT_LED_R_PIN >= 0) gpio_set_level(BASALT_LED_R_PIN, on_r);
-    if (BASALT_LED_G_PIN >= 0) gpio_set_level(BASALT_LED_G_PIN, on_g);
-    if (BASALT_LED_B_PIN >= 0) gpio_set_level(BASALT_LED_B_PIN, on_b);
+    // Handle boards where multiple channels map to the same physical pin.
+    basalt_led_set_unique_pin(BASALT_LED_R_PIN, r, g, b);
+    if (BASALT_LED_G_PIN != BASALT_LED_R_PIN) {
+        basalt_led_set_unique_pin(BASALT_LED_G_PIN, r, g, b);
+    }
+    if (BASALT_LED_B_PIN != BASALT_LED_R_PIN && BASALT_LED_B_PIN != BASALT_LED_G_PIN) {
+        basalt_led_set_unique_pin(BASALT_LED_B_PIN, r, g, b);
+    }
     return mp_const_none;
 }
 static MP_DEFINE_CONST_FUN_OBJ_3(basalt_led_set_obj, basalt_led_set);

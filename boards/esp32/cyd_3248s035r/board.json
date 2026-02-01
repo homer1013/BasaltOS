@@ -7,6 +7,8 @@
   "mcu": "ESP32-WROOM-32",
   "flash": "4MB",
   "ram": "520KB",
+  "led_mode": "single",
+  "led_active_low": true,
   "display": "320x480 ST7796",
   "capabilities": [
     "wifi",
@@ -36,7 +38,7 @@
     "i2c_scl": 22,
     "uart_tx": 1,
     "uart_rx": 3,
-    "led": 4,
+    "led": 16,
     "button": 0
   },
   "pin_definitions": {
@@ -72,7 +74,7 @@
     },
     "led": {
       "description": "Onboard LED",
-      "alternatives": [16, 2],
+      "alternatives": [17, 4, 2],
       "type": "output"
     }
   },
@@ -92,5 +94,20 @@
     "CONFIG_ESPTOOLPY_FLASHMODE_DIO=y",
     "CONFIG_ESPTOOLPY_FLASHFREQ_80M=y"
   ],
+  "defaults": {
+    "modules": [
+      "gpio",
+      "uart",
+      "spi",
+      "i2c",
+      "fs_spiffs",
+      "fs_sd",
+      "tft",
+      "shell_full"
+    ],
+    "clock": {
+      "freq_hz": 240000000
+    }
+  },
   "notes": "Popular development board with integrated TFT display. Commonly known as 'Cheap Yellow Display' or CYD."
 }
