@@ -47,7 +47,9 @@
       "timer",
       "pwm",
       "eeprom",
-      "remote_node"
+      "remote_node",
+      "shell_min",
+      "shell_full"
     ],
     "notes": "Mega 2560 targets generate Arduino-style firmware (no Basalt runtime)."
   },

@@ -794,6 +794,55 @@
             border-left: 3px solid #3b82f6;
         }
 
+        .memory-panel {
+            background: #f8fbff;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+
+        .memory-note {
+            font-size: 12px;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .memory-row {
+            margin-bottom: 10px;
+        }
+
+        .memory-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .memory-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .memory-track {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .memory-fill {
+            height: 100%;
+            background: #2563eb;
+            width: 0%;
+            transition: width 0.25s ease;
+        }
+
+        .memory-fill.warn { background: #d97706; }
+        .memory-fill.err { background: #dc2626; }
+
         .validation-icon {
             margin-right: 10px;
             font-size: 18px;
@@ -1313,6 +1362,106 @@
             color: #2d3748;
         }
 
+        .serial-panel {
+            margin-top: 16px;
+            border: 1px solid #d6e5f5;
+            border-radius: 10px;
+            background: #f8fbff;
+            padding: 12px;
+        }
+
+        .serial-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .serial-log {
+            min-height: 140px;
+            max-height: 260px;
+            overflow: auto;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: monospace;
+            font-size: 12px;
+            padding: 10px;
+            white-space: pre-wrap;
+        }
+
+        .serial-send {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .flash-progress-wrap {
+            margin-top: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #f8fafc;
+            padding: 8px 10px;
+        }
+
+        .flash-progress-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #334155;
+        }
+
+        .flash-status-pill {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            border: 1px solid #cbd5e1;
+            padding: 2px 8px;
+            font-weight: 700;
+            font-size: 11px;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        .flash-status-pill.ok {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .flash-status-pill.warn {
+            background: #fef3c7;
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+
+        .flash-status-pill.err {
+            background: #fee2e2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .flash-progress-track {
+            width: 100%;
+            height: 10px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: #e2e8f0;
+        }
+
+        .flash-progress-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            background: #2563eb;
+        }
+
         .search-box {
             width: 100%;
             padding: 10px;
@@ -1363,7 +1512,7 @@
                 <div class="landing-hero">
                     <h1>Welcome to the BasaltOS Builder</h1>
                     <p>
-                        Start from templates, tune modules and pins, then flash directly to ESP32 from the browser.
+                        Start from templates, tune drivers and pins, then flash directly to ESP32 from the browser.
                         You can keep a profile and board inventory so the workspace feels personal and repeatable.
                     </p>
                     <div class="landing-cta">
@@ -1380,7 +1529,7 @@
                     <h3>Getting Started</h3>
                     <ul>
                         <li>1. Pick a board or template</li>
-                        <li>2. Enable modules, starter apps, and market apps</li>
+                        <li>2. Enable drivers, starter apps, and market apps</li>
                         <li>3. Generate + Build, then Connect & Flash</li>
                         <li>4. Run apps from shell: <code>run &lt;app&gt;</code></li>
                     </ul>
@@ -1435,7 +1584,7 @@
             </div>
             <div class="step" data-step="2">
                 <div class="step-number">2</div>
-                <div>Modules</div>
+                <div>Drivers</div>
             </div>
             <div class="step" data-step="3">
                 <div class="step-number">3</div>
@@ -1464,6 +1613,7 @@
                     <ul class="board-list" id="board-list">
                         <!-- Populated by JavaScript -->
                     </ul>
+                    <button id="btn-open-diy-board" class="btn btn-secondary" type="button" style="margin-top:8px; width:100%;">DIY Board Creator</button>
                 </div>
 
                 <div class="profile-card" id="profile-card">
@@ -1536,15 +1686,15 @@
                     </div>
                 </div>
 
-                <!-- Step 2: Module Selection -->
+                <!-- Step 2: Driver Selection -->
                 <div id="step-2" class="content-section">
-                    <h2 style="margin-bottom: 20px;">Select Modules</h2>
+                    <h2 style="margin-bottom: 20px;">Select Drivers</h2>
                     <div class="alert alert-info">
-                        Enable or disable modules based on your application needs. Pin assignments will be configured in the next step.
+                        Enable or disable drivers based on your application needs. Pin assignments will be configured in the next step.
                     </div>
 
                     <div class="module-filters">
-                        <input type="text" id="module-search" placeholder="🔍 Search modules...">
+                        <input type="text" id="module-search" placeholder="🔍 Search drivers...">
                         <label>
                             <input type="checkbox" id="show-enabled-only"> Show enabled only
                         </label>
@@ -1557,6 +1707,7 @@
                     <div class="validation-panel" id="validation-warnings">
                         <!-- Validation messages appear here -->
                     </div>
+                    <div id="memory-estimate-panel" class="memory-panel"></div>
                     
                     <div class="module-grid" id="module-grid">
                         <!-- Populated by JavaScript -->
@@ -1576,7 +1727,7 @@
                 <div id="step-3" class="content-section">
                     <h2 style="margin-bottom: 20px;">Pin Configuration</h2>
                     <div class="alert alert-info">
-                        Configure pin assignments for enabled modules. Default values are provided based on your board.
+                        Configure pin assignments for enabled drivers. Default values are provided based on your board.
                     </div>
 
                     <div class="validation-panel" id="pin-validation">
@@ -1588,7 +1739,7 @@
                         <table class="pin-table" id="pin-table">
                             <thead>
                                 <tr>
-                                    <th>Module</th>
+                                    <th>Driver</th>
                                     <th>Signal</th>
                                     <th>Pin</th>
                                     <th>Alternative Pins</th>
@@ -1598,6 +1749,66 @@
                                 <!-- Populated by JavaScript -->
                             </tbody>
                         </table>
+                    </div>
+
+                    <div id="avr-config-panel" class="validation-panel" style="display:none; margin-top:16px;">
+                        <h3 style="margin-bottom:10px;">AVR Target Options</h3>
+                        <div class="alert alert-info" style="margin-bottom:10px;">
+                            AVR clock and fuse values can brick or destabilize a board if misconfigured.
+                        </div>
+                        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
+                            <label style="display:flex; align-items:center; gap:8px; margin:0;">
+                                <input id="avr-advanced-toggle" type="checkbox">
+                                Edit Clock/Fuses (Advanced)
+                            </label>
+                            <button id="btn-avr-restore-defaults" class="btn btn-secondary" type="button" style="padding:8px 12px; font-size:13px;">Restore Board Defaults</button>
+                        </div>
+                        <div id="avr-advanced-warning" class="alert alert-danger" style="display:none; margin-bottom:10px;">
+                            Advanced editing is enabled. Double-check clock and fuse bytes before generating/flashing.
+                        </div>
+                        <div class="module-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:10px;">
+                            <div>
+                                <label for="avr-clock-hz">Clock (Hz)</label>
+                                <input id="avr-clock-hz" type="number" min="1" class="search-box" style="margin-top:6px;" placeholder="16000000">
+                            </div>
+                            <div>
+                                <label for="avr-upload-method">Upload Method</label>
+                                <select id="avr-upload-method" class="search-box" style="margin-top:6px;">
+                                    <option value="bootloader">Bootloader (Arduino)</option>
+                                    <option value="isp">ISP (avrdude)</option>
+                                    <option value="updi">UPDI (avrdude)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="avr-fqbn">FQBN</label>
+                                <input id="avr-fqbn" type="text" class="search-box" style="margin-top:6px;" placeholder="arduino:avr:mega">
+                            </div>
+                            <div>
+                                <label for="avr-mcu">MCU</label>
+                                <input id="avr-mcu" type="text" class="search-box" style="margin-top:6px;" placeholder="atmega2560">
+                            </div>
+                            <div>
+                                <label for="avr-programmer">Programmer</label>
+                                <input id="avr-programmer" type="text" class="search-box" style="margin-top:6px;" placeholder="wiring / usbasp / serialupdi">
+                            </div>
+                            <div>
+                                <label for="avr-baud">Baud</label>
+                                <input id="avr-baud" type="number" min="1" class="search-box" style="margin-top:6px;" placeholder="115200">
+                            </div>
+                            <div>
+                                <label for="avr-port">Port (optional)</label>
+                                <input id="avr-port" type="text" class="search-box" style="margin-top:6px;" placeholder="COM5 or /dev/ttyACM0">
+                            </div>
+                        </div>
+                        <div class="module-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:10px; margin-top:6px;">
+                            <div><label for="avr-fuse-l">LFUSE</label><input id="avr-fuse-l" type="text" class="search-box" style="margin-top:6px;" placeholder="0xFF"></div>
+                            <div><label for="avr-fuse-h">HFUSE</label><input id="avr-fuse-h" type="text" class="search-box" style="margin-top:6px;" placeholder="0xD8"></div>
+                            <div><label for="avr-fuse-e">EFUSE</label><input id="avr-fuse-e" type="text" class="search-box" style="margin-top:6px;" placeholder="0xFD"></div>
+                            <div><label for="avr-fuse-lock">LOCK</label><input id="avr-fuse-lock" type="text" class="search-box" style="margin-top:6px;" placeholder="0x0F"></div>
+                        </div>
+                        <div style="font-size:12px; color:#475569; margin-top:8px;">
+                            Use bootloader for Mega over USB serial. Use ISP/UPDI for external programmers and ATmega3208-style targets.
+                        </div>
                     </div>
                 </div>
 
@@ -1613,6 +1824,7 @@
                         <div id="config-summary" style="margin-top: 15px;">
                             <!-- Populated by JavaScript -->
                         </div>
+                        <div id="memory-summary-panel" class="memory-panel"></div>
                     </div>
 
                     <div style="margin-top: 30px;">
@@ -1651,6 +1863,15 @@
                                 <button slot="activate" class="btn btn-primary">Connect &amp; Flash</button>
                             </esp-web-install-button>
                         </div>
+                        <div class="flash-progress-wrap">
+                            <div class="flash-progress-head">
+                                <span id="esp-flash-phase">Flash phase: idle</span>
+                                <span id="esp-flash-status-pill" class="flash-status-pill">Idle</span>
+                            </div>
+                            <div class="flash-progress-track">
+                                <div id="esp-flash-progress" class="flash-progress-fill"></div>
+                            </div>
+                        </div>
                         <div id="web-flasher-hint" class="web-flasher-hint">Run a check before connecting.</div>
                         <details class="web-flasher-notes">
                             <summary><strong>Troubleshooting</strong></summary>
@@ -1660,6 +1881,49 @@
                             <div>4) If needed, use <code>Local Flash (idf.py)</code> fallback.</div>
                         </details>
                         <div id="web-flasher-status" class="web-flasher-status"></div>
+                    </div>
+
+                    <div id="avr-flasher-panel" class="web-flasher-panel" style="display:none;">
+                        <h3>AVR Build + Flash</h3>
+                        <div class="web-flasher-subtitle">Generate first, then build/flash for bootloader, ISP, or UPDI from this page.</div>
+                        <div class="web-flasher-badges">
+                            <span id="badge-avr-project" class="web-flasher-badge">Project: unknown</span>
+                            <span id="badge-avr-tools" class="web-flasher-badge">Tools: unknown</span>
+                        </div>
+                        <ol class="web-flasher-steps">
+                            <li>Set AVR options in Step 3 (clock/fuses/upload method/programmer).</li>
+                            <li>Click <strong>Generate Files</strong>, then <strong>Check AVR Status</strong>.</li>
+                            <li>Click <strong>Build AVR</strong> and <strong>Flash AVR</strong>.</li>
+                        </ol>
+                        <div class="web-flasher-controls">
+                            <button class="btn btn-secondary" id="btn-refresh-avr-flasher">Check AVR Status</button>
+                            <button class="btn btn-secondary" id="btn-build-avr">Build AVR</button>
+                            <button class="btn btn-primary" id="btn-local-flash-avr">Flash AVR</button>
+                        </div>
+                        <details class="web-flasher-notes">
+                            <summary><strong>Notes</strong></summary>
+                            <div>Bootloader mode uses <code>arduino-cli upload</code>.</div>
+                            <div>ISP/UPDI mode compiles a HEX with <code>arduino-cli compile</code>, then flashes via <code>avrdude</code>.</div>
+                        </details>
+                        <div id="avr-flasher-status" class="web-flasher-status"></div>
+                    </div>
+
+                    <div id="serial-terminal-panel" class="serial-panel" style="display:none;">
+                        <h3 style="margin-bottom:6px;">Serial Terminal</h3>
+                        <div class="web-flasher-subtitle">Monitor boot logs and send shell/CLI commands directly over serial.</div>
+                        <div class="serial-controls">
+                            <label for="serial-baud" style="font-size:12px; color:#334155;">Baud</label>
+                            <input id="serial-baud" type="number" value="115200" min="1200" class="search-box" style="width:130px; margin:0;">
+                            <button class="btn btn-secondary" id="btn-serial-connect" type="button">Connect Serial</button>
+                            <button class="btn btn-secondary" id="btn-serial-disconnect" type="button">Disconnect</button>
+                            <button class="btn btn-secondary" id="btn-serial-clear" type="button">Clear Log</button>
+                            <span id="serial-state-pill" class="flash-status-pill">Disconnected</span>
+                        </div>
+                        <div id="serial-log" class="serial-log"></div>
+                        <div class="serial-send">
+                            <input id="serial-command" type="text" class="search-box" placeholder="Type command, e.g. help" style="margin:0; flex:1;">
+                            <button class="btn btn-primary" id="btn-serial-send" type="button">Send</button>
+                        </div>
                     </div>
                 </div>
 
@@ -1678,6 +1942,44 @@
     <div class="template-modal" id="template-modal">
         <div class="template-modal-content" id="template-modal-body">
             <!-- Modal content populated by JS -->
+        </div>
+    </div>
+
+    <div class="template-modal" id="diy-board-modal">
+        <div class="template-modal-content">
+            <div class="template-modal-header">
+                <div>
+                    <h3 style="margin:0;">DIY Board Creator</h3>
+                    <div style="font-size:13px; color:#64748b; margin-top:4px;">Create/update a custom board profile JSON under <code>boards/&lt;platform&gt;/&lt;id&gt;/board.json</code>.</div>
+                </div>
+                <span class="template-modal-close" id="btn-close-diy-board">×</span>
+            </div>
+            <div class="module-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:10px;">
+                <div><label>Platform</label><select id="diy-platform" class="search-box" style="margin-top:6px;"></select></div>
+                <div><label>Board ID</label><input id="diy-id" class="search-box" placeholder="my_custom_board"></div>
+                <div><label>Name</label><input id="diy-name" class="search-box" placeholder="My Custom Board"></div>
+                <div><label>Target Profile</label><input id="diy-target-profile" class="search-box" placeholder="optional (e.g. mega2560)"></div>
+                <div><label>MCU</label><input id="diy-mcu" class="search-box" placeholder="ATmega3208"></div>
+                <div><label>Flash</label><input id="diy-flash" class="search-box" placeholder="32KB"></div>
+                <div><label>RAM</label><input id="diy-ram" class="search-box" placeholder="2KB"></div>
+                <div><label>Display</label><input id="diy-display" class="search-box" placeholder="None / SSD1306 / ..."></div>
+            </div>
+            <div style="margin-top:8px;">
+                <label>Description</label>
+                <input id="diy-description" class="search-box" placeholder="Custom board for project X">
+            </div>
+            <div style="margin-top:8px;">
+                <label>Capabilities (comma-separated)</label>
+                <input id="diy-capabilities" class="search-box" placeholder="gpio,uart,spi,i2c,adc,sd_card,tft">
+            </div>
+            <div style="margin-top:8px;">
+                <label>Pins (one per line: <code>signal=pin</code>)</label>
+                <textarea id="diy-pins" class="search-box" style="height:120px; font-family:monospace;" placeholder="uart_tx=1&#10;uart_rx=3&#10;i2c_sda=21&#10;i2c_scl=22"></textarea>
+            </div>
+            <div class="action-buttons" style="margin-top:10px;">
+                <button class="btn btn-secondary" id="btn-cancel-diy-board" type="button">Cancel</button>
+                <button class="btn btn-success" id="btn-save-diy-board" type="button">Save Custom Board</button>
+            </div>
         </div>
     </div>
 
@@ -1769,6 +2071,97 @@
             }
         }
 
+        function setEspFlashProgress({ phase = 'idle', status = 'idle', percent = 0 } = {}) {
+            const phaseEl = document.getElementById('esp-flash-phase');
+            const pill = document.getElementById('esp-flash-status-pill');
+            const fill = document.getElementById('esp-flash-progress');
+            const pct = Math.max(0, Math.min(100, Number(percent || 0)));
+
+            if (phaseEl) phaseEl.textContent = `Flash phase: ${phase}`;
+            if (fill) fill.style.width = `${pct}%`;
+            if (pill) {
+                pill.className = 'flash-status-pill';
+                if (status === 'ok') pill.classList.add('ok');
+                else if (status === 'warn') pill.classList.add('warn');
+                else if (status === 'err') pill.classList.add('err');
+                const labels = {
+                    idle: 'Idle',
+                    active: 'Flashing',
+                    ok: 'Success',
+                    warn: 'Pending',
+                    err: 'Failed'
+                };
+                pill.textContent = labels[status] || String(status || 'Idle');
+            }
+        }
+
+        function phaseFromEspWebState(state) {
+            const s = String(state || '').toLowerCase();
+            if (!s) return { phase: 'waiting', status: 'warn', percent: 8 };
+            if (s.includes('prepare') || s.includes('connect')) return { phase: s, status: 'active', percent: 12 };
+            if (s.includes('erase')) return { phase: s, status: 'active', percent: 28 };
+            if (s.includes('write') || s.includes('flash')) return { phase: s, status: 'active', percent: 70 };
+            if (s.includes('verify')) return { phase: s, status: 'active', percent: 88 };
+            if (s.includes('done') || s.includes('finished') || s.includes('complete')) return { phase: s, status: 'ok', percent: 100 };
+            if (s.includes('fail') || s.includes('error')) return { phase: s, status: 'err', percent: 100 };
+            return { phase: s, status: 'active', percent: 50 };
+        }
+
+        function initEspWebInstallEvents() {
+            const install = document.getElementById('esp-web-install');
+            if (!install || install.dataset.eventsBound === '1') return;
+            install.dataset.eventsBound = '1';
+            let waitTimer = null;
+            const clearWaitTimer = () => {
+                if (waitTimer) {
+                    window.clearTimeout(waitTimer);
+                    waitTimer = null;
+                }
+            };
+
+            setEspFlashProgress({ phase: 'idle', status: 'idle', percent: 0 });
+
+            const bind = (eventName, handler) => {
+                install.addEventListener(eventName, handler);
+            };
+
+            bind('click', () => {
+                clearWaitTimer();
+                setEspFlashProgress({ phase: 'picker_open', status: 'warn', percent: 6 });
+                const hintEl = document.getElementById('web-flasher-hint');
+                if (hintEl) hintEl.textContent = 'Select your board serial port in the browser picker.';
+                waitTimer = window.setTimeout(() => {
+                    const pill = document.getElementById('esp-flash-status-pill');
+                    if (pill && !pill.classList.contains('ok') && !pill.classList.contains('err')) {
+                        setEspFlashProgress({ phase: 'waiting_for_flasher_events', status: 'warn', percent: 12 });
+                        if (hintEl) hintEl.textContent = 'Waiting for flasher events. If nothing changes, retry or use Local Flash.';
+                    }
+                }, 14000);
+            });
+
+            bind('state-changed', (ev) => {
+                clearWaitTimer();
+                const state = ev?.detail?.state || ev?.detail || 'in_progress';
+                const next = phaseFromEspWebState(state);
+                setEspFlashProgress(next);
+                const hintEl = document.getElementById('web-flasher-hint');
+                if (hintEl) hintEl.textContent = `Web flasher state: ${String(state)}`;
+            });
+
+            bind('error', (ev) => {
+                clearWaitTimer();
+                const msg = ev?.detail?.message || ev?.message || 'Unknown flash error';
+                setEspFlashProgress({ phase: 'error', status: 'err', percent: 100 });
+                const hintEl = document.getElementById('web-flasher-hint');
+                if (hintEl) hintEl.textContent = `Flash error: ${msg}`;
+            });
+
+            bind('manifest-mismatch', () => {
+                clearWaitTimer();
+                setEspFlashProgress({ phase: 'manifest_mismatch', status: 'err', percent: 100 });
+            });
+        }
+
         async function refreshWebFlasher({ silent = false } = {}) {
             const panel = document.getElementById('web-flasher-panel');
             const install = document.getElementById('esp-web-install');
@@ -1780,11 +2173,13 @@
             const canShow = currentStep === 4 && isEsp32;
             panel.style.display = canShow ? 'block' : 'none';
             if (!canShow) return;
+            initEspWebInstallEvents();
 
             if (!window.isSecureContext) {
                 install.style.display = 'none';
                 statusEl.textContent = 'Web Serial requires secure context (use localhost or HTTPS).';
                 setFlasherBadges({ secureContext: false });
+                setEspFlashProgress({ phase: 'blocked_context', status: 'err', percent: 0 });
                 if (hintEl) hintEl.textContent = 'Open from localhost/HTTPS to enable browser flashing.';
                 return;
             }
@@ -1816,19 +2211,27 @@
                     install.style.display = 'inline-block';
                     setFlasherBadges({ firmwareReady: true, portBusy: anyBusy, secureContext: true });
                     if (hintEl) {
-                        hintEl.textContent = anyBusy
+                        hintEl.textContent = serialPort
+                            ? 'Serial Terminal is connected. Disconnect it before flashing.'
+                            : anyBusy
                             ? 'Serial appears busy. Release browser port lock, then Connect & Flash.'
                             : 'Ready. Click Connect & Flash and select the ESP32 USB serial device (COMx/ttyUSB*/ttyACM*).';
+                    }
+                    const pill = document.getElementById('esp-flash-status-pill');
+                    if (pill && !pill.classList.contains('ok') && !pill.classList.contains('err') && (document.getElementById('esp-flash-progress')?.style.width || '0%') === '0%') {
+                        setEspFlashProgress({ phase: 'ready', status: 'warn', percent: 2 });
                     }
                 } else {
                     install.style.display = 'none';
                     setFlasherBadges({ firmwareReady: false, portBusy: anyBusy, secureContext: true });
+                    setEspFlashProgress({ phase: 'artifacts_missing', status: 'err', percent: 0 });
                     if (hintEl) hintEl.textContent = 'Generate/build firmware artifacts first, then run check again.';
                 }
             } catch (err) {
                 install.style.display = 'none';
                 statusEl.textContent = `Failed to load flash status: ${err.message || err}`;
                 setFlasherBadges({ firmwareReady: null, portBusy: null, secureContext: true });
+                setEspFlashProgress({ phase: 'status_error', status: 'err', percent: 0 });
                 if (hintEl) hintEl.textContent = 'Status check failed. Verify backend server and retry.';
                 if (!silent) notify(statusEl.textContent, 'error');
             }
@@ -1860,11 +2263,16 @@
         }
 
         async function localFlashEsp32() {
+            if (serialPort) {
+                notify('Disconnect Serial Terminal before flashing to avoid port conflicts.', 'warning');
+                return;
+            }
             const btn = document.getElementById('btn-local-flash');
             if (btn) {
                 btn.disabled = true;
                 btn.textContent = 'Flashing...';
             }
+            setEspFlashProgress({ phase: 'local_flash_start', status: 'active', percent: 10 });
             try {
                 const resp = await fetch('/api/flash/esp32/local', {
                     method: 'POST',
@@ -1884,22 +2292,424 @@
                     const details = data?.output || raw || '';
                     showInlineOutput(`Local flash failed: ${msg}\n\n${details}`.trim(), 'error');
                     notify(`Local flash failed: ${msg}`, 'error');
+                    setEspFlashProgress({ phase: 'local_flash_failed', status: 'err', percent: 100 });
                     return;
                 }
 
                 const output = data?.output ? String(data.output) : '(no output)';
                 showInlineOutput(`Local flash succeeded on ${data.port || '(unknown)'}:\n\n${output}`, 'success');
                 notify('Local flash completed successfully.', 'success');
+                setEspFlashProgress({ phase: 'local_flash_done', status: 'ok', percent: 100 });
             } catch (err) {
                 const msg = `Local flash failed: ${err.message || err}`;
                 showInlineOutput(msg, 'error');
                 notify(msg, 'error');
+                setEspFlashProgress({ phase: 'local_flash_error', status: 'err', percent: 100 });
             } finally {
                 if (btn) {
                     btn.disabled = false;
                     btn.textContent = 'Local Flash (idf.py)';
                 }
                 refreshWebFlasher({ silent: true });
+            }
+        }
+
+        function appendSerialLog(text) {
+            const log = document.getElementById('serial-log');
+            if (!log) return;
+            log.textContent += String(text || '');
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function setSerialState(connected) {
+            const pill = document.getElementById('serial-state-pill');
+            if (!pill) return;
+            pill.className = 'flash-status-pill';
+            if (connected) {
+                pill.classList.add('ok');
+                pill.textContent = 'Connected';
+            } else {
+                pill.textContent = 'Disconnected';
+            }
+        }
+
+        async function serialDisconnect() {
+            serialReadAbort = true;
+            try {
+                if (serialReader) {
+                    await serialReader.cancel();
+                }
+            } catch (_e) {}
+            try {
+                if (serialReader) serialReader.releaseLock();
+            } catch (_e) {}
+            serialReader = null;
+            try {
+                if (serialWriter) serialWriter.releaseLock();
+            } catch (_e) {}
+            serialWriter = null;
+            try {
+                if (serialPort) await serialPort.close();
+            } catch (_e) {}
+            serialPort = null;
+            setSerialState(false);
+        }
+
+        async function serialReadLoop() {
+            if (!serialPort?.readable) return;
+            const decoder = new TextDecoder();
+            serialReadAbort = false;
+            try {
+                while (!serialReadAbort) {
+                    serialReader = serialPort.readable.getReader();
+                    try {
+                        while (!serialReadAbort) {
+                            const { value, done } = await serialReader.read();
+                            if (done) break;
+                            if (value) appendSerialLog(decoder.decode(value, { stream: true }));
+                        }
+                    } finally {
+                        try { serialReader.releaseLock(); } catch (_e) {}
+                        serialReader = null;
+                    }
+                    if (serialReadAbort) break;
+                    await new Promise(r => setTimeout(r, 20));
+                }
+            } catch (err) {
+                appendSerialLog(`\n[serial] read error: ${err?.message || err}\n`);
+            }
+        }
+
+        async function serialConnect() {
+            if (!('serial' in navigator) || !navigator.serial?.requestPort) {
+                notify('Web Serial API unavailable in this browser.', 'warning');
+                return;
+            }
+            try {
+                await serialDisconnect();
+                const baud = parseInt(String(document.getElementById('serial-baud')?.value || '115200'), 10) || 115200;
+                serialPort = await navigator.serial.requestPort({});
+                await serialPort.open({ baudRate: baud });
+                if (serialPort.writable) serialWriter = serialPort.writable.getWriter();
+                setSerialState(true);
+                appendSerialLog(`[serial] connected @ ${baud}\n`);
+                serialReadLoop();
+            } catch (err) {
+                setSerialState(false);
+                notify(`Serial connect failed: ${err.message || err}`, 'error');
+            }
+        }
+
+        async function serialSendCommand() {
+            if (!serialWriter) {
+                notify('Serial is not connected.', 'warning');
+                return;
+            }
+            const input = document.getElementById('serial-command');
+            const cmd = String(input?.value || '');
+            if (!cmd.trim()) return;
+            try {
+                const enc = new TextEncoder();
+                await serialWriter.write(enc.encode(cmd + '\r\n'));
+                appendSerialLog(`> ${cmd}\n`);
+                if (input) input.value = '';
+            } catch (err) {
+                notify(`Serial send failed: ${err.message || err}`, 'error');
+            }
+        }
+
+        function refreshSerialTerminalVisibility() {
+            const panel = document.getElementById('serial-terminal-panel');
+            if (!panel) return;
+            const canShow = currentStep === 4 && (selectedPlatform === 'esp32' || selectedPlatform === 'avr');
+            panel.style.display = canShow ? 'block' : 'none';
+        }
+
+        function avrTargetSelected() {
+            const targetId = selectedBoard?.target_profile || '';
+            return selectedPlatform === 'avr' || targetId === 'mega2560' || targetId === 'atmega328p';
+        }
+
+        function defaultAvrSettingsFromBoard(board) {
+            const defs = (board && board.defaults) ? board.defaults : {};
+            const clock = defs.clock || {};
+            const fuses = defs.fuses || {};
+            const upload = defs.upload || {};
+            return {
+                clock: {
+                    freq_hz: Number(clock.freq_hz || 16000000)
+                },
+                fuses: {
+                    lfuse: String(fuses.lfuse || ''),
+                    hfuse: String(fuses.hfuse || ''),
+                    efuse: String(fuses.efuse || ''),
+                    lock: String(fuses.lock || '')
+                },
+                upload: {
+                    method: String(upload.method || 'bootloader'),
+                    fqbn: String(upload.fqbn || 'arduino:avr:mega'),
+                    mcu: String(upload.mcu || 'atmega2560'),
+                    programmer: String(upload.programmer || 'wiring'),
+                    baud: Number(upload.baud || 115200),
+                    port: String(upload.port || '')
+                }
+            };
+        }
+
+        function setAvrAdvancedEditing(enabled) {
+            const ids = ['avr-clock-hz', 'avr-fuse-l', 'avr-fuse-h', 'avr-fuse-e', 'avr-fuse-lock'];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.disabled = !enabled;
+            });
+            const warn = document.getElementById('avr-advanced-warning');
+            if (warn) warn.style.display = enabled ? 'block' : 'none';
+            const toggle = document.getElementById('avr-advanced-toggle');
+            if (toggle && toggle.checked !== enabled) toggle.checked = enabled;
+        }
+
+        function isAvrAdvancedEditingEnabled() {
+            const toggle = document.getElementById('avr-advanced-toggle');
+            return !!toggle?.checked;
+        }
+
+        function restoreAvrDefaults() {
+            if (!selectedBoard) return;
+            avrSettings = defaultAvrSettingsFromBoard(selectedBoard);
+            applyAvrSettingsToUi();
+            setAvrAdvancedEditing(false);
+            notify('AVR clock/fuse values restored to board defaults.', 'success');
+        }
+
+        function applyAvrSettingsToUi() {
+            const panel = document.getElementById('avr-config-panel');
+            if (panel) panel.style.display = avrTargetSelected() ? 'block' : 'none';
+            if (!avrTargetSelected()) return;
+
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.value = val ?? '';
+            };
+            setVal('avr-clock-hz', avrSettings.clock?.freq_hz ?? 16000000);
+            setVal('avr-upload-method', avrSettings.upload?.method ?? 'bootloader');
+            setVal('avr-fqbn', avrSettings.upload?.fqbn ?? 'arduino:avr:mega');
+            setVal('avr-mcu', avrSettings.upload?.mcu ?? 'atmega2560');
+            setVal('avr-programmer', avrSettings.upload?.programmer ?? 'wiring');
+            setVal('avr-baud', avrSettings.upload?.baud ?? 115200);
+            setVal('avr-port', avrSettings.upload?.port ?? '');
+            setVal('avr-fuse-l', avrSettings.fuses?.lfuse ?? '');
+            setVal('avr-fuse-h', avrSettings.fuses?.hfuse ?? '');
+            setVal('avr-fuse-e', avrSettings.fuses?.efuse ?? '');
+            setVal('avr-fuse-lock', avrSettings.fuses?.lock ?? '');
+            setAvrAdvancedEditing(isAvrAdvancedEditingEnabled());
+        }
+
+        function readAvrSettingsFromUi() {
+            const readInt = (id, fallback) => {
+                const el = document.getElementById(id);
+                if (!el) return fallback;
+                const n = parseInt(String(el.value || '').trim(), 10);
+                return Number.isFinite(n) ? n : fallback;
+            };
+            const readStr = (id, fallback = '') => {
+                const el = document.getElementById(id);
+                if (!el) return fallback;
+                const v = String(el.value || '').trim();
+                return v || fallback;
+            };
+
+            const next = {
+                clock: {
+                    freq_hz: readInt('avr-clock-hz', 16000000),
+                },
+                fuses: {
+                    lfuse: readStr('avr-fuse-l'),
+                    hfuse: readStr('avr-fuse-h'),
+                    efuse: readStr('avr-fuse-e'),
+                    lock: readStr('avr-fuse-lock'),
+                },
+                upload: {
+                    method: readStr('avr-upload-method', 'bootloader'),
+                    fqbn: readStr('avr-fqbn', 'arduino:avr:mega'),
+                    mcu: readStr('avr-mcu', 'atmega2560'),
+                    programmer: readStr('avr-programmer', 'wiring'),
+                    baud: readInt('avr-baud', 115200),
+                    port: readStr('avr-port', ''),
+                }
+            };
+            if (!isAvrAdvancedEditingEnabled() && selectedBoard) {
+                const defs = defaultAvrSettingsFromBoard(selectedBoard);
+                next.clock = defs.clock;
+                next.fuses = defs.fuses;
+                const setVal = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = val ?? '';
+                };
+                setVal('avr-clock-hz', next.clock?.freq_hz ?? 16000000);
+                setVal('avr-fuse-l', next.fuses?.lfuse ?? '');
+                setVal('avr-fuse-h', next.fuses?.hfuse ?? '');
+                setVal('avr-fuse-e', next.fuses?.efuse ?? '');
+                setVal('avr-fuse-lock', next.fuses?.lock ?? '');
+            }
+            avrSettings = next;
+            return next;
+        }
+
+        function renderAvrFlasherStatus(status) {
+            const statusEl = document.getElementById('avr-flasher-status');
+            if (!statusEl) return;
+            if (!status) {
+                statusEl.textContent = 'No AVR status available.';
+                return;
+            }
+            const lines = [];
+            if (status.error) lines.push(`Error: ${status.error}`);
+            lines.push(`Ready: ${status.ready ? 'yes' : 'no'}`);
+            if (status.board_id) lines.push(`Board: ${status.board_id}`);
+            if (status.project_dir) lines.push(`Project: ${status.project_dir}`);
+            if (status.meta?.board) lines.push(`FQBN: ${status.meta.board}`);
+            if (status.meta?.upload_method) lines.push(`Method: ${status.meta.upload_method}`);
+            statusEl.textContent = lines.join('\n');
+        }
+
+        function setAvrFlasherBadges(status) {
+            const proj = document.getElementById('badge-avr-project');
+            const tools = document.getElementById('badge-avr-tools');
+            if (proj) {
+                proj.className = 'web-flasher-badge';
+                if (status?.ready) {
+                    proj.classList.add('ok');
+                    proj.textContent = `Project: ready (${status.board_id || 'avr'})`;
+                } else {
+                    proj.classList.add('warn');
+                    proj.textContent = 'Project: generate required';
+                }
+            }
+            if (tools) {
+                tools.className = 'web-flasher-badge';
+                const hasCli = !!status?.tools?.arduino_cli;
+                const hasAvrdude = !!status?.tools?.avrdude;
+                if (hasCli && hasAvrdude) {
+                    tools.classList.add('ok');
+                    tools.textContent = 'Tools: arduino-cli + avrdude';
+                } else if (hasCli) {
+                    tools.classList.add('warn');
+                    tools.textContent = 'Tools: arduino-cli (avrdude missing)';
+                } else {
+                    tools.classList.add('err');
+                    tools.textContent = 'Tools: missing';
+                }
+            }
+        }
+
+        async function refreshAvrFlasher({ silent = false } = {}) {
+            const panel = document.getElementById('avr-flasher-panel');
+            if (!panel) return;
+            const canShow = currentStep === 4 && avrTargetSelected();
+            panel.style.display = canShow ? 'block' : 'none';
+            if (!canShow) return;
+
+            try {
+                const bid = selectedBoard?.id ? `?board_id=${encodeURIComponent(selectedBoard.id)}` : '';
+                const status = await apiFetchJson(`/api/flash/avr/status${bid}`);
+                renderAvrFlasherStatus(status);
+                setAvrFlasherBadges(status);
+            } catch (err) {
+                const statusEl = document.getElementById('avr-flasher-status');
+                if (statusEl) statusEl.textContent = `Failed to load AVR status: ${err.message || err}`;
+                setAvrFlasherBadges(null);
+                if (!silent) notify(`AVR status failed: ${err.message || err}`, 'error');
+            }
+        }
+
+        async function buildAvrFirmware() {
+            const btn = document.getElementById('btn-build-avr');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Building...';
+            }
+            try {
+                readAvrSettingsFromUi();
+                const resp = await fetch('/api/build/avr', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        board_id: selectedBoard?.id || null,
+                        upload: avrSettings.upload
+                    })
+                });
+                const raw = await resp.text();
+                let data = null;
+                try { data = raw ? JSON.parse(raw) : null; } catch (_e) { data = null; }
+                if (!resp.ok || !data?.success) {
+                    const msg = data?.error || raw || `HTTP ${resp.status}`;
+                    showInlineOutput(`AVR build failed: ${msg}\n\n${data?.output || raw || ''}`.trim(), 'error');
+                    notify(`AVR build failed: ${msg}`, 'error');
+                    return;
+                }
+                showInlineOutput(`AVR build succeeded (${data.fqbn || ''}).\n\n${data.output || ''}`.trim(), 'success');
+                notify('AVR build completed.', 'success');
+            } catch (err) {
+                const msg = `AVR build failed: ${err.message || err}`;
+                showInlineOutput(msg, 'error');
+                notify(msg, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Build AVR';
+                }
+                refreshAvrFlasher({ silent: true });
+            }
+        }
+
+        async function localFlashAvr() {
+            if (serialPort) {
+                notify('Disconnect Serial Terminal before flashing to avoid port conflicts.', 'warning');
+                return;
+            }
+            const btn = document.getElementById('btn-local-flash-avr');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Flashing...';
+            }
+            try {
+                readAvrSettingsFromUi();
+                const resp = await fetch('/api/flash/avr/local', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        board_id: selectedBoard?.id || null,
+                        upload: {
+                            ...avrSettings.upload,
+                            fuses: avrSettings.fuses
+                        },
+                        port: avrSettings.upload?.port || ''
+                    })
+                });
+                const raw = await resp.text();
+                let data = null;
+                try { data = raw ? JSON.parse(raw) : null; } catch (_e) { data = null; }
+                if (!resp.ok || !data?.success) {
+                    const msg = data?.error || raw || `HTTP ${resp.status}`;
+                    const details = data?.flash_output || data?.compile_output || data?.output || raw || '';
+                    showInlineOutput(`AVR flash failed: ${msg}\n\n${details}`.trim(), 'error');
+                    notify(`AVR flash failed: ${msg}`, 'error');
+                    return;
+                }
+                const details = [data.output, data.compile_output, data.flash_output].filter(Boolean).join('\n\n');
+                showInlineOutput(`AVR flash succeeded (${data.method || 'avr'} ${data.port || ''}).\n\n${details}`.trim(), 'success');
+                notify('AVR flash completed.', 'success');
+            } catch (err) {
+                const msg = `AVR flash failed: ${err.message || err}`;
+                showInlineOutput(msg, 'error');
+                notify(msg, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Flash AVR';
+                }
+                refreshAvrFlasher({ silent: true });
             }
         }
 
@@ -1931,6 +2741,107 @@
             notify(msg, 'error', 5200);
         }
 
+        function refreshDIYPlatformOptions() {
+            const sel = document.getElementById('diy-platform');
+            if (!sel) return;
+            sel.innerHTML = '';
+            (platforms || []).forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = p.name || p.id;
+                sel.appendChild(opt);
+            });
+            if (selectedPlatform) sel.value = selectedPlatform;
+        }
+
+        function openDIYBoardModal() {
+            refreshDIYPlatformOptions();
+            const modal = document.getElementById('diy-board-modal');
+            if (modal) modal.classList.add('active');
+            const defaultCaps = ['gpio', 'uart', 'spi', 'i2c'];
+            const capsEl = document.getElementById('diy-capabilities');
+            if (capsEl && !capsEl.value.trim()) capsEl.value = defaultCaps.join(',');
+        }
+
+        function closeDIYBoardModal() {
+            const modal = document.getElementById('diy-board-modal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function parseDIYBoardPins(text) {
+            const out = {};
+            String(text || '')
+                .split('\n')
+                .map(x => x.trim())
+                .filter(Boolean)
+                .forEach(line => {
+                    const ix = line.indexOf('=');
+                    if (ix <= 0) return;
+                    const key = line.slice(0, ix).trim();
+                    const raw = line.slice(ix + 1).trim();
+                    if (!key || !raw) return;
+                    const n = Number(raw);
+                    out[key] = Number.isFinite(n) && String(n) === raw ? n : raw;
+                });
+            return out;
+        }
+
+        async function saveDIYBoard() {
+            const payload = {
+                platform: String(document.getElementById('diy-platform')?.value || '').trim(),
+                id: String(document.getElementById('diy-id')?.value || '').trim(),
+                name: String(document.getElementById('diy-name')?.value || '').trim(),
+                description: String(document.getElementById('diy-description')?.value || '').trim(),
+                mcu: String(document.getElementById('diy-mcu')?.value || '').trim(),
+                flash: String(document.getElementById('diy-flash')?.value || '').trim(),
+                ram: String(document.getElementById('diy-ram')?.value || '').trim(),
+                display: String(document.getElementById('diy-display')?.value || '').trim(),
+                target_profile: String(document.getElementById('diy-target-profile')?.value || '').trim(),
+                capabilities: String(document.getElementById('diy-capabilities')?.value || '')
+                    .split(',')
+                    .map(x => x.trim().toLowerCase())
+                    .filter(Boolean),
+                pins: parseDIYBoardPins(document.getElementById('diy-pins')?.value || ''),
+            };
+
+            const btn = document.getElementById('btn-save-diy-board');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Saving...';
+            }
+            try {
+                const data = await apiFetchJson('/api/boards/custom', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                if (!data?.success) throw new Error(data?.error || 'Failed to save board');
+
+                const platform = payload.platform || selectedPlatform;
+                boards[platform] = await apiFetchJson(`/api/boards/${platform}`);
+                if (selectedPlatform !== platform) {
+                    selectedPlatform = platform;
+                    const platformSelect = document.getElementById('platform-select');
+                    if (platformSelect) platformSelect.value = platform;
+                    await refreshModulesForPlatform(selectedPlatform);
+                    await refreshMarketCatalogForPlatform(selectedPlatform);
+                }
+                renderProfilePanel();
+                populateBoardList();
+                const created = (boards[platform] || []).find(b => String(b.id) === String(payload.id));
+                if (created) selectBoard(created);
+                closeDIYBoardModal();
+                notify(`Custom board saved: ${payload.id}`, 'success');
+            } catch (err) {
+                notify(`DIY board save failed: ${err.message || err}`, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Save Custom Board';
+                }
+            }
+        }
+
         window.addEventListener('error', (e) => {
             showPlatformError(`UI error: ${e.message}`);
         });
@@ -1959,10 +2870,15 @@
             spi: '🔄',
             i2c: '↔️',
             tft: '🖥️',
+            display_ssd1306: '🟦',
             fs_spiffs: '💾',
             fs_sd: '💿',
             wifi: '📶',
             bluetooth: '📘',
+            rtc: '⏰',
+            imu: '🧭',
+            dht22: '🌡️',
+            mic: '🎙️',
             shell_full: '⌨️',
             shell_min: '⌨️',
             psram: '🧠'
@@ -2020,6 +2936,156 @@
                 const plats = Array.isArray(item.platforms) ? item.platforms : [];
                 return plats.length === 0 || plats.includes(platformId);
             });
+        }
+
+        const MEMORY_BASE_COST = {
+            esp32: { prog: 420 * 1024, ram: 64 * 1024, data: 64 * 1024 },
+            avr: { prog: 6 * 1024, ram: 512, data: 0 },
+            atmega: { prog: 6 * 1024, ram: 512, data: 0 },
+            rp2040: { prog: 80 * 1024, ram: 16 * 1024, data: 0 },
+            stm32: { prog: 96 * 1024, ram: 16 * 1024, data: 0 }
+        };
+
+        const DRIVER_MEMORY_COST = {
+            gpio: { prog: 2 * 1024, ram: 256 },
+            uart: { prog: 8 * 1024, ram: 1024 },
+            spi: { prog: 6 * 1024, ram: 640 },
+            i2c: { prog: 6 * 1024, ram: 640 },
+            adc: { prog: 4 * 1024, ram: 384 },
+            pwm: { prog: 3 * 1024, ram: 256 },
+            timer: { prog: 3 * 1024, ram: 256 },
+            eeprom: { prog: 2 * 1024, ram: 128 },
+            fs_spiffs: { prog: 24 * 1024, ram: 2 * 1024, data: 24 * 1024 },
+            fs_sd: { prog: 26 * 1024, ram: 2 * 1024 },
+            tft: { prog: 90 * 1024, ram: 20 * 1024 },
+            display_ssd1306: { prog: 14 * 1024, ram: 2 * 1024 },
+            shell_full: { prog: 44 * 1024, ram: 6 * 1024 },
+            shell_min: { prog: 20 * 1024, ram: 3 * 1024 },
+            remote_node: { prog: 9 * 1024, ram: 1 * 1024 },
+            wifi: { prog: 140 * 1024, ram: 36 * 1024 },
+            bluetooth: { prog: 170 * 1024, ram: 40 * 1024 },
+            rtc: { prog: 6 * 1024, ram: 1024 },
+            imu: { prog: 8 * 1024, ram: 1024 },
+            dht22: { prog: 4 * 1024, ram: 512 },
+            mic: { prog: 10 * 1024, ram: 4 * 1024 },
+            psram: { prog: 2 * 1024, ram: 128 }
+        };
+
+        const APPLET_MEMORY_COST = {
+            default: { prog: 3 * 1024, ram: 512, data: 2 * 1024 },
+            paint: { prog: 8 * 1024, ram: 2 * 1024, data: 10 * 1024 }
+        };
+
+        function parseSizeToBytes(text, fallback = 0) {
+            const raw = String(text || '').toLowerCase().replace(/,/g, '');
+            const m = raw.match(/(\d+(?:\.\d+)?)\s*(gb|gib|mb|mib|kb|kib|b)\b/);
+            if (!m) return fallback;
+            const value = Number(m[1]);
+            const unit = m[2];
+            if (!Number.isFinite(value)) return fallback;
+            const scale = unit.startsWith('g') ? 1024 ** 3 : unit.startsWith('m') ? 1024 ** 2 : unit.startsWith('k') ? 1024 : 1;
+            return Math.round(value * scale);
+        }
+
+        function formatBytes(bytes) {
+            const b = Number(bytes || 0);
+            if (!Number.isFinite(b) || b <= 0) return '0 B';
+            if (b >= 1024 ** 2) return `${(b / (1024 ** 2)).toFixed(2)} MB`;
+            if (b >= 1024) return `${(b / 1024).toFixed(1)} KB`;
+            return `${Math.round(b)} B`;
+        }
+
+        function capacityModelForBoard(board) {
+            const platformId = String(board?.platform || selectedPlatform || '').toLowerCase();
+            const base = MEMORY_BASE_COST[platformId] || { prog: 96 * 1024, ram: 16 * 1024, data: 0 };
+            const flashCap = parseSizeToBytes(board?.flash, 0);
+            const ramCap = parseSizeToBytes(board?.ram, 0);
+            let progCap = flashCap > 0 ? flashCap : 0;
+            let dataCap = 0;
+            if (platformId === 'esp32') {
+                // Typical BasaltOS partitioning: ~1.94MB app + ~1.94MB storage on 4MB flash.
+                progCap = progCap || (0x1F0000);
+                dataCap = 0x1F0000;
+            } else if (flashCap > 0) {
+                progCap = Math.round(flashCap * 0.9);
+                dataCap = Math.round(flashCap * 0.1);
+            }
+            return {
+                platformId,
+                base,
+                caps: { prog: progCap, ram: ramCap, data: dataCap }
+            };
+        }
+
+        function estimateMemoryUsage() {
+            const board = selectedBoard || {};
+            const model = capacityModelForBoard(board);
+            const usage = { prog: model.base.prog, ram: model.base.ram, data: model.base.data };
+
+            modules.filter(m => m.enabled).forEach(m => {
+                const c = DRIVER_MEMORY_COST[m.id] || {};
+                usage.prog += Number(c.prog || 0);
+                usage.ram += Number(c.ram || 0);
+                usage.data += Number(c.data || 0);
+            });
+
+            applets.filter(a => appletStates[a]).forEach(a => {
+                const c = APPLET_MEMORY_COST[a] || APPLET_MEMORY_COST.default;
+                usage.prog += Number(c.prog || 0);
+                usage.ram += Number(c.ram || 0);
+                usage.data += Number(c.data || 0);
+            });
+
+            marketCatalog
+                .filter(item => marketAppStates[item.id])
+                .forEach(item => {
+                    const srcSize = Number(item.source_size_bytes || 0);
+                    const c = APPLET_MEMORY_COST[item.id] || APPLET_MEMORY_COST.default;
+                    usage.prog += Math.round(Number(c.prog || 0) * 0.4);
+                    usage.ram += Math.round(Number(c.ram || 0) * 0.5);
+                    usage.data += srcSize > 0 ? srcSize : Number(c.data || 0);
+                });
+
+            return { usage, caps: model.caps, platformId: model.platformId };
+        }
+
+        function memoryRowHtml(label, used, cap, kind = 'prog') {
+            const pct = cap > 0 ? Math.min(100, Math.round((used / cap) * 100)) : 0;
+            const cls = pct >= 90 ? 'err' : pct >= 75 ? 'warn' : '';
+            const suffix = cap > 0 ? `${formatBytes(used)} / ${formatBytes(cap)} (${pct}%)` : `${formatBytes(used)} / n/a`;
+            return `
+                <div class="memory-row">
+                    <div class="memory-head">
+                        <span>${label}</span>
+                        <span>${suffix}</span>
+                    </div>
+                    <div class="memory-track">
+                        <div class="memory-fill ${cls}" style="width:${cap > 0 ? pct : 8}%"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateMemoryEstimatePanels() {
+            const panel = document.getElementById('memory-estimate-panel');
+            const summaryPanel = document.getElementById('memory-summary-panel');
+            if (!panel && !summaryPanel) return;
+            if (!selectedBoard) {
+                const html = '<div class="memory-note">Select a board to view memory estimates.</div>';
+                if (panel) panel.innerHTML = html;
+                if (summaryPanel) summaryPanel.innerHTML = html;
+                return;
+            }
+
+            const { usage, caps } = estimateMemoryUsage();
+            const html = `
+                <div class="memory-note">Estimated usage while configuring (pre-build). Exact values come from compiler output.</div>
+                ${memoryRowHtml('Program Flash', usage.prog, caps.prog, 'prog')}
+                ${memoryRowHtml('Data Flash (apps/storage)', usage.data, caps.data, 'data')}
+                ${memoryRowHtml('RAM', usage.ram, caps.ram, 'ram')}
+            `;
+            if (panel) panel.innerHTML = html;
+            if (summaryPanel) summaryPanel.innerHTML = html;
         }
 
         function profileStorageKey() {
@@ -2123,6 +3189,7 @@
                     <div><strong>Market Apps:</strong> ${selectedMarket.length ? selectedMarket.join(', ') : '(none)'}</div>
                 </div>
             `;
+            updateMemoryEstimatePanels();
         }
 
         function renderMarketPage() {
@@ -2179,7 +3246,8 @@
                         type: <code>${item.kind === 'starter' ? 'starter-app' : 'market-app'}</code><br>
                         id: <code>${item.id}</code><br>
                         version: <code>${item.version || '0.1.0'}</code><br>
-                        platforms: <code>${(item.platforms || []).join(', ') || selectedPlatform}</code>
+                        platforms: <code>${(item.platforms || []).join(', ') || selectedPlatform}</code><br>
+                        package: <code>${item.source_size_bytes ? formatBytes(item.source_size_bytes) : 'n/a'}</code>
                     </div>
                     <div class="market-actions">
                         <label title="${reason}">
@@ -2201,6 +3269,7 @@
                         marketAppStates[id] = !!el.checked;
                     }
                     renderSelectedAppsVisibility();
+                    updateValidation();
                     notify(`${id} ${el.checked ? 'added to' : 'removed from'} current build.`, 'success', 1600);
                 });
             });
@@ -2346,8 +3415,8 @@
             const id = String(moduleId || '');
             if (id.startsWith('fs_')) return 'storage';
             if (['uart', 'spi', 'i2c', 'remote_node'].includes(id)) return 'connectivity';
-            if (['tft', 'shell_full', 'shell_min'].includes(id)) return 'ui_shell';
-            if (['psram', 'adc', 'pwm', 'eeprom'].includes(id)) return 'advanced';
+            if (['tft', 'display_ssd1306', 'shell_full', 'shell_min'].includes(id)) return 'ui_shell';
+            if (['psram', 'adc', 'pwm', 'eeprom', 'rtc', 'imu', 'dht22', 'mic'].includes(id)) return 'advanced';
             return 'core';
         }
 
@@ -2402,6 +3471,7 @@
                     appletStates[appletId] = toggle.checked;
                     card.classList.toggle('enabled', toggle.checked);
                     updateValidation();
+                    updateMemoryEstimatePanels();
                 };
 
                 grid.appendChild(card);
@@ -2435,6 +3505,7 @@
                 card.className = `module-card ${enabled ? 'enabled' : ''}`;
                 card.id = `market-app-card-${item.id}`;
                 const tags = Array.isArray(item.tags) ? item.tags.join(', ') : '';
+                const pkgSize = item.source_size_bytes ? formatBytes(item.source_size_bytes) : 'n/a';
                 card.innerHTML = `
                     <div class="module-header">
                         <div style="display:flex; align-items:center;">
@@ -2447,6 +3518,7 @@
                         </label>
                     </div>
                     <div class="module-description">${item.description || ''}</div>
+                    <div class="module-meta">Package: ${pkgSize}</div>
                     ${tags ? `<div class="module-meta">Tags: ${tags}</div>` : ''}
                 `;
 
@@ -2455,6 +3527,7 @@
                     marketAppStates[item.id] = toggle.checked;
                     card.classList.toggle('enabled', toggle.checked);
                     updateValidation();
+                    updateMemoryEstimatePanels();
                 };
                 grid.appendChild(card);
             });
@@ -2544,7 +3617,7 @@
         }
 
         async function refreshModulesForPlatform(platformId) {
-            const url = platformId ? `/api/modules?platform=${platformId}` : '/api/modules';
+            const url = platformId ? `/api/drivers?platform=${platformId}` : '/api/drivers';
             modules = await apiFetchJson(url);
             modules.forEach(m => { if (!Array.isArray(m.pins)) m.pins = []; });
         }
@@ -2573,8 +3646,8 @@
                         icon: '🖥️',
                         platforms: ['esp32'],
                         recommended_boards: ['cyd', 'm5stickc_plus2'],
-                        enabled_modules: ['uart', 'spi', 'tft', 'fs_spiffs', 'shell_full'],
-                        module_config: {},
+                        enabled_drivers: ['uart', 'spi', 'tft', 'fs_spiffs', 'shell_full'],
+                        driver_config: {},
                         tags: ['display', 'beginner', 'popular']
                     },
                     {
@@ -2584,8 +3657,8 @@
                         icon: '🟨',
                         platforms: ['esp32'],
                         recommended_boards: ['cyd'],
-                        enabled_modules: ['uart', 'spi', 'i2c', 'tft', 'fs_spiffs', 'fs_sd', 'shell_full'],
-                        module_config: {},
+                        enabled_drivers: ['uart', 'spi', 'i2c', 'tft', 'fs_spiffs', 'fs_sd', 'shell_full'],
+                        driver_config: {},
                         tags: ['display', 'storage', 'popular']
                     },
                     {
@@ -2595,8 +3668,8 @@
                         icon: '🌡️',
                         platforms: ['esp32'],
                         recommended_boards: ['esp32-devkitc_v4', 'cyd'],
-                        enabled_modules: ['uart', 'i2c', 'wifi', 'fs_sd', 'shell_min'],
-                        module_config: {},
+                        enabled_drivers: ['uart', 'i2c', 'wifi', 'fs_sd', 'shell_min'],
+                        driver_config: {},
                         tags: ['iot', 'sensors', 'wifi']
                     },
                     {
@@ -2606,8 +3679,8 @@
                         icon: '⚡',
                         platforms: ['esp32'],
                         recommended_boards: ['esp32-c3-supermini'],
-                        enabled_modules: ['uart', 'shell_min'],
-                        module_config: {},
+                        enabled_drivers: ['uart', 'shell_min'],
+                        driver_config: {},
                         tags: ['minimal', 'low-power', 'beginner']
                     },
                     {
@@ -2617,8 +3690,8 @@
                         icon: '🧰',
                         platforms: ['avr'],
                         recommended_boards: ['mega2560'],
-                        enabled_modules: ['gpio', 'uart', 'timer'],
-                        module_config: { uart: { uart_num: 0, uart_baudrate: 115200 } },
+                        enabled_drivers: ['gpio', 'uart', 'timer'],
+                        driver_config: { uart: { uart_num: 0, uart_baudrate: 115200 } },
                         tags: ['avr', 'baseline']
                     },
                     {
@@ -2628,8 +3701,8 @@
                         icon: '🧱',
                         platforms: ['atmega'],
                         recommended_boards: ['arduino_uno_r3'],
-                        enabled_modules: ['gpio', 'uart'],
-                        module_config: { uart: { uart_num: 0, uart_baudrate: 115200 } },
+                        enabled_drivers: ['gpio', 'uart'],
+                        driver_config: { uart: { uart_num: 0, uart_baudrate: 115200 } },
                         tags: ['avr', 'minimal']
                     },
                     {
@@ -2639,8 +3712,8 @@
                         icon: '🧪',
                         platforms: ['rp2040'],
                         recommended_boards: ['raspberry_pi_pico'],
-                        enabled_modules: ['gpio', 'uart', 'i2c', 'timer'],
-                        module_config: {},
+                        enabled_drivers: ['gpio', 'uart', 'i2c', 'timer'],
+                        driver_config: {},
                         tags: ['rp2040', 'sensors']
                     },
                     {
@@ -2650,8 +3723,8 @@
                         icon: '🧭',
                         platforms: ['stm32'],
                         recommended_boards: ['nucleo_f401re'],
-                        enabled_modules: ['gpio', 'uart', 'timer'],
-                        module_config: {},
+                        enabled_drivers: ['gpio', 'uart', 'timer'],
+                        driver_config: {},
                         tags: ['stm32', 'baseline']
                     }
                 ];
@@ -2702,9 +3775,9 @@
                     <h4>${template.name}</h4>
                     <p>${template.description}</p>
                     <div class="template-modules">
-                        <strong>Modules:</strong>
-                        ${template.enabled_modules.slice(0, 3).join(', ')}
-                        ${template.enabled_modules.length > 3 ? ` +${template.enabled_modules.length - 3} more` : ''}
+                        <strong>Drivers:</strong>
+                        ${templateEnabledDrivers(template).slice(0, 3).join(', ')}
+                        ${templateEnabledDrivers(template).length > 3 ? ` +${templateEnabledDrivers(template).length - 3} more` : ''}
                     </div>
                     ${Array.isArray(template.applets) && template.applets.length > 0 ? `
                         <div class="template-modules">
@@ -2747,9 +3820,9 @@
                 </div>
 
                 <div style="margin-top: 20px;">
-                    <h3 style="margin-bottom: 10px;">Enabled Modules (${template.enabled_modules.length})</h3>
+                    <h3 style="margin-bottom: 10px;">Enabled Drivers (${templateEnabledDrivers(template).length})</h3>
                     <div class="module-badges" style="margin-bottom: 20px;">
-                        ${template.enabled_modules.map(m =>
+                        ${templateEnabledDrivers(template).map(m =>
                             `<span class="badge badge-provides">${m}</span>`
                         ).join('')}
                     </div>
@@ -2770,10 +3843,10 @@
                         </div>
                     ` : ''}
 
-                    ${Object.keys(template.module_config || {}).length > 0 ? `
-                        <h3 style="margin-bottom: 10px;">Module Configuration</h3>
+                    ${Object.keys(templateDriverConfig(template) || {}).length > 0 ? `
+                        <h3 style="margin-bottom: 10px;">Driver Configuration</h3>
                         <pre style="background: #f7fafc; padding: 15px; border-radius: 6px; overflow-x: auto;">
-${JSON.stringify(template.module_config, null, 2)}</pre>
+${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     ` : ''}
 
                     <div style="margin-top: 30px; display: flex; gap: 15px;">
@@ -2794,18 +3867,34 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             document.getElementById('template-modal').classList.remove('active');
         }
 
+        function templateEnabledDrivers(template) {
+            if (!template || typeof template !== 'object') return [];
+            if (Array.isArray(template.enabled_drivers)) return template.enabled_drivers;
+            if (Array.isArray(template.enabled_modules)) return template.enabled_modules;
+            return [];
+        }
+
+        function templateDriverConfig(template) {
+            if (!template || typeof template !== 'object') return {};
+            if (template.driver_config && typeof template.driver_config === 'object') return template.driver_config;
+            if (template.module_config && typeof template.module_config === 'object') return template.module_config;
+            return {};
+        }
+
         function applyTemplate(templateId) {
             const template = projectTemplates.find(t => t.id === templateId);
             if (!template) return;
+            const enabledDrivers = templateEnabledDrivers(template);
+            const driverConfig = templateDriverConfig(template);
 
             modules.forEach(module => {
-                const shouldEnable = template.enabled_modules.includes(module.id);
+                const shouldEnable = enabledDrivers.includes(module.id);
                 module.enabled = shouldEnable;
                 moduleStates[module.id] = shouldEnable;
             });
 
-            if (template.module_config) {
-                Object.entries(template.module_config).forEach(([moduleId, config]) => {
+            if (driverConfig && Object.keys(driverConfig).length > 0) {
+                Object.entries(driverConfig).forEach(([moduleId, config]) => {
                     moduleConfigs[moduleId] = { ...(moduleConfigs[moduleId] || {}), ...config };
                 });
             }
@@ -2953,13 +4042,14 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 conflicts.forEach(conflictId => {
                     const conflictModule = modules.find(m => m.id === conflictId);
                     if (conflictModule && conflictModule.enabled) {
-                        showWarning(`Module "${module.name}" conflicts with "${conflictModule.name}".`);
+                        showWarning(`Driver "${module.name}" conflicts with "${conflictModule.name}".`);
                     }
                 });
             }
 
             refreshModuleSectionCounts();
             updateValidation();
+            updateMemoryEstimatePanels();
         }
 
         function syncModuleStatesFromUI() {
@@ -3124,6 +4214,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                     </div>
                 `).join('');
             }
+            updateMemoryEstimatePanels();
         }
 
         function showWarning(message) {
@@ -3196,6 +4287,15 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
         let selectedPlatform = 'esp32';
         let selectedBoard = null;
         let moduleStates = {};
+        let serialPort = null;
+        let serialReader = null;
+        let serialWriter = null;
+        let serialReadAbort = false;
+        let avrSettings = {
+            clock: { freq_hz: 16000000 },
+            fuses: { lfuse: '', hfuse: '', efuse: '', lock: '' },
+            upload: { method: 'bootloader', fqbn: 'arduino:avr:mega', mcu: 'atmega2560', programmer: 'wiring', baud: 115200, port: '' }
+        };
 
         // Initialize
         async function init() {
@@ -3226,6 +4326,60 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             if (localFlashBtn) {
                 localFlashBtn.addEventListener('click', () => localFlashEsp32());
             }
+            const avrRefreshBtn = document.getElementById('btn-refresh-avr-flasher');
+            if (avrRefreshBtn) avrRefreshBtn.addEventListener('click', () => refreshAvrFlasher());
+            const avrBuildBtn = document.getElementById('btn-build-avr');
+            if (avrBuildBtn) avrBuildBtn.addEventListener('click', () => buildAvrFirmware());
+            const avrFlashBtn = document.getElementById('btn-local-flash-avr');
+            if (avrFlashBtn) avrFlashBtn.addEventListener('click', () => localFlashAvr());
+            const avrAdvancedToggle = document.getElementById('avr-advanced-toggle');
+            if (avrAdvancedToggle) {
+                avrAdvancedToggle.addEventListener('change', () => {
+                    const enabled = !!avrAdvancedToggle.checked;
+                    setAvrAdvancedEditing(enabled);
+                    if (enabled) {
+                        notify('Advanced AVR clock/fuse editing enabled.', 'warning');
+                    }
+                });
+            }
+            const avrRestoreDefaultsBtn = document.getElementById('btn-avr-restore-defaults');
+            if (avrRestoreDefaultsBtn) {
+                avrRestoreDefaultsBtn.addEventListener('click', () => restoreAvrDefaults());
+            }
+            const serialConnectBtn = document.getElementById('btn-serial-connect');
+            if (serialConnectBtn) serialConnectBtn.addEventListener('click', () => serialConnect());
+            const serialDisconnectBtn = document.getElementById('btn-serial-disconnect');
+            if (serialDisconnectBtn) serialDisconnectBtn.addEventListener('click', () => serialDisconnect());
+            const serialClearBtn = document.getElementById('btn-serial-clear');
+            if (serialClearBtn) {
+                serialClearBtn.addEventListener('click', () => {
+                    const log = document.getElementById('serial-log');
+                    if (log) log.textContent = '';
+                });
+            }
+            const serialSendBtn = document.getElementById('btn-serial-send');
+            if (serialSendBtn) serialSendBtn.addEventListener('click', () => serialSendCommand());
+            const serialCmdInput = document.getElementById('serial-command');
+            if (serialCmdInput) {
+                serialCmdInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        serialSendCommand();
+                    }
+                });
+            }
+            const avrMethod = document.getElementById('avr-upload-method');
+            if (avrMethod) {
+                avrMethod.addEventListener('change', () => {
+                    const method = String(avrMethod.value || '').trim().toLowerCase();
+                    const prog = document.getElementById('avr-programmer');
+                    if (!prog) return;
+                    if (method === 'updi' && !String(prog.value || '').trim()) prog.value = 'serialupdi';
+                    if (method === 'bootloader' && !String(prog.value || '').trim()) prog.value = 'wiring';
+                });
+            }
+            updateMemoryEstimatePanels();
+            refreshSerialTerminalVisibility();
             notify('Welcome to BasaltOS Configurator.', 'success', 1800);
         }
 
@@ -3297,10 +4451,13 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             const targetName = targetId && targets[targetId] ? targets[targetId].name : (targetId || '—');
             document.getElementById('spec-target').textContent = targetName;
             
-            // Auto-enable modules based on board capabilities
-            if (board.defaults && Array.isArray(board.defaults.modules)) {
+            // Auto-enable drivers based on board defaults/capabilities
+            const defaultDrivers = (board.defaults && Array.isArray(board.defaults.drivers))
+                ? board.defaults.drivers
+                : (board.defaults && Array.isArray(board.defaults.modules) ? board.defaults.modules : null);
+            if (Array.isArray(defaultDrivers)) {
                 modules.forEach(m => { m.enabled = false; });
-                board.defaults.modules.forEach(id => {
+                defaultDrivers.forEach(id => {
                     const mod = modules.find(m => m.id === id);
                     if (mod) mod.enabled = true;
                 });
@@ -3323,6 +4480,11 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             } else {
                 availableMarket.forEach(item => { marketAppStates[item.id] = false; });
             }
+            if (avrTargetSelected()) {
+                avrSettings = defaultAvrSettingsFromBoard(board);
+            }
+            applyAvrSettingsToUi();
+            setAvrAdvancedEditing(false);
 
             populateModuleGrid();
             populateAppletGrid();
@@ -3331,6 +4493,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             renderMarketPage();
             clearInlineOutput();
             refreshWebFlasher({ silent: true });
+            refreshAvrFlasher({ silent: true });
         }
 
         function autoEnableByBoardCapabilities(board) {
@@ -3361,10 +4524,23 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             }
             if (caps.size === 0) return true;
             if (caps.has(module.id)) return true;
+
+            // Explicit capability requirements from metadata.
+            const reqCaps = Array.isArray(module.requires_capabilities) ? module.requires_capabilities : [];
+            if (reqCaps.length > 0) {
+                return reqCaps.every(c => caps.has(String(c)));
+            }
+
             if (module.id.startsWith('shell_')) return caps.has('uart');
             if (module.id === 'fs_spiffs') return true; // internal storage
             if (module.id === 'fs_sd') return caps.has('sd_card');
             if (module.id === 'psram') return caps.has('psram');
+            // Generic transport-backed driver allowance.
+            const depends = Array.isArray(module.depends) ? module.depends : [];
+            if (depends.includes('i2c')) return caps.has('i2c');
+            if (depends.includes('spi')) return caps.has('spi');
+            if (depends.includes('adc')) return caps.has('adc');
+            if (depends.includes('gpio')) return caps.has('gpio');
             return caps.has(module.id.replace('fs_', ''));
         }
 
@@ -3617,6 +4793,31 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 });
             });
 
+            if (selectedBoard && selectedBoard.pins && Object.prototype.hasOwnProperty.call(selectedBoard.pins, 'led')) {
+                const hasLedRow = !!tbody.querySelector('.pin-input[data-pin="led"]');
+                if (!hasLedRow) {
+                    const pin = 'led';
+                    const tr = document.createElement('tr');
+                    const defaultPin = selectedBoard.pins[pin];
+                    const pinDef = selectedBoard?.pin_definitions?.[pin] || {};
+                    const altPins = Array.isArray(pinDef.alternatives) ? pinDef.alternatives : [];
+                    const isNumeric = typeof defaultPin === 'number' && Number.isFinite(defaultPin);
+                    tr.innerHTML = `
+                        <td>board</td>
+                        <td>${pin.toUpperCase()}</td>
+                        <td><input type="${isNumeric ? 'number' : 'text'}" class="pin-input" value="${defaultPin}" data-pin="${pin}" data-pin-type="${isNumeric ? 'number' : 'text'}" ${isNumeric ? 'min="-1" max="255"' : ''}></td>
+                        <td>
+                            <select class="pin-alt" data-pin="${pin}">
+                                <option value="${defaultPin}">Default</option>
+                                ${altPins.map(p => `<option value="${p}">${p}</option>`).join('')}
+                                <option value="-1">Disabled</option>
+                            </select>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            }
+
             tbody.querySelectorAll('.pin-alt').forEach(select => {
                 select.addEventListener('change', () => {
                     const pin = select.dataset.pin;
@@ -3640,6 +4841,8 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
         async function generateConfigPreview() {
             const previewEl = document.getElementById('config-preview');
             renderValidationReport();
+            const ledInput = document.querySelector('#pin-table-body input[data-pin="led"]');
+            const ledPin = ledInput ? String(ledInput.value || '').trim() : (selectedBoard?.pins?.led ?? 'n/a');
 
             // Summary
             const summary = document.getElementById('config-summary');
@@ -3658,7 +4861,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                         <div class="spec-value">${selectedBoard?.target_profile || '—'}</div>
                     </div>
                     <div class="spec-item">
-                        <div class="spec-label">Modules Enabled</div>
+                        <div class="spec-label">Drivers Enabled</div>
                         <div class="spec-value">${modules.filter(m => m.enabled).length}</div>
                     </div>
                     <div class="spec-item">
@@ -3669,6 +4872,10 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                         <div class="spec-label">Market Apps</div>
                         <div class="spec-value">${marketApps.filter(a => marketAppStates[a]).length}</div>
                     </div>
+                    <div class="spec-item">
+                        <div class="spec-label">LED Pin</div>
+                        <div class="spec-value">${ledPin}</div>
+                    </div>
                 </div>
             `;
 
@@ -3677,38 +4884,13 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 previewEl.textContent = 'Select a board to preview configuration.';
                 return;
             }
-
-            const enabled_modules = modules.filter(m => m.enabled).map(m => m.id);
-            const module_config = collectModuleConfigFromUI();
-            const enabled_applets = applets.filter(a => appletStates[a]);
-            const selected_market_apps = marketApps.filter(a => marketAppStates[a]);
-            const custom_pins = {};
-            document.querySelectorAll('#pin-table-body input[data-pin]').forEach(input => {
-                const key = input.dataset.pin;
-                const raw = (input.value || '').trim();
-                if (!raw) return;
-                if (input.dataset.pinType === 'number') {
-                    const val = parseInt(raw, 10);
-                    if (!Number.isNaN(val)) custom_pins[key] = val;
-                } else {
-                    custom_pins[key] = raw;
-                }
-            });
+            const payload = collectCurrentConfigPayload();
 
             try {
                 const data = await apiFetchJson('/api/preview/basalt_config_h', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        platform: selectedPlatform,
-                        board_id: selectedBoard.id,
-                        target_profile: selectedBoard.target_profile || null,
-                        enabled_modules,
-                        applets: enabled_applets,
-                        market_apps: selected_market_apps,
-                        module_config,
-                        custom_pins
-                    })
+                    body: JSON.stringify(payload)
                 });
                 if (!data.success) throw new Error(data.error || 'Preview failed');
                 previewEl.textContent = data.content;
@@ -3716,6 +4898,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 previewEl.textContent = `Preview failed: ${err.message || err}`;
                 notify(`Preview failed: ${err.message || err}`, 'error');
             }
+            updateMemoryEstimatePanels();
             
         }
 
@@ -3729,7 +4912,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                     if (!depModule || !depModule.enabled) {
                         issues.push({
                             type: 'error',
-                            message: `Module "${module.name}" requires "${depId}" which is not enabled`
+                            message: `Driver "${module.name}" requires "${depId}" which is not enabled`
                         });
                     }
                 });
@@ -3740,7 +4923,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                     if (conflictModule && conflictModule.enabled) {
                         issues.push({
                             type: 'warning',
-                            message: `Module "${module.name}" conflicts with "${conflictModule.name}"`
+                            message: `Driver "${module.name}" conflicts with "${conflictModule.name}"`
                         });
                     }
                 });
@@ -3779,14 +4962,19 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                     tft: 'tft',
                     touch: 'touch',
                     psram: 'psram',
-                    fs_sd: 'sd_card'
+                    fs_sd: 'sd_card',
+                    display_ssd1306: 'i2c',
+                    rtc: 'i2c',
+                    imu: 'i2c',
+                    dht22: 'gpio',
+                    mic: 'adc'
                 };
 
                 Object.entries(requires).forEach(([moduleId, cap]) => {
                     if (enabledModules.includes(moduleId) && !caps.has(cap)) {
                         issues.push({
                             type: 'warning',
-                            message: `Board capabilities do not list "${cap}" but module "${moduleId}" is enabled.`
+                            message: `Board capabilities do not list "${cap}" but driver "${moduleId}" is enabled.`
                         });
                     }
                 });
@@ -3853,7 +5041,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                     if (mods.length > 1) {
                         issues.push({
                             type: 'warning',
-                            message: `UART${port} is selected by multiple modules: ${mods.join(', ')}.`
+                            message: `UART${port} is selected by multiple drivers: ${mods.join(', ')}.`
                         });
                     }
                 });
@@ -3898,8 +5086,8 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
         }
 
         function collectCurrentConfigPayload() {
-            const enabled_modules = modules.filter(m => m.enabled).map(m => m.id);
-            const module_config = collectModuleConfigFromUI();
+            const enabled_drivers = modules.filter(m => m.enabled).map(m => m.id);
+            const driver_config = collectModuleConfigFromUI();
             const enabled_applets = applets.filter(a => appletStates[a]);
             const market_apps = marketApps.filter(a => marketAppStates[a]);
             const custom_pins = {};
@@ -3914,15 +5102,23 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                     custom_pins[key] = raw;
                 }
             });
+            if (avrTargetSelected()) {
+                readAvrSettingsFromUi();
+            }
             return {
                 platform: selectedPlatform,
                 board_id: selectedBoard?.id,
                 target_profile: selectedBoard?.target_profile || null,
-                enabled_modules,
+                enabled_drivers,
+                enabled_modules: enabled_drivers,
                 applets: enabled_applets,
                 market_apps,
-                module_config,
-                custom_pins
+                driver_config,
+                module_config: driver_config,
+                custom_pins,
+                clock: avrTargetSelected() ? avrSettings.clock : undefined,
+                fuses: avrTargetSelected() ? avrSettings.fuses : undefined,
+                upload: avrTargetSelected() ? avrSettings.upload : undefined
             };
         }
 
@@ -3961,12 +5157,17 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                     populateModuleGrid();
                 }
                 populatePinTable();
+                applyAvrSettingsToUi();
             } else if (currentStep === 2) {
                 updateValidation();
                 renderSelectedAppsVisibility();
             } else if (currentStep === 4) {
                 generateConfigPreview();
                 refreshWebFlasher({ silent: true });
+                refreshAvrFlasher({ silent: true });
+                refreshSerialTerminalVisibility();
+            } else {
+                refreshSerialTerminalVisibility();
             }
         }
 
@@ -4008,11 +5209,13 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 const fileLines = Object.keys(data.files || {}).map(k => `${k}: ${data.files[k]}`).join('\n');
                 const buildMsg = selectedPlatform === 'avr'
                     ? [
-                        'Build with (Arduino CLI):',
-                        'arduino-cli compile --fqbn arduino:avr:mega .',
+                        `Build with (Arduino CLI):`,
+                        `arduino-cli compile --fqbn ${avrSettings.upload?.fqbn || 'arduino:avr:mega'} .`,
                         '',
-                        'Upload with (Arduino CLI):',
-                        'arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:mega .'
+                        'Upload with (Arduino CLI bootloader):',
+                        `arduino-cli upload -p <PORT> --fqbn ${avrSettings.upload?.fqbn || 'arduino:avr:mega'} .`,
+                        '',
+                        'Or use the AVR Build + Flash panel below for bootloader/ISP/UPDI.'
                     ]
                     : [
                         'Build with (ESP32 targets):',
@@ -4029,6 +5232,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 showInlineOutput(msg, 'success');
                 notify('Configuration files generated successfully.', 'success');
                 refreshWebFlasher({ silent: true });
+                refreshAvrFlasher({ silent: true });
             } catch (err) {
                 const msg = `Generate failed: ${err.message || err}`;
                 showInlineOutput(msg, 'error');
@@ -4110,6 +5314,15 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
         }
 
         function attachEventListeners() {
+            const openDiyBtn = document.getElementById('btn-open-diy-board');
+            if (openDiyBtn) openDiyBtn.addEventListener('click', () => openDIYBoardModal());
+            const closeDiyBtn = document.getElementById('btn-close-diy-board');
+            if (closeDiyBtn) closeDiyBtn.addEventListener('click', () => closeDIYBoardModal());
+            const cancelDiyBtn = document.getElementById('btn-cancel-diy-board');
+            if (cancelDiyBtn) cancelDiyBtn.addEventListener('click', () => closeDIYBoardModal());
+            const saveDiyBtn = document.getElementById('btn-save-diy-board');
+            if (saveDiyBtn) saveDiyBtn.addEventListener('click', () => saveDIYBoard());
+
             const startBtn = document.getElementById('btn-start-config');
             if (startBtn) startBtn.addEventListener('click', () => enterConfigurator(1));
             const startEsp32Btn = document.getElementById('btn-start-esp32');
@@ -4161,6 +5374,10 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
 
             document.getElementById('platform-select').onchange = async (e) => {
                 selectedPlatform = e.target.value;
+                if (selectedPlatform !== 'avr') {
+                    const panel = document.getElementById('avr-config-panel');
+                    if (panel) panel.style.display = 'none';
+                }
                 renderProfilePanel();
                 populateBoardList();
                 await refreshModulesForPlatform(selectedPlatform);
@@ -4174,6 +5391,8 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 renderTemplates();
                 clearInlineOutput();
                 refreshWebFlasher({ silent: true });
+                refreshAvrFlasher({ silent: true });
+                updateMemoryEstimatePanels();
             };
 
             const profileNameInput = document.getElementById('profile-name');

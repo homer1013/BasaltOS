@@ -42,7 +42,9 @@
       "timer",
       "pwm",
       "eeprom",
-      "remote_node"
+      "remote_node",
+      "shell_min",
+      "shell_full"
     ],
     "notes": "ATmega328P targets generate Arduino-style firmware (no Basalt runtime)."
   },

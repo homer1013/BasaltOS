@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 BasaltOS Configuration GUI - Backend Server
-Provides REST API for board/module configuration and generates config files
+Provides REST API for board/driver configuration and generates config files
 """
 
 import json
@@ -11,6 +11,9 @@ import subprocess
 import shutil
 import io
 import zipfile
+import os
+import re
+import glob
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
@@ -45,6 +48,7 @@ sys.path.append(str(BASALTOS_ROOT / "tools"))
 import configure as cfg
 from pic_codegen import generate_pic16_project, render_basalt_config_preview as render_pic16_preview
 from avr_codegen import generate_avr_project, render_basalt_config_preview as render_avr_preview
+from app_validation import validate_app_dir
 
 
 class ConfigGenerator:
@@ -59,7 +63,7 @@ class ConfigGenerator:
         self.load_all_configs()
     
     def load_all_configs(self):
-        """Load all board, module, and platform configurations"""
+        """Load all board, driver, and platform configurations"""
         self.load_boards()
         self.load_modules()
         self.load_platforms()
@@ -101,6 +105,84 @@ class ConfigGenerator:
             "managed_ids": sorted({self._safe_slug(x) for x in managed_ids if self._safe_slug(x)}),
         }
         self._write_json(path, payload)
+
+    @staticmethod
+    def _enabled_drivers_from_config(config_data: dict) -> List[str]:
+        raw = config_data.get("enabled_drivers", config_data.get("enabled_modules", [])) or []
+        if not isinstance(raw, list):
+            return []
+        return [str(x).strip() for x in raw if str(x).strip()]
+
+    @staticmethod
+    def _driver_config_from_config(config_data: dict) -> dict:
+        raw = config_data.get("driver_config", config_data.get("module_config", {})) or {}
+        return raw if isinstance(raw, dict) else {}
+
+    @staticmethod
+    def _avr_clock_from_config(config_data: dict, board: dict | None) -> dict | None:
+        defaults = (board or {}).get("defaults") or {}
+        clock = dict(defaults.get("clock") or {})
+        incoming = config_data.get("clock")
+        if isinstance(incoming, dict):
+            clock.update(incoming)
+        freq = clock.get("freq_hz")
+        if freq is None:
+            return clock if clock else None
+        try:
+            clock["freq_hz"] = int(freq)
+        except Exception:
+            raise ValueError("clock.freq_hz must be an integer.")
+        if clock["freq_hz"] <= 0:
+            raise ValueError("clock.freq_hz must be > 0.")
+        return clock
+
+    @staticmethod
+    def _avr_fuses_from_config(config_data: dict, board: dict | None) -> dict | None:
+        defaults = (board or {}).get("defaults") or {}
+        merged = dict(defaults.get("fuses") or {})
+        incoming = config_data.get("fuses")
+        if isinstance(incoming, dict):
+            merged.update(incoming)
+        out: dict = {}
+        for key in ("lfuse", "hfuse", "efuse", "lock"):
+            val = merged.get(key)
+            if val is None:
+                continue
+            sval = str(val).strip()
+            if not sval:
+                continue
+            out[key] = sval
+        return out if out else None
+
+    @staticmethod
+    def _avr_upload_from_config(config_data: dict, board: dict | None) -> dict | None:
+        defaults = (board or {}).get("defaults") or {}
+        merged = dict(defaults.get("upload") or {})
+        incoming = config_data.get("upload")
+        if isinstance(incoming, dict):
+            merged.update(incoming)
+        if not merged:
+            return None
+        if "baud" in merged and merged.get("baud") not in (None, ""):
+            try:
+                merged["baud"] = int(merged.get("baud"))
+            except Exception:
+                raise ValueError("upload.baud must be an integer.")
+        for key in ("method", "fqbn", "mcu", "programmer", "port"):
+            if key in merged and merged.get(key) is not None:
+                merged[key] = str(merged.get(key)).strip()
+        return merged
+
+    @staticmethod
+    def _with_legacy_driver_keys(payload: dict) -> dict:
+        out = dict(payload)
+        if "enabled_drivers" in out and "enabled_modules" not in out:
+            out["enabled_modules"] = list(out["enabled_drivers"])
+        if "resolved_drivers" in out and "resolved_modules" not in out:
+            out["resolved_modules"] = list(out["resolved_drivers"])
+        if "driver_config" in out and "module_config" not in out:
+            out["module_config"] = dict(out["driver_config"])
+        return out
 
     def _render_builtin_applet_files(self, applet_id: str) -> Dict[str, str] | None:
         aid = self._safe_slug(applet_id)
@@ -290,6 +372,16 @@ print("[uart_echo] done")
         }
 
     def get_market_catalog(self, platform: str | None = None) -> List[dict]:
+        def _dir_size_bytes(path: Path) -> int:
+            total = 0
+            try:
+                for p in path.rglob("*"):
+                    if p.is_file():
+                        total += p.stat().st_size
+            except Exception:
+                return 0
+            return total
+
         raw = self._read_json(MARKET_APPS_CATALOG, [])
         out: List[dict] = []
         if not isinstance(raw, list):
@@ -305,6 +397,15 @@ print("[uart_echo] done")
             plats = rec.get("platforms")
             if platform and isinstance(plats, list) and platform not in plats:
                 continue
+            source_rel = str(rec.get("source_dir") or "").strip()
+            if source_rel:
+                src = (BASALTOS_ROOT / source_rel).resolve()
+                try:
+                    src.relative_to(BASALTOS_ROOT.resolve())
+                    if src.exists() and src.is_dir():
+                        rec["source_size_bytes"] = _dir_size_bytes(src)
+                except Exception:
+                    pass
             out.append(rec)
         out.sort(key=lambda x: x.get("name", x.get("id", "")))
         return out
@@ -367,8 +468,7 @@ print("[uart_echo] done")
             if len(children) == 1 and children[0].is_dir():
                 src = children[0]
 
-            if not (src / "main.py").exists():
-                raise ValueError("App package must include main.py at root")
+            validate_app_dir(src, check_py_syntax=False)
 
             if dst.exists():
                 shutil.rmtree(dst, ignore_errors=True)
@@ -511,15 +611,20 @@ print("[uart_echo] done")
             except Exception as e:
                 print(f"Error loading board {board_file}: {e}")
 
+    def reload_boards(self):
+        self.boards = {}
+        self.boards_by_id = {}
+        self.load_boards()
+
     def load_modules(self):
-        """Load module configurations from modules/ directory (recursively).
+        """Load driver configurations from modules/ directory (recursively).
 
         Supported layouts:
           - modules/<id>.json
           - modules/<module_id>/module.json
         """
         if not MODULES_DIR.exists():
-            print(f"Warning: Modules directory not found: {MODULES_DIR}")
+            print(f"Warning: Drivers directory not found: {MODULES_DIR}")
             return
 
         candidates = []
@@ -536,7 +641,7 @@ print("[uart_echo] done")
                 module_data.setdefault("id", module_data.get("id") or module_id)
                 self.modules[module_id] = module_data
             except Exception as e:
-                print(f"Error loading module {module_file}: {e}")
+                print(f"Error loading driver {module_file}: {e}")
 
     def resolve_board(self, board_ref: str | None) -> dict | None:
         if not board_ref:
@@ -597,12 +702,118 @@ print("[uart_echo] done")
         out.sort(key=lambda x: x.get("name", x.get("id", "")))
         return out
 
+    def create_custom_board(self, payload: dict) -> dict:
+        board_id = self._safe_slug(payload.get("id", ""))
+        platform = self._safe_slug(payload.get("platform", ""))
+        if not board_id:
+            raise ValueError("Board id is required")
+        if not platform:
+            raise ValueError("Platform is required")
+        if platform not in self.platforms:
+            raise ValueError(f"Unknown platform '{platform}'")
+
+        name = str(payload.get("name", "")).strip()
+        if not name:
+            raise ValueError("Board name is required")
+
+        capabilities = payload.get("capabilities") or []
+        if not isinstance(capabilities, list):
+            raise ValueError("Capabilities must be a list")
+        capabilities = [self._safe_slug(x) for x in capabilities if self._safe_slug(x)]
+
+        pins_in = payload.get("pins") or {}
+        if not isinstance(pins_in, dict):
+            raise ValueError("pins must be an object")
+        pins: Dict[str, Any] = {}
+        for k, v in pins_in.items():
+            sig = self._safe_slug(k)
+            if not sig:
+                continue
+            if isinstance(v, bool):
+                raise ValueError(f"Pin value for '{sig}' cannot be boolean")
+            if isinstance(v, (int, float)) and int(v) == v:
+                pins[sig] = int(v)
+            else:
+                raw = str(v).strip()
+                try:
+                    pins[sig] = int(raw)
+                except ValueError:
+                    pins[sig] = raw
+
+        pin_defs_in = payload.get("pin_definitions") or {}
+        pin_definitions: Dict[str, Any] = {}
+        if isinstance(pin_defs_in, dict):
+            for k, v in pin_defs_in.items():
+                sig = self._safe_slug(k)
+                if not sig or not isinstance(v, dict):
+                    continue
+                alts = v.get("alternatives")
+                if not isinstance(alts, list):
+                    alts = [pins.get(sig)] if sig in pins else []
+                pin_definitions[sig] = {
+                    "description": str(v.get("description") or sig),
+                    "alternatives": [a for a in alts if a is not None],
+                    "type": str(v.get("type") or "bidirectional"),
+                }
+
+        default_modules = payload.get("default_drivers", payload.get("default_modules")) or []
+        if not isinstance(default_modules, list):
+            default_modules = []
+        default_modules = [self._safe_slug(x) for x in default_modules if self._safe_slug(x)]
+        if not default_modules:
+            if "gpio" in self.modules:
+                default_modules.append("gpio")
+            if "uart" in capabilities and "uart" in self.modules:
+                default_modules.append("uart")
+                if "shell_full" in self.modules:
+                    default_modules.append("shell_full")
+            if "spi" in capabilities and "spi" in self.modules:
+                default_modules.append("spi")
+            if "i2c" in capabilities and "i2c" in self.modules:
+                default_modules.append("i2c")
+            if "tft" in capabilities and "tft" in self.modules:
+                default_modules.append("tft")
+            if "sd_card" in capabilities and "fs_sd" in self.modules:
+                default_modules.append("fs_sd")
+            if "fs_spiffs" in self.modules:
+                default_modules.append("fs_spiffs")
+
+        board_data = {
+            "id": board_id,
+            "name": name,
+            "description": str(payload.get("description") or f"Custom {platform} board"),
+            "platform": platform,
+            "target": str(payload.get("target") or platform),
+            "mcu": str(payload.get("mcu") or "Unknown"),
+            "flash": str(payload.get("flash") or ""),
+            "ram": str(payload.get("ram") or ""),
+            "display": str(payload.get("display") or "None"),
+            "capabilities": sorted(set(capabilities)),
+            "pins": pins,
+            "pin_definitions": pin_definitions,
+            "defaults": {
+                "drivers": sorted(set(default_modules)),
+                "modules": sorted(set(default_modules)),
+                "applets": [],
+            },
+            "notes": str(payload.get("notes") or "Generated by BasaltOS DIY Board Creator"),
+        }
+        target_profile = str(payload.get("target_profile") or "").strip()
+        if target_profile:
+            board_data["target_profile"] = target_profile
+
+        board_path = BOARDS_DIR / platform / board_id / "board.json"
+        board_path.parent.mkdir(parents=True, exist_ok=True)
+        board_path.write_text(json.dumps(board_data, indent=2) + "\n", encoding="utf-8")
+        self.reload_boards()
+        return {"board_path": str(board_path), "board": board_data}
+
 
     def get_available_modules(self, platform_id: str | None = None):
-        """Return list of modules, optionally filtered by platform.
+        """Return list of drivers, optionally filtered by platform.
 
-        If a module declares supported platforms (e.g. 'platforms' or 'supported_platforms'),
-        it will be filtered accordingly. If no such field exists, the module is treated as
+        If a driver declares supported platforms (e.g. 'platforms' or 'supported_platforms'),
+        it will be filtered accordingly. If no such field exists, the driver is treated as
         platform-agnostic and included.
         """
         out = []
@@ -619,11 +830,15 @@ print("[uart_echo] done")
         out.sort(key=lambda x: x.get("name", x.get("id", "")))
         return out
 
+    def get_available_drivers(self, platform_id: str | None = None):
+        """Canonical alias for get_available_modules()."""
+        return self.get_available_modules(platform_id)
+
 
     def _resolve(self, config_data: dict) -> Tuple[str | None, cfg.BoardProfile | None, List[str], Dict[str, cfg.Module]]:
         platform = config_data.get("platform")
         board_id = config_data.get("board_id")
-        enabled_modules = config_data.get("enabled_modules", []) or []
+        enabled_modules = self._enabled_drivers_from_config(config_data)
 
         modules = cfg.discover_modules(BASALTOS_ROOT / "modules")
         boards = cfg.discover_boards(BASALTOS_ROOT, platform)
@@ -665,12 +880,12 @@ print("[uart_echo] done")
             allowed = set(policy.get("allowed") or [])
             disallowed = [m for m in enabled_modules if m not in allowed]
             if disallowed:
-                raise ValueError(f"Module '{disallowed[0]}' is not supported by selected board/capabilities.")
+                raise ValueError(f"Driver '{disallowed[0]}' is not supported by selected board/capabilities.")
         elif mode == "denylist":
             denied = set(policy.get("denied") or [])
             disallowed = [m for m in enabled_modules if m in denied]
             if disallowed:
-                raise ValueError(f"Module '{disallowed[0]}' is not supported by selected board/capabilities.")
+                raise ValueError(f"Driver '{disallowed[0]}' is not supported by selected board/capabilities.")
 
 
     def _merge_pins(self, board: dict | None, custom_pins: dict | None) -> dict:
@@ -781,14 +996,14 @@ print("[uart_echo] done")
         return data
 
 
-    def _append_module_config_macros(self, out_path: Path, module_config: dict | None) -> None:
-        if not module_config or not isinstance(module_config, dict):
+    def _append_driver_config_macros(self, out_path: Path, driver_config: dict | None) -> None:
+        if not driver_config or not isinstance(driver_config, dict):
             return
 
         lines: List[str] = []
         lines.append("")
-        lines.append("/* Module configuration options */")
-        for module_id, options in module_config.items():
+        lines.append("/* Driver configuration options */")
+        for module_id, options in driver_config.items():
             if not isinstance(options, dict):
                 continue
             for key, val in options.items():
@@ -850,17 +1065,17 @@ print("[uart_echo] done")
     def generate_basalt_config_h(
         self,
         board_id: str | None,
-        enabled_modules: List[str],
+        enabled_drivers: List[str],
         custom_pins: dict | None,
         platform: str | None,
-        module_config: dict | None = None,
+        driver_config: dict | None = None,
         applets: List[str] | None = None,
         market_apps: List[str] | None = None,
     ) -> str:
         platform, board_profile, enabled_list, modules = self._resolve({
             "platform": platform,
             "board_id": board_id,
-            "enabled_modules": enabled_modules,
+            "enabled_drivers": enabled_drivers,
         })
 
         board_define_name = board_profile.id if board_profile else board_id
@@ -879,17 +1094,17 @@ print("[uart_echo] done")
                 board_define_name=board_define_name,
                 board_data=board_data,
             )
-            self._append_module_config_macros(out_path, module_config)
+            self._append_driver_config_macros(out_path, driver_config)
             self._append_applet_macros(out_path, applets)
             self._append_market_app_macros(out_path, market_apps)
             return out_path.read_text(encoding="utf-8")
 
 
-    def generate_sdkconfig_defaults(self, board_id: str | None, platform: str | None, enabled_modules: List[str]) -> str:
+    def generate_sdkconfig_defaults(self, board_id: str | None, platform: str | None, enabled_drivers: List[str]) -> str:
         platform, board_profile, enabled_list, modules = self._resolve({
             "platform": platform,
             "board_id": board_id,
-            "enabled_modules": enabled_modules,
+            "enabled_drivers": enabled_drivers,
         })
 
         with tempfile.TemporaryDirectory() as td:
@@ -914,10 +1129,10 @@ print("[uart_echo] done")
             if not board:
                 raise ValueError("Board not found.")
 
-            enabled_modules = config_data.get("enabled_modules", []) or []
+            enabled_modules = self._enabled_drivers_from_config(config_data)
             self._validate_module_policy(target, enabled_modules)
             custom_pins = config_data.get("custom_pins") or {}
-            module_config = config_data.get("module_config") or {}
+            module_config = self._driver_config_from_config(config_data)
             applets = config_data.get("applets")
             if not applets:
                 applets = (board.get("defaults") or {}).get("applets", [])
@@ -941,7 +1156,11 @@ print("[uart_echo] done")
             config_json = outdir / "basalt_config.json"
             applets_json = outdir / "applets.json"
             payload = dict(config_data)
+            payload["enabled_drivers"] = enabled_modules
+            payload["driver_config"] = module_config
+            payload = self._with_legacy_driver_keys(payload)
             payload["resolved_modules"] = enabled_modules
+            payload["resolved_drivers"] = enabled_modules
             payload["target_profile"] = target.get("id")
             payload["pins"] = pins
             payload["applets"] = applets
@@ -958,15 +1177,18 @@ print("[uart_echo] done")
             if not board:
                 raise ValueError("Board not found.")
 
-            enabled_modules = config_data.get("enabled_modules", []) or []
+            enabled_modules = self._enabled_drivers_from_config(config_data)
             self._validate_module_policy(target, enabled_modules)
             custom_pins = config_data.get("custom_pins") or {}
-            module_config = config_data.get("module_config") or {}
+            module_config = self._driver_config_from_config(config_data)
             applets = config_data.get("applets")
             if not applets:
                 applets = (board.get("defaults") or {}).get("applets", [])
             pins = self._merge_pins(board, custom_pins)
             self._validate_pins(board, pins)
+            clock = self._avr_clock_from_config(config_data, board)
+            fuses = self._avr_fuses_from_config(config_data, board)
+            upload_profile = self._avr_upload_from_config(config_data, board)
 
             outdir = CONFIG_OUTPUT_DIR / "avr" / board_id
             outdir.mkdir(parents=True, exist_ok=True)
@@ -977,17 +1199,26 @@ print("[uart_echo] done")
                 enabled_modules=enabled_modules,
                 pins=pins,
                 module_config=module_config,
-                clock=(board.get("defaults") or {}).get("clock"),
+                clock=clock,
+                fuses=fuses,
                 applets=applets,
+                upload_profile=upload_profile,
             )
 
             config_json = outdir / "basalt_config.json"
             applets_json = outdir / "applets.json"
             payload = dict(config_data)
+            payload["enabled_drivers"] = enabled_modules
+            payload["driver_config"] = module_config
+            payload = self._with_legacy_driver_keys(payload)
             payload["resolved_modules"] = enabled_modules
+            payload["resolved_drivers"] = enabled_modules
             payload["target_profile"] = target.get("id")
             payload["pins"] = pins
             payload["applets"] = applets
+            payload["clock"] = clock or {}
+            payload["fuses"] = fuses or {}
+            payload["upload"] = upload_profile or {}
             config_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
             self._write_applets_json(applets_json, board.get("platform"), board_id, applets)
             files["basalt_config.json"] = str(config_json)
@@ -998,7 +1229,7 @@ print("[uart_echo] done")
         selected_board_id = config_data.get("board_id")
         platform, board_profile, enabled_list, modules = self._resolve(config_data)
         custom_pins = config_data.get("custom_pins") or {}
-        module_config = config_data.get("module_config") or {}
+        module_config = self._driver_config_from_config(config_data)
         applets = config_data.get("applets")
         market_apps = config_data.get("market_apps") or []
         if not applets and board_profile:
@@ -1030,7 +1261,7 @@ print("[uart_echo] done")
             board_define_name=board_define_name,
             board_data=board_data,
         )
-        self._append_module_config_macros(basalt_h, module_config)
+        self._append_driver_config_macros(basalt_h, module_config)
         self._append_applet_macros(basalt_h, applets)
         self._append_market_app_macros(basalt_h, market_apps)
         cfg.emit_features_json(
@@ -1051,7 +1282,11 @@ print("[uart_echo] done")
         )
 
         payload = dict(config_data)
+        payload["enabled_drivers"] = enabled_list
+        payload["driver_config"] = module_config
+        payload = self._with_legacy_driver_keys(payload)
         payload["resolved_modules"] = enabled_list
+        payload["resolved_drivers"] = enabled_list
         payload["applets"] = applets
         payload["market_apps"] = market_apps
         config_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
@@ -1128,26 +1363,49 @@ def _esp32_flash_status() -> dict:
 
 
 def _serial_ports_status() -> dict:
-    ports = sorted(list(Path("/dev").glob("ttyUSB*")) + list(Path("/dev").glob("ttyACM*")))
-    out = []
-    for p in ports:
-        holder_lines: List[str] = []
+    def detect_serial_ports() -> List[str]:
+        found: set[str] = set()
         try:
-            proc = subprocess.run(
-                ["lsof", str(p)],
-                capture_output=True,
-                text=True,
-                timeout=2,
-                check=False,
-            )
-            txt = (proc.stdout or "").strip()
-            if txt:
-                lines = txt.splitlines()
-                holder_lines = lines[1:] if len(lines) > 1 else lines
+            from serial.tools import list_ports as pyserial_list_ports  # type: ignore
+            for p in pyserial_list_ports.comports():
+                dev = str(getattr(p, "device", "") or "").strip()
+                if dev:
+                    found.add(dev)
         except Exception:
-            holder_lines = []
+            pass
+
+        if os.name == "nt":
+            for i in range(1, 257):
+                found.add(f"COM{i}")
+        else:
+            for pat in ("/dev/ttyUSB*", "/dev/ttyACM*", "/dev/cu.usb*", "/dev/cu.SLAB*", "/dev/tty.usb*"):
+                for p in glob.glob(pat):
+                    found.add(p)
+        return sorted(found)
+
+    ports = detect_serial_ports()
+    out = []
+    for raw_path in ports:
+        p = Path(raw_path)
+        holder_lines: List[str] = []
+        is_windows_com = bool(re.match(r"^COM\d+$", raw_path, flags=re.IGNORECASE))
+        if not is_windows_com:
+            try:
+                proc = subprocess.run(
+                    ["lsof", str(p)],
+                    capture_output=True,
+                    text=True,
+                    timeout=2,
+                    check=False,
+                )
+                txt = (proc.stdout or "").strip()
+                if txt:
+                    lines = txt.splitlines()
+                    holder_lines = lines[1:] if len(lines) > 1 else lines
+            except Exception:
+                holder_lines = []
         out.append({
-            "path": str(p),
+            "path": raw_path,
             "busy": len(holder_lines) > 0,
             "holders": holder_lines[:8],
         })
@@ -1159,8 +1417,11 @@ def _serial_ports_status() -> dict:
 @app.route('/api/platforms', methods=['GET'])
 def get_platforms():
     """Get list of available platforms"""
+    hidden_aliases = {"atmega"}
     platforms = []
     for platform_id, platform_data in config_gen.platforms.items():
+        if platform_id in hidden_aliases:
+            continue
         platforms.append({
             'id': platform_id,
             'name': platform_data.get('name', platform_id),
@@ -1183,12 +1444,13 @@ def get_targets():
     return jsonify(list(config_gen.targets.values()))
 
 
+@app.route('/api/drivers', methods=['GET'])
 @app.route('/api/modules', methods=['GET'])
 def get_modules():
-    """Get available modules"""
+    """Get available drivers (legacy alias: /api/modules)."""
     platform = request.args.get('platform')
-    modules = getattr(config_gen, 'get_available_modules', lambda p: [dict(v, id=k) for k,v in config_gen.modules.items()])(platform)
-    return jsonify(modules)
+    drivers = getattr(config_gen, 'get_available_drivers', lambda p: [dict(v, id=k) for k,v in config_gen.modules.items()])(platform)
+    return jsonify(drivers)
 
 
 @app.route('/api/market/catalog', methods=['GET'])
@@ -1281,6 +1543,24 @@ def get_board_details(board_id):
         'pins': board.get('pins', {}),
         'capabilities': board.get('capabilities', [])
     })
+
+
+@app.route('/api/boards/custom', methods=['POST'])
+def create_custom_board():
+    """Create/update a custom board JSON under boards/<platform>/<id>/board.json."""
+    try:
+        data = request.get_json(silent=True) or {}
+        result = config_gen.create_custom_board(data)
+        return jsonify({
+            "success": True,
+            "message": "Custom board saved.",
+            "board_path": result["board_path"],
+            "board": result["board"],
+        })
+    except ValueError as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Failed to create custom board: {e}"}), 500
 
 
 @app.route('/api/templates', methods=['GET'])
@@ -1382,7 +1662,7 @@ def flash_esp32_local():
     cmd = (
         "source tools/env.sh && "
         "SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults "
-        f"idf.py -p {port} -B build flash"
+        f"idf.py -D SDKCONFIG=config/generated/sdkconfig -p {port} -B build flash"
     )
     try:
         proc = subprocess.run(
@@ -1419,7 +1699,7 @@ def build_esp32():
     cmd = (
         "source tools/env.sh && "
         "SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults "
-        "idf.py -B build build"
+        "idf.py -D SDKCONFIG=config/generated/sdkconfig -B build build"
     )
     try:
         proc = subprocess.run(
@@ -1448,15 +1728,278 @@ def build_esp32():
         return jsonify({"success": False, "error": "ESP32 build timed out."}), 504
 
 
+def _resolve_avr_project(board_id: str | None) -> tuple[Path | None, str | None]:
+    bid = str(board_id or "").strip()
+    if bid:
+        proj = CONFIG_OUTPUT_DIR / "avr" / bid
+        if proj.exists() and proj.is_dir():
+            return proj, bid
+    root = CONFIG_OUTPUT_DIR / "avr"
+    if not root.exists():
+        return None, None
+    candidates = sorted([p for p in root.iterdir() if p.is_dir()], key=lambda p: p.stat().st_mtime, reverse=True)
+    if not candidates:
+        return None, None
+    return candidates[0], candidates[0].name
+
+
+def _read_avr_meta(project_dir: Path) -> dict:
+    meta_file = project_dir / "arduino.json"
+    if not meta_file.exists():
+        return {}
+    try:
+        return json.loads(meta_file.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def _avr_flash_status(board_id: str | None = None) -> dict:
+    project_dir, resolved_board = _resolve_avr_project(board_id)
+    arduino_cli = shutil.which("arduino-cli")
+    avrdude = shutil.which("avrdude")
+    if not project_dir:
+        return {
+            "ready": False,
+            "error": "No generated AVR project found. Run Generate first.",
+            "board_id": resolved_board or str(board_id or ""),
+            "tools": {
+                "arduino_cli": bool(arduino_cli),
+                "avrdude": bool(avrdude),
+            },
+        }
+    meta = _read_avr_meta(project_dir)
+    ino = list(project_dir.glob("*.ino"))
+    return {
+        "ready": len(ino) > 0,
+        "board_id": resolved_board or str(board_id or ""),
+        "project_dir": str(project_dir),
+        "meta": meta,
+        "tools": {
+            "arduino_cli": bool(arduino_cli),
+            "avrdude": bool(avrdude),
+        },
+    }
+
+
+def _pick_default_serial_port() -> str:
+    status = _serial_ports_status()
+    ports = status.get("ports", []) or []
+    free = [p["path"] for p in ports if not p.get("busy")]
+    if free:
+        return str(free[0])
+    if ports:
+        return str(ports[0].get("path", ""))
+    return ""
+
+
+def _run_cmd(args: List[str], cwd: Path, timeout_s: int = 240) -> tuple[int, str]:
+    proc = subprocess.run(
+        args,
+        cwd=str(cwd),
+        capture_output=True,
+        text=True,
+        timeout=timeout_s,
+        check=False,
+    )
+    combined = ((proc.stdout or "") + "\n" + (proc.stderr or "")).strip()
+    tail = "\n".join(combined.splitlines()[-240:])
+    return proc.returncode, tail
+
+
+@app.route('/api/flash/avr/status', methods=['GET'])
+def flash_avr_status():
+    board_id = request.args.get("board_id")
+    return jsonify(_avr_flash_status(board_id))
+
+
+@app.route('/api/flash/avr/ports', methods=['GET'])
+def flash_avr_ports():
+    return jsonify(_serial_ports_status())
+
+
+@app.route('/api/build/avr', methods=['POST'])
+def build_avr():
+    data = request.get_json(silent=True) or {}
+    project_dir, board_id = _resolve_avr_project(data.get("board_id"))
+    if not project_dir:
+        return jsonify({"success": False, "error": "No generated AVR project found. Run Generate first."}), 404
+    if not shutil.which("arduino-cli"):
+        return jsonify({"success": False, "error": "arduino-cli not found in PATH."}), 500
+
+    meta = _read_avr_meta(project_dir)
+    req_upload = data.get("upload") if isinstance(data.get("upload"), dict) else {}
+    fqbn = str((req_upload.get("fqbn") if req_upload else None) or meta.get("board") or "arduino:avr:mega").strip()
+    try:
+        rc, out = _run_cmd(["arduino-cli", "compile", "--fqbn", fqbn, str(project_dir)], cwd=project_dir, timeout_s=420)
+        if rc == 0:
+            return jsonify({
+                "success": True,
+                "board_id": board_id,
+                "project_dir": str(project_dir),
+                "fqbn": fqbn,
+                "returncode": rc,
+                "output": out,
+            })
+        return jsonify({
+            "success": False,
+            "board_id": board_id,
+            "fqbn": fqbn,
+            "returncode": rc,
+            "error": "AVR build failed.",
+            "output": out,
+        }), 500
+    except subprocess.TimeoutExpired:
+        return jsonify({"success": False, "error": "AVR build timed out."}), 504
+
+
+@app.route('/api/flash/avr/local', methods=['POST'])
+def flash_avr_local():
+    data = request.get_json(silent=True) or {}
+    project_dir, board_id = _resolve_avr_project(data.get("board_id"))
+    if not project_dir:
+        return jsonify({"success": False, "error": "No generated AVR project found. Run Generate first."}), 404
+
+    meta = _read_avr_meta(project_dir)
+    upload = dict(meta or {})
+    req_upload = data.get("upload")
+    if isinstance(req_upload, dict):
+        upload.update(req_upload)
+
+    method = str(upload.get("upload_method") or upload.get("method") or "bootloader").strip().lower()
+    fqbn = str(upload.get("board") or upload.get("fqbn") or "arduino:avr:mega").strip()
+    mcu = str(upload.get("cpu") or upload.get("mcu") or "atmega2560").strip()
+    programmer = str(upload.get("programmer") or ("serialupdi" if method == "updi" else "wiring")).strip()
+    baud = upload.get("baud")
+    fuses = upload.get("fuses") if isinstance(upload.get("fuses"), dict) else {}
+    port = str(data.get("port") or upload.get("port") or "").strip()
+    if not port:
+        port = _pick_default_serial_port()
+    if not port and method in ("bootloader", "updi"):
+        return jsonify({"success": False, "error": "No serial port found. Connect board and retry."}), 404
+    if port and not re.match(r"^COM\d+$", port, flags=re.IGNORECASE):
+        p = Path(port)
+        if not p.exists():
+            return jsonify({"success": False, "error": f"Serial port not found: {port}"}), 404
+
+    if method == "bootloader":
+        if not shutil.which("arduino-cli"):
+            return jsonify({"success": False, "error": "arduino-cli not found in PATH."}), 500
+        cmd = ["arduino-cli", "upload", "--fqbn", fqbn, "-p", port, str(project_dir)]
+        try:
+            rc, out = _run_cmd(cmd, cwd=project_dir, timeout_s=420)
+            if rc == 0:
+                return jsonify({
+                    "success": True,
+                    "board_id": board_id,
+                    "method": method,
+                    "port": port,
+                    "fqbn": fqbn,
+                    "returncode": rc,
+                    "output": out,
+                })
+            return jsonify({
+                "success": False,
+                "board_id": board_id,
+                "method": method,
+                "port": port,
+                "fqbn": fqbn,
+                "returncode": rc,
+                "error": "AVR bootloader upload failed.",
+                "output": out,
+            }), 500
+        except subprocess.TimeoutExpired:
+            return jsonify({"success": False, "error": "AVR bootloader upload timed out."}), 504
+
+    if method not in ("isp", "updi"):
+        return jsonify({"success": False, "error": f"Unsupported AVR upload method: {method}"}), 400
+
+    if not shutil.which("arduino-cli"):
+        return jsonify({"success": False, "error": "arduino-cli not found in PATH (required to produce .hex)."}), 500
+    if not shutil.which("avrdude"):
+        return jsonify({"success": False, "error": "avrdude not found in PATH."}), 500
+
+    build_out = project_dir / "build"
+    build_out.mkdir(parents=True, exist_ok=True)
+    compile_cmd = ["arduino-cli", "compile", "--fqbn", fqbn, "--output-dir", str(build_out), str(project_dir)]
+    try:
+        rc_compile, out_compile = _run_cmd(compile_cmd, cwd=project_dir, timeout_s=420)
+    except subprocess.TimeoutExpired:
+        return jsonify({"success": False, "error": "AVR compile timed out before flashing."}), 504
+    if rc_compile != 0:
+        return jsonify({
+            "success": False,
+            "board_id": board_id,
+            "method": method,
+            "fqbn": fqbn,
+            "returncode": rc_compile,
+            "error": "AVR compile failed before flashing.",
+            "output": out_compile,
+        }), 500
+
+    hex_files = sorted(build_out.rglob("*.hex"))
+    if not hex_files:
+        return jsonify({"success": False, "error": f"No .hex file produced in {build_out}."}), 500
+    hex_file = hex_files[0]
+
+    flash_cmd = ["avrdude", "-p", mcu, "-c", programmer]
+    if port:
+        flash_cmd += ["-P", port]
+    if baud not in (None, ""):
+        try:
+            flash_cmd += ["-b", str(int(baud))]
+        except Exception:
+            return jsonify({"success": False, "error": "upload.baud must be an integer."}), 400
+    flash_cmd += ["-U", f"flash:w:{hex_file}:i"]
+    for key in ("lfuse", "hfuse", "efuse", "lock"):
+        val = str(fuses.get(key, "")).strip()
+        if val:
+            flash_cmd += ["-U", f"{key}:w:{val}:m"]
+
+    try:
+        rc_flash, out_flash = _run_cmd(flash_cmd, cwd=project_dir, timeout_s=300)
+    except subprocess.TimeoutExpired:
+        return jsonify({"success": False, "error": "AVR flash timed out."}), 504
+    if rc_flash != 0:
+        return jsonify({
+            "success": False,
+            "board_id": board_id,
+            "method": method,
+            "programmer": programmer,
+            "port": port,
+            "mcu": mcu,
+            "returncode": rc_flash,
+            "error": "AVR flash failed.",
+            "compile_output": out_compile,
+            "flash_output": out_flash,
+        }), 500
+
+    return jsonify({
+        "success": True,
+        "board_id": board_id,
+        "method": method,
+        "programmer": programmer,
+        "port": port,
+        "mcu": mcu,
+        "hex": str(hex_file),
+        "compile_output": out_compile,
+        "flash_output": out_flash,
+    })
+
+
 @app.route('/api/generate', methods=['POST'])
 def generate_config():
     """Generate configuration files based on user selections"""
     config_data = request.get_json(silent=True) or {}
-    
-    required_fields = ['platform', 'board_id', 'enabled_modules']
+    config_data["enabled_drivers"] = config_gen._enabled_drivers_from_config(config_data)
+    config_data["driver_config"] = config_gen._driver_config_from_config(config_data)
+    config_data = config_gen._with_legacy_driver_keys(config_data)
+
+    required_fields = ['platform', 'board_id']
     for field in required_fields:
         if field not in config_data:
             return jsonify({'error': f'Missing required field: {field}'}), 400
+    if not ("enabled_drivers" in config_data or "enabled_modules" in config_data):
+        return jsonify({'error': "Missing required field: enabled_drivers"}), 400
     
     try:
         output_files = config_gen.save_configuration(config_data)
@@ -1483,6 +2026,9 @@ def generate_config():
 def preview_config(config_type):
     """Preview generated configuration without saving"""
     config_data = request.get_json(silent=True) or {}
+    config_data["enabled_drivers"] = config_gen._enabled_drivers_from_config(config_data)
+    config_data["driver_config"] = config_gen._driver_config_from_config(config_data)
+    config_data = config_gen._with_legacy_driver_keys(config_data)
     
     try:
         target = config_gen._select_target(config_data)
@@ -1494,10 +2040,10 @@ def preview_config(config_type):
                 if not board:
                     raise ValueError("Board not found.")
 
-                enabled_modules = config_data.get("enabled_modules", []) or []
+                enabled_modules = config_gen._enabled_drivers_from_config(config_data)
                 config_gen._validate_module_policy(target, enabled_modules)
                 custom_pins = config_data.get("custom_pins") or {}
-                module_config = config_data.get("module_config") or {}
+                module_config = config_gen._driver_config_from_config(config_data)
                 pins = config_gen._merge_pins(board, custom_pins)
                 config_gen._validate_pins(board, pins)
 
@@ -1516,12 +2062,14 @@ def preview_config(config_type):
                 if not board:
                     raise ValueError("Board not found.")
 
-                enabled_modules = config_data.get("enabled_modules", []) or []
+                enabled_modules = config_gen._enabled_drivers_from_config(config_data)
                 config_gen._validate_module_policy(target, enabled_modules)
                 custom_pins = config_data.get("custom_pins") or {}
-                module_config = config_data.get("module_config") or {}
+                module_config = config_gen._driver_config_from_config(config_data)
                 pins = config_gen._merge_pins(board, custom_pins)
                 config_gen._validate_pins(board, pins)
+                clock = config_gen._avr_clock_from_config(config_data, board)
+                fuses = config_gen._avr_fuses_from_config(config_data, board)
 
                 content = render_avr_preview(
                     board_id=board_id,
@@ -1529,15 +2077,16 @@ def preview_config(config_type):
                     enabled_modules=enabled_modules,
                     pins=pins,
                     module_config=module_config,
-                    clock=(board.get("defaults") or {}).get("clock"),
+                    clock=clock,
+                    fuses=fuses,
                 )
             else:
                 content = config_gen.generate_basalt_config_h(
                     config_data['board_id'],
-                    config_data['enabled_modules'],
+                    config_data['enabled_drivers'],
                     config_data.get('custom_pins', {}),
                     config_data.get('platform'),
-                    config_data.get('module_config', {}),
+                    config_data.get('driver_config', {}),
                     config_data.get('applets', []),
                     config_data.get('market_apps', []),
                 )
@@ -1545,7 +2094,7 @@ def preview_config(config_type):
             content = config_gen.generate_sdkconfig_defaults(
                 config_data['board_id'],
                 config_data['platform'],
-                config_data['enabled_modules']
+                config_data['enabled_drivers']
             )
         else:
             return jsonify({'error': 'Invalid config type'}), 400
@@ -1576,10 +2125,10 @@ def index():
 if __name__ == '__main__':
     print("BasaltOS Configuration Server")
     print(f"Boards directory: {BOARDS_DIR}")
-    print(f"Modules directory: {MODULES_DIR}")
+    print(f"Drivers directory: {MODULES_DIR}")
     print(f"Platforms directory: {PLATFORMS_DIR}")
     print(f"Loaded {len(config_gen.boards)} boards")
-    print(f"Loaded {len(config_gen.modules)} modules")
+    print(f"Loaded {len(config_gen.modules)} drivers")
     print(f"Loaded {len(config_gen.platforms)} platforms")
     print("\nStarting server on http://localhost:5000")
     app.run(debug=True, host='0.0.0.0', port=5000)

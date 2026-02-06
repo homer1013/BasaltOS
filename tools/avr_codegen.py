@@ -5,6 +5,7 @@ Generates a minimal sketch scaffold and config header.
 """
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -21,6 +22,8 @@ def _emit_basalt_config_h(
     pins: Dict[str, str],
     module_config: Optional[dict] = None,
     clock: Optional[dict] = None,
+    fuses: Optional[dict] = None,
+    applets: Optional[List[str]] = None,
 ) -> None:
     lines: List[str] = []
     lines.append("#pragma once")
@@ -31,6 +34,13 @@ def _emit_basalt_config_h(
 
     if clock:
         lines.append(f"#define BASALT_CLOCK_HZ {int(clock.get('freq_hz', 16000000))}")
+    if fuses:
+        for key in ("lfuse", "hfuse", "efuse", "lock"):
+            if key in fuses and str(fuses.get(key)).strip():
+                lines.append(f"#define BASALT_FUSE_{key.upper()} \"{str(fuses.get(key)).strip()}\"")
+    applets = applets or []
+    lines.append(f"#define BASALT_APPLET_COUNT {len(applets)}")
+    lines.append(f"#define BASALT_APPLETS_CSV \"{','.join(applets)}\"")
 
     lines.append("")
     lines.append("// Enabled modules")
@@ -85,33 +95,94 @@ void loop() {
 def _emit_app_cpp(out_path: Path, applets: Optional[List[str]] = None) -> None:
     applets = applets or []
     decls: List[str] = []
-    init_calls: List[str] = []
-    loop_calls: List[str] = []
+    init_ptrs: List[str] = []
+    loop_ptrs: List[str] = []
+    names: List[str] = []
     for applet in applets:
         safe = applet.strip().replace("-", "_")
         decls.append(f"void applet_{safe}_init(void) __attribute__((weak));")
         decls.append(f"void applet_{safe}_loop(void) __attribute__((weak));")
         decls.append(f"void applet_{safe}_init(void) {{}}")
         decls.append(f"void applet_{safe}_loop(void) {{}}")
-        init_calls.append(f"    applet_{safe}_init();")
-        loop_calls.append(f"    applet_{safe}_loop();")
+        init_ptrs.append(f"    applet_{safe}_init,")
+        loop_ptrs.append(f"    applet_{safe}_loop,")
+        names.append(f"    \"{safe}\",")
 
     out_path.write_text(
         "\n".join(
             [
                 "#include <Arduino.h>",
+                "#include <string.h>",
                 '#include "basalt_config.h"',
+                "",
+                "typedef void (*applet_fn_t)(void);",
                 "",
                 *decls,
                 "",
+                f"static const size_t k_applet_count = {len(applets)};",
+                "static const char *k_applet_names[] = {",
+                *names,
+                "};",
+                "static applet_fn_t k_applet_init[] = {",
+                *init_ptrs,
+                "};",
+                "static applet_fn_t k_applet_loop[] = {",
+                *loop_ptrs,
+                "};",
+                "static bool k_applet_inited[64] = {false};",
+                "static int g_active_applet = -1;",
+                "",
+                "size_t basalt_app_count(void) {",
+                "    return k_applet_count;",
+                "}",
+                "",
+                "const char *basalt_app_name(size_t idx) {",
+                "    if (idx >= k_applet_count) return nullptr;",
+                "    return k_applet_names[idx];",
+                "}",
+                "",
+                "const char *basalt_app_active_name(void) {",
+                "    if (g_active_applet < 0 || (size_t)g_active_applet >= k_applet_count) return nullptr;",
+                "    return k_applet_names[g_active_applet];",
+                "}",
+                "",
+                "bool basalt_app_run(const char *name) {",
+                "    if (!name || !*name) return false;",
+                "    for (size_t i = 0; i < k_applet_count; ++i) {",
+                "        if (strcmp(k_applet_names[i], name) == 0) {",
+                "            g_active_applet = (int)i;",
+                "            return true;",
+                "        }",
+                "    }",
+                "    return false;",
+                "}",
+                "",
+                "void basalt_app_stop(void) {",
+                "    g_active_applet = -1;",
+                "}",
+                "",
+                "#if defined(BASALT_ENABLE_SHELL_MIN) || defined(BASALT_ENABLE_SHELL_FULL)",
+                "void basalt_shell_init(void);",
+                "void basalt_shell_poll(void);",
+                "#endif",
+                "",
                 "void app_init(void) {",
                 "    // TODO: application init",
-                *init_calls,
+                "#if defined(BASALT_ENABLE_SHELL_MIN) || defined(BASALT_ENABLE_SHELL_FULL)",
+                "    basalt_shell_init();",
+                "#endif",
                 "}",
                 "",
                 "void app_loop(void) {",
-                "    // TODO: application loop",
-                *loop_calls,
+                "#if defined(BASALT_ENABLE_SHELL_MIN) || defined(BASALT_ENABLE_SHELL_FULL)",
+                "    basalt_shell_poll();",
+                "#endif",
+                "    if (g_active_applet < 0 || (size_t)g_active_applet >= k_applet_count) return;",
+                "    if (!k_applet_inited[g_active_applet]) {",
+                "        k_applet_inited[g_active_applet] = true;",
+                "        k_applet_init[g_active_applet]();",
+                "    }",
+                "    k_applet_loop[g_active_applet]();",
                 "}",
                 "",
             ]
@@ -399,6 +470,250 @@ void applet_remote_node_loop(void) {
     )
 
 
+def _emit_shell_runtime(out_path: Path, full_shell: bool) -> None:
+    unsupported_cmds = [
+        "cat", "cd", "mkdir", "cp", "mv", "rm", "edit", "install", "remove", "logs", "wifi", "bluetooth", "imu"
+    ] if full_shell else [
+        "cat", "cd", "mkdir", "cp", "mv", "rm", "edit", "install", "remove", "logs", "wifi", "bluetooth", "imu"
+    ]
+    unsupported_list = ", ".join([f"\"{c}\"" for c in unsupported_cmds])
+    out_path.write_text(
+        f"""#include <Arduino.h>
+#include <string.h>
+#include <stdlib.h>
+#include "basalt_config.h"
+
+size_t basalt_app_count(void);
+const char *basalt_app_name(size_t idx);
+const char *basalt_app_active_name(void);
+bool basalt_app_run(const char *name);
+void basalt_app_stop(void);
+
+static HardwareSerial &shell_port() {{
+#if defined(BASALT_CFG_UART_UART_NUM)
+#if BASALT_CFG_UART_UART_NUM == 1
+    return Serial1;
+#elif BASALT_CFG_UART_UART_NUM == 2
+    return Serial2;
+#elif BASALT_CFG_UART_UART_NUM == 3
+    return Serial3;
+#else
+    return Serial;
+#endif
+#else
+    return Serial;
+#endif
+}}
+
+static unsigned long shell_baud() {{
+#if defined(BASALT_CFG_UART_UART_BAUDRATE)
+    return (unsigned long)BASALT_CFG_UART_UART_BAUDRATE;
+#else
+    return 115200UL;
+#endif
+}}
+
+static char g_line[128];
+static size_t g_line_len = 0;
+
+static void sh_print_prompt() {{
+    shell_port().print("basalt> ");
+}}
+
+static bool sh_equals(const char *a, const char *b) {{
+    return a && b && strcmp(a, b) == 0;
+}}
+
+static void sh_help(const char *arg) {{
+    if (!arg || !*arg) {{
+        shell_port().println("Basalt shell. Type 'help -commands' for list.");
+        return;
+    }}
+    if (sh_equals(arg, "-commands")) {{
+        shell_port().println("help, pwd, ls, apps, run <app>, stop, led_test [pin], drivers, reboot");
+        shell_port().println("cat, cd, mkdir, cp, mv, rm, edit, install, remove, logs, wifi, bluetooth, imu (stubs)");
+        return;
+    }}
+    if (sh_equals(arg, "run")) {{
+        shell_port().println("run <app>: run one selected applet by name");
+        return;
+    }}
+    if (sh_equals(arg, "apps")) {{
+        shell_port().println("apps: list compiled applets");
+        return;
+    }}
+    shell_port().print("help: no detailed entry for ");
+    shell_port().println(arg);
+}}
+
+static void sh_led_test(const char *arg) {{
+    long pin = -1;
+    if (arg && *arg) pin = strtol(arg, nullptr, 10);
+#ifdef BASALT_PIN_LED
+    if (pin < 0) pin = BASALT_PIN_LED;
+#endif
+    if (pin < 0) {{
+        shell_port().println("led_test: no LED pin configured");
+        return;
+    }}
+    pinMode((uint8_t)pin, OUTPUT);
+    shell_port().print("led_test pin=");
+    shell_port().println((int)pin);
+    for (int i = 0; i < 8; ++i) {{
+        digitalWrite((uint8_t)pin, (i & 1) ? HIGH : LOW);
+        delay(110);
+    }}
+    digitalWrite((uint8_t)pin, LOW);
+}}
+
+static void sh_drivers() {{
+    shell_port().println("drivers:");
+#ifdef BASALT_ENABLE_GPIO
+    shell_port().println("  gpio: enabled");
+#else
+    shell_port().println("  gpio: disabled");
+#endif
+#ifdef BASALT_ENABLE_UART
+    shell_port().println("  uart: enabled");
+#else
+    shell_port().println("  uart: disabled");
+#endif
+#ifdef BASALT_ENABLE_I2C
+    shell_port().println("  i2c: enabled");
+#else
+    shell_port().println("  i2c: disabled");
+#endif
+#ifdef BASALT_ENABLE_SPI
+    shell_port().println("  spi: enabled");
+#else
+    shell_port().println("  spi: disabled");
+#endif
+#ifdef BASALT_ENABLE_SHELL_FULL
+    shell_port().println("  shell: full");
+#elif defined(BASALT_ENABLE_SHELL_MIN)
+    shell_port().println("  shell: minimal");
+#else
+    shell_port().println("  shell: off");
+#endif
+}}
+
+static void sh_apps() {{
+    const size_t n = basalt_app_count();
+    if (n == 0) {{
+        shell_port().println("apps: none");
+        return;
+    }}
+    for (size_t i = 0; i < n; ++i) {{
+        shell_port().print("- ");
+        shell_port().println(basalt_app_name(i));
+    }}
+}}
+
+static void sh_handle_line(char *line) {{
+    while (*line == ' ' || *line == '\\t') line++;
+    if (!*line) return;
+
+    char *cmd = strtok(line, " \\t");
+    char *arg = strtok(nullptr, "");
+    while (arg && (*arg == ' ' || *arg == '\\t')) arg++;
+
+    if (sh_equals(cmd, "help")) {{
+        sh_help(arg);
+        return;
+    }}
+    if (sh_equals(cmd, "pwd")) {{
+        shell_port().println("/");
+        return;
+    }}
+    if (sh_equals(cmd, "ls")) {{
+        shell_port().println("apps");
+        return;
+    }}
+    if (sh_equals(cmd, "apps")) {{
+        sh_apps();
+        return;
+    }}
+    if (sh_equals(cmd, "run")) {{
+        if (!arg || !*arg) {{
+            shell_port().println("run: missing app name");
+            return;
+        }}
+        if (basalt_app_run(arg)) {{
+            shell_port().print("run: ");
+            shell_port().println(arg);
+        }} else {{
+            shell_port().print("run: unknown app: ");
+            shell_port().println(arg);
+        }}
+        return;
+    }}
+    if (sh_equals(cmd, "stop")) {{
+        basalt_app_stop();
+        shell_port().println("stop: ok");
+        return;
+    }}
+    if (sh_equals(cmd, "led_test")) {{
+        sh_led_test(arg);
+        return;
+    }}
+    if (sh_equals(cmd, "drivers")) {{
+        sh_drivers();
+        return;
+    }}
+    if (sh_equals(cmd, "reboot")) {{
+        shell_port().println("rebooting...");
+        delay(50);
+        void (*reset_fn)(void) = 0;
+        reset_fn();
+        return;
+    }}
+
+    static const char *k_unsupported[] = {{{unsupported_list}}};
+    for (size_t i = 0; i < sizeof(k_unsupported) / sizeof(k_unsupported[0]); ++i) {{
+        if (sh_equals(cmd, k_unsupported[i])) {{
+            shell_port().print(cmd);
+            shell_port().println(": not supported on AVR runtime yet");
+            return;
+        }}
+    }}
+
+    shell_port().print("unknown command: ");
+    shell_port().println(cmd);
+}}
+
+void basalt_shell_init(void) {{
+    shell_port().begin(shell_baud());
+    delay(20);
+    shell_port().println("Basalt shell (AVR) ready. Type 'help'.");
+    sh_print_prompt();
+}}
+
+void basalt_shell_poll(void) {{
+    while (shell_port().available() > 0) {{
+        const int ch = shell_port().read();
+        if (ch < 0) break;
+        if (ch == '\\r' || ch == '\\n') {{
+            shell_port().println();
+            g_line[g_line_len] = 0;
+            sh_handle_line(g_line);
+            g_line_len = 0;
+            sh_print_prompt();
+            continue;
+        }}
+        if (ch == 8 || ch == 127) {{
+            if (g_line_len > 0) g_line_len--;
+            continue;
+        }}
+        if (g_line_len + 1 < sizeof(g_line)) {{
+            g_line[g_line_len++] = (char)ch;
+        }}
+    }}
+}}
+""",
+        encoding="utf-8",
+    )
+
+
 def generate_avr_project(
     out_dir: Path,
     board_id: str,
@@ -407,7 +722,9 @@ def generate_avr_project(
     pins: Dict[str, str],
     module_config: Optional[dict] = None,
     clock: Optional[dict] = None,
+    fuses: Optional[dict] = None,
     applets: Optional[List[str]] = None,
+    upload_profile: Optional[dict] = None,
 ) -> Dict[str, str]:
     include_dir = out_dir / "include"
     src_dir = out_dir / "src"
@@ -428,6 +745,8 @@ def generate_avr_project(
         pins=pins,
         module_config=module_config,
         clock=clock,
+        fuses=fuses,
+        applets=applets,
     )
     _emit_basalt_config_h(
         include_dir / "basalt_config.h",
@@ -437,6 +756,8 @@ def generate_avr_project(
         pins=pins,
         module_config=module_config,
         clock=clock,
+        fuses=fuses,
+        applets=applets,
     )
     _emit_basalt_config_h(
         src_dir / "basalt_config.h",
@@ -446,6 +767,8 @@ def generate_avr_project(
         pins=pins,
         module_config=module_config,
         clock=clock,
+        fuses=fuses,
+        applets=applets,
     )
 
     sketch_name = out_dir.name
@@ -471,6 +794,9 @@ def generate_avr_project(
     for mid, emitter in module_to_driver.items():
         if mid in enabled_modules:
             emitter(drivers_dir / f"{mid}.cpp")
+
+    if "shell_min" in enabled_modules or "shell_full" in enabled_modules:
+        _emit_shell_runtime(src_dir / "shell.cpp", full_shell=("shell_full" in enabled_modules))
 
     for applet in applets or []:
         safe = applet.strip().replace("-", "_")
@@ -498,14 +824,20 @@ build_flags =
         encoding="utf-8",
     )
 
+    up = upload_profile or {}
     arduino_meta = out_dir / "arduino.json"
     arduino_meta.write_text(
-        """{
-  "board": "arduino:avr:mega",
-  "cpu": "atmega2560",
-  "clock_hz": 16000000
-}
-""",
+        (
+            "{\n"
+            f"  \"board\": \"{up.get('fqbn', 'arduino:avr:mega')}\",\n"
+            f"  \"cpu\": \"{up.get('mcu', 'atmega2560')}\",\n"
+            f"  \"clock_hz\": {int((clock or {}).get('freq_hz', 16000000))},\n"
+            f"  \"upload_method\": \"{up.get('method', 'bootloader')}\",\n"
+            f"  \"programmer\": \"{up.get('programmer', 'wiring')}\",\n"
+            f"  \"baud\": {int(up.get('baud', 115200))},\n"
+            f"  \"fuses\": {json.dumps(fuses or {}, indent=2)}\n"
+            "}\n"
+        ),
         encoding="utf-8",
     )
 
@@ -530,7 +862,7 @@ Use platformio.ini with `pio run`.
         encoding="utf-8",
     )
 
-    return {
+    result = {
         "basalt_config.h": str(basalt_h),
         f"{sketch_name}.ino": str(out_dir / f"{sketch_name}.ino"),
         "app.cpp": str(out_dir / "app.cpp"),
@@ -539,7 +871,10 @@ Use platformio.ini with `pio run`.
         "drivers_dir": str(drivers_dir),
         "apps_dir": str(apps_dir),
         "README.md": str(readme),
-    } 
+    }
+    if "shell_min" in enabled_modules or "shell_full" in enabled_modules:
+        result["shell.cpp"] = str(src_dir / "shell.cpp")
+    return result
 
 
 def render_basalt_config_preview(
@@ -549,6 +884,7 @@ def render_basalt_config_preview(
     pins: Dict[str, str],
     module_config: Optional[dict] = None,
     clock: Optional[dict] = None,
+    fuses: Optional[dict] = None,
 ) -> str:
     tmp = Path("/tmp") / "basalt_avr_preview.h"
     _emit_basalt_config_h(
@@ -559,5 +895,6 @@ def render_basalt_config_preview(
         pins=pins,
         module_config=module_config,
         clock=clock,
+        fuses=fuses,
     )
     return tmp.read_text(encoding="utf-8")
