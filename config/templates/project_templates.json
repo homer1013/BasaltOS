@@ -3,11 +3,12 @@
     {
       "id": "display_app",
       "name": "Display Application",
-      "description": "Basic TFT display application with console output and file storage",
+      "description": "Basic TFT display app with console output and internal storage.",
       "icon": "🖥️",
       "platforms": ["esp32"],
       "recommended_boards": ["cyd", "m5stickc_plus2"],
       "enabled_modules": ["uart", "spi", "tft", "fs_spiffs", "shell_full"],
+      "applets": ["tft_hello", "system_info"],
       "module_config": {
         "tft": {
           "tft_driver": "ST7796",
@@ -27,52 +28,96 @@
     {
       "id": "cyd_full_stack",
       "name": "CYD Full Stack",
-      "description": "TFT console + SPIFFS + SD for the CYD display",
+      "description": "TFT console + SPIFFS + SD + I2C baseline for CYD bring-up.",
       "icon": "🟨",
       "platforms": ["esp32"],
       "recommended_boards": ["cyd"],
-      "enabled_modules": ["uart", "spi", "i2c", "tft", "fs_spiffs", "fs_sd", "shell_full"],
+      "enabled_modules": ["gpio", "uart", "spi", "i2c", "tft", "fs_spiffs", "fs_sd", "shell_full"],
+      "applets": ["tft_hello", "sd_probe", "fs_smoke", "system_info"],
       "module_config": {
         "tft": {
           "tft_driver": "ST7796",
           "tft_width": 320,
-          "tft_height": 480
+          "tft_height": 480,
+          "tft_spi_speed": 10000000
         },
         "uart": {
           "uart_baudrate": 115200
         }
       },
-      "tags": ["display", "storage", "popular"]
+      "tags": ["display", "storage", "popular", "cyd"]
     },
     {
-      "id": "iot_sensor",
-      "name": "IoT Sensor Hub",
-      "description": "WiFi-enabled sensor hub with I2C sensors and SD card data logging",
-      "icon": "🌡️",
+      "id": "cyd_ui_lab",
+      "name": "CYD UI Lab",
+      "description": "UI-focused setup with TFT + shell + applet set for display experiments.",
+      "icon": "🎛️",
       "platforms": ["esp32"],
-      "recommended_boards": ["esp32-devkitc_v4", "cyd"],
-      "enabled_modules": ["uart", "i2c", "wifi", "fs_sd", "shell_min"],
+      "recommended_boards": ["cyd"],
+      "enabled_modules": ["uart", "spi", "tft", "fs_spiffs", "shell_full"],
+      "applets": ["tft_hello", "system_info", "blink"],
+      "module_config": {
+        "tft": {
+          "tft_driver": "ST7796",
+          "tft_width": 320,
+          "tft_height": 480,
+          "tft_spi_speed": 12000000
+        },
+        "uart": {
+          "uart_baudrate": 115200
+        }
+      },
+      "tags": ["ui", "display", "cyd"]
+    },
+    {
+      "id": "cyd_sensor_logger",
+      "name": "CYD Sensor Logger",
+      "description": "I2C sensor stack with SD logging and diagnostic applets.",
+      "icon": "📈",
+      "platforms": ["esp32"],
+      "recommended_boards": ["cyd", "esp32-devkitc_v4"],
+      "enabled_modules": ["gpio", "uart", "i2c", "spi", "fs_sd", "fs_spiffs", "shell_full"],
+      "applets": ["i2c_scan", "sd_probe", "fs_smoke", "system_info"],
+      "module_config": {
+        "uart": {
+          "uart_baudrate": 115200
+        }
+      },
+      "tags": ["sensors", "storage", "cyd"]
+    },
+    {
+      "id": "cyd_remote_node",
+      "name": "CYD Remote Node",
+      "description": "UART remote node baseline with shell and status applets.",
+      "icon": "📡",
+      "platforms": ["esp32"],
+      "recommended_boards": ["cyd"],
+      "enabled_modules": ["gpio", "uart", "remote_node", "fs_spiffs", "shell_full"],
+      "applets": ["remote_node", "system_info", "blink"],
       "module_config": {
         "uart": {
           "uart_baudrate": 115200
         },
-        "i2c": {
-          "i2c_speed": 100000
+        "remote_node": {
+          "node_id": 1,
+          "uart_port": 0,
+          "protocol": "basalt-simple-v1"
         }
       },
-      "tags": ["iot", "sensors", "wifi"]
+      "tags": ["remote", "uart", "cyd"]
     },
     {
       "id": "data_logger",
       "name": "Data Logger",
-      "description": "High-speed data logger with SD card storage and RTC",
+      "description": "High-speed logger with SD card storage and serial output.",
       "icon": "📊",
       "platforms": ["esp32"],
-      "recommended_boards": ["esp32-devkitc_v4"],
-      "enabled_modules": ["uart", "spi", "fs_sd", "i2c"],
+      "recommended_boards": ["esp32-devkitc_v4", "cyd"],
+      "enabled_modules": ["gpio", "uart", "spi", "fs_sd", "i2c"],
+      "applets": ["sd_probe", "fs_smoke", "i2c_scan"],
       "module_config": {
         "uart": {
-          "uart_baudrate": 921600
+          "uart_baudrate": 460800
         }
       },
       "tags": ["logging", "storage", "advanced"]
@@ -80,11 +125,12 @@
     {
       "id": "minimal_embedded",
       "name": "Minimal Embedded System",
-      "description": "Bare minimum configuration for resource-constrained applications",
+      "description": "Minimal shell + UART baseline for quick bring-up.",
       "icon": "⚡",
       "platforms": ["esp32", "atmega", "stm32"],
       "recommended_boards": ["esp32-c3-supermini"],
       "enabled_modules": ["uart", "shell_min"],
+      "applets": ["blink"],
       "module_config": {
         "uart": {
           "uart_baudrate": 115200,
@@ -96,11 +142,12 @@
     {
       "id": "mega2560_bringup",
       "name": "Mega 2560 Bring-up",
-      "description": "GPIO + UART + Timer baseline for Arduino Mega 2560",
+      "description": "GPIO + UART + Timer baseline for Arduino Mega 2560.",
       "icon": "🧰",
       "platforms": ["avr"],
       "recommended_boards": ["mega2560"],
       "enabled_modules": ["gpio", "uart", "timer"],
+      "applets": ["blink", "uart_echo"],
       "module_config": {
         "uart": {
           "uart_num": 0,
@@ -112,11 +159,12 @@
     {
       "id": "uno_minimal",
       "name": "Uno Minimal",
-      "description": "ATmega328P minimal config (GPIO + UART)",
+      "description": "ATmega328P minimal config (GPIO + UART).",
       "icon": "🧱",
       "platforms": ["atmega"],
       "recommended_boards": ["arduino_uno_r3"],
       "enabled_modules": ["gpio", "uart"],
+      "applets": ["blink"],
       "module_config": {
         "uart": {
           "uart_num": 0,
@@ -128,56 +176,26 @@
     {
       "id": "pico_sensors",
       "name": "Pico Sensor Core",
-      "description": "RP2040 sensor-ready baseline (I2C + UART)",
+      "description": "RP2040 sensor-ready baseline (I2C + UART).",
       "icon": "🧪",
       "platforms": ["rp2040"],
       "recommended_boards": ["raspberry_pi_pico"],
       "enabled_modules": ["gpio", "uart", "i2c", "timer"],
+      "applets": ["blink", "i2c_scan"],
       "module_config": {},
       "tags": ["rp2040", "sensors"]
     },
     {
       "id": "nucleo_console",
       "name": "Nucleo Console",
-      "description": "STM32 console + GPIO baseline",
+      "description": "STM32 console + GPIO baseline.",
       "icon": "🧭",
       "platforms": ["stm32"],
       "recommended_boards": ["nucleo_f401re"],
       "enabled_modules": ["gpio", "uart", "timer"],
+      "applets": ["blink", "uart_echo"],
       "module_config": {},
       "tags": ["stm32", "baseline"]
-    },
-    {
-      "id": "touchscreen_ui",
-      "name": "Touchscreen UI",
-      "description": "Full-featured touchscreen interface with storage and connectivity",
-      "icon": "📱",
-      "platforms": ["esp32"],
-      "recommended_boards": ["cyd"],
-      "enabled_modules": ["uart", "spi", "tft", "fs_spiffs", "fs_sd", "wifi", "shell_full"],
-      "module_config": {
-        "tft": {
-          "tft_driver": "ST7796",
-          "tft_width": 320,
-          "tft_height": 480
-        }
-      },
-      "tags": ["ui", "touchscreen", "advanced", "popular"]
-    },
-    {
-      "id": "bluetooth_peripheral",
-      "name": "Bluetooth Peripheral",
-      "description": "Bluetooth Low Energy peripheral device with sensor support",
-      "icon": "📘",
-      "platforms": ["esp32"],
-      "recommended_boards": ["esp32-c3-supermini", "m5stickc_plus2"],
-      "enabled_modules": ["uart", "bluetooth", "i2c", "fs_spiffs"],
-      "module_config": {
-        "uart": {
-          "uart_baudrate": 115200
-        }
-      },
-      "tags": ["bluetooth", "ble", "wireless"]
     }
   ]
 }

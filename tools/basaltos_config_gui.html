@@ -12,9 +12,9 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
             background: #f5f5f5;
-            color: #333;
+            color: #1f2937;
         }
 
         .container {
@@ -23,23 +23,239 @@
             padding: 20px;
         }
 
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
+        .app-topbar {
+            background: #ffffff;
+            border: 1px solid #dbeafe;
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #0369a1, #0ea5a4);
+            color: #fff;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .brand-sub {
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-chip {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #ecfeff;
+            color: #155e75;
+            font-weight: 700;
+            font-size: 12px;
+            border: 1px solid #a5f3fc;
+        }
+
+        .btn-nav {
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #0f172a;
             border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
         }
 
-        header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
+        .btn-nav:hover {
+            background: #f8fafc;
         }
 
-        header p {
-            opacity: 0.9;
-            font-size: 16px;
+        .landing-home {
+            background: #ffffff;
+            color: #1f2937;
+            border: 1px solid #dbeafe;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        .landing-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .landing-hero h1 {
+            font-size: 34px;
+            line-height: 1.1;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .landing-hero p {
+            color: #475569;
+            max-width: 60ch;
+            margin-bottom: 18px;
+        }
+
+        .landing-cta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .landing-card {
+            border: 1px solid #dbeafe;
+            background: #f8fbff;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .landing-card h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #1e3a8a;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .landing-card ul {
+            list-style: none;
+            font-size: 13px;
+            color: #334155;
+            display: grid;
+            gap: 6px;
+        }
+
+        .landing-stat {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .landing-stat-box {
+            border-radius: 10px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 8px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .landing-stat-box strong {
+            display: block;
+            font-size: 18px;
+            color: #1d4ed8;
+        }
+
+        #configurator-shell, #market-shell {
+            display: none;
+        }
+
+        .market-shell {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid #dbeafe;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        .market-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .market-card {
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            background: #f8fbff;
+            padding: 12px;
+        }
+
+        .market-card h4 {
+            margin-bottom: 6px;
+            color: #0f172a;
+        }
+
+        .market-card p {
+            font-size: 13px;
+            color: #475569;
+            min-height: 36px;
+        }
+
+        .market-meta {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .market-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .market-upload {
+            margin-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 14px;
+        }
+
+        .market-upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .market-upload-grid input,
+        .market-upload-grid textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 13px;
         }
 
         .wizard-steps {
@@ -143,6 +359,82 @@
             font-weight: 600;
         }
 
+        .board-group {
+            margin-bottom: 12px;
+        }
+
+        .board-group-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #718096;
+            margin: 10px 0 6px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .profile-card {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f8fbff;
+            border: 1px solid #d9e7ff;
+        }
+
+        .profile-card label {
+            display: block;
+            font-size: 12px;
+            color: #4a5568;
+            margin-bottom: 6px;
+        }
+
+        .profile-card input[type="text"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .profile-stats {
+            font-size: 12px;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .inventory-panel {
+            margin-top: 8px;
+            border-top: 1px solid #d9e7ff;
+            padding-top: 8px;
+        }
+
+        .inventory-list {
+            max-height: 170px;
+            overflow: auto;
+            margin-top: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px;
+            background: #fff;
+        }
+
+        .inventory-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #2d3748;
+        }
+
+        .board-empty {
+            padding: 10px;
+            border-radius: 6px;
+            background: #f7fafc;
+            color: #4a5568;
+            font-size: 13px;
+        }
+
         .main-content {
             background: white;
             padding: 30px;
@@ -221,6 +513,44 @@
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 15px;
             margin-top: 20px;
+        }
+
+        .module-section {
+            margin-top: 14px;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            background: #f8fbff;
+            overflow: hidden;
+        }
+
+        .module-section summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 12px 14px;
+            font-weight: 700;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .module-section summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .module-section-count {
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            background: #e2e8f0;
+            border-radius: 999px;
+            padding: 2px 8px;
+        }
+
+        .module-subgrid {
+            margin-top: 0;
+            padding: 0 12px 12px 12px;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
         }
 
         .module-card {
@@ -471,6 +801,7 @@
 
         .module-filters {
             display: flex;
+            align-items: center;
             gap: 15px;
             margin-bottom: 20px;
             flex-wrap: wrap;
@@ -487,6 +818,28 @@
         .module-filters label {
             font-size: 13px;
             color: #4a5568;
+        }
+
+        .module-layout-controls {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-mini {
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #334155;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+
+        .btn-mini:hover {
+            background: #eef2ff;
+            border-color: #a5b4fc;
         }
 
         .pin-config {
@@ -816,6 +1169,150 @@
             color: #22543d;
         }
 
+        .alert-danger {
+            background: #fed7d7;
+            border-left: 4px solid #e53e3e;
+            color: #742a2a;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            pointer-events: auto;
+            min-width: 260px;
+            max-width: 460px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            color: #fff;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .toast.info { background: #2b6cb0; }
+        .toast.success { background: #2f855a; }
+        .toast.warning { background: #b7791f; }
+        .toast.error { background: #c53030; }
+
+        .inline-output {
+            margin-top: 16px;
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+            color: #2d3748;
+            display: none;
+        }
+
+        .web-flasher-panel {
+            margin-top: 24px;
+            border: 1px solid #d6e5f5;
+            border-radius: 10px;
+            background: linear-gradient(180deg, #f7fbff 0%, #edf5ff 100%);
+            padding: 16px;
+        }
+
+        .web-flasher-panel h3 {
+            margin: 0 0 8px 0;
+        }
+
+        .web-flasher-subtitle {
+            color: #334155;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .web-flasher-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 8px 0 10px 0;
+        }
+
+        .web-flasher-badge {
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 4px 10px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        .web-flasher-badge.ok {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .web-flasher-badge.warn {
+            background: #fef3c7;
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+
+        .web-flasher-badge.err {
+            background: #fee2e2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .web-flasher-steps {
+            margin: 8px 0 6px 18px;
+            color: #1f2937;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .web-flasher-hint {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #334155;
+        }
+
+        .web-flasher-controls {
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .web-flasher-notes {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #bfdbfe;
+            background: #eff6ff;
+            color: #1e3a8a;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .web-flasher-notes code {
+            font-size: 11px;
+        }
+
+        .web-flasher-status {
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            color: #2d3748;
+        }
+
         .search-box {
             width: 100%;
             padding: 10px;
@@ -829,15 +1326,108 @@
             outline: none;
             border-color: #667eea;
         }
+
+        @media (max-width: 900px) {
+            .landing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .config-panel {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
+    <div id="toast-container" class="toast-container"></div>
     <div class="container">
-        <header>
-            <h1>🏔️ BasaltOS Configurator</h1>
-            <p>Configure your embedded system with ease - from ESP32 to ATtiny85</p>
-        </header>
+        <div class="app-topbar">
+            <div class="brand">
+                <span class="brand-mark">B</span>
+                <div>
+                    <div class="brand-title">BasaltOS Configurator</div>
+                    <div class="brand-sub">Build, configure, flash, and manage your board setups</div>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <button id="btn-home" class="btn-nav" type="button">Home</button>
+                <button id="btn-open-config" class="btn-nav" type="button">Open Configurator</button>
+                <button id="btn-market" class="btn-nav" type="button">App Market</button>
+                <button id="btn-login" class="btn-nav" type="button">Sign In</button>
+                <div id="top-profile-chip" class="profile-chip">Guest</div>
+            </div>
+        </div>
 
+        <section id="landing-home" class="landing-home">
+            <div class="landing-grid">
+                <div class="landing-hero">
+                    <h1>Welcome to the BasaltOS Builder</h1>
+                    <p>
+                        Start from templates, tune modules and pins, then flash directly to ESP32 from the browser.
+                        You can keep a profile and board inventory so the workspace feels personal and repeatable.
+                    </p>
+                    <div class="landing-cta">
+                        <button id="btn-start-config" class="btn btn-success" type="button">Start Configuring</button>
+                        <button id="btn-start-esp32" class="btn btn-secondary" type="button">Quick Start: ESP32</button>
+                    </div>
+                    <div class="landing-stat">
+                        <div class="landing-stat-box"><strong id="stat-platforms">0</strong>Platforms</div>
+                        <div class="landing-stat-box"><strong id="stat-boards">0</strong>Boards</div>
+                        <div class="landing-stat-box"><strong id="stat-market">0</strong>Market Apps</div>
+                    </div>
+                </div>
+                <div class="landing-card">
+                    <h3>Getting Started</h3>
+                    <ul>
+                        <li>1. Pick a board or template</li>
+                        <li>2. Enable modules, starter apps, and market apps</li>
+                        <li>3. Generate + Build, then Connect & Flash</li>
+                        <li>4. Run apps from shell: <code>run &lt;app&gt;</code></li>
+                    </ul>
+                    <h3 style="margin-top:12px;">Tips</h3>
+                    <ul>
+                        <li>Use profile inventory to filter boards you own.</li>
+                        <li>Use templates for reproducible project presets.</li>
+                        <li>Web flasher supports Windows COM and Linux/macOS tty devices.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="market-shell" class="market-shell">
+            <div class="market-header">
+                <div>
+                    <h2>App Market</h2>
+                    <div style="font-size:13px; color:#475569; margin-top:4px;">
+                        Browse curated apps, download packages, upload your own, and add apps to the current build.
+                    </div>
+                </div>
+                <div class="market-actions">
+                    <input type="text" id="market-page-search" class="search-box" placeholder="Search market apps..." style="margin:0; min-width: 260px;">
+                    <button id="btn-market-refresh" class="btn btn-secondary" type="button">Refresh</button>
+                    <button id="btn-market-to-config" class="btn btn-primary" type="button">Back to Configurator</button>
+                </div>
+            </div>
+            <div id="market-page-grid" class="market-grid"></div>
+            <div class="market-upload">
+                <h3>Upload App Package</h3>
+                <div style="font-size:13px; color:#475569;">Upload a zip with <code>main.py</code> at package root (or one top-level folder).</div>
+                <div class="market-upload-grid">
+                    <input id="market-upload-id" type="text" placeholder="App ID (e.g. paint_plus)">
+                    <input id="market-upload-name" type="text" placeholder="Display name">
+                    <input id="market-upload-version" type="text" placeholder="Version (e.g. 0.1.0)">
+                    <input id="market-upload-author" type="text" placeholder="Author">
+                    <input id="market-upload-platforms" type="text" value="esp32" placeholder="Platforms (comma-separated)">
+                    <textarea id="market-upload-description" rows="2" placeholder="Description"></textarea>
+                    <input id="market-upload-package" type="file" accept=".zip,application/zip">
+                </div>
+                <div class="market-actions">
+                    <button id="btn-market-upload" class="btn btn-success" type="button">Upload to Market</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="configurator-shell">
         <div class="wizard-steps">
             <div class="step active" data-step="1">
                 <div class="step-number">1</div>
@@ -874,6 +1464,23 @@
                     <ul class="board-list" id="board-list">
                         <!-- Populated by JavaScript -->
                     </ul>
+                </div>
+
+                <div class="profile-card" id="profile-card">
+                    <h3 style="margin-bottom: 10px;">Profile & Inventory</h3>
+                    <label for="profile-name">Builder Name</label>
+                    <input type="text" id="profile-name" placeholder="Your handle">
+                    <div class="profile-stats" id="profile-stats">Owned boards: 0 • Points: 0</div>
+                    <label style="margin: 0;">
+                        <input type="checkbox" id="owned-only-toggle">
+                        Show only boards in my inventory
+                    </label>
+                    <div class="inventory-panel">
+                        <details>
+                            <summary style="cursor:pointer; font-size:12px; color:#2d3748;">Manage board inventory</summary>
+                            <div class="inventory-list" id="inventory-list"></div>
+                        </details>
+                    </div>
                 </div>
             </div>
 
@@ -941,6 +1548,10 @@
                         <label>
                             <input type="checkbox" id="show-enabled-only"> Show enabled only
                         </label>
+                        <div class="module-layout-controls">
+                            <button class="btn-mini" id="btn-expand-modules" type="button">Expand All</button>
+                            <button class="btn-mini" id="btn-collapse-modules" type="button">Collapse All</button>
+                        </div>
                     </div>
 
                     <div class="validation-panel" id="validation-warnings">
@@ -951,12 +1562,13 @@
                         <!-- Populated by JavaScript -->
                     </div>
 
-                    <h3 style="margin-top: 30px;">Applets</h3>
+                    <h3 style="margin-top: 30px;">Selected Apps</h3>
                     <div class="alert alert-info">
-                        Optional example applets compiled into the generated project (codegen targets).
+                        App selection is managed in the App Market page. This panel is read-only visibility for current build selection.
                     </div>
-                    <div class="module-grid" id="applet-grid">
-                        <!-- Populated by JavaScript -->
+                    <div id="selected-apps-visibility" class="validation-panel"></div>
+                    <div style="margin-top:10px;">
+                        <button id="btn-open-market-from-config" class="btn btn-secondary" type="button">Manage Apps in App Market</button>
                     </div>
                 </div>
 
@@ -1016,15 +1628,50 @@
                             <pre id="config-preview">/* Generated configuration will appear here */</pre>
                         </div>
                     </div>
+
+                    <div id="generate-output" class="inline-output"></div>
+
+                    <div id="web-flasher-panel" class="web-flasher-panel" style="display:none;">
+                        <h3>ESP32 Web Flasher</h3>
+                        <div class="web-flasher-subtitle">Flash directly from this page via Web Serial (Chrome/Edge on <code>http://localhost</code> or HTTPS).</div>
+                        <div class="web-flasher-badges">
+                            <span id="badge-firmware" class="web-flasher-badge">Firmware: unknown</span>
+                            <span id="badge-serial-port" class="web-flasher-badge">Serial port: unknown</span>
+                        </div>
+                        <ol class="web-flasher-steps">
+                            <li>Click <strong>Check Firmware + Port</strong>.</li>
+                            <li>Click <strong>Connect &amp; Flash</strong>, then choose the ESP32 USB serial device in the picker (<code>COMx</code> on Windows, <code>ttyUSB*</code>/<code>ttyACM*</code> on Linux).</li>
+                            <li>If connect fails, click <strong>Release Browser Port Lock</strong> and retry.</li>
+                        </ol>
+                        <div class="web-flasher-controls">
+                            <button class="btn btn-secondary" id="btn-refresh-flasher">Check Firmware + Port</button>
+                            <button class="btn btn-secondary" id="btn-release-serial">Release Browser Port Lock</button>
+                            <button class="btn btn-primary" id="btn-local-flash">Local Flash (idf.py)</button>
+                            <esp-web-install-button id="esp-web-install" style="display:none;">
+                                <button slot="activate" class="btn btn-primary">Connect &amp; Flash</button>
+                            </esp-web-install-button>
+                        </div>
+                        <div id="web-flasher-hint" class="web-flasher-hint">Run a check before connecting.</div>
+                        <details class="web-flasher-notes">
+                            <summary><strong>Troubleshooting</strong></summary>
+                            <div>1) In the picker, select the ESP32 USB serial device (<code>COMx</code> / <code>ttyUSB*</code> / <code>ttyACM*</code>), not unrelated system ports.</div>
+                            <div>2) If “Serial port is not ready”, click <code>Release Browser Port Lock</code> and retry.</div>
+                            <div>3) If still blocked, unplug/replug USB and run check again.</div>
+                            <div>4) If needed, use <code>Local Flash (idf.py)</code> fallback.</div>
+                        </details>
+                        <div id="web-flasher-status" class="web-flasher-status"></div>
+                    </div>
                 </div>
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button class="btn btn-secondary" id="btn-prev" style="display: none;">← Previous</button>
                     <button class="btn btn-primary" id="btn-next">Next →</button>
+                    <button class="btn btn-primary" id="btn-generate-build" style="display: none;">Generate + Build ESP32</button>
                     <button class="btn btn-success" id="btn-generate" style="display: none;">Generate Files</button>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 
@@ -1034,12 +1681,254 @@
         </div>
     </div>
 
+    <script type="module" src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
     <script>
+        function notify(message, type = 'info', timeoutMs = 3600) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            window.setTimeout(() => toast.remove(), timeoutMs);
+        }
+
+        function showInlineOutput(text, type = 'info') {
+            const output = document.getElementById('generate-output');
+            if (!output) return;
+            output.style.display = 'block';
+            output.style.borderColor = type === 'error' ? '#feb2b2' : '#cbd5e0';
+            output.style.background = type === 'error' ? '#fff5f5' : '#f7fafc';
+            output.textContent = text;
+        }
+
+        function clearInlineOutput() {
+            const output = document.getElementById('generate-output');
+            if (!output) return;
+            output.style.display = 'none';
+            output.textContent = '';
+        }
+
+        function renderWebFlasherStatus(status) {
+            const statusEl = document.getElementById('web-flasher-status');
+            if (!statusEl) return;
+            if (!status) {
+                statusEl.textContent = 'No status available.';
+                return;
+            }
+
+            const lines = [];
+            lines.push(`Ready: ${status.ready ? 'yes' : 'no'}`);
+            if (status.build_version) {
+                lines.push(`Build version: ${status.build_version}`);
+            }
+            if (Array.isArray(status.missing_required) && status.missing_required.length > 0) {
+                lines.push(`Missing required: ${status.missing_required.join(', ')}`);
+                lines.push('Build command: SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build');
+            }
+            if (Array.isArray(status.files)) {
+                lines.push('');
+                status.files.forEach(f => {
+                    const sz = Number(f.size || 0);
+                    const stamp = f.mtime_ns ? `, v=${f.mtime_ns}` : '';
+                    lines.push(`${f.exists ? 'OK ' : 'MISS'} 0x${Number(f.offset).toString(16).toUpperCase().padStart(6, '0')}  ${f.name}  (${sz} bytes${stamp})`);
+                });
+            }
+            statusEl.textContent = lines.join('\n');
+        }
+
+        function setFlasherBadges({ firmwareReady = null, portBusy = null, secureContext = true } = {}) {
+            const fw = document.getElementById('badge-firmware');
+            const sp = document.getElementById('badge-serial-port');
+            if (fw) {
+                fw.className = 'web-flasher-badge';
+                if (firmwareReady === true) {
+                    fw.classList.add('ok');
+                    fw.textContent = 'Firmware: ready';
+                } else if (firmwareReady === false) {
+                    fw.classList.add('err');
+                    fw.textContent = 'Firmware: missing artifacts';
+                } else {
+                    fw.textContent = 'Firmware: unknown';
+                }
+            }
+            if (sp) {
+                sp.className = 'web-flasher-badge';
+                if (!secureContext) {
+                    sp.classList.add('warn');
+                    sp.textContent = 'Serial: blocked (context)';
+                } else if (portBusy === true) {
+                    sp.classList.add('err');
+                    sp.textContent = 'Serial: busy';
+                } else if (portBusy === false) {
+                    sp.classList.add('ok');
+                    sp.textContent = 'Serial: free';
+                } else {
+                    sp.textContent = 'Serial: unknown';
+                }
+            }
+        }
+
+        async function refreshWebFlasher({ silent = false } = {}) {
+            const panel = document.getElementById('web-flasher-panel');
+            const install = document.getElementById('esp-web-install');
+            const statusEl = document.getElementById('web-flasher-status');
+            const hintEl = document.getElementById('web-flasher-hint');
+            if (!panel || !install || !statusEl) return;
+
+            const isEsp32 = selectedPlatform === 'esp32';
+            const canShow = currentStep === 4 && isEsp32;
+            panel.style.display = canShow ? 'block' : 'none';
+            if (!canShow) return;
+
+            if (!window.isSecureContext) {
+                install.style.display = 'none';
+                statusEl.textContent = 'Web Serial requires secure context (use localhost or HTTPS).';
+                setFlasherBadges({ secureContext: false });
+                if (hintEl) hintEl.textContent = 'Open from localhost/HTTPS to enable browser flashing.';
+                return;
+            }
+
+            try {
+                const status = await apiFetchJson('/api/flash/esp32/status');
+                renderWebFlasherStatus(status);
+                let anyBusy = null;
+                try {
+                    const ports = await apiFetchJson('/api/flash/esp32/ports');
+                    if (Array.isArray(ports.ports) && ports.ports.length > 0) {
+                        const statusEl = document.getElementById('web-flasher-status');
+                        const lines = [statusEl.textContent || '', '', 'Serial ports:'];
+                        ports.ports.forEach(p => {
+                            lines.push(`- ${p.path}: ${p.busy ? 'BUSY' : 'free'}`);
+                            if (p.busy && Array.isArray(p.holders)) {
+                                p.holders.forEach(h => lines.push(`    ${h}`));
+                            }
+                        });
+                        statusEl.textContent = lines.join('\n').trim();
+                        anyBusy = !!ports.any_busy;
+                    }
+                } catch (_portErr) {
+                    // Keep flasher usable even if host serial probe is unavailable.
+                }
+                if (status.ready) {
+                    const boardRef = selectedBoard?.id ? `?board_id=${encodeURIComponent(selectedBoard.id)}&t=${Date.now()}` : `?t=${Date.now()}`;
+                    install.setAttribute('manifest', `/api/flash/esp32/manifest${boardRef}`);
+                    install.style.display = 'inline-block';
+                    setFlasherBadges({ firmwareReady: true, portBusy: anyBusy, secureContext: true });
+                    if (hintEl) {
+                        hintEl.textContent = anyBusy
+                            ? 'Serial appears busy. Release browser port lock, then Connect & Flash.'
+                            : 'Ready. Click Connect & Flash and select the ESP32 USB serial device (COMx/ttyUSB*/ttyACM*).';
+                    }
+                } else {
+                    install.style.display = 'none';
+                    setFlasherBadges({ firmwareReady: false, portBusy: anyBusy, secureContext: true });
+                    if (hintEl) hintEl.textContent = 'Generate/build firmware artifacts first, then run check again.';
+                }
+            } catch (err) {
+                install.style.display = 'none';
+                statusEl.textContent = `Failed to load flash status: ${err.message || err}`;
+                setFlasherBadges({ firmwareReady: null, portBusy: null, secureContext: true });
+                if (hintEl) hintEl.textContent = 'Status check failed. Verify backend server and retry.';
+                if (!silent) notify(statusEl.textContent, 'error');
+            }
+        }
+
+        async function releaseBrowserSerialPorts() {
+            if (!('serial' in navigator) || !navigator.serial?.getPorts) {
+                notify('Web Serial API unavailable in this browser.', 'warning');
+                return;
+            }
+            try {
+                const ports = await navigator.serial.getPorts();
+                let closed = 0;
+                for (const p of ports) {
+                    try {
+                        await p.close();
+                        closed++;
+                    } catch (_e) {
+                        // Ignore; port may already be closed.
+                    }
+                }
+                notify(`Released ${closed} browser serial port(s).`, 'success');
+                const hintEl = document.getElementById('web-flasher-hint');
+                if (hintEl) hintEl.textContent = 'Browser port handles released. Run check, then connect again.';
+                await refreshWebFlasher({ silent: true });
+            } catch (err) {
+                notify(`Failed to release serial ports: ${err.message || err}`, 'error');
+            }
+        }
+
+        async function localFlashEsp32() {
+            const btn = document.getElementById('btn-local-flash');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Flashing...';
+            }
+            try {
+                const resp = await fetch('/api/flash/esp32/local', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+                const raw = await resp.text();
+                let data = null;
+                try {
+                    data = raw ? JSON.parse(raw) : null;
+                } catch (_e) {
+                    data = null;
+                }
+
+                if (!resp.ok || !data?.success) {
+                    const msg = data?.error || data?.message || raw || `HTTP ${resp.status}`;
+                    const details = data?.output || raw || '';
+                    showInlineOutput(`Local flash failed: ${msg}\n\n${details}`.trim(), 'error');
+                    notify(`Local flash failed: ${msg}`, 'error');
+                    return;
+                }
+
+                const output = data?.output ? String(data.output) : '(no output)';
+                showInlineOutput(`Local flash succeeded on ${data.port || '(unknown)'}:\n\n${output}`, 'success');
+                notify('Local flash completed successfully.', 'success');
+            } catch (err) {
+                const msg = `Local flash failed: ${err.message || err}`;
+                showInlineOutput(msg, 'error');
+                notify(msg, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Local Flash (idf.py)';
+                }
+                refreshWebFlasher({ silent: true });
+            }
+        }
+
+        async function apiFetchJson(url, options = {}) {
+            const fetchOptions = {
+                cache: 'no-store',
+                ...options,
+            };
+            const resp = await fetch(url, fetchOptions);
+            const raw = await resp.text();
+            let payload = null;
+            try {
+                payload = raw ? JSON.parse(raw) : null;
+            } catch (_e) {
+                payload = null;
+            }
+            if (!resp.ok) {
+                const msg = payload?.error || payload?.message || raw || `HTTP ${resp.status}`;
+                throw new Error(msg);
+            }
+            return payload;
+        }
+
         function showPlatformError(msg) {
             const errorEl = document.getElementById('platform-load-error');
             if (!errorEl) return;
             errorEl.style.display = 'block';
             errorEl.textContent = msg;
+            notify(msg, 'error', 5200);
         }
 
         window.addEventListener('error', (e) => {
@@ -1052,10 +1941,18 @@
         let modules = [];
         let applets = [];
         let appletStates = {};
+        let marketApps = [];
+        let marketAppStates = {};
+        let marketCatalog = [];
+        let userProfile = {
+            name: '',
+            ownedBoards: []
+        };
         let targets = {};
         let boardDetails = {};
         let moduleConfigs = {};
         let projectTemplates = [];
+        let configuratorVisible = false;
 
         const MODULE_ICONS = {
             uart: '📡',
@@ -1074,8 +1971,20 @@
         const APPLET_META = {
             blink: { name: 'Blink', description: 'Toggle a pin/LED repeatedly.', icon: '💡' },
             uart_echo: { name: 'UART Echo', description: 'Echo bytes over UART.', icon: '🛰️' },
-            remote_node: { name: 'Remote Node', description: 'Simple UART remote node protocol.', icon: '📡' }
+            remote_node: { name: 'Remote Node', description: 'Simple UART remote node protocol.', icon: '📡' },
+            system_info: { name: 'System Info', description: 'Print board, memory, and runtime status at startup.', icon: '📋' },
+            tft_hello: { name: 'TFT Hello', description: 'Render a basic hello/status screen on TFT.', icon: '🖥️', requires_capabilities: ['tft'] },
+            sd_probe: { name: 'SD Probe', description: 'Check SD mount and list top-level files.', icon: '💿', requires_capabilities: ['sd_card'] },
+            fs_smoke: { name: 'FS Smoke', description: 'Create/read/remove test file in storage.', icon: '🧪' },
+            i2c_scan: { name: 'I2C Scan', description: 'Scan I2C bus for attached devices.', icon: '🔎', requires_capabilities: ['i2c'] },
+            wifi_status: { name: 'WiFi Status', description: 'Show Wi-Fi status and station metadata.', icon: '📶', requires_capabilities: ['wifi'] }
         };
+
+        const PLATFORM_APPLETS = {
+            esp32: ['blink', 'system_info', 'tft_hello', 'fs_smoke', 'sd_probe', 'i2c_scan', 'wifi_status']
+        };
+
+        let moduleSectionState = {};
 
         function getModuleIcon(moduleId) {
             return MODULE_ICONS[moduleId] || '📦';
@@ -1084,21 +1993,386 @@
         function getAppletMeta(appletId) {
             return APPLET_META[appletId] || { name: appletId, description: '', icon: '🧩' };
         }
+
+        function appletAllowedByBoard(appletId, board) {
+            const meta = getAppletMeta(appletId);
+            const req = Array.isArray(meta.requires_capabilities) ? meta.requires_capabilities : [];
+            if (req.length === 0) return true;
+            const caps = new Set((board?.capabilities || []).map(x => String(x)));
+            return req.every(c => caps.has(c));
+        }
+
+        function availableAppletsForBoard(board) {
+            const targetId = board?.target_profile;
+            const target = targetId ? targets[targetId] : null;
+            const fromTarget = Array.isArray(target?.applets) ? target.applets : [];
+            if (fromTarget.length > 0) {
+                return fromTarget.filter(a => appletAllowedByBoard(a, board));
+            }
+            const platformId = board?.platform || selectedPlatform;
+            const fromPlatform = Array.isArray(PLATFORM_APPLETS[platformId]) ? PLATFORM_APPLETS[platformId] : [];
+            return fromPlatform.filter(a => appletAllowedByBoard(a, board));
+        }
+
+        function availableMarketAppsForBoard(board) {
+            const platformId = board?.platform || selectedPlatform;
+            return marketCatalog.filter(item => {
+                const plats = Array.isArray(item.platforms) ? item.platforms : [];
+                return plats.length === 0 || plats.includes(platformId);
+            });
+        }
+
+        function profileStorageKey() {
+            return 'basaltos_profile_v1';
+        }
+
+        function updateTopProfileChip() {
+            const chip = document.getElementById('top-profile-chip');
+            const loginBtn = document.getElementById('btn-login');
+            if (!chip) return;
+            const name = String(userProfile?.name || '').trim();
+            if (name) {
+                chip.textContent = name;
+                if (loginBtn) loginBtn.textContent = 'Switch User';
+            } else {
+                chip.textContent = 'Guest';
+                if (loginBtn) loginBtn.textContent = 'Sign In';
+            }
+        }
+
+        function updateLandingStats() {
+            const platformCount = document.getElementById('stat-platforms');
+            const boardCount = document.getElementById('stat-boards');
+            const marketCount = document.getElementById('stat-market');
+            const platformTotal = Array.isArray(platforms) ? platforms.length : 0;
+            const boardTotal = Object.values(boards || {}).reduce((sum, list) => {
+                return sum + (Array.isArray(list) ? list.length : 0);
+            }, 0);
+            const marketTotal = Array.isArray(marketCatalog) ? marketCatalog.length : 0;
+            if (platformCount) platformCount.textContent = String(platformTotal);
+            if (boardCount) boardCount.textContent = String(boardTotal);
+            if (marketCount) marketCount.textContent = String(marketTotal);
+        }
+
+        function showLanding() {
+            configuratorVisible = false;
+            const landing = document.getElementById('landing-home');
+            const shell = document.getElementById('configurator-shell');
+            const marketShell = document.getElementById('market-shell');
+            if (landing) landing.style.display = 'block';
+            if (shell) shell.style.display = 'none';
+            if (marketShell) marketShell.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function enterConfigurator(step = null) {
+            configuratorVisible = true;
+            const landing = document.getElementById('landing-home');
+            const shell = document.getElementById('configurator-shell');
+            const marketShell = document.getElementById('market-shell');
+            if (landing) landing.style.display = 'none';
+            if (shell) shell.style.display = 'block';
+            if (marketShell) marketShell.style.display = 'none';
+            if (typeof step === 'number' && step >= 1 && step <= 4) {
+                currentStep = step;
+            }
+            updateWizardSteps();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showMarketPage() {
+            const landing = document.getElementById('landing-home');
+            const shell = document.getElementById('configurator-shell');
+            const marketShell = document.getElementById('market-shell');
+            if (landing) landing.style.display = 'none';
+            if (shell) shell.style.display = 'none';
+            if (marketShell) marketShell.style.display = 'block';
+            renderMarketPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function starterCatalogForMarket() {
+            const fromPlatform = Array.isArray(PLATFORM_APPLETS[selectedPlatform]) ? PLATFORM_APPLETS[selectedPlatform] : [];
+            return fromPlatform.filter(Boolean);
+        }
+
+        function starterAllowedForCurrentBuild(appId) {
+            if (!selectedBoard) return false;
+            const allowed = new Set(availableAppletsForBoard(selectedBoard));
+            return allowed.has(String(appId));
+        }
+
+        function marketAllowedForCurrentBuild(appId) {
+            if (!selectedBoard) return false;
+            const allowed = new Set(availableMarketAppsForBoard(selectedBoard).map(x => x.id));
+            return allowed.has(String(appId));
+        }
+
+        function renderSelectedAppsVisibility() {
+            const wrap = document.getElementById('selected-apps-visibility');
+            if (!wrap) return;
+            const selectedStarter = applets.filter(a => appletStates[a]);
+            const selectedMarket = marketApps.filter(a => marketAppStates[a]);
+            wrap.innerHTML = `
+                <div class="validation-item info">
+                    <span class="validation-icon">📦</span>
+                    <div><strong>Starter Apps:</strong> ${selectedStarter.length ? selectedStarter.join(', ') : '(none)'}</div>
+                </div>
+                <div class="validation-item info">
+                    <span class="validation-icon">🛒</span>
+                    <div><strong>Market Apps:</strong> ${selectedMarket.length ? selectedMarket.join(', ') : '(none)'}</div>
+                </div>
+            `;
+        }
+
+        function renderMarketPage() {
+            const grid = document.getElementById('market-page-grid');
+            if (!grid) return;
+            const search = String(document.getElementById('market-page-search')?.value || '').toLowerCase().trim();
+            applets = starterCatalogForMarket();
+            marketApps = (marketCatalog || []).map(item => item.id);
+            const starter = starterCatalogForMarket().map(id => {
+                const meta = getAppletMeta(id);
+                return {
+                    id,
+                    name: meta.name || id,
+                    description: meta.description || '',
+                    kind: 'starter',
+                    platforms: [selectedPlatform],
+                    version: 'builtin',
+                };
+            }).filter(item => {
+                const blob = `${item.id} ${item.name || ''} ${item.description || ''}`.toLowerCase();
+                return !search || blob.includes(search);
+            });
+            const market = (marketCatalog || []).filter(item => {
+                const blob = `${item.id} ${item.name || ''} ${item.description || ''}`.toLowerCase();
+                return !search || blob.includes(search);
+            });
+            const items = [...starter, ...market.map(x => ({ ...x, kind: 'market' }))];
+            grid.innerHTML = '';
+            if (!items.length) {
+                grid.innerHTML = '<div class="board-empty">No market apps found for current filters.</div>';
+                return;
+            }
+            if (!selectedBoard) {
+                const msg = document.createElement('div');
+                msg.className = 'alert alert-warning';
+                msg.style.gridColumn = '1 / -1';
+                msg.textContent = 'Select platform and board in Configurator first. Add-to-build is disabled until board compatibility can be checked.';
+                grid.appendChild(msg);
+            }
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'market-card';
+                const enabled = item.kind === 'starter' ? !!appletStates[item.id] : !!marketAppStates[item.id];
+                const allowed = item.kind === 'starter'
+                    ? starterAllowedForCurrentBuild(item.id)
+                    : marketAllowedForCurrentBuild(item.id);
+                const reason = !selectedBoard
+                    ? 'Select board first'
+                    : (allowed ? 'Supported by current board' : 'Not supported by current board');
+                card.innerHTML = `
+                    <h4>${item.name || item.id}</h4>
+                    <p>${item.description || ''}</p>
+                    <div class="market-meta">
+                        type: <code>${item.kind === 'starter' ? 'starter-app' : 'market-app'}</code><br>
+                        id: <code>${item.id}</code><br>
+                        version: <code>${item.version || '0.1.0'}</code><br>
+                        platforms: <code>${(item.platforms || []).join(', ') || selectedPlatform}</code>
+                    </div>
+                    <div class="market-actions">
+                        <label title="${reason}">
+                            <input type="checkbox" data-market-page-add="${item.id}" data-market-kind="${item.kind}" ${enabled ? 'checked' : ''} ${allowed ? '' : 'disabled'}>
+                            Add to current build
+                        </label>
+                        ${item.kind === 'market' ? `<button class="btn btn-secondary" type="button" data-market-download="${item.id}">Download</button>` : ''}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            grid.querySelectorAll('[data-market-page-add]').forEach(el => {
+                el.addEventListener('change', () => {
+                    const id = el.getAttribute('data-market-page-add');
+                    const kind = el.getAttribute('data-market-kind');
+                    if (kind === 'starter') {
+                        appletStates[id] = !!el.checked;
+                    } else {
+                        marketAppStates[id] = !!el.checked;
+                    }
+                    renderSelectedAppsVisibility();
+                    notify(`${id} ${el.checked ? 'added to' : 'removed from'} current build.`, 'success', 1600);
+                });
+            });
+            grid.querySelectorAll('[data-market-download]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-market-download');
+                    const platform = encodeURIComponent(selectedPlatform || '');
+                    window.open(`/api/market/download/${encodeURIComponent(id)}?platform=${platform}`, '_blank');
+                });
+            });
+        }
+
+        async function uploadMarketApp() {
+            const fileInput = document.getElementById('market-upload-package');
+            const idInput = document.getElementById('market-upload-id');
+            const nameInput = document.getElementById('market-upload-name');
+            const descInput = document.getElementById('market-upload-description');
+            const verInput = document.getElementById('market-upload-version');
+            const authorInput = document.getElementById('market-upload-author');
+            const platformsInput = document.getElementById('market-upload-platforms');
+            const btn = document.getElementById('btn-market-upload');
+
+            const file = fileInput?.files?.[0];
+            if (!file) {
+                notify('Choose a ZIP package to upload.', 'warning');
+                return;
+            }
+
+            const fd = new FormData();
+            fd.append('package', file);
+            fd.append('id', String(idInput?.value || '').trim());
+            fd.append('name', String(nameInput?.value || '').trim());
+            fd.append('description', String(descInput?.value || '').trim());
+            fd.append('version', String(verInput?.value || '').trim());
+            fd.append('author', String(authorInput?.value || '').trim());
+            fd.append('platforms', String(platformsInput?.value || selectedPlatform || 'esp32').trim());
+
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Uploading...';
+            }
+            try {
+                const resp = await fetch('/api/market/upload', { method: 'POST', body: fd, cache: 'no-store' });
+                const raw = await resp.text();
+                let data = null;
+                try { data = raw ? JSON.parse(raw) : null; } catch (_e) { data = null; }
+                if (!resp.ok || !data?.success) {
+                    throw new Error(data?.error || raw || `HTTP ${resp.status}`);
+                }
+                await refreshMarketCatalogForPlatform(selectedPlatform);
+                updateLandingStats();
+                populateMarketAppGrid();
+                renderMarketPage();
+                if (idInput) idInput.value = '';
+                if (nameInput) nameInput.value = '';
+                if (descInput) descInput.value = '';
+                if (verInput) verInput.value = '';
+                if (authorInput) authorInput.value = '';
+                if (fileInput) fileInput.value = '';
+                notify(`Uploaded market app: ${data.app?.id || 'unknown'}`, 'success');
+            } catch (err) {
+                notify(`Upload failed: ${err.message || err}`, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Upload to Market';
+                }
+            }
+        }
+
+        function loadUserProfile() {
+            try {
+                const raw = localStorage.getItem(profileStorageKey());
+                if (!raw) return;
+                const parsed = JSON.parse(raw);
+                if (!parsed || typeof parsed !== 'object') return;
+                userProfile.name = String(parsed.name || '');
+                userProfile.ownedBoards = Array.isArray(parsed.ownedBoards) ? parsed.ownedBoards.map(x => String(x)) : [];
+            } catch (_e) {
+                userProfile = { name: '', ownedBoards: [] };
+            }
+        }
+
+        function saveUserProfile() {
+            try {
+                localStorage.setItem(profileStorageKey(), JSON.stringify(userProfile));
+            } catch (_e) {
+                // ignore persistence errors
+            }
+            updateTopProfileChip();
+        }
+
+        function boardGroupLabel(board) {
+            const id = String(board?.id || '').toLowerCase();
+            const name = String(board?.name || '').toLowerCase();
+            const mcu = String(board?.mcu || '').toLowerCase();
+            const text = `${id} ${name}`;
+            if (selectedPlatform !== 'esp32') return 'Boards';
+            if (text.includes('cyd') || text.includes('display') || text.includes('t-display') || text.includes('m5')) return 'Display & Product Boards';
+            if (text.includes('devkit') || text.includes('dev board') || text.includes('node') || text.includes('wroom') || text.includes('wrover')) return 'Dev Kits';
+            if (text.includes('module') || text.includes('mini') || text.includes('supermini')) return 'Modules & Mini Boards';
+            if (mcu.includes('c3')) return 'SoC Family: ESP32-C3';
+            if (mcu.includes('s2')) return 'SoC Family: ESP32-S2';
+            if (mcu.includes('s3')) return 'SoC Family: ESP32-S3';
+            if (mcu.includes('c6')) return 'SoC Family: ESP32-C6';
+            return 'SoC Family: ESP32';
+        }
+
+        function renderProfilePanel() {
+            const nameInput = document.getElementById('profile-name');
+            const ownedOnly = document.getElementById('owned-only-toggle');
+            const stats = document.getElementById('profile-stats');
+            const inventory = document.getElementById('inventory-list');
+            if (!nameInput || !ownedOnly || !stats || !inventory) return;
+
+            if (nameInput.value !== userProfile.name) {
+                nameInput.value = userProfile.name || '';
+            }
+
+            const platformBoards = boards[selectedPlatform] || [];
+            const ownedSet = new Set((userProfile.ownedBoards || []).map(String));
+            const points = (ownedSet.size * 25);
+            stats.textContent = `Owned boards: ${ownedSet.size} • Points: ${points}`;
+
+            inventory.innerHTML = '';
+            if (!platformBoards.length) {
+                inventory.innerHTML = '<div class="board-empty">No boards available for this platform.</div>';
+                return;
+            }
+            platformBoards.forEach(board => {
+                const row = document.createElement('label');
+                row.className = 'inventory-item';
+                row.innerHTML = `
+                    <input type="checkbox" data-owned-board="${board.id}" ${ownedSet.has(String(board.id)) ? 'checked' : ''}>
+                    <span>${board.name}</span>
+                `;
+                inventory.appendChild(row);
+            });
+            updateTopProfileChip();
+        }
+
+        function moduleSectionFor(moduleId) {
+            const id = String(moduleId || '');
+            if (id.startsWith('fs_')) return 'storage';
+            if (['uart', 'spi', 'i2c', 'remote_node'].includes(id)) return 'connectivity';
+            if (['tft', 'shell_full', 'shell_min'].includes(id)) return 'ui_shell';
+            if (['psram', 'adc', 'pwm', 'eeprom'].includes(id)) return 'advanced';
+            return 'core';
+        }
+
+        function moduleSectionLabel(sectionId) {
+            const map = {
+                core: 'Core Runtime',
+                connectivity: 'Connectivity & Buses',
+                storage: 'Storage',
+                ui_shell: 'UI & Shell',
+                advanced: 'Advanced & Peripherals'
+            };
+            return map[sectionId] || sectionId;
+        }
         
         function populateAppletGrid() {
+            const available = availableAppletsForBoard(selectedBoard);
+            applets = available;
             const grid = document.getElementById('applet-grid');
             if (!grid) return;
             grid.innerHTML = '';
 
-            const targetId = selectedBoard?.target_profile;
-            const target = targetId ? targets[targetId] : null;
-            const available = Array.isArray(target?.applets) ? target.applets : [];
-            applets = available;
-
             if (!available.length) {
                 const empty = document.createElement('div');
                 empty.className = 'module-description';
-                empty.textContent = 'No applets available for this target.';
+                empty.textContent = 'No starter apps available for this board/platform.';
                 grid.appendChild(empty);
                 return;
             }
@@ -1127,8 +2401,61 @@
                 toggle.onchange = () => {
                     appletStates[appletId] = toggle.checked;
                     card.classList.toggle('enabled', toggle.checked);
+                    updateValidation();
                 };
 
+                grid.appendChild(card);
+            });
+        }
+
+        function populateMarketAppGrid() {
+            const allForBoard = availableMarketAppsForBoard(selectedBoard);
+            marketApps = allForBoard.map(x => x.id);
+            const grid = document.getElementById('market-app-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const search = String(document.getElementById('market-search')?.value || '').toLowerCase();
+            const available = allForBoard.filter(item => {
+                if (!search) return true;
+                const hay = `${item.id} ${item.name || ''} ${item.description || ''} ${(item.tags || []).join(' ')}`.toLowerCase();
+                return hay.includes(search);
+            });
+            if (!available.length) {
+                const empty = document.createElement('div');
+                empty.className = 'module-description';
+                empty.textContent = 'No curated apps available for this board/platform.';
+                grid.appendChild(empty);
+                return;
+            }
+
+            available.forEach(item => {
+                const enabled = !!marketAppStates[item.id];
+                const card = document.createElement('div');
+                card.className = `module-card ${enabled ? 'enabled' : ''}`;
+                card.id = `market-app-card-${item.id}`;
+                const tags = Array.isArray(item.tags) ? item.tags.join(', ') : '';
+                card.innerHTML = `
+                    <div class="module-header">
+                        <div style="display:flex; align-items:center;">
+                            <span class="module-icon">🧰</span>
+                            <div class="module-name">${item.name || item.id}</div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" ${enabled ? 'checked' : ''} data-market-app="${item.id}">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="module-description">${item.description || ''}</div>
+                    ${tags ? `<div class="module-meta">Tags: ${tags}</div>` : ''}
+                `;
+
+                const toggle = card.querySelector('input[type="checkbox"]');
+                toggle.onchange = () => {
+                    marketAppStates[item.id] = toggle.checked;
+                    card.classList.toggle('enabled', toggle.checked);
+                    updateValidation();
+                };
                 grid.appendChild(card);
             });
         }
@@ -1141,31 +2468,36 @@
             }
 
             try {
-                const pRes = await fetch('/api/platforms');
-                platforms = await pRes.json();
+                platforms = await apiFetchJson('/api/platforms');
 
                 boards = {};
                 for (const p of platforms) {
-                    const bRes = await fetch(`/api/boards/${p.id}`);
-                    boards[p.id] = await bRes.json();
+                    boards[p.id] = await apiFetchJson(`/api/boards/${p.id}`);
                 }
 
                 await refreshModulesForPlatform(selectedPlatform);
                 modules.forEach(m => { if (!Array.isArray(m.pins)) m.pins = []; });
 
                 try {
-                    const tRes = await fetch('/api/targets');
-                    const tList = await tRes.json();
+                    const tList = await apiFetchJson('/api/targets');
                     targets = {};
                     tList.forEach(t => { if (t && t.id) targets[t.id] = t; });
                 } catch (err) {
                     console.warn('Failed to load targets:', err);
+                    notify(`Targets API unavailable: ${err.message || err}`, 'warning');
+                }
+
+                try {
+                    marketCatalog = await apiFetchJson(`/api/market/catalog?platform=${encodeURIComponent(selectedPlatform)}`);
+                } catch (err) {
+                    marketCatalog = [];
+                    notify(`Market catalog unavailable: ${err.message || err}`, 'warning');
                 }
 
                 return true;
             } catch (err) {
                 console.error('Failed to load from API:', err);
-                showPlatformError(`Failed to load /api/platforms: ${err}`);
+                showPlatformError(`Failed to load /api/platforms: ${err.message || err}`);
                 return false;
             }
         }
@@ -1177,22 +2509,12 @@
 
             if (!platforms || platforms.length === 0) {
                 try {
-                    const url = `${window.location.origin}/api/platforms`;
-                    const resp = await fetch(url);
-                    if (resp.ok) {
-                        platforms = await resp.json();
-                    } else {
-                        const text = await resp.text();
-                        if (errorEl) {
-                            errorEl.style.display = 'block';
-                            errorEl.textContent = `Failed to load platforms (${resp.status}). ${text.slice(0, 120)}`;
-                        }
-                    }
+                    platforms = await apiFetchJson('/api/platforms');
                 } catch (err) {
                     console.error('Failed to load platforms:', err);
                     if (errorEl) {
                         errorEl.style.display = 'block';
-                        errorEl.textContent = `Failed to load platforms: ${err}`;
+                        errorEl.textContent = `Failed to load platforms: ${err.message || err}`;
                     }
                 }
             }
@@ -1223,20 +2545,20 @@
 
         async function refreshModulesForPlatform(platformId) {
             const url = platformId ? `/api/modules?platform=${platformId}` : '/api/modules';
-            const mRes = await fetch(url);
-            modules = await mRes.json();
+            modules = await apiFetchJson(url);
             modules.forEach(m => { if (!Array.isArray(m.pins)) m.pins = []; });
+        }
+
+        async function refreshMarketCatalogForPlatform(platformId) {
+            const url = platformId ? `/api/market/catalog?platform=${encodeURIComponent(platformId)}` : '/api/market/catalog';
+            marketCatalog = await apiFetchJson(url);
+            if (!Array.isArray(marketCatalog)) marketCatalog = [];
         }
 
         async function loadTemplates() {
             try {
-                const response = await fetch('/api/templates');
-                if (response.ok) {
-                    const data = await response.json();
-                    projectTemplates = data.templates || data;
-                } else {
-                    projectTemplates = [];
-                }
+                const data = await apiFetchJson('/api/templates');
+                projectTemplates = data.templates || data;
             } catch (error) {
                 console.warn('Using embedded templates, API unavailable.');
                 projectTemplates = [];
@@ -1384,6 +2706,11 @@
                         ${template.enabled_modules.slice(0, 3).join(', ')}
                         ${template.enabled_modules.length > 3 ? ` +${template.enabled_modules.length - 3} more` : ''}
                     </div>
+                    ${Array.isArray(template.applets) && template.applets.length > 0 ? `
+                        <div class="template-modules">
+                            <strong>Starter Apps:</strong> ${template.applets.length}
+                        </div>
+                    ` : ''}
                     <div class="template-tags">
                         ${(template.tags || []).map(tag =>
                             `<span class="template-tag">${tag}</span>`
@@ -1434,6 +2761,15 @@
                         ).join('')}
                     </div>
 
+                    ${Array.isArray(template.applets) && template.applets.length > 0 ? `
+                        <h3 style="margin-bottom: 10px;">Starter Apps (${template.applets.length})</h3>
+                        <div class="module-badges" style="margin-bottom: 20px;">
+                            ${template.applets.map(a =>
+                                `<span class="badge badge-platform">${a}</span>`
+                            ).join('')}
+                        </div>
+                    ` : ''}
+
                     ${Object.keys(template.module_config || {}).length > 0 ? `
                         <h3 style="margin-bottom: 10px;">Module Configuration</h3>
                         <pre style="background: #f7fafc; padding: 15px; border-radius: 6px; overflow-x: auto;">
@@ -1474,7 +2810,25 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 });
             }
 
+            if (Array.isArray(template.applets)) {
+                const available = new Set(availableAppletsForBoard(selectedBoard));
+                Object.keys(appletStates).forEach(k => { appletStates[k] = false; });
+                template.applets.forEach(a => {
+                    if (available.has(a)) appletStates[a] = true;
+                });
+            }
+
+            if (Array.isArray(template.market_apps)) {
+                const available = new Set(availableMarketAppsForBoard(selectedBoard).map(x => x.id));
+                Object.keys(marketAppStates).forEach(k => { marketAppStates[k] = false; });
+                template.market_apps.forEach(a => {
+                    if (available.has(a)) marketAppStates[a] = true;
+                });
+            }
+
             populateModuleGrid();
+            populateAppletGrid();
+            populateMarketAppGrid();
             updateValidation();
         }
 
@@ -1526,7 +2880,8 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
 
         function toggleModuleOptions(moduleId, buttonEl) {
             const optionsPanel = document.getElementById(`options-${moduleId}`);
-            const btn = buttonEl || event.target;
+            const btn = buttonEl;
+            if (!optionsPanel || !btn) return;
 
             if (optionsPanel.classList.contains('active')) {
                 optionsPanel.classList.remove('active');
@@ -1603,6 +2958,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 });
             }
 
+            refreshModuleSectionCounts();
             updateValidation();
         }
 
@@ -1614,9 +2970,33 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             });
         }
 
+        function signalIoType(signal) {
+            const pinDef = selectedBoard?.pin_definitions?.[signal];
+            if (pinDef && typeof pinDef === 'object') {
+                const t = String(pinDef.type || '').toLowerCase();
+                if (t === 'input' || t === 'output' || t === 'bidirectional') return t;
+            }
+            const s = String(signal || '').toLowerCase();
+            const outputSuffixes = ['_tx', '_mosi', '_sclk', '_clk', '_sck', '_cs', '_dc', '_rst', '_bl', '_led', '_pwm'];
+            const inputSuffixes = ['_rx', '_miso', '_irq', '_int', '_button'];
+            if (outputSuffixes.some(x => s.endsWith(x))) return 'output';
+            if (inputSuffixes.some(x => s.endsWith(x))) return 'input';
+            return 'bidirectional';
+        }
+
+        function spiShareKind(signal) {
+            const s = String(signal || '').toLowerCase();
+            if (s.endsWith('_mosi')) return 'mosi';
+            if (s.endsWith('_miso')) return 'miso';
+            if (s.endsWith('_sclk') || s.endsWith('_clk') || s.endsWith('_sck')) return 'sclk';
+            return null;
+        }
+
         function checkPinConflicts() {
             const pinUsage = {};
-            const conflicts = [];
+            const errors = [];
+            const warnings = [];
+            const platform = String(selectedBoard?.platform || selectedPlatform || '').toLowerCase();
 
             document.querySelectorAll('.pin-input').forEach(input => {
                 const raw = (input.value || '').trim();
@@ -1639,30 +3019,62 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                     key = raw;
                 }
 
-                if (pinUsage[key]) {
-                    conflicts.push({
-                        pin: key,
-                        signals: [pinUsage[key], signal]
+                if (typeof key === 'number' && platform === 'esp32') {
+                    if (key > 39) {
+                        errors.push({ pin: key, signals: [signal], reason: `GPIO${key} is out of range for ESP32 (0-39)` });
+                    } else if (key >= 6 && key <= 11) {
+                        errors.push({ pin: key, signals: [signal], reason: `GPIO${key} is reserved for SPI flash` });
+                    }
+                    const ioType = signalIoType(signal);
+                    if ((ioType === 'output' || ioType === 'bidirectional') && key >= 34 && key <= 39) {
+                        errors.push({ pin: key, signals: [signal], reason: `GPIO${key} is input-only on ESP32` });
+                    }
+                    if ([0, 2, 4, 5, 12, 15].includes(key)) {
+                        warnings.push({ pin: key, signals: [signal], reason: `GPIO${key} is a strapping pin; use with caution` });
+                    }
+                }
+
+                if (!pinUsage[key]) pinUsage[key] = [];
+                if (!pinUsage[key].includes(signal)) pinUsage[key].push(signal);
+            });
+
+            Object.entries(pinUsage).forEach(([pin, signals]) => {
+                if (signals.length <= 1) return;
+                const kinds = signals.map(spiShareKind);
+                const shareableSpi = kinds.every(k => k !== null) && (new Set(kinds)).size === 1;
+                if (!shareableSpi) {
+                    errors.push({
+                        pin,
+                        signals,
+                        reason: `Pin ${pin} is assigned to ${signals.join(' and ')}`
                     });
+                }
+            });
+
+            const conflictSignals = new Set();
+            errors.forEach(e => {
+                (e.signals || []).forEach(s => conflictSignals.add(s));
+            });
+            document.querySelectorAll('.pin-input').forEach(input => {
+                const signal = input.dataset.pin;
+                const status = document.createElement('span');
+                if (conflictSignals.has(signal)) {
                     input.classList.add('conflict');
-                    const status = document.createElement('span');
                     status.className = 'pin-status error';
                     status.textContent = '❌';
-                    status.title = `Conflict with ${pinUsage[key]}`;
-                    input.after(status);
+                    status.title = 'Pin assignment issue';
                 } else {
-                    pinUsage[key] = signal;
                     input.classList.add('valid');
-                    const status = document.createElement('span');
                     status.className = 'pin-status ok';
                     status.textContent = '✓';
-                    input.after(status);
+                    status.title = 'Pin assignment looks valid';
                 }
+                input.after(status);
             });
 
             const pinPanel = document.getElementById('pin-validation');
             if (pinPanel) {
-                if (conflicts.length === 0) {
+                if (errors.length === 0 && warnings.length === 0) {
                     pinPanel.innerHTML = `
                         <div class="validation-item info">
                             <span class="validation-icon">✅</span>
@@ -1670,16 +3082,23 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                         </div>
                     `;
                 } else {
-                    pinPanel.innerHTML = conflicts.map(conflict => `
+                    const errorHtml = errors.map(conflict => `
                         <div class="validation-item error">
                             <span class="validation-icon">❌</span>
-                            <div>Pin ${conflict.pin} is assigned to ${conflict.signals.join(' and ')}</div>
+                            <div>${conflict.reason}</div>
                         </div>
                     `).join('');
+                    const warnHtml = warnings.map(warn => `
+                        <div class="validation-item warning">
+                            <span class="validation-icon">⚠️</span>
+                            <div>${warn.reason}</div>
+                        </div>
+                    `).join('');
+                    pinPanel.innerHTML = `${errorHtml}${warnHtml}`;
                 }
             }
 
-            return conflicts;
+            return { errors, warnings };
         }
 
         function updateValidation() {
@@ -1709,7 +3128,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
 
         function showWarning(message) {
             console.warn(message);
-            alert(message);
+            notify(message, 'warning');
         }
 
         function initModuleFilters() {
@@ -1741,10 +3160,34 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
 
                     card.style.display = show ? 'block' : 'none';
                 });
+
+                document.querySelectorAll('.module-section').forEach(section => {
+                    const visible = Array.from(section.querySelectorAll('.module-card'))
+                        .some(card => card.style.display !== 'none');
+                    section.style.display = visible ? 'block' : 'none';
+                });
             }
 
-            if (searchInput) searchInput.addEventListener('input', filterModules);
-            if (showEnabledOnly) showEnabledOnly.addEventListener('change', filterModules);
+            if (searchInput) searchInput.oninput = filterModules;
+            if (showEnabledOnly) showEnabledOnly.onchange = filterModules;
+            filterModules();
+        }
+
+        function setAllModuleSections(open) {
+            document.querySelectorAll('.module-section').forEach(section => {
+                section.open = open;
+                const key = section.dataset.group;
+                if (key) moduleSectionState[key] = open;
+            });
+        }
+
+        function refreshModuleSectionCounts() {
+            document.querySelectorAll('.module-section').forEach(section => {
+                const cards = Array.from(section.querySelectorAll('.module-card'));
+                const enabled = cards.filter(card => card.classList.contains('enabled')).length;
+                const badge = section.querySelector('.module-section-count');
+                if (badge) badge.textContent = `${enabled}/${cards.length} enabled`;
+            });
         }
         
 
@@ -1756,41 +3199,91 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
 
         // Initialize
         async function init() {
+            loadUserProfile();
             const ok = await loadFromApi();
             await populatePlatformSelect();
             if (!ok || !platforms || platforms.length === 0) {
                 showPlatformError('No platforms loaded. Check http://localhost:5000/api/platforms');
             }
+            renderProfilePanel();
             populateBoardList();
             populateModuleGrid();
             loadTemplates();
-            updateWizardSteps();
+            updateLandingStats();
+            showLanding();
+            renderMarketPage();
+            renderSelectedAppsVisibility();
             attachEventListeners();
+            const flasherBtn = document.getElementById('btn-refresh-flasher');
+            if (flasherBtn) {
+                flasherBtn.addEventListener('click', () => refreshWebFlasher());
+            }
+            const releaseBtn = document.getElementById('btn-release-serial');
+            if (releaseBtn) {
+                releaseBtn.addEventListener('click', () => releaseBrowserSerialPorts());
+            }
+            const localFlashBtn = document.getElementById('btn-local-flash');
+            if (localFlashBtn) {
+                localFlashBtn.addEventListener('click', () => localFlashEsp32());
+            }
+            notify('Welcome to BasaltOS Configurator.', 'success', 1800);
         }
 
         function populateBoardList() {
             const boardList = document.getElementById('board-list');
             boardList.innerHTML = '';
-            
-            const platformBoards = boards[selectedPlatform] || [];
+
+            const ownedOnly = !!document.getElementById('owned-only-toggle')?.checked;
+            const ownedSet = new Set((userProfile.ownedBoards || []).map(String));
+            const platformBoards = (boards[selectedPlatform] || []).filter(board => {
+                return !ownedOnly || ownedSet.has(String(board.id));
+            });
+
+            if (!platformBoards.length) {
+                boardList.innerHTML = '<li class="board-empty">No boards match your current filter.</li>';
+                return;
+            }
+
+            const groups = {};
             platformBoards.forEach(board => {
-                const li = document.createElement('li');
-                li.className = 'board-item';
-                li.textContent = board.name;
-                li.dataset.boardId = board.id;
-                li.onclick = () => selectBoard(board);
-                boardList.appendChild(li);
+                const group = boardGroupLabel(board);
+                if (!groups[group]) groups[group] = [];
+                groups[group].push(board);
+            });
+
+            Object.keys(groups).sort().forEach(groupName => {
+                const groupWrap = document.createElement('li');
+                groupWrap.className = 'board-group';
+
+                const title = document.createElement('div');
+                title.className = 'board-group-title';
+                title.textContent = `${groupName} (${groups[groupName].length})`;
+                groupWrap.appendChild(title);
+
+                groups[groupName].sort((a, b) => String(a.name).localeCompare(String(b.name))).forEach(board => {
+                    const li = document.createElement('div');
+                    li.className = 'board-item';
+                    li.textContent = board.name;
+                    li.dataset.boardId = board.id;
+                    if (selectedBoard && String(selectedBoard.id) === String(board.id)) {
+                        li.classList.add('selected');
+                    }
+                    li.onclick = () => selectBoard(board, li);
+                    groupWrap.appendChild(li);
+                });
+
+                boardList.appendChild(groupWrap);
             });
         }
 
-        function selectBoard(board) {
+        function selectBoard(board, sourceEl) {
             selectedBoard = board;
             
             // Update UI
             document.querySelectorAll('.board-item').forEach(item => {
                 item.classList.remove('selected');
             });
-            event.target.classList.add('selected');
+            if (sourceEl) sourceEl.classList.add('selected');
             
             // Show board details
             document.getElementById('board-details').style.display = 'block';
@@ -1815,8 +3308,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 autoEnableByBoardCapabilities(board);
             }
             
-            const target = targetId ? targets[targetId] : null;
-            const availableApplets = Array.isArray(target?.applets) ? target.applets : [];
+            const availableApplets = availableAppletsForBoard(board);
             appletStates = {};
             if (board.defaults && Array.isArray(board.defaults.applets)) {
                 board.defaults.applets.forEach(id => { appletStates[id] = true; });
@@ -1824,8 +3316,21 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 availableApplets.forEach(id => { appletStates[id] = false; });
             }
 
+            const availableMarket = availableMarketAppsForBoard(board);
+            marketAppStates = {};
+            if (board.defaults && Array.isArray(board.defaults.market_apps)) {
+                board.defaults.market_apps.forEach(id => { marketAppStates[id] = true; });
+            } else {
+                availableMarket.forEach(item => { marketAppStates[item.id] = false; });
+            }
+
             populateModuleGrid();
             populateAppletGrid();
+            populateMarketAppGrid();
+            renderSelectedAppsVisibility();
+            renderMarketPage();
+            clearInlineOutput();
+            refreshWebFlasher({ silent: true });
         }
 
         function autoEnableByBoardCapabilities(board) {
@@ -1868,6 +3373,9 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             grid.innerHTML = '';
 
             const caps = new Set(selectedBoard?.capabilities || []);
+            const sectionOrder = ['core', 'connectivity', 'storage', 'ui_shell', 'advanced'];
+            const groupedCards = {};
+            sectionOrder.forEach(s => { groupedCards[s] = []; });
 
             modules.forEach(module => {
                 const enabled = !!module.enabled;
@@ -1920,11 +3428,38 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 }
 
                 wireModuleOptionInputs(card);
+                const section = moduleSectionFor(module.id);
+                if (!groupedCards[section]) groupedCards[section] = [];
+                groupedCards[section].push({ card, enabled });
+            });
 
-                grid.appendChild(card);
+            sectionOrder.forEach(sectionId => {
+                const cards = groupedCards[sectionId] || [];
+                if (cards.length === 0) return;
+                const enabledCount = cards.filter(c => c.enabled).length;
+                const details = document.createElement('details');
+                details.className = 'module-section';
+                details.dataset.group = sectionId;
+                details.open = moduleSectionState[sectionId] !== false;
+                details.innerHTML = `
+                    <summary>
+                        <span>${moduleSectionLabel(sectionId)}</span>
+                        <span class="module-section-count">${enabledCount}/${cards.length} enabled</span>
+                    </summary>
+                `;
+                details.addEventListener('toggle', () => {
+                    moduleSectionState[sectionId] = details.open;
+                });
+
+                const sub = document.createElement('div');
+                sub.className = 'module-grid module-subgrid';
+                cards.forEach(c => sub.appendChild(c.card));
+                details.appendChild(sub);
+                grid.appendChild(details);
             });
 
             initModuleFilters();
+            refreshModuleSectionCounts();
             updateValidation();
         }
 
@@ -2127,8 +3662,12 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                         <div class="spec-value">${modules.filter(m => m.enabled).length}</div>
                     </div>
                     <div class="spec-item">
-                        <div class="spec-label">Applets Enabled</div>
+                        <div class="spec-label">Starter Apps Enabled</div>
                         <div class="spec-value">${applets.filter(a => appletStates[a]).length}</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Market Apps</div>
+                        <div class="spec-value">${marketApps.filter(a => marketAppStates[a]).length}</div>
                     </div>
                 </div>
             `;
@@ -2142,6 +3681,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             const enabled_modules = modules.filter(m => m.enabled).map(m => m.id);
             const module_config = collectModuleConfigFromUI();
             const enabled_applets = applets.filter(a => appletStates[a]);
+            const selected_market_apps = marketApps.filter(a => marketAppStates[a]);
             const custom_pins = {};
             document.querySelectorAll('#pin-table-body input[data-pin]').forEach(input => {
                 const key = input.dataset.pin;
@@ -2156,7 +3696,7 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             });
 
             try {
-                const resp = await fetch('/api/preview/basalt_config_h', {
+                const data = await apiFetchJson('/api/preview/basalt_config_h', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -2165,15 +3705,16 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                         target_profile: selectedBoard.target_profile || null,
                         enabled_modules,
                         applets: enabled_applets,
+                        market_apps: selected_market_apps,
                         module_config,
                         custom_pins
                     })
                 });
-                const data = await resp.json();
                 if (!data.success) throw new Error(data.error || 'Preview failed');
                 previewEl.textContent = data.content;
             } catch (err) {
-                previewEl.textContent = `Preview failed: ${err}`;
+                previewEl.textContent = `Preview failed: ${err.message || err}`;
+                notify(`Preview failed: ${err.message || err}`, 'error');
             }
             
         }
@@ -2206,11 +3747,11 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             });
 
             if (includePins) {
-                const pinConflicts = checkPinConflicts();
-                if (pinConflicts.length > 0) {
+                const pinResult = checkPinConflicts();
+                if ((pinResult.errors || []).length > 0) {
                     issues.push({
                         type: 'error',
-                        message: `${pinConflicts.length} pin conflict(s) detected`
+                        message: `${pinResult.errors.length} pin assignment error(s) detected`
                     });
                 }
             }
@@ -2258,7 +3799,29 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 if (invalid.length > 0) {
                     issues.push({
                         type: 'warning',
-                        message: `Selected applets not supported by target: ${invalid.join(', ')}.`
+                        message: `Selected starter apps not supported by target: ${invalid.join(', ')}.`
+                    });
+                }
+            } else if (applets.length > 0) {
+                const allowedApplets = new Set(availableAppletsForBoard(selectedBoard));
+                const enabledApplets = applets.filter(a => appletStates[a]);
+                const invalid = enabledApplets.filter(a => !allowedApplets.has(a));
+                if (invalid.length > 0) {
+                    issues.push({
+                        type: 'warning',
+                        message: `Selected starter apps not supported by board/platform: ${invalid.join(', ')}.`
+                    });
+                }
+            }
+
+            if (marketApps.length > 0) {
+                const allowedMarket = new Set(availableMarketAppsForBoard(selectedBoard).map(x => x.id));
+                const enabledMarket = marketApps.filter(a => marketAppStates[a]);
+                const invalid = enabledMarket.filter(a => !allowedMarket.has(a));
+                if (invalid.length > 0) {
+                    issues.push({
+                        type: 'warning',
+                        message: `Selected market apps not supported by board/platform: ${invalid.join(', ')}.`
                     });
                 }
             }
@@ -2334,6 +3897,35 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             `).join('');
         }
 
+        function collectCurrentConfigPayload() {
+            const enabled_modules = modules.filter(m => m.enabled).map(m => m.id);
+            const module_config = collectModuleConfigFromUI();
+            const enabled_applets = applets.filter(a => appletStates[a]);
+            const market_apps = marketApps.filter(a => marketAppStates[a]);
+            const custom_pins = {};
+            document.querySelectorAll('#pin-table-body input[data-pin]').forEach(input => {
+                const key = input.dataset.pin;
+                const raw = (input.value || '').trim();
+                if (!raw) return;
+                if (input.dataset.pinType === 'number') {
+                    const val = parseInt(raw, 10);
+                    if (!Number.isNaN(val)) custom_pins[key] = val;
+                } else {
+                    custom_pins[key] = raw;
+                }
+            });
+            return {
+                platform: selectedPlatform,
+                board_id: selectedBoard?.id,
+                target_profile: selectedBoard?.target_profile || null,
+                enabled_modules,
+                applets: enabled_applets,
+                market_apps,
+                module_config,
+                custom_pins
+            };
+        }
+
         function updateWizardSteps() {
             document.querySelectorAll('.step').forEach((step, index) => {
                 step.classList.remove('active', 'completed');
@@ -2356,6 +3948,10 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
             document.getElementById('btn-prev').style.display = currentStep > 1 ? 'block' : 'none';
             document.getElementById('btn-next').style.display = currentStep < 4 ? 'block' : 'none';
             document.getElementById('btn-generate').style.display = currentStep === 4 ? 'block' : 'none';
+            const btnGenerateBuild = document.getElementById('btn-generate-build');
+            if (btnGenerateBuild) {
+                btnGenerateBuild.style.display = (currentStep === 4 && selectedPlatform === 'esp32') ? 'block' : 'none';
+            }
             
             // Populate data for current step
             if (currentStep === 3) {
@@ -2367,8 +3963,10 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                 populatePinTable();
             } else if (currentStep === 2) {
                 updateValidation();
+                renderSelectedAppsVisibility();
             } else if (currentStep === 4) {
                 generateConfigPreview();
+                refreshWebFlasher({ silent: true });
             }
         }
 
@@ -2387,44 +3985,24 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
         }
 
         async function generateFiles() {
+            clearInlineOutput();
             if (!selectedBoard) {
-                alert('Select a board first.');
+                notify('Select a board first.', 'warning');
                 return;
             }
+            const payload = collectCurrentConfigPayload();
 
-            const enabled_modules = modules.filter(m => m.enabled).map(m => m.id);
-            const module_config = collectModuleConfigFromUI();
-            const enabled_applets = applets.filter(a => appletStates[a]);
-            const custom_pins = {};
-            document.querySelectorAll('#pin-table-body input[data-pin]').forEach(input => {
-                const key = input.dataset.pin;
-                const raw = (input.value || '').trim();
-                if (!raw) return;
-                if (input.dataset.pinType === 'number') {
-                    const val = parseInt(raw, 10);
-                    if (!Number.isNaN(val)) custom_pins[key] = val;
-                } else {
-                    custom_pins[key] = raw;
-                }
-            });
-
-            const payload = {
-                platform: selectedPlatform,
-                board_id: selectedBoard.id,
-                target_profile: selectedBoard.target_profile || null,
-                enabled_modules,
-                applets: enabled_applets,
-                module_config,
-                custom_pins
-            };
-
+            const btnGenerate = document.getElementById('btn-generate');
+            if (btnGenerate) {
+                btnGenerate.disabled = true;
+                btnGenerate.textContent = 'Generating...';
+            }
             try {
-                const resp = await fetch('/api/generate', {
+                const data = await apiFetchJson('/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                const data = await resp.json();
                 if (!data.success) throw new Error(data.error || 'Generate failed');
 
                 const fileLines = Object.keys(data.files || {}).map(k => `${k}: ${data.files[k]}`).join('\n');
@@ -2448,21 +4026,196 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                     ...buildMsg
                 ].join('\n');
 
-                alert(msg);
+                showInlineOutput(msg, 'success');
+                notify('Configuration files generated successfully.', 'success');
+                refreshWebFlasher({ silent: true });
             } catch (err) {
-                alert(`Generate failed: ${err}`);
+                const msg = `Generate failed: ${err.message || err}`;
+                showInlineOutput(msg, 'error');
+                notify(msg, 'error');
+            } finally {
+                if (btnGenerate) {
+                    btnGenerate.disabled = false;
+                    btnGenerate.textContent = 'Generate Files';
+                }
+            }
+        }
+
+        async function generateAndBuildEsp32() {
+            clearInlineOutput();
+            if (!selectedBoard) {
+                notify('Select a board first.', 'warning');
+                return;
+            }
+            if (selectedPlatform !== 'esp32') {
+                notify('Generate + Build is currently implemented for ESP32 only.', 'warning');
+                return;
+            }
+
+            const payload = collectCurrentConfigPayload();
+            const btn = document.getElementById('btn-generate-build');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Generating + Building...';
+            }
+            try {
+                const gen = await apiFetchJson('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!gen.success) throw new Error(gen.error || 'Generate failed');
+
+                const buildResp = await fetch('/api/build/esp32', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+                const raw = await buildResp.text();
+                let build = null;
+                try { build = raw ? JSON.parse(raw) : null; } catch (_e) { build = null; }
+
+                if (!buildResp.ok || !build?.success) {
+                    const msg = build?.error || raw || `HTTP ${buildResp.status}`;
+                    const details = build?.output || raw || '';
+                    showInlineOutput(`Generate succeeded, but build failed: ${msg}\n\n${details}`.trim(), 'error');
+                    notify(`Build failed: ${msg}`, 'error');
+                    return;
+                }
+
+                const genLines = Object.keys(gen.files || {}).map(k => `${k}: ${gen.files[k]}`).join('\n');
+                const output = build.output ? String(build.output) : '(no build output)';
+                const msg = [
+                    'Generate + Build completed successfully.',
+                    '',
+                    'Generated files:',
+                    genLines || '(none)',
+                    '',
+                    'Build output (tail):',
+                    output
+                ].join('\n');
+                showInlineOutput(msg, 'success');
+                notify('ESP32 firmware rebuilt. Web Flasher now uses latest selection.', 'success');
+                refreshWebFlasher({ silent: true });
+            } catch (err) {
+                const msg = `Generate + Build failed: ${err.message || err}`;
+                showInlineOutput(msg, 'error');
+                notify(msg, 'error');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Generate + Build ESP32';
+                }
             }
         }
 
         function attachEventListeners() {
+            const startBtn = document.getElementById('btn-start-config');
+            if (startBtn) startBtn.addEventListener('click', () => enterConfigurator(1));
+            const startEsp32Btn = document.getElementById('btn-start-esp32');
+            if (startEsp32Btn) {
+                startEsp32Btn.addEventListener('click', async () => {
+                    const platformSel = document.getElementById('platform-select');
+                    if (platformSel && selectedPlatform !== 'esp32') {
+                        platformSel.value = 'esp32';
+                        platformSel.dispatchEvent(new Event('change'));
+                    }
+                    enterConfigurator(1);
+                });
+            }
+            const topOpenBtn = document.getElementById('btn-open-config');
+            if (topOpenBtn) topOpenBtn.addEventListener('click', () => enterConfigurator());
+            const topMarketBtn = document.getElementById('btn-market');
+            if (topMarketBtn) topMarketBtn.addEventListener('click', () => showMarketPage());
+            const topHomeBtn = document.getElementById('btn-home');
+            if (topHomeBtn) topHomeBtn.addEventListener('click', () => showLanding());
+            const btnMarketToConfig = document.getElementById('btn-market-to-config');
+            if (btnMarketToConfig) btnMarketToConfig.addEventListener('click', () => enterConfigurator());
+            const btnOpenMarketFromConfig = document.getElementById('btn-open-market-from-config');
+            if (btnOpenMarketFromConfig) btnOpenMarketFromConfig.addEventListener('click', () => showMarketPage());
+            const btnMarketRefresh = document.getElementById('btn-market-refresh');
+            if (btnMarketRefresh) {
+                btnMarketRefresh.addEventListener('click', async () => {
+                    await refreshMarketCatalogForPlatform(selectedPlatform);
+                    updateLandingStats();
+                    renderMarketPage();
+                    notify('Market refreshed.', 'success', 1400);
+                });
+            }
+            const marketPageSearch = document.getElementById('market-page-search');
+            if (marketPageSearch) marketPageSearch.addEventListener('input', () => renderMarketPage());
+            const btnMarketUpload = document.getElementById('btn-market-upload');
+            if (btnMarketUpload) btnMarketUpload.addEventListener('click', () => uploadMarketApp());
+            const loginBtn = document.getElementById('btn-login');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', () => {
+                    const current = String(userProfile?.name || '').trim();
+                    const next = window.prompt('Enter your builder name', current);
+                    if (next === null) return;
+                    userProfile.name = String(next || '').trim();
+                    saveUserProfile();
+                    renderProfilePanel();
+                    notify(userProfile.name ? `Signed in as ${userProfile.name}` : 'Signed out to guest mode.', 'success');
+                });
+            }
+
             document.getElementById('platform-select').onchange = async (e) => {
                 selectedPlatform = e.target.value;
+                renderProfilePanel();
                 populateBoardList();
                 await refreshModulesForPlatform(selectedPlatform);
+                await refreshMarketCatalogForPlatform(selectedPlatform);
+                updateLandingStats();
                 populateModuleGrid();
+                populateAppletGrid();
+                populateMarketAppGrid();
+                renderMarketPage();
                 renderTemplateFilters();
                 renderTemplates();
+                clearInlineOutput();
+                refreshWebFlasher({ silent: true });
             };
+
+            const profileNameInput = document.getElementById('profile-name');
+            if (profileNameInput) {
+                profileNameInput.addEventListener('change', () => {
+                    userProfile.name = (profileNameInput.value || '').trim();
+                    saveUserProfile();
+                    renderProfilePanel();
+                });
+            }
+
+            const ownedOnlyToggle = document.getElementById('owned-only-toggle');
+            if (ownedOnlyToggle) {
+                ownedOnlyToggle.checked = false;
+                ownedOnlyToggle.addEventListener('change', () => {
+                    populateBoardList();
+                });
+            }
+
+            const inventoryList = document.getElementById('inventory-list');
+            if (inventoryList) {
+                inventoryList.addEventListener('change', (e) => {
+                    const target = e.target;
+                    if (!(target instanceof HTMLInputElement)) return;
+                    const boardId = target.dataset.ownedBoard;
+                    if (!boardId) return;
+                    const owned = new Set((userProfile.ownedBoards || []).map(String));
+                    if (target.checked) owned.add(String(boardId));
+                    else owned.delete(String(boardId));
+                    userProfile.ownedBoards = Array.from(owned);
+                    saveUserProfile();
+                    renderProfilePanel();
+                    populateBoardList();
+                });
+            }
+
+            const marketSearch = document.getElementById('market-search');
+            if (marketSearch) {
+                marketSearch.addEventListener('input', () => {
+                    populateMarketAppGrid();
+                });
+            }
             
             document.getElementById('board-search').oninput = (e) => {
                 const search = e.target.value.toLowerCase();
@@ -2470,11 +4223,23 @@ ${JSON.stringify(template.module_config, null, 2)}</pre>
                     const text = item.textContent.toLowerCase();
                     item.style.display = text.includes(search) ? 'block' : 'none';
                 });
+                document.querySelectorAll('.board-group').forEach(group => {
+                    const hasVisible = Array.from(group.querySelectorAll('.board-item'))
+                        .some(item => item.style.display !== 'none');
+                    const title = group.querySelector('.board-group-title');
+                    if (title) title.style.display = hasVisible ? 'block' : 'none';
+                });
             };
             
             document.getElementById('btn-next').onclick = nextStep;
             document.getElementById('btn-prev').onclick = prevStep;
             document.getElementById('btn-generate').onclick = generateFiles;
+            const btnGenerateBuild = document.getElementById('btn-generate-build');
+            if (btnGenerateBuild) btnGenerateBuild.onclick = generateAndBuildEsp32;
+            const expandBtn = document.getElementById('btn-expand-modules');
+            if (expandBtn) expandBtn.onclick = () => setAllModuleSections(true);
+            const collapseBtn = document.getElementById('btn-collapse-modules');
+            if (collapseBtn) collapseBtn.onclick = () => setAllModuleSections(false);
         }
 
         // Initialize on load

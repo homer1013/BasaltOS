@@ -1,14 +1,28 @@
 # Board profiles
 
-Board profiles provide a simple "BIOS-like" switch for Basalt OS by copying
-board-specific `sdkconfig.defaults` and `partitions.csv` into the repo root.
+Boards are organized as:
+`boards/<platform>/<board_dir>/board.json`
 
-Current profiles:
-- esp32-cyd (ESP32-D0WD-V3) [active target]
-- esp32-wroom-32d (placeholder)
-- esp32-cam (placeholder)
-- esp32-c3 (placeholder)
-- esp32-c6 (placeholder)
+Some boards also include legacy profile files:
+- `sdkconfig.defaults`
+- `partitions.csv`
+- optional `board_config.h`
 
-Use `tools/board.sh <board-name>` to activate a profile.
+Use `tools/board.sh --list` to see which boards are:
+- `profile-ready` (legacy profile files present)
+- `metadata-only` (board metadata only)
 
+For profile-ready boards, apply a profile with:
+```bash
+tools/board.sh <selector>
+```
+
+Selector forms:
+- `platform/board_dir` (recommended)
+- `board_dir` (if unique)
+- `board_id` from `board.json` (if unique)
+
+For metadata-only boards, use:
+```bash
+python tools/configure.py --platform <platform> --board <board_dir>
+```

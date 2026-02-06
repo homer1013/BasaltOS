@@ -54,7 +54,7 @@ net = false
 Core commands:
 - help, ls, cd, cat, edit
 - run, apps, install, remove
-- top, logs, wifi, reboot
+- logs, wifi, reboot
 
 Wizard commands:
 - new sensor-project
@@ -77,10 +77,9 @@ Wizard commands:
 
 ## Milestones (v0.1)
 1) Boot + serial console
-2) LittleFS mount
+2) SPIFFS mount
 3) bsh shell
 4) App loader
 5) One runtime (python or lua)
 6) GPIO API
 7) Hello/Blink/Sensor demo apps
-

@@ -93,6 +93,7 @@
 static const char *TAG = "tft";
 
 static spi_device_handle_t s_spi = NULL;
+static spi_device_handle_t s_touch_spi = NULL;
 static bool s_ready = false;
 static char s_screen[MAX_ROWS][MAX_COLS];
 static uint16_t s_color[MAX_ROWS][MAX_COLS];
@@ -102,6 +103,26 @@ static uint16_t s_bg = 0x0000;
 static int s_row = 0;
 static int s_col = 0;
 static SemaphoreHandle_t s_tft_lock = NULL;
+
+#if defined(BASALT_PIN_TOUCH_CS)
+#define BASALT_TOUCH_CS BASALT_PIN_TOUCH_CS
+#else
+#define BASALT_TOUCH_CS -1
+#endif
+
+// XPT2046 defaults; can become board-configurable later.
+#define BASALT_TOUCH_X_MIN 200
+#define BASALT_TOUCH_X_MAX 3800
+#define BASALT_TOUCH_Y_MIN 200
+#define BASALT_TOUCH_Y_MAX 3800
+#define BASALT_TOUCH_Z_MIN 80
+
+static inline void tft_maybe_yield(int step) {
+    if (step > 0 && (step % 4) == 0) {
+        // Avoid starving IDLE on verbose shell output (watchdog sensitivity on CYD).
+        vTaskDelay(pdMS_TO_TICKS(1));
+    }
+}
 
 // 5x7 ASCII font, characters 32..127 (96 glyphs). Public domain style.
 static const uint8_t font5x7[96][5] = {
@@ -391,6 +412,29 @@ static void tft_push_colors(const uint16_t *data, int len) {
     spi_device_polling_transmit(s_spi, &t);
 }
 
+static int touch_read_adc(uint8_t cmd) {
+    if (!s_touch_spi) return -1;
+    uint8_t tx[3] = {cmd, 0x00, 0x00};
+    uint8_t rx[3] = {0};
+    spi_transaction_t t = {0};
+    t.length = 24;
+    t.tx_buffer = tx;
+    t.rxlength = 24;
+    t.rx_buffer = rx;
+    if (spi_device_polling_transmit(s_touch_spi, &t) != ESP_OK) {
+        return -1;
+    }
+    int v = ((int)rx[1] << 8) | rx[2];
+    v >>= 3; // 12-bit value
+    return v & 0x0FFF;
+}
+
+static int touch_clamp(int v, int lo, int hi) {
+    if (v < lo) return lo;
+    if (v > hi) return hi;
+    return v;
+}
+
 static void tft_draw_line(int row) {
     if (row < 0 || row >= MAX_ROWS) return;
     int y0 = row * FONT_H;
@@ -425,6 +469,67 @@ static void tft_draw_line(int row) {
     tft_push_colors(s_linebuf, BASALT_TFT_WIDTH * FONT_H);
 }
 
+static uint32_t isqrt_u32(uint32_t n) {
+    uint32_t x = n;
+    uint32_t y = (x + 1U) >> 1;
+    while (y < x) {
+        x = y;
+        y = (x + n / x) >> 1;
+    }
+    return x;
+}
+
+static bool clip_rect(int *x, int *y, int *w, int *h) {
+    if (!x || !y || !w || !h) return false;
+    if (*w <= 0 || *h <= 0) return false;
+    if (*x >= BASALT_TFT_WIDTH || *y >= BASALT_TFT_HEIGHT) return false;
+    if (*x + *w <= 0 || *y + *h <= 0) return false;
+
+    if (*x < 0) {
+        *w += *x;
+        *x = 0;
+    }
+    if (*y < 0) {
+        *h += *y;
+        *y = 0;
+    }
+    if (*x + *w > BASALT_TFT_WIDTH) {
+        *w = BASALT_TFT_WIDTH - *x;
+    }
+    if (*y + *h > BASALT_TFT_HEIGHT) {
+        *h = BASALT_TFT_HEIGHT - *y;
+    }
+    return *w > 0 && *h > 0;
+}
+
+static void tft_draw_pixel_raw(int x, int y, uint16_t color) {
+    if (x < 0 || y < 0 || x >= BASALT_TFT_WIDTH || y >= BASALT_TFT_HEIGHT) return;
+    tft_set_addr_window(x, y, x, y);
+    tft_push_colors(&color, 1);
+}
+
+static void tft_fill_rect_raw(int x, int y, int w, int h, uint16_t color) {
+    if (!clip_rect(&x, &y, &w, &h)) return;
+    if (w > BASALT_TFT_WIDTH) w = BASALT_TFT_WIDTH;
+
+    for (int i = 0; i < w; ++i) {
+        s_linebuf[i] = color;
+    }
+    for (int row = 0; row < h; ++row) {
+        int yy = y + row;
+        tft_set_addr_window(x, yy, x + w - 1, yy);
+        tft_push_colors(s_linebuf, w);
+    }
+}
+
+static void tft_draw_hline_raw(int x, int y, int w, uint16_t color) {
+    tft_fill_rect_raw(x, y, w, 1, color);
+}
+
+static void tft_draw_vline_raw(int x, int y, int h, uint16_t color) {
+    tft_fill_rect_raw(x, y, 1, h, color);
+}
+
 static void tft_clear_screen(void) {
     // Clear text buffer
     for (int r = 0; r < MAX_ROWS; r++) {
@@ -437,11 +542,14 @@ static void tft_clear_screen(void) {
     for (int x = 0; x < BASALT_TFT_WIDTH * FONT_H; x++) {
         s_linebuf[x] = s_bg;
     }
+    int step = 0;
     for (int y = 0; y < BASALT_TFT_HEIGHT; y += FONT_H) {
         int y1 = y + FONT_H - 1;
         if (y1 >= BASALT_TFT_HEIGHT) y1 = BASALT_TFT_HEIGHT - 1;
         tft_set_addr_window(0, y, BASALT_TFT_WIDTH - 1, y1);
         tft_push_colors(s_linebuf, BASALT_TFT_WIDTH * (y1 - y + 1));
+        step++;
+        tft_maybe_yield(step);
     }
 }
 
@@ -456,6 +564,7 @@ static void tft_scroll(void) {
     }
     for (int r = 0; r < MAX_ROWS; r++) {
         tft_draw_line(r);
+        tft_maybe_yield(r + 1);
     }
 }
 
@@ -563,6 +672,140 @@ void tft_console_write_at(int x, int y, const char *text) {
     }
 }
 
+void tft_console_draw_pixel(int x, int y, uint16_t color) {
+    if (!s_ready) return;
+    if (s_tft_lock) xSemaphoreTake(s_tft_lock, portMAX_DELAY);
+    tft_draw_pixel_raw(x, y, color);
+    if (s_tft_lock) xSemaphoreGive(s_tft_lock);
+}
+
+void tft_console_draw_line(int x0, int y0, int x1, int y1, uint16_t color) {
+    if (!s_ready) return;
+    if (s_tft_lock) xSemaphoreTake(s_tft_lock, portMAX_DELAY);
+    int dx = (x1 > x0) ? (x1 - x0) : (x0 - x1);
+    int sx = (x0 < x1) ? 1 : -1;
+    int dy = (y1 > y0) ? (y0 - y1) : (y1 - y0); // negative abs
+    int sy = (y0 < y1) ? 1 : -1;
+    int err = dx + dy;
+
+    while (true) {
+        tft_draw_pixel_raw(x0, y0, color);
+        if (x0 == x1 && y0 == y1) break;
+        int e2 = err << 1;
+        if (e2 >= dy) {
+            err += dy;
+            x0 += sx;
+        }
+        if (e2 <= dx) {
+            err += dx;
+            y0 += sy;
+        }
+    }
+    if (s_tft_lock) xSemaphoreGive(s_tft_lock);
+}
+
+void tft_console_draw_rect(int x, int y, int w, int h, uint16_t color, bool fill) {
+    if (!s_ready || w <= 0 || h <= 0) return;
+    if (s_tft_lock) xSemaphoreTake(s_tft_lock, portMAX_DELAY);
+    if (fill) {
+        tft_fill_rect_raw(x, y, w, h, color);
+    } else {
+        tft_draw_hline_raw(x, y, w, color);
+        tft_draw_hline_raw(x, y + h - 1, w, color);
+        tft_draw_vline_raw(x, y, h, color);
+        tft_draw_vline_raw(x + w - 1, y, h, color);
+    }
+    if (s_tft_lock) xSemaphoreGive(s_tft_lock);
+}
+
+void tft_console_draw_circle(int cx, int cy, int r, uint16_t color, bool fill) {
+    if (!s_ready || r <= 0) return;
+    if (s_tft_lock) xSemaphoreTake(s_tft_lock, portMAX_DELAY);
+    int rr = r * r;
+    for (int y = -r; y <= r; ++y) {
+        int yy = y * y;
+        if (yy > rr) continue;
+        int x = (int)isqrt_u32((uint32_t)(rr - yy));
+        if (fill) {
+            tft_draw_hline_raw(cx - x, cy + y, (x * 2) + 1, color);
+        } else {
+            tft_draw_pixel_raw(cx - x, cy + y, color);
+            tft_draw_pixel_raw(cx + x, cy + y, color);
+        }
+    }
+    if (s_tft_lock) xSemaphoreGive(s_tft_lock);
+}
+
+void tft_console_draw_ellipse(int cx, int cy, int rx, int ry, uint16_t color, bool fill) {
+    if (!s_ready || rx <= 0 || ry <= 0) return;
+    if (s_tft_lock) xSemaphoreTake(s_tft_lock, portMAX_DELAY);
+
+    uint64_t rx2 = (uint64_t)rx * (uint64_t)rx;
+    uint64_t ry2 = (uint64_t)ry * (uint64_t)ry;
+    uint64_t rhs = rx2 * ry2;
+    for (int y = -ry; y <= ry; ++y) {
+        uint64_t y2 = (uint64_t)(y * y);
+        uint64_t term = y2 * rx2;
+        if (term > rhs) continue;
+        uint64_t remain = rhs - term;
+        uint32_t x = (uint32_t)isqrt_u32((uint32_t)(remain / ry2));
+        if (fill) {
+            tft_draw_hline_raw(cx - (int)x, cy + y, ((int)x * 2) + 1, color);
+        } else {
+            tft_draw_pixel_raw(cx - (int)x, cy + y, color);
+            tft_draw_pixel_raw(cx + (int)x, cy + y, color);
+        }
+    }
+    if (s_tft_lock) xSemaphoreGive(s_tft_lock);
+}
+
+bool tft_console_touch_read(int *pressed, int *x, int *y, int *raw_x, int *raw_y) {
+    if (pressed) *pressed = 0;
+    if (x) *x = -1;
+    if (y) *y = -1;
+    if (raw_x) *raw_x = -1;
+    if (raw_y) *raw_y = -1;
+
+    if (!s_ready || !s_touch_spi || BASALT_TOUCH_CS < 0) return false;
+
+    if (s_tft_lock) xSemaphoreTake(s_tft_lock, portMAX_DELAY);
+    // XPT2046 command bytes.
+    int z1 = touch_read_adc(0xB0);
+    int z2 = touch_read_adc(0xC0);
+    int rx = touch_read_adc(0xD0);
+    int ry = touch_read_adc(0x90);
+    if (s_tft_lock) xSemaphoreGive(s_tft_lock);
+
+    if (z1 < 0 || z2 < 0 || rx < 0 || ry < 0) return false;
+
+    int pressure = z1 + (4095 - z2);
+    if (pressure < BASALT_TOUCH_Z_MIN) {
+        if (pressed) *pressed = 0;
+        return true;
+    }
+    if (pressed) *pressed = 1;
+    if (raw_x) *raw_x = rx;
+    if (raw_y) *raw_y = ry;
+
+    // Map raw touch range to screen coordinates.
+    int mx = (rx - BASALT_TOUCH_X_MIN) * (BASALT_TFT_WIDTH - 1) / (BASALT_TOUCH_X_MAX - BASALT_TOUCH_X_MIN);
+    int my = (ry - BASALT_TOUCH_Y_MIN) * (BASALT_TFT_HEIGHT - 1) / (BASALT_TOUCH_Y_MAX - BASALT_TOUCH_Y_MIN);
+    mx = touch_clamp(mx, 0, BASALT_TFT_WIDTH - 1);
+    my = touch_clamp(my, 0, BASALT_TFT_HEIGHT - 1);
+
+    // CYD/XPT2046 panel is typically rotated relative to TFT coordinates.
+#if defined(BASALT_BOARD_CYD) || defined(BASALT_BOARD_CYD_3248S035R)
+    int tx = BASALT_TFT_WIDTH - 1 - mx;
+    int ty = BASALT_TFT_HEIGHT - 1 - my;
+    mx = tx;
+    my = ty;
+#endif
+
+    if (x) *x = mx;
+    if (y) *y = my;
+    return true;
+}
+
 bool tft_console_init(void) {
 #if BASALT_TFT_ENABLE
     if (!s_tft_lock) {
@@ -613,6 +856,21 @@ bool tft_console_init(void) {
         .pre_cb = NULL,
     };
     ESP_ERROR_CHECK(spi_bus_add_device(BASALT_TFT_HOST, &devcfg, &s_spi));
+
+    if (BASALT_TOUCH_CS >= 0) {
+        spi_device_interface_config_t touchcfg = {
+            .clock_speed_hz = 2500000, // XPT2046 max is low MHz range
+            .mode = 0,
+            .spics_io_num = BASALT_TOUCH_CS,
+            .queue_size = 1,
+            .flags = 0,
+        };
+        esp_err_t tret = spi_bus_add_device(BASALT_TFT_HOST, &touchcfg, &s_touch_spi);
+        if (tret != ESP_OK) {
+            ESP_LOGW(TAG, "Touch SPI add failed (%s)", esp_err_to_name(tret));
+            s_touch_spi = NULL;
+        }
+    }
 
     tft_reset();
 

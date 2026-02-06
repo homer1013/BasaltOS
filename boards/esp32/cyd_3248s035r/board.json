@@ -13,6 +13,7 @@
   "capabilities": [
     "wifi",
     "bluetooth",
+    "gpio",
     "tft",
     "touch",
     "sd_card",
@@ -72,10 +73,65 @@
       "alternatives": [21, 27],
       "type": "output"
     },
+    "touch_cs": {
+      "description": "Touch Controller Chip Select",
+      "alternatives": [33, 5, 15],
+      "type": "output"
+    },
+    "touch_irq": {
+      "description": "Touch Controller Interrupt",
+      "alternatives": [-1, 36, 39],
+      "type": "input"
+    },
+    "sd_mosi": {
+      "description": "SD SPI MOSI",
+      "alternatives": [23, 13],
+      "type": "output"
+    },
+    "sd_miso": {
+      "description": "SD SPI MISO",
+      "alternatives": [19, 12],
+      "type": "input"
+    },
+    "sd_sclk": {
+      "description": "SD SPI Clock",
+      "alternatives": [18, 14],
+      "type": "output"
+    },
+    "sd_cs": {
+      "description": "SD Card Chip Select",
+      "alternatives": [5, 4, 15, 33],
+      "type": "output"
+    },
+    "i2c_sda": {
+      "description": "I2C SDA",
+      "alternatives": [21, 33, 25],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL",
+      "alternatives": [22, 32, 26],
+      "type": "output"
+    },
+    "uart_tx": {
+      "description": "UART TX",
+      "alternatives": [1, 17, 25],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "UART RX",
+      "alternatives": [3, 16, 26],
+      "type": "input"
+    },
     "led": {
       "description": "Onboard LED",
       "alternatives": [17, 4, 2],
       "type": "output"
+    },
+    "button": {
+      "description": "Boot/User Button",
+      "alternatives": [0, 35, 39],
+      "type": "input"
     }
   },
   "sdkconfig": [
@@ -104,6 +160,11 @@
       "fs_sd",
       "tft",
       "shell_full"
+    ],
+    "applets": [
+      "tft_hello",
+      "system_info",
+      "sd_probe"
     ],
     "clock": {
       "freq_hz": 240000000

@@ -10,3 +10,5 @@ bool mpy_runtime_start_file(const char *path, char *err_buf, size_t err_len);
 bool mpy_runtime_stop(bool force, char *err_buf, size_t err_len);
 bool mpy_runtime_is_running(void);
 const char *mpy_runtime_current_app(void);
+const char *mpy_runtime_last_error(void);
+const char *mpy_runtime_last_result(void);

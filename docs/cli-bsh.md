@@ -23,8 +23,8 @@
 - apps: list installed apps
 - install <src> [name]: install from folder or store-only zip
 - remove <app>: uninstall an app
-- logs: view system/app logs (stub)
-- wifi: configure Wi-Fi (stub)
+- logs: show runtime diagnostics (running app, last runtime error, heap/cpu info)
+- wifi [status|scan|connect|reconnect|disconnect]: Wi-Fi station tools
 - reboot: restart device
 
 ## Examples

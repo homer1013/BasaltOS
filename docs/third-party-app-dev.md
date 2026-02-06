@@ -86,12 +86,12 @@ That means for now:
 - Use `print(...)` for display output
 - Treat the TFT as a terminal (no graphics primitives yet)
 
-Basalt also exposes a **UI stub** so you can code against a stable API today.
-All UI calls are **no-ops** (they won’t draw yet), but they won’t crash.
-When the real UI/graphics layer lands, your code will already follow the API.
+Basalt also exposes a **UI API** you can code against today.
+Current behavior is **text-oriented rendering** through the TFT console bridge on supported boards.
+This keeps app code stable while full graphics/touch behavior is still being built out.
 
-### UI API stub (available now)
-The API below is implemented as no-ops.
+### UI API (current behavior)
+The API below renders text labels/buttons at requested coordinates when TFT console is active.
 
 ```python
 import basalt.ui as ui
@@ -118,8 +118,8 @@ Notes:
 - events are callback-based
 - touch input will map to widget events
 
-### Longer UI example (stub)
-This runs today (no-ops for UI), and will become interactive once UI lands.
+### Longer UI example
+This runs today with text rendering; interaction callbacks remain placeholder-level.
 
 ```python
 import basalt

@@ -17,6 +17,7 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/event_groups.h"
 
 #include "esp_system.h"
 #include "esp_log.h"
@@ -32,6 +33,10 @@
 #include "driver/spi_master.h"
 #include "sdmmc_cmd.h"
 #include "esp_vfs_fat.h"
+#include "esp_event.h"
+#include "esp_netif.h"
+#include "esp_wifi.h"
+#include "lwip/ip4_addr.h"
 
 #include "tft_console.h"
 #include "mpy_runtime.h"
@@ -66,6 +71,13 @@
 #endif
 #define BASALT_ENABLE_SHELL (BASALT_SHELL_LEVEL > 0)
 #define BASALT_SHELL_BACKEND (BASALT_ENABLE_UART || BASALT_ENABLE_TFT)
+
+#ifndef BASALT_APPLET_COUNT
+#define BASALT_APPLET_COUNT 0
+#endif
+#ifndef BASALT_APPLETS_CSV
+#define BASALT_APPLETS_CSV ""
+#endif
 
 static const char *TAG = "basalt";
 static int g_uart_num = CONFIG_ESP_CONSOLE_UART_NUM;
@@ -154,11 +166,12 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"run_dev", "run_dev <app|script>", "Run a dev app from /apps_dev"},
     {"stop", "stop", "Stop the running app"},
     {"kill", "kill", "Force stop the running app"},
+    {"applet", "applet list|run <name>", "List or run selected applets"},
 #if BASALT_SHELL_LEVEL >= 2
     {"install", "install <src> [name]", "Install app from folder or zip"},
     {"remove", "remove <app>", "Remove installed app"},
-    {"logs", "logs", "Show logs (stub)"},
-    {"wifi", "wifi", "WiFi tools (stub)"},
+    {"logs", "logs", "Show runtime diagnostics and last app error"},
+    {"wifi", "wifi [status|scan|connect|reconnect|disconnect]", "Wi-Fi station tools"},
 #endif
     {"reboot", "reboot", "Restart the device"},
 };
@@ -311,6 +324,63 @@ static bool app_entry_path_flat(const char *app_prefix, char *out, size_t out_le
     parse_entry_from_toml(toml, entry, sizeof(entry));
     snprintf(out, out_len, "%s/%s", app_prefix, entry);
     return true;
+}
+
+static bool resolve_named_app_script(const char *app_name, char *out, size_t out_len) {
+    if (!app_name || !app_name[0] || strchr(app_name, '/')) return false;
+
+    char app_prefix[128];
+    snprintf(app_prefix, sizeof(app_prefix), BASALT_APPS_ROOT "/%s", app_name);
+
+    char script[256];
+    app_entry_path_flat(app_prefix, script, sizeof(script));
+    if (path_is_file(script)) {
+        snprintf(out, out_len, "%s", script);
+        return true;
+    }
+
+    snprintf(script, sizeof(script), "%s/main.py", app_prefix);
+    if (path_is_file(script)) {
+        snprintf(out, out_len, "%s", script);
+        return true;
+    }
+
+    // SPIFFS can flatten paths; scan for "<app>/main.py" or any "<app>/*.py" fallback.
+    DIR *dir = opendir(BASALT_APPS_ROOT);
+    if (!dir) return false;
+
+    char prefix[96];
+    snprintf(prefix, sizeof(prefix), "%s/", app_name);
+    size_t prefix_len = strlen(prefix);
+    char first_py[256] = {0};
+    struct dirent *ent;
+    while ((ent = readdir(dir)) != NULL) {
+        const char *name = ent->d_name;
+        if (strncmp(name, prefix, prefix_len) != 0) continue;
+        size_t nlen = strlen(name);
+        if (nlen < 3 || strcmp(name + (nlen - 3), ".py") != 0) continue;
+
+        char full[256];
+        int full_len = snprintf(full, sizeof(full), BASALT_APPS_ROOT "/%s", name);
+        if (full_len < 0 || full_len >= (int)sizeof(full)) continue;
+        if (!path_is_file(full)) continue;
+
+        if (strcmp(name + prefix_len, "main.py") == 0) {
+            snprintf(out, out_len, "%s", full);
+            closedir(dir);
+            return true;
+        }
+        if (first_py[0] == '\0') {
+            snprintf(first_py, sizeof(first_py), "%s", full);
+        }
+    }
+    closedir(dir);
+
+    if (first_py[0]) {
+        snprintf(out, out_len, "%s", first_py);
+        return true;
+    }
+    return false;
 }
 
 static bool copy_file(const char *src, const char *dst) {
@@ -1393,6 +1463,398 @@ static void bsh_cmd_remove(const char *target) {
 }
 #endif
 
+#if BASALT_SHELL_LEVEL >= 2
+#if defined(CONFIG_ESP_WIFI_ENABLED) && CONFIG_ESP_WIFI_ENABLED
+
+#define BASALT_WIFI_CONNECTED_BIT BIT0
+#define BASALT_WIFI_FAIL_BIT BIT1
+
+static EventGroupHandle_t s_wifi_events = NULL;
+static bool s_wifi_ready = false;
+static bool s_wifi_connecting = false;
+static bool s_wifi_connected = false;
+static int s_wifi_retry_count = 0;
+static const int s_wifi_retry_max = 5;
+static char s_wifi_ssid[33] = {0};
+static esp_netif_t *s_wifi_netif = NULL;
+static esp_netif_ip_info_t s_wifi_last_ip = {0};
+
+static const char *wifi_auth_mode_str(wifi_auth_mode_t mode) {
+    switch (mode) {
+        case WIFI_AUTH_OPEN: return "open";
+        case WIFI_AUTH_WEP: return "wep";
+        case WIFI_AUTH_WPA_PSK: return "wpa";
+        case WIFI_AUTH_WPA2_PSK: return "wpa2";
+        case WIFI_AUTH_WPA_WPA2_PSK: return "wpa/wpa2";
+        case WIFI_AUTH_WPA2_ENTERPRISE: return "wpa2-ent";
+        case WIFI_AUTH_WPA3_PSK: return "wpa3";
+        case WIFI_AUTH_WPA2_WPA3_PSK: return "wpa2/wpa3";
+        case WIFI_AUTH_WAPI_PSK: return "wapi";
+        default: return "unknown";
+    }
+}
+
+static void basalt_wifi_event_handler(void *arg, esp_event_base_t base, int32_t id, void *data) {
+    (void)arg;
+    if (base == WIFI_EVENT && id == WIFI_EVENT_STA_DISCONNECTED) {
+        s_wifi_connected = false;
+        memset(&s_wifi_last_ip, 0, sizeof(s_wifi_last_ip));
+        if (s_wifi_connecting && s_wifi_retry_count < s_wifi_retry_max) {
+            s_wifi_retry_count++;
+            esp_wifi_connect();
+        } else if (s_wifi_connecting && s_wifi_events) {
+            xEventGroupSetBits(s_wifi_events, BASALT_WIFI_FAIL_BIT);
+        }
+    } else if (base == IP_EVENT && id == IP_EVENT_STA_GOT_IP) {
+        ip_event_got_ip_t *evt = (ip_event_got_ip_t *)data;
+        if (evt) {
+            s_wifi_last_ip = evt->ip_info;
+        }
+        s_wifi_connected = true;
+        if (s_wifi_events) {
+            xEventGroupSetBits(s_wifi_events, BASALT_WIFI_CONNECTED_BIT);
+        }
+    }
+}
+
+static bool basalt_wifi_init(char *err, size_t err_len) {
+    if (s_wifi_ready) return true;
+
+    if (!s_wifi_events) {
+        s_wifi_events = xEventGroupCreate();
+        if (!s_wifi_events) {
+            if (err && err_len) snprintf(err, err_len, "event group allocation failed");
+            return false;
+        }
+    }
+
+    esp_err_t ret = esp_netif_init();
+    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
+        if (err && err_len) snprintf(err, err_len, "esp_netif_init failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    ret = esp_event_loop_create_default();
+    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
+        if (err && err_len) snprintf(err, err_len, "event loop init failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+
+    if (!s_wifi_netif) {
+        s_wifi_netif = esp_netif_create_default_wifi_sta();
+        if (!s_wifi_netif) {
+            if (err && err_len) snprintf(err, err_len, "failed to create Wi-Fi netif");
+            return false;
+        }
+    }
+
+    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    ret = esp_wifi_init(&cfg);
+    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
+        if (err && err_len) snprintf(err, err_len, "esp_wifi_init failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+
+    ret = esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &basalt_wifi_event_handler, NULL);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "wifi event register failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    ret = esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &basalt_wifi_event_handler, NULL);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "ip event register failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+
+    ret = esp_wifi_set_storage(WIFI_STORAGE_RAM);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "wifi storage set failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    ret = esp_wifi_set_mode(WIFI_MODE_STA);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "wifi mode set failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    ret = esp_wifi_start();
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "wifi start failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+
+    s_wifi_ready = true;
+    return true;
+}
+
+static void bsh_cmd_wifi_status(void) {
+    basalt_printf("wifi.enabled: yes\n");
+    basalt_printf("wifi.initialized: %s\n", s_wifi_ready ? "yes" : "no");
+    basalt_printf("wifi.connected: %s\n", s_wifi_connected ? "yes" : "no");
+    basalt_printf("wifi.ssid: %s\n", s_wifi_ssid[0] ? s_wifi_ssid : "(none)");
+    if (s_wifi_connected) {
+        esp_netif_ip_info_t ip = {0};
+        if (s_wifi_netif && esp_netif_get_ip_info(s_wifi_netif, &ip) == ESP_OK) {
+            s_wifi_last_ip = ip;
+        }
+        basalt_printf("wifi.ipv4: " IPSTR "\n", IP2STR(&s_wifi_last_ip.ip));
+
+        wifi_ap_record_t ap = {0};
+        if (esp_wifi_sta_get_ap_info(&ap) == ESP_OK) {
+            basalt_printf("wifi.rssi: %d\n", ap.rssi);
+        }
+    } else {
+        basalt_printf("wifi.ipv4: (none)\n");
+    }
+}
+
+static void bsh_cmd_wifi_connect(const char *ssid, const char *pass) {
+    if (!ssid || !ssid[0]) {
+        basalt_printf("wifi connect: missing ssid\n");
+        basalt_printf("usage: wifi connect <ssid> [passphrase]\n");
+        return;
+    }
+    if (strlen(ssid) > 32) {
+        basalt_printf("wifi connect: ssid too long (max 32)\n");
+        return;
+    }
+    if (pass && strlen(pass) > 63) {
+        basalt_printf("wifi connect: passphrase too long (max 63)\n");
+        return;
+    }
+
+    char err[128];
+    if (!basalt_wifi_init(err, sizeof(err))) {
+        basalt_printf("wifi connect: %s\n", err);
+        return;
+    }
+
+    wifi_config_t cfg = {0};
+    snprintf((char *)cfg.sta.ssid, sizeof(cfg.sta.ssid), "%s", ssid);
+    snprintf((char *)cfg.sta.password, sizeof(cfg.sta.password), "%s", pass ? pass : "");
+    cfg.sta.threshold.authmode = (pass && pass[0]) ? WIFI_AUTH_WPA2_PSK : WIFI_AUTH_OPEN;
+    cfg.sta.pmf_cfg.capable = true;
+    cfg.sta.pmf_cfg.required = false;
+
+    esp_err_t ret = esp_wifi_set_config(WIFI_IF_STA, &cfg);
+    if (ret != ESP_OK) {
+        basalt_printf("wifi connect: config failed (%s)\n", esp_err_to_name(ret));
+        return;
+    }
+
+    xEventGroupClearBits(s_wifi_events, BASALT_WIFI_CONNECTED_BIT | BASALT_WIFI_FAIL_BIT);
+    s_wifi_connecting = true;
+    s_wifi_connected = false;
+    s_wifi_retry_count = 0;
+    snprintf(s_wifi_ssid, sizeof(s_wifi_ssid), "%s", ssid);
+    memset(&s_wifi_last_ip, 0, sizeof(s_wifi_last_ip));
+
+    esp_wifi_disconnect();
+    ret = esp_wifi_connect();
+    if (ret != ESP_OK) {
+        s_wifi_connecting = false;
+        basalt_printf("wifi connect: connect failed (%s)\n", esp_err_to_name(ret));
+        return;
+    }
+
+    EventBits_t bits = xEventGroupWaitBits(
+        s_wifi_events,
+        BASALT_WIFI_CONNECTED_BIT | BASALT_WIFI_FAIL_BIT,
+        pdTRUE,
+        pdFALSE,
+        pdMS_TO_TICKS(15000)
+    );
+    s_wifi_connecting = false;
+
+    if (bits & BASALT_WIFI_CONNECTED_BIT) {
+        basalt_printf("wifi connect: connected to %s\n", s_wifi_ssid);
+        bsh_cmd_wifi_status();
+    } else if (bits & BASALT_WIFI_FAIL_BIT) {
+        basalt_printf("wifi connect: failed to connect to %s\n", s_wifi_ssid);
+    } else {
+        basalt_printf("wifi connect: timeout waiting for connection\n");
+    }
+}
+
+static void bsh_cmd_wifi_scan(void) {
+    char err[128];
+    if (!basalt_wifi_init(err, sizeof(err))) {
+        basalt_printf("wifi scan: %s\n", err);
+        return;
+    }
+
+    wifi_scan_config_t scan_cfg = {0};
+    esp_err_t ret = esp_wifi_scan_start(&scan_cfg, true);
+    if (ret != ESP_OK) {
+        basalt_printf("wifi scan: failed (%s)\n", esp_err_to_name(ret));
+        return;
+    }
+
+    uint16_t count = 20;
+    wifi_ap_record_t records[20];
+    memset(records, 0, sizeof(records));
+    ret = esp_wifi_scan_get_ap_records(&count, records);
+    if (ret != ESP_OK) {
+        basalt_printf("wifi scan: read results failed (%s)\n", esp_err_to_name(ret));
+        return;
+    }
+
+    uint16_t total = 0;
+    ret = esp_wifi_scan_get_ap_num(&total);
+    if (ret == ESP_OK) {
+        basalt_printf("wifi scan: %u network(s), showing %u\n", (unsigned)total, (unsigned)count);
+    } else {
+        basalt_printf("wifi scan: showing %u network(s)\n", (unsigned)count);
+    }
+
+    for (uint16_t i = 0; i < count; ++i) {
+        const char *ssid = (const char *)records[i].ssid;
+        if (!ssid || !ssid[0]) ssid = "<hidden>";
+        basalt_printf("%2u) ssid=%s rssi=%d ch=%u auth=%s\n",
+                      (unsigned)(i + 1),
+                      ssid,
+                      records[i].rssi,
+                      (unsigned)records[i].primary,
+                      wifi_auth_mode_str(records[i].authmode));
+    }
+}
+
+static void bsh_cmd_wifi_reconnect(void) {
+    char err[128];
+    if (!basalt_wifi_init(err, sizeof(err))) {
+        basalt_printf("wifi reconnect: %s\n", err);
+        return;
+    }
+
+    wifi_config_t cfg = {0};
+    esp_err_t ret = esp_wifi_get_config(WIFI_IF_STA, &cfg);
+    if (ret != ESP_OK) {
+        basalt_printf("wifi reconnect: get config failed (%s)\n", esp_err_to_name(ret));
+        return;
+    }
+    if (cfg.sta.ssid[0] == '\0') {
+        basalt_printf("wifi reconnect: no saved ssid; use 'wifi connect <ssid> [passphrase]'\n");
+        return;
+    }
+
+    const char *ssid = (const char *)cfg.sta.ssid;
+    snprintf(s_wifi_ssid, sizeof(s_wifi_ssid), "%s", ssid);
+    memset(&s_wifi_last_ip, 0, sizeof(s_wifi_last_ip));
+    s_wifi_retry_count = 0;
+    s_wifi_connecting = true;
+    s_wifi_connected = false;
+    xEventGroupClearBits(s_wifi_events, BASALT_WIFI_CONNECTED_BIT | BASALT_WIFI_FAIL_BIT);
+
+    esp_wifi_disconnect();
+    ret = esp_wifi_connect();
+    if (ret != ESP_OK) {
+        s_wifi_connecting = false;
+        basalt_printf("wifi reconnect: connect failed (%s)\n", esp_err_to_name(ret));
+        return;
+    }
+
+    EventBits_t bits = xEventGroupWaitBits(
+        s_wifi_events,
+        BASALT_WIFI_CONNECTED_BIT | BASALT_WIFI_FAIL_BIT,
+        pdTRUE,
+        pdFALSE,
+        pdMS_TO_TICKS(15000)
+    );
+    s_wifi_connecting = false;
+
+    if (bits & BASALT_WIFI_CONNECTED_BIT) {
+        basalt_printf("wifi reconnect: connected to %s\n", s_wifi_ssid);
+        bsh_cmd_wifi_status();
+    } else if (bits & BASALT_WIFI_FAIL_BIT) {
+        basalt_printf("wifi reconnect: failed to reconnect to %s\n", s_wifi_ssid);
+    } else {
+        basalt_printf("wifi reconnect: timeout waiting for connection\n");
+    }
+}
+
+static void bsh_cmd_wifi_disconnect(void) {
+    if (!s_wifi_ready) {
+        basalt_printf("wifi disconnect: not initialized\n");
+        return;
+    }
+    esp_err_t ret = esp_wifi_disconnect();
+    if (ret != ESP_OK) {
+        basalt_printf("wifi disconnect: failed (%s)\n", esp_err_to_name(ret));
+        return;
+    }
+    s_wifi_connecting = false;
+    s_wifi_connected = false;
+    memset(&s_wifi_last_ip, 0, sizeof(s_wifi_last_ip));
+    xEventGroupClearBits(s_wifi_events, BASALT_WIFI_CONNECTED_BIT | BASALT_WIFI_FAIL_BIT);
+    basalt_printf("wifi disconnect: disconnected\n");
+}
+
+#else
+static void bsh_cmd_wifi_status(void) {
+    basalt_printf("wifi.enabled: no (CONFIG_ESP_WIFI_ENABLED=0)\n");
+}
+static void bsh_cmd_wifi_connect(const char *ssid, const char *pass) {
+    (void)ssid;
+    (void)pass;
+    basalt_printf("wifi connect: Wi-Fi is not enabled in this firmware build\n");
+}
+static void bsh_cmd_wifi_scan(void) {
+    basalt_printf("wifi scan: Wi-Fi is not enabled in this firmware build\n");
+}
+static void bsh_cmd_wifi_reconnect(void) {
+    basalt_printf("wifi reconnect: Wi-Fi is not enabled in this firmware build\n");
+}
+static void bsh_cmd_wifi_disconnect(void) {
+    basalt_printf("wifi disconnect: Wi-Fi is not enabled in this firmware build\n");
+}
+#endif
+#endif
+
+static void bsh_cmd_applet_list(void) {
+    basalt_printf("applets.count: %d\n", (int)BASALT_APPLET_COUNT);
+    const char *csv = BASALT_APPLETS_CSV;
+    if (!csv || csv[0] == '\0') {
+        basalt_printf("applets: (none selected)\n");
+        return;
+    }
+
+    basalt_printf("applets.selected:\n");
+    int idx = 1;
+    const char *start = csv;
+    const char *p = csv;
+    while (true) {
+        if (*p == ',' || *p == '\0') {
+            int len = (int)(p - start);
+            if (len > 0) {
+                char name[48];
+                if (len >= (int)sizeof(name)) len = (int)sizeof(name) - 1;
+                memcpy(name, start, (size_t)len);
+                name[len] = '\0';
+                basalt_printf("  %d) %s\n", idx++, name);
+            }
+            if (*p == '\0') break;
+            start = p + 1;
+        }
+        ++p;
+    }
+}
+
+static void bsh_cmd_applet_run(const char *name) {
+    if (!name || !name[0]) {
+        basalt_printf("usage: applet run <name>\n");
+        return;
+    }
+    char script[256];
+    if (!resolve_named_app_script(name, script, sizeof(script))) {
+        basalt_printf("applet run: no entry script in /apps/%s\n", name);
+        return;
+    }
+
+    char err[128];
+    basalt_printf("applet run: launching %s\n", script);
+    if (!mpy_runtime_start_file(script, err, sizeof(err))) {
+        basalt_printf("applet run: %s\n", err);
+    }
+}
+
 static void bsh_handle_line(char *line) {
     char *cmd = strtok(line, " \t\r\n");
     if (!cmd) return;
@@ -1491,12 +1953,22 @@ static void bsh_handle_line(char *line) {
         if (!arg) {
             basalt_printf("run: missing script path\n");
         } else {
-            char vpath[128];
-            if (!path_is_absolute(arg) && !strchr(arg, '/') && !strstr(arg, ".py")) {
-                snprintf(vpath, sizeof(vpath), "/apps/%s", arg);
-            } else {
-                resolve_virtual_path(arg, vpath, sizeof(vpath));
+            const bool is_name = !path_is_absolute(arg) && !strchr(arg, '/') && !strstr(arg, ".py");
+            if (is_name) {
+                char script[256];
+                if (!resolve_named_app_script(arg, script, sizeof(script))) {
+                    basalt_printf("run: no entry script in /apps/%s\n", arg);
+                    return;
+                }
+                char err[128];
+                basalt_printf("run: launching %s\n", script);
+                if (!mpy_runtime_start_file(script, err, sizeof(err))) {
+                    basalt_printf("run: %s\n", err);
+                }
+                return;
             }
+            char vpath[128];
+            resolve_virtual_path(arg, vpath, sizeof(vpath));
             char rpath[128];
             if (!map_virtual_to_real(vpath, rpath, sizeof(rpath))) {
                 basalt_printf("run: invalid path %s\n", vpath);
@@ -1517,6 +1989,7 @@ static void bsh_handle_line(char *line) {
                 return;
             }
             char err[128];
+            basalt_printf("run: launching %s\n", script);
             if (!mpy_runtime_start_file(script, err, sizeof(err))) {
                 basalt_printf("run: %s\n", err);
             }
@@ -1614,6 +2087,18 @@ static void bsh_handle_line(char *line) {
         } else {
             basalt_printf("killed\n");
         }
+    } else if (strcmp(cmd, "applet") == 0 || strcmp(cmd, "applets") == 0) {
+        char *sub = strtok(NULL, " \t\r\n");
+        if (!sub || strcmp(sub, "list") == 0) {
+            bsh_cmd_applet_list();
+        } else if (strcmp(sub, "run") == 0) {
+            char *name = strtok(NULL, " \t\r\n");
+            bsh_cmd_applet_run(name);
+        } else {
+            basalt_printf("applet: unknown subcommand '%s'\n", sub);
+            basalt_printf("usage: applet list\n");
+            basalt_printf("       applet run <name>\n");
+        }
     } else if (strcmp(cmd, "install") == 0) {
 #if BASALT_SHELL_LEVEL >= 2
         char *src = strtok(NULL, " \t\r\n");
@@ -1631,13 +2116,40 @@ static void bsh_handle_line(char *line) {
 #endif
     } else if (strcmp(cmd, "logs") == 0) {
 #if BASALT_SHELL_LEVEL >= 2
-        basalt_printf("logs: (stub)\n");
+        const char *current = mpy_runtime_current_app();
+        const char *last_err = mpy_runtime_last_error();
+        const char *last_result = mpy_runtime_last_result();
+        basalt_printf("runtime.ready: %s\n", mpy_runtime_is_ready() ? "yes" : "no");
+        basalt_printf("runtime.running: %s\n", mpy_runtime_is_running() ? "yes" : "no");
+        basalt_printf("runtime.app: %s\n", current ? current : "(none)");
+        basalt_printf("runtime.last_result: %s\n", last_result ? last_result : "(none)");
+        basalt_printf("runtime.last_error: %s\n", last_err ? last_err : "(none)");
+        basalt_printf("runtime.history_persistence: RAM-only (clears on reboot)\n");
+        basalt_printf("system.heap_free: %u\n", (unsigned)esp_get_free_heap_size());
+        basalt_printf("system.cpu_hz: %u\n", (unsigned)esp_clk_cpu_freq());
+        basalt_printf("hint: use idf.py monitor for full ESP-IDF logs\n");
 #else
         basalt_printf("logs: disabled in minimal shell\n");
 #endif
     } else if (strcmp(cmd, "wifi") == 0) {
 #if BASALT_SHELL_LEVEL >= 2
-        basalt_printf("wifi: (stub)\n");
+        char *sub = strtok(NULL, " \t\r\n");
+        if (!sub || strcmp(sub, "status") == 0) {
+            bsh_cmd_wifi_status();
+        } else if (strcmp(sub, "scan") == 0) {
+            bsh_cmd_wifi_scan();
+        } else if (strcmp(sub, "connect") == 0) {
+            char *ssid = strtok(NULL, " \t\r\n");
+            char *pass = strtok(NULL, " \t\r\n");
+            bsh_cmd_wifi_connect(ssid, pass);
+        } else if (strcmp(sub, "reconnect") == 0) {
+            bsh_cmd_wifi_reconnect();
+        } else if (strcmp(sub, "disconnect") == 0) {
+            bsh_cmd_wifi_disconnect();
+        } else {
+            basalt_printf("wifi: unknown subcommand '%s'\n", sub);
+            basalt_printf("usage: wifi [status|scan|connect|reconnect|disconnect]\n");
+        }
 #else
         basalt_printf("wifi: disabled in minimal shell\n");
 #endif

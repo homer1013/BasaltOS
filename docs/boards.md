@@ -1,25 +1,46 @@
 # Basalt OS board selection
 
-Basalt uses a simple board profile system to switch targets quickly.
-Each profile provides `sdkconfig.defaults` and `partitions.csv`.
+Basalt supports two board-selection flows:
+- `tools/board.sh` for legacy profile-copy boards (copies `sdkconfig.defaults` + `partitions.csv` into repo root)
+- `tools/configure.py` for metadata-driven board/module config generation
 
-## Current board (connected)
-- ESP32 CYD (ESP32-D0WD-V3)
-- Serial: /dev/ttyUSB0
-
-## Switch boards
+## List boards
+```bash
+./tools/board.sh --list
 ```
-./tools/board.sh esp32-cyd
+
+Each entry is shown as:
+- `profile-ready`: board includes legacy profile files
+- `metadata-only`: board exists in board metadata but does not include legacy profile files yet
+
+## Legacy profile switch (profile-ready boards)
+`tools/board.sh` selector formats:
+- `platform/board_dir` (recommended)
+- `board_dir` (if unique)
+- `board_id` from `board.json` (if unique)
+
+Example:
+```bash
+./tools/board.sh esp32/cyd_3248s035r
 ```
 
 Then build/flash with ESP-IDF:
-```
+```bash
+# target should match board metadata; for CYD this is esp32
 idf.py set-target esp32
 idf.py build
 idf.py -p /dev/ttyUSB0 flash monitor
 ```
 
-## Notes
-- Profiles for ESP32-C3/C6 are placeholders; they need proper partitions and target selection.
-- ESP32-C3/C6 require `idf.py set-target esp32c3` or `idf.py set-target esp32c6`.
-- CYD display support is currently experimental and assumes an SPI ILI9488 panel; see `main/tft_console.c` for pin config.
+## Configurator flow (all boards)
+For metadata-only boards, use:
+```bash
+python tools/configure.py --platform <platform> --board <board_dir>
+```
+
+Example:
+```bash
+python tools/configure.py --platform esp32 --board esp32-devkitc_v4
+```
+
+This generates outputs under `config/generated/` (including `sdkconfig.defaults` used by CMake).

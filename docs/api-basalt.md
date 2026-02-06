@@ -31,8 +31,9 @@
 - wifi_connect(ssid, passphrase)
 - http_get(url)
 
-## basalt.ui (current stub)
-All UI calls are no-ops for now. They are safe to call and provide a stable API.
+## basalt.ui (current text-mode implementation)
+`basalt.ui` currently renders text widgets through the TFT console bridge when TFT console is enabled.
+This is not a full graphics/UI stack yet; callbacks and touch integration are still placeholder-level.
 
 Functions:
 - screen()

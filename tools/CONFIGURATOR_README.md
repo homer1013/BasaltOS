@@ -4,12 +4,14 @@ A web-based graphical interface for configuring BasaltOS projects. Similar to ST
 
 ## Features
 
+- 🏠 **Landing + Navigation** - Home page, top navigation, and profile chip
 - 🎯 **Visual Board Selection** - Browse and select from supported development boards
 - 🧩 **Module Management** - Enable/disable features like TFT, SD card, WiFi, etc.
 - 📌 **Pin Configuration** - Assign GPIO pins with conflict detection
+- 🛒 **Dedicated App Market Page** - Browse/upload/download apps and add compatible apps to current build
 - 📝 **Code Generation** - Automatically generate `basalt_config.h` and `sdkconfig.defaults`
 - 🔍 **Configuration Preview** - See generated configuration before saving
-- 💾 **Save/Load Projects** - Save your configuration for reuse
+- 👤 **Profile + Inventory** - Builder profile and owned-board filtering
 
 ## Architecture
 
@@ -66,7 +68,7 @@ http://localhost:5000
 
 ## Configuration File Structure
 
-### Board JSON (`boards/cyd_3248s035r.json`)
+### Board JSON (`boards/esp32/cyd_3248s035r/board.json`)
 
 ```json
 {
@@ -141,6 +143,15 @@ http://localhost:5000
 1. Toggle modules on/off based on your needs
 2. See which pins each module requires
 3. View module dependencies automatically
+4. Review selected apps (managed from the App Market page)
+
+### App Market Page
+
+1. Open **App Market** from top nav
+2. Browse starter apps + market apps
+3. Use **Add to current build** (gated by selected board/platform compatibility)
+4. Download packages as zip
+5. Upload app packages as zip (`main.py` required)
 
 ### Step 3: Configure Pins
 
@@ -164,6 +175,9 @@ The backend provides a REST API:
 - `GET /api/boards/<platform>` - Get boards for platform
 - `GET /api/modules?platform=<platform>` - Get available modules
 - `GET /api/board/<board_id>` - Get detailed board info
+- `GET /api/market/catalog?platform=<platform>` - List market catalog
+- `GET /api/market/download/<app_id>?platform=<platform>` - Download app package zip
+- `POST /api/market/upload` - Upload app package zip + metadata
 - `POST /api/generate` - Generate configuration files
 - `POST /api/preview/<config_type>` - Preview config without saving
 
@@ -257,7 +271,7 @@ This GUI follows the principle of **"Configure Once, Build Anywhere"**:
 
 ## Future Enhancements
 
-- [ ] Pin conflict detection and highlighting
+- [ ] App signing/trust metadata for market packages
 - [ ] Visual pin diagram/pinout viewer
 - [ ] Module dependency graph visualization
 - [ ] Import/export configurations

@@ -30,7 +30,9 @@ idf.py -p /dev/ttyUSB0 flash monitor
 
 Notes:
 - `sdkconfig.defaults` is applied only when generating a new `sdkconfig`.
-- Board profiles are applied with `tools/board.sh <board>`.
+- Use `tools/board.sh --list` to see selector options, then `tools/board.sh <selector>` for profile-ready boards.
+- For metadata-only boards, use `python tools/configure.py --platform <platform> --board <board_dir>`.
+- Validate metadata consistency with `python tools/validate_metadata.py`.
 - The SPIFFS image is generated from `spiffs/` into `storage.bin`.
 
 ## Filesystem conventions
@@ -82,4 +84,3 @@ TFT prompt uses `tft_console_set_color()` before drawing the prompt.
 - SD: card mounts at `/sd`, can `ls` and `cp` files.
 - Install: `install /sd/app.zip app` then `run app`.
 - Remove: `remove app`, `rm -r` directory deletion works.
-

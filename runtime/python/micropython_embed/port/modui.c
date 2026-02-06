@@ -332,6 +332,138 @@ STATIC mp_obj_t basalt_ui_set_title(mp_obj_t title_in) {
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(basalt_ui_set_title_obj, basalt_ui_set_title);
 
 // ------------------------
+// Primitive draw/touch API
+// ------------------------
+STATIC mp_obj_t basalt_ui_ready(void) {
+    return mp_obj_new_bool(tft_console_is_ready());
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(basalt_ui_ready_obj, basalt_ui_ready);
+
+STATIC mp_obj_t basalt_ui_clear_fn(void) {
+    if (tft_console_is_ready()) {
+        tft_console_clear();
+    }
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(basalt_ui_clear_fn_obj, basalt_ui_clear_fn);
+
+STATIC mp_obj_t basalt_ui_text(mp_obj_t msg_obj) {
+    const char *msg = mp_obj_str_get_str(msg_obj);
+    if (tft_console_is_ready() && msg) {
+        tft_console_write(msg);
+        tft_console_write("\n");
+    }
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(basalt_ui_text_obj, basalt_ui_text);
+
+STATIC mp_obj_t basalt_ui_text_at(mp_obj_t x_obj, mp_obj_t y_obj, mp_obj_t msg_obj) {
+    int x = mp_obj_get_int(x_obj);
+    int y = mp_obj_get_int(y_obj);
+    const char *msg = mp_obj_str_get_str(msg_obj);
+    if (tft_console_is_ready() && msg) {
+        tft_console_write_at(x, y, msg);
+    }
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_3(basalt_ui_text_at_obj, basalt_ui_text_at);
+
+STATIC mp_obj_t basalt_ui_color(mp_obj_t color_obj) {
+    int c = mp_obj_get_int(color_obj);
+    if (c < 0) c = 0;
+    if (c > 0xFFFF) c = 0xFFFF;
+    if (tft_console_is_ready()) {
+        tft_console_set_color((uint16_t)c);
+    }
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(basalt_ui_color_obj, basalt_ui_color);
+
+STATIC mp_obj_t basalt_ui_pixel(mp_obj_t x_obj, mp_obj_t y_obj, mp_obj_t color_obj) {
+    int x = mp_obj_get_int(x_obj);
+    int y = mp_obj_get_int(y_obj);
+    int c = mp_obj_get_int(color_obj);
+    if (c < 0) c = 0;
+    if (c > 0xFFFF) c = 0xFFFF;
+    tft_console_draw_pixel(x, y, (uint16_t)c);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_3(basalt_ui_pixel_obj, basalt_ui_pixel);
+
+STATIC mp_obj_t basalt_ui_line(size_t n_args, const mp_obj_t *args) {
+    (void)n_args;
+    int x0 = mp_obj_get_int(args[0]);
+    int y0 = mp_obj_get_int(args[1]);
+    int x1 = mp_obj_get_int(args[2]);
+    int y1 = mp_obj_get_int(args[3]);
+    int c = mp_obj_get_int(args[4]);
+    if (c < 0) c = 0;
+    if (c > 0xFFFF) c = 0xFFFF;
+    tft_console_draw_line(x0, y0, x1, y1, (uint16_t)c);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(basalt_ui_line_obj, 5, 5, basalt_ui_line);
+
+STATIC mp_obj_t basalt_ui_rect(size_t n_args, const mp_obj_t *args) {
+    int x = mp_obj_get_int(args[0]);
+    int y = mp_obj_get_int(args[1]);
+    int w = mp_obj_get_int(args[2]);
+    int h = mp_obj_get_int(args[3]);
+    int c = mp_obj_get_int(args[4]);
+    bool fill = (n_args >= 6) ? mp_obj_is_true(args[5]) : false;
+    if (c < 0) c = 0;
+    if (c > 0xFFFF) c = 0xFFFF;
+    tft_console_draw_rect(x, y, w, h, (uint16_t)c, fill);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(basalt_ui_rect_obj, 5, 6, basalt_ui_rect);
+
+STATIC mp_obj_t basalt_ui_circle(size_t n_args, const mp_obj_t *args) {
+    int cx = mp_obj_get_int(args[0]);
+    int cy = mp_obj_get_int(args[1]);
+    int r = mp_obj_get_int(args[2]);
+    int c = mp_obj_get_int(args[3]);
+    bool fill = (n_args >= 5) ? mp_obj_is_true(args[4]) : false;
+    if (c < 0) c = 0;
+    if (c > 0xFFFF) c = 0xFFFF;
+    tft_console_draw_circle(cx, cy, r, (uint16_t)c, fill);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(basalt_ui_circle_obj, 4, 5, basalt_ui_circle);
+
+STATIC mp_obj_t basalt_ui_ellipse(size_t n_args, const mp_obj_t *args) {
+    int cx = mp_obj_get_int(args[0]);
+    int cy = mp_obj_get_int(args[1]);
+    int rx = mp_obj_get_int(args[2]);
+    int ry = mp_obj_get_int(args[3]);
+    int c = mp_obj_get_int(args[4]);
+    bool fill = (n_args >= 6) ? mp_obj_is_true(args[5]) : false;
+    if (c < 0) c = 0;
+    if (c > 0xFFFF) c = 0xFFFF;
+    tft_console_draw_ellipse(cx, cy, rx, ry, (uint16_t)c, fill);
+    return mp_const_none;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(basalt_ui_ellipse_obj, 5, 6, basalt_ui_ellipse);
+
+STATIC mp_obj_t basalt_ui_touch(void) {
+    int pressed = 0;
+    int x = -1;
+    int y = -1;
+    int raw_x = -1;
+    int raw_y = -1;
+    tft_console_touch_read(&pressed, &x, &y, &raw_x, &raw_y);
+
+    mp_obj_t items[5];
+    items[0] = mp_obj_new_int(pressed);
+    items[1] = mp_obj_new_int(x);
+    items[2] = mp_obj_new_int(y);
+    items[3] = mp_obj_new_int(raw_x);
+    items[4] = mp_obj_new_int(raw_y);
+    return mp_obj_new_tuple(5, items);
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(basalt_ui_touch_obj, basalt_ui_touch);
+
+// ------------------------
 // Export into module dict
 // ------------------------
 void basalt_ui_init(mp_obj_module_t *ui_mod) {
@@ -342,6 +474,17 @@ void basalt_ui_init(mp_obj_module_t *ui_mod) {
     mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(MP_QSTR_button),    MP_OBJ_FROM_PTR(&basalt_ui_button_obj));
     mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(MP_QSTR_label),     MP_OBJ_FROM_PTR(&basalt_ui_label_obj));
     mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(MP_QSTR_set_title), MP_OBJ_FROM_PTR(&basalt_ui_set_title_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("ready")),   MP_OBJ_FROM_PTR(&basalt_ui_ready_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("clear")),   MP_OBJ_FROM_PTR(&basalt_ui_clear_fn_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("text")),    MP_OBJ_FROM_PTR(&basalt_ui_text_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("text_at")), MP_OBJ_FROM_PTR(&basalt_ui_text_at_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("color")),   MP_OBJ_FROM_PTR(&basalt_ui_color_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("pixel")),   MP_OBJ_FROM_PTR(&basalt_ui_pixel_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("line")),    MP_OBJ_FROM_PTR(&basalt_ui_line_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("rect")),    MP_OBJ_FROM_PTR(&basalt_ui_rect_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("circle")),  MP_OBJ_FROM_PTR(&basalt_ui_circle_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("ellipse")), MP_OBJ_FROM_PTR(&basalt_ui_ellipse_obj));
+    mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(qstr_from_str("touch")),   MP_OBJ_FROM_PTR(&basalt_ui_touch_obj));
 
     // Types (uppercase)
     mp_obj_dict_store(g, MP_OBJ_NEW_QSTR(MP_QSTR_Screen), MP_OBJ_FROM_PTR(&basalt_ui_screen_type));

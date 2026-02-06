@@ -1,0 +1,26 @@
+[
+  {
+    "id": "demo",
+    "name": "Demo App",
+    "description": "Simple LED/color demo script bundled with BasaltOS.",
+    "platforms": ["esp32"],
+    "source_dir": "apps/demo.app",
+    "tags": ["demo", "starter", "ui"]
+  },
+  {
+    "id": "example",
+    "name": "Example App",
+    "description": "Reference third-party app package structure.",
+    "platforms": ["esp32"],
+    "source_dir": "apps/example.app",
+    "tags": ["example", "template"]
+  },
+  {
+    "id": "paint",
+    "name": "Paint (Prototype)",
+    "description": "Simple paint-style starter app for TFT/touch workflows.",
+    "platforms": ["esp32"],
+    "source_dir": "apps/paint.app",
+    "tags": ["ui", "touch", "creative", "prototype"]
+  }
+]

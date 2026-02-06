@@ -1,4 +1,5 @@
 # BasaltOS
+[![Configurator CI](https://github.com/homer1013/BasaltOS/actions/workflows/configurator-ci.yml/badge.svg)](https://github.com/homer1013/BasaltOS/actions/workflows/configurator-ci.yml)
 
 BasaltOS is a lightweight, portable embedded OS / application platform aimed at making **small hardware projects feel like installing and running apps**—even for non-engineers.
 
@@ -6,7 +7,7 @@ The long-term goal is an “Android-light” experience on microcontrollers: a f
 
 ---
 
-## Status (v0.0.5)
+## Status (v0.0.6)
 
 What’s working today:
 
@@ -25,11 +26,18 @@ What’s working today:
 - **Embedded MicroPython runtime**
   - MicroPython is integrated as a submodule/runtime
   - `basalt.*` APIs exist and are expanding
-  - UI stub now draws basic text/widgets through TFT console bridge
+  - UI API now includes draw + touch primitives used by apps like `paint`
 - **Configuration system (CLI + Web)**
   - **Boards + Modules + Platforms** model
   - CLI wizard: `python tools/configure.py --wizard`
   - Local web configurator: `python tools/basaltos_config_server.py`
+  - website-style landing + profile chip + board inventory
+  - dedicated **App Market page** for:
+    - browsing starter apps + market apps
+    - add-to-current-build selection (board/platform gated)
+    - uploading local market app zip packages
+    - downloading catalog app packages as zip
+  - ESP32 web flasher cache-hardening to avoid stale artifact flashes
   - generated outputs:
     - `config/generated/basalt_config.h`
     - `config/generated/basalt.features.json`
@@ -38,7 +46,7 @@ What’s working today:
   - runtime-capable flow for ESP32/IDF boards
   - generated-firmware profile flow started for constrained targets (PIC/AVR direction)
 
-This release is about **workflow + foundation**: select board/features cleanly, generate config repeatably, run apps/dev-apps faster, and start a cross-target generation model.
+This release focuses on **workflow quality**: cleaner configurator UX, gated app selection in App Market, more reliable web flashing, and practical runtime UI APIs for device-side apps.
 
 ---
 
@@ -106,6 +114,12 @@ http://localhost:5000
 
 This is intended for local workflow right now (no hosting/deployment required).
 
+App flow in web configurator:
+1. Pick platform + board in Configurator
+2. Open **App Market** (top nav)
+3. Add compatible starter/market apps to current build
+4. Generate + Build, then flash
+
 ---
 
 ## Local dev apps workflow (ESP32 shell)
@@ -125,6 +139,17 @@ Typical flow:
 For hardware sanity checks:
 - `led_test` (or `led_test <pin>`)
 - `devcheck` / `devcheck full`
+
+Wi-Fi shell examples:
+- `wifi status`
+- `wifi scan`
+- `wifi connect MySSID MyPassphrase`
+- `wifi reconnect`
+- `wifi disconnect`
+
+App/runtime examples:
+- `apps` (list installed apps)
+- `run paint` (interactive paint prototype using `basalt.ui`)
 
 ---
 
@@ -156,6 +181,7 @@ Near-term:
 - Continue shell UX polish and command safety
 - Harden module gating + board capability constraints
 - Complete board metadata (pins, flash/ram, LED mode/polarity, module support)
+- Expand App Market metadata/signing and moderation workflow
 
 Mid-term:
 - Full-featured configurator UX (validation, conflict hints, profile export/import)
