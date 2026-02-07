@@ -10,6 +10,7 @@
 - `monitor.sh` – wrapper for idf.py monitor
 - `gen_mpy_embed.sh` – build MicroPython embed sources
 - `pack_app.py` – create store-only zip app packages
+- `validate_app.py` – validate app folders/zip packages before upload/install
 - `new_app.py` – create a new app skeleton (app.toml + main.py)
 - `basaltos_config_server.py` – local configurator backend + App Market API
 
@@ -30,6 +31,35 @@ Set a display title for app.toml:
 python tools/new_app.py blink_rgb --title "Blink RGB"
 ```
 
+## validate_app.py
+
+Validate an app folder:
+```
+python tools/validate_app.py apps/example.app
+```
+
+Validate a zip package:
+```
+python tools/validate_app.py dist/example.zip
+```
+
+Optional syntax check (best-effort with CPython):
+```
+python tools/validate_app.py apps/example.app --check-syntax
+```
+
+## pack_app.py
+
+Pack an app into a store-only zip:
+```
+python tools/pack_app.py apps/example.app dist/example.zip
+```
+
+Pack with syntax validation:
+```
+python tools/pack_app.py apps/example.app dist/example.zip --check-syntax
+```
+
 ## App Market API (local)
 
 When running `python tools/basaltos_config_server.py`, these endpoints are available:
@@ -40,3 +70,4 @@ When running `python tools/basaltos_config_server.py`, these endpoints are avail
   - multipart fields:
     - `package` (required zip)
     - `id`, `name`, `description`, `version`, `author`, `platforms` (optional metadata)
+  - server validates package structure + app entry before accepting upload

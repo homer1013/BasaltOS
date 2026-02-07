@@ -2,7 +2,7 @@
 
 Basalt supports two board-selection flows:
 - `tools/board.sh` for legacy profile-copy boards (copies `sdkconfig.defaults` + `partitions.csv` into repo root)
-- `tools/configure.py` for metadata-driven board/module config generation
+- `tools/configure.py` for metadata-driven board/driver config generation
 
 ## List boards
 ```bash

@@ -11,6 +11,7 @@ Basalt OS is a lightweight embedded OS that provides:
 - An app namespace at `/apps` (mapped to `/data/apps`)
 - A MicroPython runtime with a Basalt module (`basalt.*`) for hardware access
 - A built-in TFT console on supported boards (text output mirrored to display)
+- App packaging via folder or store-only zip (`install`)
 
 Apps are just folders (or files) placed under `/apps`. The OS runs them using
 MicroPython when you call `run`.
@@ -62,7 +63,7 @@ If `app.toml` is missing, `main.py` is used.
 
 ## Basalt MicroPython APIs
 
-Basalt OS exposes a minimal module inside MicroPython:
+Basalt OS exposes Basalt modules inside MicroPython:
 
 ```
 import basalt
@@ -75,20 +76,20 @@ basalt.led.set(r, g, b)       # r/g/b are 0 or 1
 basalt.led.off()
 ```
 
-Additional modules will be added over time.
+Optional modules (driver-gated):
+```python
+import basalt.ui as ui        # TFT text/widget bridge
+import basalt.rtc             # rtc.available(), rtc.now()
+import basalt.ssd1306         # OLED debug drawing helpers
+```
+
+For latest API surface, see `docs/api-basalt.md`.
 
 ## Display / UI (current state)
 
-Basalt OS provides a **text console** on supported TFT boards.  
-Anything printed to stdout is mirrored to the TFT console.
-
-That means for now:
-- Use `print(...)` for display output
-- Treat the TFT as a terminal (no graphics primitives yet)
-
-Basalt also exposes a **UI API** you can code against today.
-Current behavior is **text-oriented rendering** through the TFT console bridge on supported boards.
-This keeps app code stable while full graphics/touch behavior is still being built out.
+Basalt OS provides a **text console** on supported TFT boards, and stdout is mirrored there.
+It also provides a **UI API** (`basalt.ui`) with screen/label/button primitives rendered through
+the TFT text bridge in current firmware. This keeps app code stable while touch/graphics expand.
 
 ### UI API (current behavior)
 The API below renders text labels/buttons at requested coordinates when TFT console is active.
@@ -177,7 +178,7 @@ help -commands
 
 ### Run an app
 ```
-run /apps/<app_name>
+run <app_name>
 ```
 
 ### Run a script directly
@@ -237,7 +238,23 @@ install /data/demo.zip demo
 The packer:
 - forces store-only (no compression)
 - ensures a single top-level folder inside the zip
-- validates `app.toml` or `main.py` exists
+- validates manifest/entry before packing
+
+### Validate before upload/install (recommended)
+Validate a local app folder:
+```
+python tools/validate_app.py apps/demo.app
+```
+
+Validate a zip package:
+```
+python tools/validate_app.py demo.zip
+```
+
+Optional CPython syntax check:
+```
+python tools/validate_app.py apps/demo.app --check-syntax
+```
 
 ### Transfer via microSD (recommended)
 For now, use a microSD card to move apps between your computer/phone and the device.
@@ -295,9 +312,9 @@ mv /apps/demo /sd/apps/demo
 - Keep app file names short. SPIFFS has path length limits.
 - Use `/apps/<name>` so your app is portable across boards.
 - Prefer GPIO numbers rather than board silkscreen labels.
-- If you need a display, assume the Basalt TFT console is already active.
-  Do not reinitialize the display in apps.
-  Use `print(...)` for now until a UI API is available.
+- If you need UI, use `basalt.ui` (portable path) instead of touching panel drivers directly.
+- If your board enables SSD1306, use `basalt.ssd1306` only as a secondary/debug surface.
+- Do not reinitialize shared display buses in app code; the OS owns those resources.
 
 ## Demo App Example
 

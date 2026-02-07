@@ -24,7 +24,9 @@
 - install <src> [name]: install from folder or store-only zip
 - remove <app>: uninstall an app
 - logs: show runtime diagnostics (running app, last runtime error, heap/cpu info)
+- drivers: show configured drivers and implementation status
 - wifi [status|scan|connect|reconnect|disconnect]: Wi-Fi station tools
+- bluetooth [status|on|off|scan [seconds]]: Bluetooth diagnostics, power control, and BLE scan
 - reboot: restart device
 
 ## Examples

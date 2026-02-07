@@ -1,12 +1,12 @@
 # BasaltOS Configuration GUI
 
-A web-based graphical interface for configuring BasaltOS projects. Similar to STM32CubeMX or MPLAB X, this tool helps you select boards, enable modules, configure pins, and generate configuration files without manually editing code.
+A web-based graphical interface for configuring BasaltOS projects. Similar to STM32CubeMX or MPLAB X, this tool helps you select boards, enable drivers, configure pins, and generate configuration files without manually editing code.
 
 ## Features
 
 - 🏠 **Landing + Navigation** - Home page, top navigation, and profile chip
 - 🎯 **Visual Board Selection** - Browse and select from supported development boards
-- 🧩 **Module Management** - Enable/disable features like TFT, SD card, WiFi, etc.
+- 🧩 **Driver Management** - Enable/disable features like TFT, SD card, WiFi, etc.
 - 📌 **Pin Configuration** - Assign GPIO pins with conflict detection
 - 🛒 **Dedicated App Market Page** - Browse/upload/download apps and add compatible apps to current build
 - 📝 **Code Generation** - Automatically generate `basalt_config.h` and `sdkconfig.defaults`
@@ -18,7 +18,7 @@ A web-based graphical interface for configuring BasaltOS projects. Similar to ST
 The GUI consists of two parts:
 
 1. **Frontend** (`basaltos_config_gui.html`) - Interactive web interface
-2. **Backend** (`basaltos_config_server.py`) - Flask server that reads board/module JSON files
+2. **Backend** (`basaltos_config_server.py`) - Flask server that reads board/driver JSON files
 
 ## Quick Start
 
@@ -46,7 +46,7 @@ pip install flask flask-cors
 ```
 BasaltOS/
 ├── boards/           # Board JSON files
-├── modules/          # Module JSON files  
+├── modules/          # Driver metadata JSON files  
 ├── platforms/        # Platform JSON files
 ├── config/
 │   └── generated/    # Output directory
@@ -100,7 +100,7 @@ http://localhost:5000
 }
 ```
 
-### Module JSON (`modules/tft.json`)
+### Driver Metadata JSON (`modules/tft/module.json`)
 
 ```json
 {
@@ -138,11 +138,11 @@ http://localhost:5000
 2. Browse available boards for that platform
 3. View board specifications and capabilities
 
-### Step 2: Enable Modules
+### Step 2: Enable Drivers
 
-1. Toggle modules on/off based on your needs
-2. See which pins each module requires
-3. View module dependencies automatically
+1. Toggle drivers on/off based on your needs
+2. See which pins each driver requires
+3. View driver dependencies automatically
 4. Review selected apps (managed from the App Market page)
 
 ### App Market Page
@@ -151,11 +151,11 @@ http://localhost:5000
 2. Browse starter apps + market apps
 3. Use **Add to current build** (gated by selected board/platform compatibility)
 4. Download packages as zip
-5. Upload app packages as zip (`main.py` required)
+5. Upload app packages as zip (server validates `app.toml`/entry or `main.py`)
 
 ### Step 3: Configure Pins
 
-1. Review pin assignments for enabled modules
+1. Review pin assignments for enabled drivers
 2. Modify pins if needed (conflict checking)
 3. See alternative pin options
 
@@ -173,7 +173,7 @@ The backend provides a REST API:
 
 - `GET /api/platforms` - List available platforms
 - `GET /api/boards/<platform>` - Get boards for platform
-- `GET /api/modules?platform=<platform>` - Get available modules
+- `GET /api/drivers?platform=<platform>` - Get available drivers
 - `GET /api/board/<board_id>` - Get detailed board info
 - `GET /api/market/catalog?platform=<platform>` - List market catalog
 - `GET /api/market/download/<app_id>?platform=<platform>` - Download app package zip
@@ -196,7 +196,7 @@ fetch('http://localhost:5000/api/generate', {
   body: JSON.stringify({
     platform: 'esp32',
     board_id: 'cyd_3248s035r',
-    enabled_modules: ['uart', 'tft', 'fs_spiffs'],
+    enabled_drivers: ['uart', 'tft', 'fs_spiffs'],
     custom_pins: {
       led: 16
     }
@@ -248,11 +248,11 @@ CONFIG_SPI_MASTER_IN_IRAM=y
 2. Define pins, capabilities, platform
 3. Restart server to load new board
 
-### Adding a New Module
+### Adding a New Driver
 
-1. Create `modules/my_module.json`
+1. Create `modules/my_module/module.json`
 2. Define pins, dependencies, options
-3. Restart server to load new module
+3. Restart server to load new driver
 
 ### Adding Platform Support
 
@@ -264,7 +264,7 @@ CONFIG_SPI_MASTER_IN_IRAM=y
 
 This GUI follows the principle of **"Configure Once, Build Anywhere"**:
 
-1. **Declarative Configuration** - Board/module capabilities defined in JSON
+1. **Declarative Configuration** - Board/driver capabilities defined in JSON
 2. **Separation of Concerns** - Hardware config separate from application code
 3. **No Hardcoding** - `app_main.c` uses generated defines only
 4. **Scalable** - Works from ATtiny85 to ESP32
@@ -273,7 +273,7 @@ This GUI follows the principle of **"Configure Once, Build Anywhere"**:
 
 - [ ] App signing/trust metadata for market packages
 - [ ] Visual pin diagram/pinout viewer
-- [ ] Module dependency graph visualization
+- [ ] Driver dependency graph visualization
 - [ ] Import/export configurations
 - [ ] Multi-board projects (e.g., master/slave setups)
 - [ ] Real-time validation
@@ -303,6 +303,6 @@ Part of the BasaltOS project. See main repository for license details.
 
 Contributions welcome! Areas that need work:
 - Additional board definitions
-- New module types
+- New driver types
 - UI/UX improvements
 - Testing on different platforms

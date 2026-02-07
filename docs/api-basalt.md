@@ -18,6 +18,24 @@
 - set(r, g, b)
 - off()
 
+## basalt.rtc (current, basic)
+- available() -> bool
+- now() -> (year, month, day, hour, minute, second, weekday)
+
+## basalt.ssd1306 (current, basic)
+- ready() -> bool
+- width() / height()
+- clear([color])
+- color(value)
+- pixel(x, y[, color])
+- line(x0, y0, x1, y1[, color])
+- rect(x, y, w, h[, color[, fill]])
+- circle(cx, cy, r[, color[, fill]])
+- ellipse(cx, cy, rx, ry[, color[, fill]])
+- text_at(x, y, text[, color])  # debug font helper
+- text(text[, color])            # debug cursor helper
+- show()
+
 ## basalt.events
 - subscribe(topic, callback)
 - publish(topic, data)

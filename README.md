@@ -1,6 +1,6 @@
 # BasaltOS
 [![Configurator CI](https://github.com/homer1013/BasaltOS/actions/workflows/configurator-ci.yml/badge.svg)](https://github.com/homer1013/BasaltOS/actions/workflows/configurator-ci.yml)
-[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-30363d?logo=github)](https://github.com/sponsors/homer1013)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-30363d?logo=github)](https://github.com/homer1013/BasaltOS#readme)
 
 BasaltOS is a lightweight, portable embedded OS / application platform aimed at making **small hardware projects feel like installing and running apps**—even for non-engineers.
 
@@ -42,7 +42,7 @@ These components may be offered under separate terms.
 
 ---
 
-## Status (v0.0.6)
+## Status (v0.0.7)
 
 What’s working today:
 
@@ -65,6 +65,8 @@ What’s working today:
 - **Configuration system (CLI + Web)**
   - **Boards + Drivers + Platforms** model
   - CLI wizard: `python tools/configure.py --wizard`
+  - CLI wizard now starts board-first with taxonomy filters:
+    - Manufacturer -> Architecture -> Family -> Processor/Silicon -> Board
   - Local web configurator: `python tools/basaltos_config_server.py`
   - website-style landing + profile chip + board inventory
   - dedicated **App Market page** for:
@@ -77,11 +79,19 @@ What’s working today:
     - `config/generated/basalt_config.h`
     - `config/generated/basalt.features.json`
     - `config/generated/sdkconfig.defaults`
+  - display boot splash options in driver config:
+    - `none` (default)
+    - `test_glyph` (built-in Basalt test glyph/pattern)
+    - `local_file_upload` (currently expects processed `custom_image.c`; PNG/BMP conversion is planned later)
 - **Multi-target backend groundwork**
   - runtime-capable flow for ESP32/IDF boards
   - generated-firmware profile flow started for constrained targets (PIC/AVR direction)
+- **Driver/peripheral expansion**
+  - connectivity: `wifi`, `bluetooth`, `twai` (CAN)
+  - transceiver + motor: `mcp2544fd`, `uln2003`, `l298n`
+  - sensing/display gates: `display_ssd1306`, `rtc`, `imu`, `dht22`, `mic`, `ads1115`, `mcp23017`, `hp4067`, `tp4056`
 
-This release focuses on **workflow quality**: cleaner configurator UX, gated app selection in App Market, more reliable web flashing, and practical runtime UI APIs for device-side apps.
+This release focuses on **workflow quality + platform breadth**: cleaner configurator UX, board-first taxonomy across wizard/UI, gated app selection in App Market, expanded board/driver catalogs, and practical runtime UI APIs for device-side apps.
 
 ---
 
@@ -122,8 +132,7 @@ python tools/configure.py --wizard
 ```
 
 This will guide you through:
-- platform selection (e.g. `esp32`)
-- board selection (e.g. `cyd_3248s035r`)
+- board taxonomy filters + board selection (e.g. `cyd_3248s035r`)
 - driver selection (e.g. `spi,tft,uart,fs_spiffs`)
 
 …and generate configuration outputs into:
