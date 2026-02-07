@@ -71,6 +71,59 @@
             gap: 10px;
         }
 
+        .topbar-menu {
+            position: relative;
+        }
+
+        .btn-overflow {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #0f172a;
+            font-size: 18px;
+            line-height: 1;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .overflow-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            min-width: 210px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+            padding: 6px;
+            display: none;
+            z-index: 60;
+        }
+
+        .overflow-menu.active {
+            display: block;
+        }
+
+        .overflow-menu button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            border: none;
+            background: transparent;
+            color: #0f172a;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .overflow-menu button:hover {
+            background: #f1f5f9;
+        }
+
         .profile-chip {
             padding: 6px 10px;
             border-radius: 999px;
@@ -177,11 +230,19 @@
             color: #1d4ed8;
         }
 
-        #configurator-shell, #market-shell {
+        #configurator-shell, #market-shell, #profile-shell {
             display: none;
         }
 
         .market-shell {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid #dbeafe;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        .profile-shell {
             background: #ffffff;
             border-radius: 12px;
             padding: 22px;
@@ -335,6 +396,45 @@
             font-size: 18px;
         }
 
+        .selector-stack {
+            display: grid;
+            gap: 10px;
+        }
+
+        .selector-stack label {
+            font-size: 12px;
+            color: #475569;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+        }
+
+        .board-browser-note {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #64748b;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+
+        .hardware-path {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .hardware-chip {
+            font-size: 11px;
+            color: #1e3a8a;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 999px;
+            padding: 3px 8px;
+            font-weight: 700;
+        }
+
         .board-list, .module-list {
             list-style: none;
         }
@@ -425,6 +525,18 @@
             margin-bottom: 6px;
             font-size: 12px;
             color: #2d3748;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+
+        .profile-actions .btn {
+            font-size: 12px;
+            padding: 8px 10px;
         }
 
         .board-empty {
@@ -1476,6 +1588,221 @@
             border-color: #667eea;
         }
 
+        .build-health-bar {
+            position: sticky;
+            bottom: 10px;
+            z-index: 40;
+            margin-top: 10px;
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 10px 12px;
+            box-shadow: 0 8px 24px rgba(2, 6, 23, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .health-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-size: 12px;
+        }
+
+        .health-pill {
+            border-radius: 999px;
+            padding: 4px 9px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid #334155;
+            background: #1e293b;
+        }
+
+        .health-pill.ok {
+            background: #052e16;
+            border-color: #14532d;
+            color: #86efac;
+        }
+
+        .health-pill.warn {
+            background: #422006;
+            border-color: #92400e;
+            color: #fdba74;
+        }
+
+        .health-pill.err {
+            background: #450a0a;
+            border-color: #7f1d1d;
+            color: #fca5a5;
+        }
+
+        .health-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .issues-popover {
+            position: absolute;
+            right: 14px;
+            bottom: calc(100% + 8px);
+            width: min(420px, calc(100vw - 40px));
+            max-height: 220px;
+            overflow: auto;
+            background: #0b1220;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            box-shadow: 0 12px 24px rgba(2, 6, 23, 0.4);
+            padding: 10px;
+            display: none;
+            z-index: 80;
+        }
+
+        .issues-popover.active {
+            display: block;
+        }
+
+        .issues-popover-item {
+            font-size: 12px;
+            line-height: 1.35;
+            padding: 6px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .issues-popover-item:last-child {
+            border-bottom: none;
+        }
+
+        .health-pill.issues-hover {
+            cursor: help;
+        }
+
+        .health-progress {
+            width: 160px;
+            height: 8px;
+            border-radius: 999px;
+            background: #334155;
+            overflow: hidden;
+        }
+
+        .health-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #22c55e;
+            transition: width 0.2s ease;
+        }
+
+        .driver-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0 14px;
+            flex-wrap: wrap;
+        }
+
+        .driver-tab {
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #0f172a;
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .driver-tab.active {
+            background: #dbeafe;
+            border-color: #93c5fd;
+            color: #1e3a8a;
+        }
+
+        .status-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 8px 0 12px;
+        }
+
+        .status-chip {
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 9px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #334155;
+        }
+
+        .status-chip.ok {
+            color: #166534;
+            background: #dcfce7;
+            border-color: #86efac;
+        }
+
+        .status-chip.warn {
+            color: #92400e;
+            background: #ffedd5;
+            border-color: #fdba74;
+        }
+
+        .status-chip.err {
+            color: #991b1b;
+            background: #fee2e2;
+            border-color: #fca5a5;
+        }
+
+        .compat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 999px;
+            margin-top: 8px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .compat-badge.ok {
+            color: #166534;
+            background: #dcfce7;
+            border-color: #86efac;
+        }
+
+        .compat-badge.warn {
+            color: #92400e;
+            background: #ffedd5;
+            border-color: #fdba74;
+        }
+
+        .compat-badge.err {
+            color: #991b1b;
+            background: #fee2e2;
+            border-color: #fca5a5;
+        }
+
+        .plain-help {
+            margin-top: 10px;
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            padding: 8px 10px;
+            background: #f8fbff;
+            font-size: 12px;
+            color: #334155;
+        }
+
+        .plain-help summary {
+            cursor: pointer;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+
         @media (max-width: 900px) {
             .landing-grid {
                 grid-template-columns: 1fr;
@@ -1483,6 +1810,10 @@
 
             .config-panel {
                 grid-template-columns: 1fr;
+            }
+
+            .build-health-bar {
+                bottom: 6px;
             }
         }
     </style>
@@ -1502,7 +1833,14 @@
                 <button id="btn-home" class="btn-nav" type="button">Home</button>
                 <button id="btn-open-config" class="btn-nav" type="button">Open Configurator</button>
                 <button id="btn-market" class="btn-nav" type="button">App Market</button>
-                <button id="btn-login" class="btn-nav" type="button">Sign In</button>
+                <div class="topbar-menu">
+                    <button id="btn-overflow-menu" class="btn-overflow" type="button" aria-label="More options">⋯</button>
+                    <div id="overflow-menu" class="overflow-menu">
+                        <button id="menu-profile" type="button">Profile & Inventory</button>
+                        <button id="menu-switch-user" type="button">Switch User</button>
+                        <button id="menu-diy-board" type="button">DIY Board Creator</button>
+                    </div>
+                </div>
                 <div id="top-profile-chip" class="profile-chip">Guest</div>
             </div>
         </div>
@@ -1537,6 +1875,7 @@
                     <ul>
                         <li>Use profile inventory to filter boards you own.</li>
                         <li>Use templates for reproducible project presets.</li>
+                        <li>Watch memory bars in every step and keep usage below ~85% when possible.</li>
                         <li>Web flasher supports Windows COM and Linux/macOS tty devices.</li>
                     </ul>
                 </div>
@@ -1576,6 +1915,43 @@
             </div>
         </section>
 
+        <section id="profile-shell" class="profile-shell">
+            <div class="market-header">
+                <div>
+                    <h2>Profile & Inventory</h2>
+                    <div style="font-size:13px; color:#475569; margin-top:4px;">
+                        Manage your builder name and board ownership list.
+                    </div>
+                </div>
+                <div class="market-actions">
+                    <button id="btn-profile-to-config" class="btn btn-primary" type="button">Open Configurator</button>
+                    <button id="btn-profile-to-home" class="btn btn-secondary" type="button">Home</button>
+                </div>
+            </div>
+            <div class="profile-card" id="profile-card" style="margin:0; box-shadow:none; border:1px solid #e2e8f0; max-width:560px;">
+                <label for="profile-name">Builder Name</label>
+                <input type="text" id="profile-name" placeholder="Your handle">
+                <div class="profile-stats" id="profile-stats">Owned boards: 0 • Points: 0</div>
+                <label for="profile-platform-select">Inventory Platform</label>
+                <select id="profile-platform-select" class="search-box" style="margin-top:6px;"></select>
+                <label style="margin: 0;">
+                    <input type="checkbox" id="owned-only-toggle">
+                    Show only boards in my inventory
+                </label>
+                <div class="profile-actions">
+                    <button id="btn-profile-select-visible" class="btn btn-secondary" type="button">Add All Visible</button>
+                    <button id="btn-profile-clear-inventory" class="btn btn-secondary" type="button">Clear Inventory</button>
+                    <button id="btn-profile-open-diy" class="btn btn-secondary" type="button">Open DIY Board Creator</button>
+                </div>
+                <div class="inventory-panel">
+                    <details open>
+                        <summary style="cursor:pointer; font-size:12px; color:#2d3748;">Manage board inventory</summary>
+                        <div class="inventory-list" id="inventory-list"></div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
         <div id="configurator-shell">
         <div class="wizard-steps">
             <div class="step active" data-step="1">
@@ -1600,37 +1976,41 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <div id="platform-selection">
-                    <h3>Platform</h3>
+                    <h3>Select Hardware</h3>
                     <div class="alert alert-danger" id="platform-load-error" style="display:none; margin-bottom: 10px;"></div>
-                    <select id="platform-select" class="search-box">
-                        <!-- populated by JS from /api/platforms -->
+                    <div class="selector-stack">
+                        <div>
+                            <label for="manufacturer-select">Manufacturer</label>
+                            <select id="manufacturer-select" class="search-box"></select>
+                        </div>
+                        <div>
+                            <label for="architecture-select">Architecture</label>
+                            <select id="architecture-select" class="search-box"></select>
+                        </div>
+                        <div>
+                            <label for="family-select">Family</label>
+                            <select id="family-select" class="search-box"></select>
+                        </div>
+                        <div>
+                            <label for="silicon-select">Processor / Silicon</label>
+                            <select id="silicon-select" class="search-box"></select>
+                        </div>
+                    </div>
+                    <div class="board-browser-note">
+                        Pick broad criteria first, then choose your exact board below.
+                    </div>
+                    <select id="platform-select" class="search-box" style="display:none;" aria-hidden="true" tabindex="-1">
+                        <!-- hidden internal platform binding -->
                     </select>
                 </div>
 
                 <div id="board-selection" style="margin-top: 20px;">
                     <h3>Boards</h3>
+                    <div id="hardware-path" class="hardware-path"></div>
                     <input type="text" class="search-box" placeholder="Search boards..." id="board-search">
                     <ul class="board-list" id="board-list">
                         <!-- Populated by JavaScript -->
                     </ul>
-                    <button id="btn-open-diy-board" class="btn btn-secondary" type="button" style="margin-top:8px; width:100%;">DIY Board Creator</button>
-                </div>
-
-                <div class="profile-card" id="profile-card">
-                    <h3 style="margin-bottom: 10px;">Profile & Inventory</h3>
-                    <label for="profile-name">Builder Name</label>
-                    <input type="text" id="profile-name" placeholder="Your handle">
-                    <div class="profile-stats" id="profile-stats">Owned boards: 0 • Points: 0</div>
-                    <label style="margin: 0;">
-                        <input type="checkbox" id="owned-only-toggle">
-                        Show only boards in my inventory
-                    </label>
-                    <div class="inventory-panel">
-                        <details>
-                            <summary style="cursor:pointer; font-size:12px; color:#2d3748;">Manage board inventory</summary>
-                            <div class="inventory-list" id="inventory-list"></div>
-                        </details>
-                    </div>
                 </div>
             </div>
 
@@ -1641,6 +2021,7 @@
                     <div class="alert alert-info">
                         <strong>Welcome!</strong> Select a platform and board to get started with your BasaltOS configuration.
                     </div>
+                    <div id="memory-step1-panel" class="memory-panel"></div>
 
                     <div class="templates-section">
                         <h3>🚀 Quick Start Templates</h3>
@@ -1699,10 +2080,29 @@
                             <input type="checkbox" id="show-enabled-only"> Show enabled only
                         </label>
                         <div class="module-layout-controls">
+                            <button class="btn-mini" id="btn-optimize-size" type="button">Optimize For Size</button>
                             <button class="btn-mini" id="btn-expand-modules" type="button">Expand All</button>
                             <button class="btn-mini" id="btn-collapse-modules" type="button">Collapse All</button>
                         </div>
                     </div>
+                    <div class="driver-tabs" id="driver-tabs">
+                        <button class="driver-tab active" type="button" data-driver-view="essential">Essential</button>
+                        <button class="driver-tab" type="button" data-driver-view="advanced">Advanced</button>
+                        <button class="driver-tab" type="button" data-driver-view="experimental">Experimental</button>
+                        <button class="driver-tab" type="button" data-driver-view="all">All</button>
+                    </div>
+                    <div id="status-chips" class="status-chips"></div>
+                    <details class="plain-help">
+                        <summary>Help & quick fixes</summary>
+                        <div style="margin-top:6px;">If your setup shows warnings/errors, you can apply safe defaults to reduce conflicts and memory pressure.</div>
+                        <div style="margin-top:8px;">
+                            <button id="btn-build-health-fix" class="btn btn-secondary" type="button">Apply Quick Fixes</button>
+                        </div>
+                    </details>
+                    <details class="plain-help">
+                        <summary>New here? Read this in plain language</summary>
+                        <div style="margin-top:6px;">Essential drivers are the safest starting point. Advanced adds more features and memory usage. Experimental includes in-progress or hardware-specific integrations that may require extra setup.</div>
+                    </details>
 
                     <div class="validation-panel" id="validation-warnings">
                         <!-- Validation messages appear here -->
@@ -1729,6 +2129,7 @@
                     <div class="alert alert-info">
                         Configure pin assignments for enabled drivers. Default values are provided based on your board.
                     </div>
+                    <div id="memory-step3-panel" class="memory-panel"></div>
 
                     <div class="validation-panel" id="pin-validation">
                         <!-- Pin conflict warnings appear here -->
@@ -1756,6 +2157,10 @@
                         <div class="alert alert-info" style="margin-bottom:10px;">
                             AVR clock and fuse values can brick or destabilize a board if misconfigured.
                         </div>
+                        <details class="plain-help" style="margin-bottom:10px;">
+                            <summary>What this means (plain language)</summary>
+                            <div style="margin-top:6px;">Clock controls timing speed. Fuse bits set low-level chip behavior. Wrong values can make upload fail until recovered with a programmer. If unsure, keep defaults and leave advanced edit off.</div>
+                        </details>
                         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
                             <label style="display:flex; align-items:center; gap:8px; margin:0;">
                                 <input id="avr-advanced-toggle" type="checkbox">
@@ -1933,10 +2338,19 @@
                     <button class="btn btn-primary" id="btn-next">Next →</button>
                     <button class="btn btn-primary" id="btn-generate-build" style="display: none;">Generate + Build ESP32</button>
                     <button class="btn btn-success" id="btn-generate" style="display: none;">Generate Files</button>
+        </div>
+        </div>
+        <div id="build-health-bar" class="build-health-bar">
+            <div class="health-meta" id="build-health-meta"></div>
+            <div class="health-actions">
+                <div class="health-progress" aria-hidden="true">
+                    <div id="build-health-progress" class="health-progress-fill"></div>
                 </div>
             </div>
+            <div id="build-health-issues-popover" class="issues-popover"></div>
         </div>
         </div>
+    </div>
     </div>
 
     <div class="template-modal" id="template-modal">
@@ -2002,6 +2416,9 @@
             output.style.borderColor = type === 'error' ? '#feb2b2' : '#cbd5e0';
             output.style.background = type === 'error' ? '#fff5f5' : '#f7fafc';
             output.textContent = text;
+            if (type === 'error') {
+                try { output.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (_e) {}
+            }
         }
 
         function clearInlineOutput() {
@@ -2502,6 +2919,11 @@
             setVal('avr-fuse-h', avrSettings.fuses?.hfuse ?? '');
             setVal('avr-fuse-e', avrSettings.fuses?.efuse ?? '');
             setVal('avr-fuse-lock', avrSettings.fuses?.lock ?? '');
+            // Keep terminal default baud aligned with AVR upload/runtime baud.
+            const serialBaud = document.getElementById('serial-baud');
+            if (serialBaud && !serialPort) {
+                serialBaud.value = String(avrSettings.upload?.baud ?? 115200);
+            }
             setAvrAdvancedEditing(isAvrAdvancedEditingEnabled());
         }
 
@@ -2571,6 +2993,57 @@
             if (status.meta?.board) lines.push(`FQBN: ${status.meta.board}`);
             if (status.meta?.upload_method) lines.push(`Method: ${status.meta.upload_method}`);
             statusEl.textContent = lines.join('\n');
+        }
+
+        function diagnoseAvrFailure(text, phase = 'build') {
+            const src = String(text || '');
+            const low = src.toLowerCase();
+            const hints = [];
+            const add = (msg) => { if (msg && !hints.includes(msg)) hints.push(msg); };
+
+            if (low.includes('arduino-cli not found')) add('Install arduino-cli and ensure it is in PATH.');
+            if (low.includes('avrdude not found')) add('Install avrdude and ensure it is in PATH.');
+            if (low.includes('no serial port found') || low.includes('serial port not found')) {
+                add('Select the correct COM/tty port, reconnect board, then retry.');
+            }
+            if (low.includes('permission denied') && (low.includes('/dev/tty') || low.includes('com'))) {
+                add('Serial access denied: close other serial tools and check user permissions/groups.');
+            }
+            if (low.includes('programmer is not responding') || low.includes('stk500') || low.includes('not in sync')) {
+                add('Bootloader/programmer mismatch: verify upload method and programmer settings for this board.');
+            }
+            if (low.includes('expected unqualified-id before') || low.includes('was not declared in this scope')) {
+                add('C/C++ compile error in generated or custom source. Rebuild after fixing symbol/declaration scope issues.');
+            }
+            if (low.includes('no such file or directory')) {
+                add('Missing include/source file. Verify generated project files and custom source paths.');
+            }
+            if (low.includes('error during build: exit status 1') || low.includes('compilation error')) {
+                add('Compilation failed. Check the first compiler error line above for exact file:line cause.');
+            }
+            if (phase === 'flash' && hints.length === 0) {
+                add('Flash failed. Verify port, upload method, baud/programmer, and board boot mode.');
+            }
+            if (phase === 'build' && hints.length === 0) {
+                add('Build failed. Check full compiler output above for the first error line.');
+            }
+            return hints;
+        }
+
+        function renderAvrFailureReport({ phase = 'build', message = '', details = '' } = {}) {
+            const full = `${message}\n${details}`.trim();
+            const hints = diagnoseAvrFailure(full, phase);
+            const statusEl = document.getElementById('avr-flasher-status');
+            if (statusEl) {
+                const lines = [`${phase === 'flash' ? 'Flash' : 'Build'} error: ${message || 'Unknown error'}`];
+                if (hints.length > 0) {
+                    lines.push('', 'Likely causes:');
+                    hints.forEach((h, i) => lines.push(`  ${i + 1}. ${h}`));
+                }
+                lines.push('', 'Tip: open inline output above for full tool logs.');
+                statusEl.textContent = lines.join('\n');
+            }
+            return hints;
         }
 
         function setAvrFlasherBadges(status) {
@@ -2643,15 +3116,21 @@
                 let data = null;
                 try { data = raw ? JSON.parse(raw) : null; } catch (_e) { data = null; }
                 if (!resp.ok || !data?.success) {
-                    const msg = data?.error || raw || `HTTP ${resp.status}`;
-                    showInlineOutput(`AVR build failed: ${msg}\n\n${data?.output || raw || ''}`.trim(), 'error');
-                    notify(`AVR build failed: ${msg}`, 'error');
+                    const generic = data?.error || raw || `HTTP ${resp.status}`;
+                    const detail = data?.error_detail ? ` ${data.error_detail}` : '';
+                    const msg = `${generic}${detail}`.trim();
+                    const details = data?.output || raw || '';
+                    const hints = renderAvrFailureReport({ phase: 'build', message: msg, details });
+                    const hintsBlock = hints.length ? `\n\nLikely causes:\n- ${hints.join('\n- ')}` : '';
+                    showInlineOutput(`AVR build failed: ${msg}${hintsBlock}\n\n${details}`.trim(), 'error');
+                    notify(`AVR build failed: ${msg}`, 'error', 6200);
                     return;
                 }
                 showInlineOutput(`AVR build succeeded (${data.fqbn || ''}).\n\n${data.output || ''}`.trim(), 'success');
                 notify('AVR build completed.', 'success');
             } catch (err) {
                 const msg = `AVR build failed: ${err.message || err}`;
+                renderAvrFailureReport({ phase: 'build', message: msg, details: '' });
                 showInlineOutput(msg, 'error');
                 notify(msg, 'error');
             } finally {
@@ -2693,15 +3172,19 @@
                 if (!resp.ok || !data?.success) {
                     const msg = data?.error || raw || `HTTP ${resp.status}`;
                     const details = data?.flash_output || data?.compile_output || data?.output || raw || '';
-                    showInlineOutput(`AVR flash failed: ${msg}\n\n${details}`.trim(), 'error');
+                    const hints = renderAvrFailureReport({ phase: 'flash', message: msg, details });
+                    const hintsBlock = hints.length ? `\n\nLikely causes:\n- ${hints.join('\n- ')}` : '';
+                    showInlineOutput(`AVR flash failed: ${msg}${hintsBlock}\n\n${details}`.trim(), 'error');
                     notify(`AVR flash failed: ${msg}`, 'error');
                     return;
                 }
                 const details = [data.output, data.compile_output, data.flash_output].filter(Boolean).join('\n\n');
                 showInlineOutput(`AVR flash succeeded (${data.method || 'avr'} ${data.port || ''}).\n\n${details}`.trim(), 'success');
                 notify('AVR flash completed.', 'success');
+                appendSerialLog(`[avr] flash complete. Connect Serial Terminal and run 'help' to validate shell/runtime.\n`);
             } catch (err) {
                 const msg = `AVR flash failed: ${err.message || err}`;
+                renderAvrFailureReport({ phase: 'flash', message: msg, details: '' });
                 showInlineOutput(msg, 'error');
                 notify(msg, 'error');
             } finally {
@@ -2829,7 +3312,7 @@
                 renderProfilePanel();
                 populateBoardList();
                 const created = (boards[platform] || []).find(b => String(b.id) === String(payload.id));
-                if (created) selectBoard(created);
+                if (created) await selectBoard(created);
                 closeDIYBoardModal();
                 notify(`Custom board saved: ${payload.id}`, 'success');
             } catch (err) {
@@ -2859,11 +3342,15 @@
             name: '',
             ownedBoards: []
         };
+        let profileInventoryPlatform = '';
         let targets = {};
         let boardDetails = {};
         let moduleConfigs = {};
         let projectTemplates = [];
+        let activeTemplateId = null;
         let configuratorVisible = false;
+        let driverView = 'essential';
+        let issuesPopoverHideTimer = null;
 
         const MODULE_ICONS = {
             uart: '📡',
@@ -2875,12 +3362,21 @@
             fs_sd: '💿',
             wifi: '📶',
             bluetooth: '📘',
+            twai: '🛞',
             rtc: '⏰',
             imu: '🧭',
             dht22: '🌡️',
             mic: '🎙️',
+            ads1115: '📈',
+            mcp23017: '🧩',
+            mcp2544fd: '🚘',
+            uln2003: '🌀',
+            l298n: '⚙️',
+            hp4067: '🎚️',
+            tp4056: '🔋',
             shell_full: '⌨️',
             shell_min: '⌨️',
+            shell_tiny: '⌨️',
             psram: '🧠'
         };
 
@@ -2932,18 +3428,43 @@
 
         function availableMarketAppsForBoard(board) {
             const platformId = board?.platform || selectedPlatform;
+            const caps = new Set((board?.capabilities || []).map(x => String(x)));
             return marketCatalog.filter(item => {
                 const plats = Array.isArray(item.platforms) ? item.platforms : [];
-                return plats.length === 0 || plats.includes(platformId);
+                if (!(plats.length === 0 || plats.includes(platformId))) return false;
+                const req = Array.isArray(item.requires_capabilities) ? item.requires_capabilities.map(x => String(x)) : [];
+                if (req.length > 0 && req.some(cap => !caps.has(cap))) return false;
+                return true;
             });
         }
 
         const MEMORY_BASE_COST = {
             esp32: { prog: 420 * 1024, ram: 64 * 1024, data: 64 * 1024 },
-            avr: { prog: 6 * 1024, ram: 512, data: 0 },
-            atmega: { prog: 6 * 1024, ram: 512, data: 0 },
-            rp2040: { prog: 80 * 1024, ram: 16 * 1024, data: 0 },
-            stm32: { prog: 96 * 1024, ram: 16 * 1024, data: 0 }
+            avr: { prog: 5 * 1024, ram: 384, data: 0 },
+            atmega: { prog: 5 * 1024, ram: 384, data: 0 },
+            pic16: { prog: 3 * 1024, ram: 256, data: 0 },
+            rp2040: { prog: 28 * 1024, ram: 6 * 1024, data: 0 },
+            stm32: { prog: 40 * 1024, ram: 8 * 1024, data: 0 },
+            atsam: { prog: 44 * 1024, ram: 8 * 1024, data: 0 },
+            renesas_ra: { prog: 56 * 1024, ram: 10 * 1024, data: 0 },
+            renesas_rx: { prog: 72 * 1024, ram: 12 * 1024, data: 0 },
+            "linux-sbc": { prog: 8 * 1024 * 1024, ram: 4 * 1024 * 1024, data: 16 * 1024 * 1024 }
+        };
+
+        const BOARD_MEMORY_BASE_OVERRIDES = {
+            cyd: { prog: 460 * 1024, ram: 72 * 1024, data: 64 * 1024 },
+            m5stickc_plus2: { prog: 430 * 1024, ram: 70 * 1024, data: 64 * 1024 },
+            esp32_devkitc_v4: { prog: 410 * 1024, ram: 58 * 1024, data: 48 * 1024 },
+            mega2560: { prog: 6 * 1024, ram: 512, data: 0 },
+            arduino_pro_micro_5v_usbc: { prog: 5 * 1024, ram: 420, data: 0 },
+            arduino_uno_r3: { prog: 4 * 1024, ram: 320, data: 0 },
+            arduino_nano_v3: { prog: 4 * 1024, ram: 320, data: 0 },
+            raspberry_pi_pico: { prog: 24 * 1024, ram: 5 * 1024, data: 0 },
+            raspberry_pi_pico_w: { prog: 28 * 1024, ram: 6 * 1024, data: 0 },
+            adafruit_feather_rp2040: { prog: 30 * 1024, ram: 6 * 1024, data: 0 },
+            nucleo_f401re: { prog: 38 * 1024, ram: 8 * 1024, data: 0 },
+            nucleo_f446re: { prog: 40 * 1024, ram: 8 * 1024, data: 0 },
+            blackpill_f411ce: { prog: 36 * 1024, ram: 8 * 1024, data: 0 }
         };
 
         const DRIVER_MEMORY_COST = {
@@ -2961,19 +3482,68 @@
             display_ssd1306: { prog: 14 * 1024, ram: 2 * 1024 },
             shell_full: { prog: 44 * 1024, ram: 6 * 1024 },
             shell_min: { prog: 20 * 1024, ram: 3 * 1024 },
+            shell_tiny: { prog: 10 * 1024, ram: 1536 },
             remote_node: { prog: 9 * 1024, ram: 1 * 1024 },
             wifi: { prog: 140 * 1024, ram: 36 * 1024 },
             bluetooth: { prog: 170 * 1024, ram: 40 * 1024 },
+            twai: { prog: 18 * 1024, ram: 3 * 1024 },
             rtc: { prog: 6 * 1024, ram: 1024 },
             imu: { prog: 8 * 1024, ram: 1024 },
             dht22: { prog: 4 * 1024, ram: 512 },
             mic: { prog: 10 * 1024, ram: 4 * 1024 },
+            ads1115: { prog: 8 * 1024, ram: 1024 },
+            mcp23017: { prog: 7 * 1024, ram: 768 },
+            mcp2544fd: { prog: 5 * 1024, ram: 512 },
+            uln2003: { prog: 6 * 1024, ram: 640 },
+            l298n: { prog: 6 * 1024, ram: 640 },
+            hp4067: { prog: 5 * 1024, ram: 512 },
+            tp4056: { prog: 4 * 1024, ram: 384 },
             psram: { prog: 2 * 1024, ram: 128 }
+        };
+
+        // AVR/ATmega cost model tuned from observed arduino-cli outputs.
+        const DRIVER_MEMORY_COST_AVR = {
+            gpio: { prog: 128, ram: 24 },
+            uart: { prog: 1024, ram: 180 },
+            spi: { prog: 420, ram: 64 },
+            i2c: { prog: 480, ram: 72 },
+            adc: { prog: 220, ram: 24 },
+            pwm: { prog: 180, ram: 20 },
+            timer: { prog: 220, ram: 32 },
+            eeprom: { prog: 260, ram: 28 },
+            display_ssd1306: { prog: 1400, ram: 220 },
+            shell_full: { prog: 3600, ram: 720 },
+            shell_min: { prog: 2200, ram: 460 },
+            shell_tiny: { prog: 1200, ram: 260 },
+            remote_node: { prog: 520, ram: 96 },
+            rtc: { prog: 680, ram: 84 },
+            imu: { prog: 820, ram: 96 },
+            dht22: { prog: 900, ram: 84 },
+            ads1115: { prog: 760, ram: 92 },
+            mcp23017: { prog: 720, ram: 78 },
+            mcp2544fd: { prog: 0, ram: 0 },
+            uln2003: { prog: 320, ram: 40 },
+            l298n: { prog: 320, ram: 40 },
+            hp4067: { prog: 360, ram: 40 },
+            tp4056: { prog: 320, ram: 36 },
+            wifi: { prog: 0, ram: 0 },
+            bluetooth: { prog: 0, ram: 0 },
+            twai: { prog: 0, ram: 0 },
+            fs_spiffs: { prog: 0, ram: 0, data: 0 },
+            fs_sd: { prog: 0, ram: 0, data: 0 },
+            tft: { prog: 0, ram: 0, data: 0 },
+            mic: { prog: 0, ram: 0 },
+            psram: { prog: 0, ram: 0 }
         };
 
         const APPLET_MEMORY_COST = {
             default: { prog: 3 * 1024, ram: 512, data: 2 * 1024 },
-            paint: { prog: 8 * 1024, ram: 2 * 1024, data: 10 * 1024 }
+            paint: { prog: 8 * 1024, ram: 2 * 1024, data: 10 * 1024 },
+            flappy_bird: { prog: 12 * 1024, ram: 3 * 1024, data: 12 * 1024 }
+        };
+        const APPLET_MEMORY_COST_AVR = {
+            default: { prog: 700, ram: 96, data: 64 },
+            paint: { prog: 0, ram: 0, data: 0 }
         };
 
         function parseSizeToBytes(text, fallback = 0) {
@@ -2997,23 +3567,41 @@
 
         function capacityModelForBoard(board) {
             const platformId = String(board?.platform || selectedPlatform || '').toLowerCase();
-            const base = MEMORY_BASE_COST[platformId] || { prog: 96 * 1024, ram: 16 * 1024, data: 0 };
+            const boardId = String(board?.id || '').toLowerCase();
+            const targetId = String(board?.target_profile || '').toLowerCase();
+            const target = targetId ? targets[targetId] : null;
+            const base = {
+                ...(MEMORY_BASE_COST[platformId] || { prog: 96 * 1024, ram: 16 * 1024, data: 0 }),
+                ...(BOARD_MEMORY_BASE_OVERRIDES[boardId] || {})
+            };
+
             const flashCap = parseSizeToBytes(board?.flash, 0);
             const ramCap = parseSizeToBytes(board?.ram, 0);
-            let progCap = flashCap > 0 ? flashCap : 0;
+            const targetCaps = target?.capabilities || {};
+            let progCap = Number(targetCaps.max_flash_bytes || 0) || (flashCap > 0 ? flashCap : 0);
+            let ramCapFinal = Number(targetCaps.max_ram_bytes || 0) || ramCap;
             let dataCap = 0;
             if (platformId === 'esp32') {
                 // Typical BasaltOS partitioning: ~1.94MB app + ~1.94MB storage on 4MB flash.
                 progCap = progCap || (0x1F0000);
                 dataCap = 0x1F0000;
-            } else if (flashCap > 0) {
-                progCap = Math.round(flashCap * 0.9);
-                dataCap = Math.round(flashCap * 0.1);
+            } else if (platformId === 'avr' || platformId === 'atmega' || platformId === 'pic16') {
+                // 8-bit targets generally treat data flash separately (EEPROM/etc.), keep data partition at zero.
+                dataCap = 0;
+            } else if (platformId === 'linux-sbc') {
+                // Planning model only.
+                progCap = progCap || (256 * 1024 * 1024);
+                ramCapFinal = ramCapFinal || (512 * 1024 * 1024);
+                dataCap = Math.max(dataCap, 128 * 1024 * 1024);
+            } else if (progCap > 0) {
+                const totalFlash = progCap;
+                progCap = Math.round(totalFlash * 0.9);
+                dataCap = Math.round(totalFlash * 0.1);
             }
             return {
                 platformId,
                 base,
-                caps: { prog: progCap, ram: ramCap, data: dataCap }
+                caps: { prog: progCap, ram: ramCapFinal, data: dataCap }
             };
         }
 
@@ -3021,16 +3609,20 @@
             const board = selectedBoard || {};
             const model = capacityModelForBoard(board);
             const usage = { prog: model.base.prog, ram: model.base.ram, data: model.base.data };
+            const base = { ...model.base };
+            const isAvr = model.platformId === 'avr' || model.platformId === 'atmega';
+            const driverCost = isAvr ? DRIVER_MEMORY_COST_AVR : DRIVER_MEMORY_COST;
+            const appletCost = isAvr ? APPLET_MEMORY_COST_AVR : APPLET_MEMORY_COST;
 
             modules.filter(m => m.enabled).forEach(m => {
-                const c = DRIVER_MEMORY_COST[m.id] || {};
+                const c = driverCost[m.id] || {};
                 usage.prog += Number(c.prog || 0);
                 usage.ram += Number(c.ram || 0);
                 usage.data += Number(c.data || 0);
             });
 
             applets.filter(a => appletStates[a]).forEach(a => {
-                const c = APPLET_MEMORY_COST[a] || APPLET_MEMORY_COST.default;
+                const c = appletCost[a] || appletCost.default;
                 usage.prog += Number(c.prog || 0);
                 usage.ram += Number(c.ram || 0);
                 usage.data += Number(c.data || 0);
@@ -3040,13 +3632,13 @@
                 .filter(item => marketAppStates[item.id])
                 .forEach(item => {
                     const srcSize = Number(item.source_size_bytes || 0);
-                    const c = APPLET_MEMORY_COST[item.id] || APPLET_MEMORY_COST.default;
+                    const c = appletCost[item.id] || appletCost.default;
                     usage.prog += Math.round(Number(c.prog || 0) * 0.4);
                     usage.ram += Math.round(Number(c.ram || 0) * 0.5);
                     usage.data += srcSize > 0 ? srcSize : Number(c.data || 0);
                 });
 
-            return { usage, caps: model.caps, platformId: model.platformId };
+            return { usage, base, caps: model.caps, platformId: model.platformId };
         }
 
         function memoryRowHtml(label, used, cap, kind = 'prog') {
@@ -3069,23 +3661,33 @@
         function updateMemoryEstimatePanels() {
             const panel = document.getElementById('memory-estimate-panel');
             const summaryPanel = document.getElementById('memory-summary-panel');
-            if (!panel && !summaryPanel) return;
+            const step1Panel = document.getElementById('memory-step1-panel');
+            const step3Panel = document.getElementById('memory-step3-panel');
+            const allPanels = [panel, summaryPanel, step1Panel, step3Panel].filter(Boolean);
+            if (allPanels.length === 0) return;
             if (!selectedBoard) {
                 const html = '<div class="memory-note">Select a board to view memory estimates.</div>';
-                if (panel) panel.innerHTML = html;
-                if (summaryPanel) summaryPanel.innerHTML = html;
+                allPanels.forEach(p => { p.innerHTML = html; });
                 return;
             }
 
-            const { usage, caps } = estimateMemoryUsage();
+            const { usage, base, caps } = estimateMemoryUsage();
+            const added = {
+                prog: Math.max(0, usage.prog - (base.prog || 0)),
+                ram: Math.max(0, usage.ram - (base.ram || 0)),
+                data: Math.max(0, usage.data - (base.data || 0))
+            };
             const html = `
-                <div class="memory-note">Estimated usage while configuring (pre-build). Exact values come from compiler output.</div>
+                <div class="memory-note">Estimated usage while configuring (pre-build). Target/board-aware caps are applied when available. Exact values come from compiler output.</div>
+                <div class="memory-note">
+                    Baseline firmware overhead: Prog ${formatBytes(base.prog)}, RAM ${formatBytes(base.ram)}, Data ${formatBytes(base.data)}.
+                    Added by selected drivers/apps: Prog ${formatBytes(added.prog)}, RAM ${formatBytes(added.ram)}, Data ${formatBytes(added.data)}.
+                </div>
                 ${memoryRowHtml('Program Flash', usage.prog, caps.prog, 'prog')}
                 ${memoryRowHtml('Data Flash (apps/storage)', usage.data, caps.data, 'data')}
                 ${memoryRowHtml('RAM', usage.ram, caps.ram, 'ram')}
             `;
-            if (panel) panel.innerHTML = html;
-            if (summaryPanel) summaryPanel.innerHTML = html;
+            allPanels.forEach(p => { p.innerHTML = html; });
         }
 
         function profileStorageKey() {
@@ -3094,15 +3696,12 @@
 
         function updateTopProfileChip() {
             const chip = document.getElementById('top-profile-chip');
-            const loginBtn = document.getElementById('btn-login');
             if (!chip) return;
             const name = String(userProfile?.name || '').trim();
             if (name) {
                 chip.textContent = name;
-                if (loginBtn) loginBtn.textContent = 'Switch User';
             } else {
                 chip.textContent = 'Guest';
-                if (loginBtn) loginBtn.textContent = 'Sign In';
             }
         }
 
@@ -3125,9 +3724,11 @@
             const landing = document.getElementById('landing-home');
             const shell = document.getElementById('configurator-shell');
             const marketShell = document.getElementById('market-shell');
+            const profileShell = document.getElementById('profile-shell');
             if (landing) landing.style.display = 'block';
             if (shell) shell.style.display = 'none';
             if (marketShell) marketShell.style.display = 'none';
+            if (profileShell) profileShell.style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -3136,9 +3737,11 @@
             const landing = document.getElementById('landing-home');
             const shell = document.getElementById('configurator-shell');
             const marketShell = document.getElementById('market-shell');
+            const profileShell = document.getElementById('profile-shell');
             if (landing) landing.style.display = 'none';
             if (shell) shell.style.display = 'block';
             if (marketShell) marketShell.style.display = 'none';
+            if (profileShell) profileShell.style.display = 'none';
             if (typeof step === 'number' && step >= 1 && step <= 4) {
                 currentStep = step;
             }
@@ -3150,10 +3753,25 @@
             const landing = document.getElementById('landing-home');
             const shell = document.getElementById('configurator-shell');
             const marketShell = document.getElementById('market-shell');
+            const profileShell = document.getElementById('profile-shell');
             if (landing) landing.style.display = 'none';
             if (shell) shell.style.display = 'none';
             if (marketShell) marketShell.style.display = 'block';
+            if (profileShell) profileShell.style.display = 'none';
             renderMarketPage();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showProfilePage() {
+            const landing = document.getElementById('landing-home');
+            const shell = document.getElementById('configurator-shell');
+            const marketShell = document.getElementById('market-shell');
+            const profileShell = document.getElementById('profile-shell');
+            if (landing) landing.style.display = 'none';
+            if (shell) shell.style.display = 'none';
+            if (marketShell) marketShell.style.display = 'none';
+            if (profileShell) profileShell.style.display = 'block';
+            renderProfilePanel();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -3236,9 +3854,17 @@
                 const allowed = item.kind === 'starter'
                     ? starterAllowedForCurrentBuild(item.id)
                     : marketAllowedForCurrentBuild(item.id);
-                const reason = !selectedBoard
-                    ? 'Select board first'
-                    : (allowed ? 'Supported by current board' : 'Not supported by current board');
+                let reason = 'Supported by current board';
+                if (!selectedBoard) {
+                    reason = 'Select board first';
+                } else if (!allowed) {
+                    const req = Array.isArray(item.requires_capabilities) ? item.requires_capabilities.map(x => String(x)) : [];
+                    const caps = new Set((selectedBoard.capabilities || []).map(x => String(x)));
+                    const missing = req.filter(cap => !caps.has(cap));
+                    reason = missing.length
+                        ? `Missing capabilities: ${missing.join(', ')}`
+                        : 'Not supported by current board';
+                }
                 card.innerHTML = `
                     <h4>${item.name || item.id}</h4>
                     <p>${item.description || ''}</p>
@@ -3247,6 +3873,7 @@
                         id: <code>${item.id}</code><br>
                         version: <code>${item.version || '0.1.0'}</code><br>
                         platforms: <code>${(item.platforms || []).join(', ') || selectedPlatform}</code><br>
+                        requires: <code>${(item.requires_capabilities || []).join(', ') || 'none'}</code><br>
                         package: <code>${item.source_size_bytes ? formatBytes(item.source_size_bytes) : 'n/a'}</code>
                     </div>
                     <div class="market-actions">
@@ -3321,7 +3948,6 @@
                 }
                 await refreshMarketCatalogForPlatform(selectedPlatform);
                 updateLandingStats();
-                populateMarketAppGrid();
                 renderMarketPage();
                 if (idInput) idInput.value = '';
                 if (nameInput) nameInput.value = '';
@@ -3348,34 +3974,225 @@
                 if (!parsed || typeof parsed !== 'object') return;
                 userProfile.name = String(parsed.name || '');
                 userProfile.ownedBoards = Array.isArray(parsed.ownedBoards) ? parsed.ownedBoards.map(x => String(x)) : [];
+                profileInventoryPlatform = String(parsed.inventoryPlatform || '');
             } catch (_e) {
                 userProfile = { name: '', ownedBoards: [] };
+                profileInventoryPlatform = '';
             }
         }
 
         function saveUserProfile() {
             try {
-                localStorage.setItem(profileStorageKey(), JSON.stringify(userProfile));
+                const payload = {
+                    ...userProfile,
+                    inventoryPlatform: profileInventoryPlatform || ''
+                };
+                localStorage.setItem(profileStorageKey(), JSON.stringify(payload));
             } catch (_e) {
                 // ignore persistence errors
             }
             updateTopProfileChip();
         }
 
-        function boardGroupLabel(board) {
-            const id = String(board?.id || '').toLowerCase();
-            const name = String(board?.name || '').toLowerCase();
-            const mcu = String(board?.mcu || '').toLowerCase();
-            const text = `${id} ${name}`;
-            if (selectedPlatform !== 'esp32') return 'Boards';
-            if (text.includes('cyd') || text.includes('display') || text.includes('t-display') || text.includes('m5')) return 'Display & Product Boards';
-            if (text.includes('devkit') || text.includes('dev board') || text.includes('node') || text.includes('wroom') || text.includes('wrover')) return 'Dev Kits';
-            if (text.includes('module') || text.includes('mini') || text.includes('supermini')) return 'Modules & Mini Boards';
-            if (mcu.includes('c3')) return 'SoC Family: ESP32-C3';
-            if (mcu.includes('s2')) return 'SoC Family: ESP32-S2';
-            if (mcu.includes('s3')) return 'SoC Family: ESP32-S3';
-            if (mcu.includes('c6')) return 'SoC Family: ESP32-C6';
-            return 'SoC Family: ESP32';
+        const PLATFORM_MANUFACTURER = {
+            esp32: 'Espressif',
+            avr: 'Microchip',
+            atmega: 'Microchip',
+            pic16: 'Microchip',
+            rp2040: 'Raspberry Pi',
+            stm32: 'STMicroelectronics',
+            atsam: 'Microchip',
+            renesas_ra: 'Renesas',
+            renesas_rx: 'Renesas',
+            'linux-sbc': 'Linux SBC'
+        };
+
+        const PLATFORM_ARCHITECTURE = {
+            avr: 'AVR 8-bit',
+            atmega: 'AVR 8-bit',
+            pic16: 'PIC 8-bit',
+            stm32: 'ARM Cortex-M',
+            atsam: 'ARM Cortex-M',
+            rp2040: 'ARM Cortex-M0+',
+            renesas_ra: 'ARM Cortex-M',
+            renesas_rx: 'Renesas RX 32-bit',
+            'linux-sbc': 'Linux Host'
+        };
+
+        function mcuFamilyLabel(mcu, platform) {
+            const text = String(mcu || '').toUpperCase();
+            const plat = String(platform || '').toLowerCase();
+            if (plat === 'esp32') {
+                if (text.includes('C6')) return 'ESP32-C6';
+                if (text.includes('C3')) return 'ESP32-C3';
+                if (text.includes('S3')) return 'ESP32-S3';
+                if (text.includes('S2')) return 'ESP32-S2';
+                return 'ESP32';
+            }
+            if (plat === 'stm32') {
+                const m = text.match(/STM32([A-Z]\d)/);
+                if (m) return `STM32${m[1]}`;
+                if (text.includes('STM32')) return 'STM32';
+            }
+            if (plat === 'rp2040') return 'RP2040';
+            if (plat === 'atsam') {
+                if (text.includes('SAMD21')) return 'SAMD21';
+                if (text.includes('SAMD51')) return 'SAMD51';
+                return 'SAM';
+            }
+            if (plat === 'renesas_ra') {
+                if (text.includes('RA4')) return 'RA4';
+                if (text.includes('RA6')) return 'RA6';
+                return 'Renesas RA';
+            }
+            if (plat === 'renesas_rx') {
+                if (text.includes('RX72')) return 'RX72';
+                if (text.includes('RX65')) return 'RX65';
+                return 'Renesas RX';
+            }
+            if (plat === 'avr' || plat === 'atmega') {
+                if (text.includes('ATMEGA32U4')) return 'ATmega32U4';
+                if (text.includes('ATMEGA2560')) return 'ATmega2560';
+                if (text.includes('ATMEGA328')) return 'ATmega328';
+                return 'ATmega';
+            }
+            if (plat === 'pic16') return 'PIC16';
+            return plat ? plat.toUpperCase() : 'General';
+        }
+
+        function boardTaxonomy(board) {
+            const platform = String(board?.platform || '').toLowerCase();
+            const mcu = String(board?.mcu || board?.soc || board?.target_profile || '');
+            const mcuUp = mcu.toUpperCase();
+            let manufacturer = String(board?.manufacturer || PLATFORM_MANUFACTURER[platform] || 'Generic');
+            let architecture = String(board?.architecture || PLATFORM_ARCHITECTURE[platform] || 'Embedded');
+            if (platform === 'esp32') {
+                architecture = (mcuUp.includes('C3') || mcuUp.includes('C6')) ? 'RISC-V' : 'Xtensa';
+            } else if (platform === 'linux-sbc' && mcuUp.includes('BCM')) {
+                architecture = 'ARM Cortex-A';
+                manufacturer = 'Raspberry Pi';
+            }
+            return {
+                manufacturer,
+                architecture,
+                family: String(board?.family || mcuFamilyLabel(mcu, platform)),
+                silicon: mcu || String(board?.target_profile || board?.id || 'Unknown')
+            };
+        }
+
+        function allBoardsFlat() {
+            const out = [];
+            Object.entries(boards || {}).forEach(([platformId, list]) => {
+                (Array.isArray(list) ? list : []).forEach(board => {
+                    out.push({ ...board, platform: board?.platform || platformId });
+                });
+            });
+            return out;
+        }
+
+        function setSelectOptions(selectEl, values, placeholder) {
+            if (!selectEl) return;
+            const prev = selectEl.value;
+            selectEl.innerHTML = '';
+            const ph = document.createElement('option');
+            ph.value = '';
+            ph.textContent = placeholder;
+            selectEl.appendChild(ph);
+            values.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v;
+                opt.textContent = v;
+                selectEl.appendChild(opt);
+            });
+            if (values.includes(prev)) selectEl.value = prev;
+            else selectEl.value = '';
+        }
+
+        function buildBoardEmptyHint() {
+            const parts = [];
+            if (selectedManufacturer) parts.push(`manufacturer=${selectedManufacturer}`);
+            if (selectedArchitecture) parts.push(`architecture=${selectedArchitecture}`);
+            if (selectedFamily) parts.push(`family=${selectedFamily}`);
+            if (selectedSilicon) parts.push(`processor=${selectedSilicon}`);
+            const search = String(document.getElementById('board-search')?.value || '').trim();
+            if (search) parts.push(`search="${search}"`);
+            const ownedOnly = !!document.getElementById('owned-only-toggle')?.checked;
+            if (ownedOnly) parts.push('inventory-only');
+            if (!parts.length) return 'Try changing any filter above, or disable inventory-only mode.';
+            return `Active filters: ${parts.join(' • ')}`;
+        }
+
+        function renderHardwarePath() {
+            const pathEl = document.getElementById('hardware-path');
+            if (!pathEl) return;
+            const chips = [];
+            if (selectedManufacturer) chips.push(selectedManufacturer);
+            if (selectedArchitecture) chips.push(selectedArchitecture);
+            if (selectedFamily) chips.push(selectedFamily);
+            if (selectedSilicon) chips.push(selectedSilicon);
+            if (selectedBoard?.name) chips.push(selectedBoard.name);
+            if (!chips.length) {
+                pathEl.innerHTML = '<span class="hardware-chip">All Hardware</span>';
+                return;
+            }
+            pathEl.innerHTML = chips.map(c => `<span class="hardware-chip">${c}</span>`).join('');
+        }
+
+        function applyHierarchyFilters() {
+            const ownedOnly = !!document.getElementById('owned-only-toggle')?.checked;
+            const ownedSet = new Set((userProfile.ownedBoards || []).map(String));
+            const search = String(document.getElementById('board-search')?.value || '').trim().toLowerCase();
+            return allBoardsFlat().filter(board => {
+                if (ownedOnly && !ownedSet.has(String(board.id))) return false;
+                const tx = boardTaxonomy(board);
+                if (selectedManufacturer && tx.manufacturer !== selectedManufacturer) return false;
+                if (selectedArchitecture && tx.architecture !== selectedArchitecture) return false;
+                if (selectedFamily && tx.family !== selectedFamily) return false;
+                if (selectedSilicon && tx.silicon !== selectedSilicon) return false;
+                if (search) {
+                    const hay = `${board.name || ''} ${board.id || ''} ${board.mcu || ''} ${board.description || ''}`.toLowerCase();
+                    if (!hay.includes(search)) return false;
+                }
+                return true;
+            });
+        }
+
+        function syncHierarchySelectors() {
+            const manuSel = document.getElementById('manufacturer-select');
+            const archSel = document.getElementById('architecture-select');
+            const famSel = document.getElementById('family-select');
+            const silSel = document.getElementById('silicon-select');
+
+            const all = allBoardsFlat();
+            const manufacturers = Array.from(new Set(all.map(b => boardTaxonomy(b).manufacturer))).sort((a, b) => a.localeCompare(b));
+            if (selectedManufacturer && !manufacturers.includes(selectedManufacturer)) selectedManufacturer = '';
+            setSelectOptions(manuSel, manufacturers, 'All manufacturers');
+            if (!selectedManufacturer && manufacturers.length === 1) selectedManufacturer = manufacturers[0];
+            if (selectedManufacturer) manuSel.value = selectedManufacturer;
+
+            const byManu = all.filter(b => !selectedManufacturer || boardTaxonomy(b).manufacturer === selectedManufacturer);
+            const architectures = Array.from(new Set(byManu.map(b => boardTaxonomy(b).architecture))).sort((a, b) => a.localeCompare(b));
+            if (selectedArchitecture && !architectures.includes(selectedArchitecture)) selectedArchitecture = '';
+            setSelectOptions(archSel, architectures, 'All architectures');
+            if (!selectedArchitecture && architectures.length === 1) selectedArchitecture = architectures[0];
+            if (selectedArchitecture && architectures.includes(selectedArchitecture)) archSel.value = selectedArchitecture;
+            else selectedArchitecture = '';
+
+            const byArch = byManu.filter(b => !selectedArchitecture || boardTaxonomy(b).architecture === selectedArchitecture);
+            const families = Array.from(new Set(byArch.map(b => boardTaxonomy(b).family))).sort((a, b) => a.localeCompare(b));
+            if (selectedFamily && !families.includes(selectedFamily)) selectedFamily = '';
+            setSelectOptions(famSel, families, 'All families');
+            if (!selectedFamily && families.length === 1) selectedFamily = families[0];
+            if (selectedFamily && families.includes(selectedFamily)) famSel.value = selectedFamily;
+            else selectedFamily = '';
+
+            const byFam = byArch.filter(b => !selectedFamily || boardTaxonomy(b).family === selectedFamily);
+            const silicons = Array.from(new Set(byFam.map(b => boardTaxonomy(b).silicon))).sort((a, b) => a.localeCompare(b));
+            if (selectedSilicon && !silicons.includes(selectedSilicon)) selectedSilicon = '';
+            setSelectOptions(silSel, silicons, 'All processors');
+            if (!selectedSilicon && silicons.length === 1) selectedSilicon = silicons[0];
+            if (selectedSilicon && silicons.includes(selectedSilicon)) silSel.value = selectedSilicon;
+            else selectedSilicon = '';
         }
 
         function renderProfilePanel() {
@@ -3383,13 +4200,37 @@
             const ownedOnly = document.getElementById('owned-only-toggle');
             const stats = document.getElementById('profile-stats');
             const inventory = document.getElementById('inventory-list');
-            if (!nameInput || !ownedOnly || !stats || !inventory) return;
+            const platformSel = document.getElementById('profile-platform-select');
+            if (!nameInput || !ownedOnly || !stats || !inventory || !platformSel) return;
 
             if (nameInput.value !== userProfile.name) {
                 nameInput.value = userProfile.name || '';
             }
 
-            const platformBoards = boards[selectedPlatform] || [];
+            const platformOptions = Array.isArray(platforms)
+                ? [...platforms].sort((a, b) => String(a?.name || a?.id || '').localeCompare(String(b?.name || b?.id || ''), undefined, { sensitivity: 'base' }))
+                : [];
+            const fallbackPlatform = selectedPlatform || platformOptions[0]?.id || '';
+            if (!profileInventoryPlatform || (!boards[profileInventoryPlatform] && profileInventoryPlatform !== '')) {
+                profileInventoryPlatform = fallbackPlatform;
+            }
+
+            platformSel.innerHTML = '';
+            const allOpt = document.createElement('option');
+            allOpt.value = '';
+            allOpt.textContent = 'All Platforms';
+            platformSel.appendChild(allOpt);
+            platformOptions.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = p.name || p.id;
+                platformSel.appendChild(opt);
+            });
+            platformSel.value = profileInventoryPlatform || '';
+
+            const platformBoards = profileInventoryPlatform
+                ? (boards[profileInventoryPlatform] || [])
+                : Object.values(boards || {}).flat();
             const ownedSet = new Set((userProfile.ownedBoards || []).map(String));
             const points = (ownedSet.size * 25);
             stats.textContent = `Owned boards: ${ownedSet.size} • Points: ${points}`;
@@ -3399,7 +4240,10 @@
                 inventory.innerHTML = '<div class="board-empty">No boards available for this platform.</div>';
                 return;
             }
-            platformBoards.forEach(board => {
+            platformBoards
+                .slice()
+                .sort((a, b) => String(a.name || a.id || '').localeCompare(String(b.name || b.id || ''), undefined, { sensitivity: 'base' }))
+                .forEach(board => {
                 const row = document.createElement('label');
                 row.className = 'inventory-item';
                 row.innerHTML = `
@@ -3415,8 +4259,8 @@
             const id = String(moduleId || '');
             if (id.startsWith('fs_')) return 'storage';
             if (['uart', 'spi', 'i2c', 'remote_node'].includes(id)) return 'connectivity';
-            if (['tft', 'display_ssd1306', 'shell_full', 'shell_min'].includes(id)) return 'ui_shell';
-            if (['psram', 'adc', 'pwm', 'eeprom', 'rtc', 'imu', 'dht22', 'mic'].includes(id)) return 'advanced';
+            if (['tft', 'display_ssd1306', 'shell_full', 'shell_min', 'shell_tiny'].includes(id)) return 'ui_shell';
+            if (['psram', 'adc', 'pwm', 'eeprom', 'rtc', 'imu', 'dht22', 'mic', 'ads1115', 'mcp23017', 'hp4067', 'tp4056'].includes(id)) return 'advanced';
             return 'core';
         }
 
@@ -3431,108 +4275,6 @@
             return map[sectionId] || sectionId;
         }
         
-        function populateAppletGrid() {
-            const available = availableAppletsForBoard(selectedBoard);
-            applets = available;
-            const grid = document.getElementById('applet-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-
-            if (!available.length) {
-                const empty = document.createElement('div');
-                empty.className = 'module-description';
-                empty.textContent = 'No starter apps available for this board/platform.';
-                grid.appendChild(empty);
-                return;
-            }
-
-            available.forEach(appletId => {
-                const meta = getAppletMeta(appletId);
-                const enabled = !!appletStates[appletId];
-                const card = document.createElement('div');
-                card.className = `module-card ${enabled ? 'enabled' : ''}`;
-                card.id = `applet-card-${appletId}`;
-                card.innerHTML = `
-                    <div class="module-header">
-                        <div style="display:flex; align-items:center;">
-                            <span class="module-icon">${meta.icon}</span>
-                            <div class="module-name">${meta.name}</div>
-                        </div>
-                        <label class="toggle">
-                            <input type="checkbox" ${enabled ? 'checked' : ''} data-applet="${appletId}">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="module-description">${meta.description}</div>
-                `;
-
-                const toggle = card.querySelector('input[type="checkbox"]');
-                toggle.onchange = () => {
-                    appletStates[appletId] = toggle.checked;
-                    card.classList.toggle('enabled', toggle.checked);
-                    updateValidation();
-                    updateMemoryEstimatePanels();
-                };
-
-                grid.appendChild(card);
-            });
-        }
-
-        function populateMarketAppGrid() {
-            const allForBoard = availableMarketAppsForBoard(selectedBoard);
-            marketApps = allForBoard.map(x => x.id);
-            const grid = document.getElementById('market-app-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-
-            const search = String(document.getElementById('market-search')?.value || '').toLowerCase();
-            const available = allForBoard.filter(item => {
-                if (!search) return true;
-                const hay = `${item.id} ${item.name || ''} ${item.description || ''} ${(item.tags || []).join(' ')}`.toLowerCase();
-                return hay.includes(search);
-            });
-            if (!available.length) {
-                const empty = document.createElement('div');
-                empty.className = 'module-description';
-                empty.textContent = 'No curated apps available for this board/platform.';
-                grid.appendChild(empty);
-                return;
-            }
-
-            available.forEach(item => {
-                const enabled = !!marketAppStates[item.id];
-                const card = document.createElement('div');
-                card.className = `module-card ${enabled ? 'enabled' : ''}`;
-                card.id = `market-app-card-${item.id}`;
-                const tags = Array.isArray(item.tags) ? item.tags.join(', ') : '';
-                const pkgSize = item.source_size_bytes ? formatBytes(item.source_size_bytes) : 'n/a';
-                card.innerHTML = `
-                    <div class="module-header">
-                        <div style="display:flex; align-items:center;">
-                            <span class="module-icon">🧰</span>
-                            <div class="module-name">${item.name || item.id}</div>
-                        </div>
-                        <label class="toggle">
-                            <input type="checkbox" ${enabled ? 'checked' : ''} data-market-app="${item.id}">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="module-description">${item.description || ''}</div>
-                    <div class="module-meta">Package: ${pkgSize}</div>
-                    ${tags ? `<div class="module-meta">Tags: ${tags}</div>` : ''}
-                `;
-
-                const toggle = card.querySelector('input[type="checkbox"]');
-                toggle.onchange = () => {
-                    marketAppStates[item.id] = toggle.checked;
-                    card.classList.toggle('enabled', toggle.checked);
-                    updateValidation();
-                    updateMemoryEstimatePanels();
-                };
-                grid.appendChild(card);
-            });
-        }
-
         async function loadFromApi() {
             const isHttp = window.location.protocol.startsWith('http');
             if (!isHttp) {
@@ -3548,8 +4290,13 @@
                     boards[p.id] = await apiFetchJson(`/api/boards/${p.id}`);
                 }
 
-                await refreshModulesForPlatform(selectedPlatform);
-                modules.forEach(m => { if (!Array.isArray(m.pins)) m.pins = []; });
+                if (selectedPlatform) {
+                    await refreshModulesForPlatform(selectedPlatform);
+                    modules.forEach(m => { if (!Array.isArray(m.pins)) m.pins = []; });
+                } else {
+                    modules = [];
+                    loadedPlatformForModules = '';
+                }
 
                 try {
                     const tList = await apiFetchJson('/api/targets');
@@ -3561,9 +4308,16 @@
                 }
 
                 try {
-                    marketCatalog = await apiFetchJson(`/api/market/catalog?platform=${encodeURIComponent(selectedPlatform)}`);
+                    if (selectedPlatform) {
+                        marketCatalog = await apiFetchJson(`/api/market/catalog?platform=${encodeURIComponent(selectedPlatform)}`);
+                        loadedPlatformForMarket = String(selectedPlatform || '');
+                    } else {
+                        marketCatalog = [];
+                        loadedPlatformForMarket = '';
+                    }
                 } catch (err) {
                     marketCatalog = [];
+                    loadedPlatformForMarket = '';
                     notify(`Market catalog unavailable: ${err.message || err}`, 'warning');
                 }
 
@@ -3603,29 +4357,36 @@
 
             sel.disabled = false;
             if (errorEl) errorEl.style.display = 'none';
-            platforms.forEach(p => {
+            const sortedPlatforms = [...platforms].sort((a, b) =>
+                String(a?.name || a?.id || '').localeCompare(String(b?.name || b?.id || ''), undefined, { sensitivity: 'base' })
+            );
+
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.textContent = 'Select Platform';
+            sel.appendChild(placeholder);
+
+            sortedPlatforms.forEach(p => {
                 const opt = document.createElement('option');
                 opt.value = p.id;
                 opt.textContent = p.name || p.id;
                 sel.appendChild(opt);
             });
-
-            if (platforms.length > 0) {
-                selectedPlatform = platforms[0].id;
-                sel.value = selectedPlatform;
-            }
+            sel.value = selectedPlatform || '';
         }
 
         async function refreshModulesForPlatform(platformId) {
             const url = platformId ? `/api/drivers?platform=${platformId}` : '/api/drivers';
             modules = await apiFetchJson(url);
             modules.forEach(m => { if (!Array.isArray(m.pins)) m.pins = []; });
+            loadedPlatformForModules = String(platformId || '');
         }
 
         async function refreshMarketCatalogForPlatform(platformId) {
             const url = platformId ? `/api/market/catalog?platform=${encodeURIComponent(platformId)}` : '/api/market/catalog';
             marketCatalog = await apiFetchJson(url);
             if (!Array.isArray(marketCatalog)) marketCatalog = [];
+            loadedPlatformForMarket = String(platformId || '');
         }
 
         async function loadTemplates() {
@@ -3675,11 +4436,11 @@
                     {
                         id: 'minimal_embedded',
                         name: 'Minimal System',
-                        description: 'Bare minimum configuration for resource-constrained applications',
+                        description: 'Bare minimum configuration for resource-constrained applications (Shell Tiny)',
                         icon: '⚡',
                         platforms: ['esp32'],
                         recommended_boards: ['esp32-c3-supermini'],
-                        enabled_drivers: ['uart', 'shell_min'],
+                        enabled_drivers: ['uart', 'shell_tiny'],
                         driver_config: {},
                         tags: ['minimal', 'low-power', 'beginner']
                     },
@@ -3695,6 +4456,28 @@
                         tags: ['avr', 'baseline']
                     },
                     {
+                        id: 'mega2560_lite',
+                        name: 'Mega 2560 Tiny Shell',
+                        description: 'Mega baseline with Shell (Tiny) for interactive bring-up on USB serial',
+                        icon: '🧩',
+                        platforms: ['avr'],
+                        recommended_boards: ['mega2560'],
+                        enabled_drivers: ['gpio', 'uart', 'timer', 'shell_min'],
+                        driver_config: { uart: { uart_num: 0, uart_baudrate: 115200 } },
+                        tags: ['avr', 'shell', 'lite', 'baseline']
+                    },
+                    {
+                        id: 'mega2560_tiny',
+                        name: 'Mega 2560 Tiny Shell',
+                        description: 'Ultra-constrained Mega profile with Shell (Tiny) for lowest overhead',
+                        icon: '🪶',
+                        platforms: ['avr'],
+                        recommended_boards: ['mega2560'],
+                        enabled_drivers: ['gpio', 'uart', 'shell_tiny'],
+                        driver_config: { uart: { uart_num: 0, uart_baudrate: 115200 } },
+                        tags: ['avr', 'shell', 'tiny', 'low-power']
+                    },
+                    {
                         id: 'uno_minimal',
                         name: 'Uno Minimal',
                         description: 'ATmega328P minimal config (GPIO + UART)',
@@ -3704,6 +4487,20 @@
                         enabled_drivers: ['gpio', 'uart'],
                         driver_config: { uart: { uart_num: 0, uart_baudrate: 115200 } },
                         tags: ['avr', 'minimal']
+                    },
+                    {
+                        id: 'pro_micro_oled_lite',
+                        name: 'Pro Micro OLED Tiny',
+                        description: 'ATmega32U4 Pro Micro baseline with I2C SSD1306 + Shell (Tiny)',
+                        icon: '🖼️',
+                        platforms: ['avr', 'atmega'],
+                        recommended_boards: ['arduino_pro_micro_5v_usbc'],
+                        enabled_drivers: ['gpio', 'uart', 'i2c', 'display_ssd1306', 'shell_tiny'],
+                        driver_config: {
+                            uart: { uart_num: 0, uart_baudrate: 57600 },
+                            display_ssd1306: { address: '0x3C', width: 128, height: 64 }
+                        },
+                        tags: ['atmega32u4', 'oled', 'shell', 'starter']
                     },
                     {
                         id: 'pico_sensors',
@@ -3736,17 +4533,90 @@
 
         function renderTemplateFilters() {
             const allTags = new Set(['all']);
-            projectTemplates.forEach(t => (t.tags || []).forEach(tag => allTags.add(tag)));
+            projectTemplates
+                .filter(t => !selectedPlatform || (Array.isArray(t.platforms) && t.platforms.includes(selectedPlatform)))
+                .forEach(t => (t.tags || []).forEach(tag => allTags.add(tag)));
 
             const filterContainer = document.getElementById('template-filters');
             if (!filterContainer) return;
 
-            filterContainer.innerHTML = Array.from(allTags).map(tag => `
+            const priority = selectedPlatform ? [selectedPlatform, 'baseline', 'starter', 'popular', 'minimal', 'beginner'] : ['popular', 'starter', 'baseline'];
+            const tagsSorted = Array.from(allTags).sort((a, b) => {
+                const ia = priority.indexOf(a);
+                const ib = priority.indexOf(b);
+                if (ia >= 0 && ib >= 0) return ia - ib;
+                if (ia >= 0) return -1;
+                if (ib >= 0) return 1;
+                return String(a).localeCompare(String(b));
+            });
+
+            filterContainer.innerHTML = tagsSorted.map(tag => `
                 <span class="filter-tag ${tag === 'all' ? 'active' : ''}"
                       onclick="selectTemplateFilter('${tag}')">
                     ${tag.charAt(0).toUpperCase() + tag.slice(1)}
                 </span>
             `).join('');
+        }
+
+        function boardFamilyTags(board) {
+            const id = String(board?.id || '').toLowerCase();
+            const tags = new Set();
+            if (id.includes('nucleo')) tags.add('nucleo');
+            if (id.includes('blackpill')) tags.add('blackpill');
+            if (id.includes('pico')) tags.add('pico');
+            if (id.includes('feather')) tags.add('feather');
+            if (id.includes('mega')) tags.add('mega');
+            if (id.includes('nano')) tags.add('nano');
+            if (id.includes('xiao')) tags.add('xiao');
+            if (id.includes('renesas') || id.includes('ra4') || id.includes('rx')) tags.add('renesas');
+            if (id.includes('cyd')) tags.add('cyd');
+            return tags;
+        }
+
+        function normalizeBoardId(value) {
+            return String(value || '')
+                .trim()
+                .toLowerCase()
+                .replace(/[\s-]+/g, '_');
+        }
+
+        function recommendedBoardSet(template) {
+            return new Set((template?.recommended_boards || []).map(normalizeBoardId));
+        }
+
+        function boardDisplayNameById(boardIdRaw) {
+            const boardId = normalizeBoardId(boardIdRaw);
+            if (!boardId) return String(boardIdRaw || '');
+            for (const list of Object.values(boards || {})) {
+                const found = (Array.isArray(list) ? list : []).find(b => normalizeBoardId(b?.id) === boardId);
+                if (found?.name) return found.name;
+            }
+            return String(boardIdRaw || '');
+        }
+
+        function templateRelevanceScore(template) {
+            let score = 0;
+            const tags = new Set((template.tags || []).map(x => String(x).toLowerCase()));
+            const recBoards = recommendedBoardSet(template);
+            const tplPlatforms = new Set((template.platforms || []).map(x => String(x).toLowerCase()));
+            const platformId = String(selectedPlatform || '').toLowerCase();
+            const boardId = normalizeBoardId(selectedBoard?.id || '');
+
+            if (platformId && tplPlatforms.has(platformId)) score += 20;
+            if (boardId && recBoards.has(boardId)) score += 35;
+            if (tags.has('popular')) score += 6;
+            if (tags.has('starter') || tags.has('baseline')) score += 8;
+            if (tags.has('beginner') || tags.has('minimal')) score += 4;
+            if (platformId && tags.has(platformId)) score += 10;
+
+            if (selectedBoard) {
+                const fam = boardFamilyTags(selectedBoard);
+                fam.forEach(tag => {
+                    if (tags.has(tag)) score += 6;
+                });
+            }
+            if (!selectedBoard && tags.has('starter')) score += 3;
+            return score;
         }
 
         function selectTemplateFilter(tag) {
@@ -3767,12 +4637,22 @@
             if (selectedPlatform && selectedPlatform !== 'all') {
                 filtered = filtered.filter(t => t.platforms && t.platforms.includes(selectedPlatform));
             }
+            filtered = filtered
+                .map(t => ({ template: t, score: templateRelevanceScore(t) }))
+                .sort((a, b) => {
+                    if (b.score !== a.score) return b.score - a.score;
+                    return String(a.template.name || '').localeCompare(String(b.template.name || ''));
+                })
+                .map(x => x.template);
 
             container.innerHTML = filtered.map(template => `
                 <div class="template-card ${template.tags?.includes('popular') ? 'popular' : ''}"
                      onclick="showTemplatePreview('${template.id}')">
                     <span class="template-icon">${template.icon || '📦'}</span>
                     <h4>${template.name}</h4>
+                    ${selectedBoard && recommendedBoardSet(template).has(normalizeBoardId(selectedBoard.id))
+                        ? `<div class="template-modules"><strong>Best Match:</strong> tuned for ${selectedBoard.name}</div>`
+                        : ''}
                     <p>${template.description}</p>
                     <div class="template-modules">
                         <strong>Drivers:</strong>
@@ -3830,7 +4710,7 @@
                     <h3 style="margin-bottom: 10px;">Recommended Boards</h3>
                     <div class="module-badges" style="margin-bottom: 20px;">
                         ${(template.recommended_boards || []).map(b =>
-                            `<span class="badge badge-platform">${b}</span>`
+                            `<span class="badge badge-platform">${boardDisplayNameById(b)}</span>`
                         ).join('')}
                     </div>
 
@@ -3867,6 +4747,31 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             document.getElementById('template-modal').classList.remove('active');
         }
 
+        function openProfileModal() {
+            showProfilePage();
+        }
+
+        function closeProfileModal() {
+            showLanding();
+        }
+
+        function toggleOverflowMenu(show = null) {
+            const menu = document.getElementById('overflow-menu');
+            if (!menu) return;
+            const shouldShow = show === null ? !menu.classList.contains('active') : !!show;
+            menu.classList.toggle('active', shouldShow);
+        }
+
+        function switchUserFlow() {
+            showProfilePage();
+            const input = document.getElementById('profile-name');
+            if (!input) return;
+            setTimeout(() => {
+                input.focus();
+                input.select();
+            }, 0);
+        }
+
         function templateEnabledDrivers(template) {
             if (!template || typeof template !== 'object') return [];
             if (Array.isArray(template.enabled_drivers)) return template.enabled_drivers;
@@ -3884,6 +4789,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         function applyTemplate(templateId) {
             const template = projectTemplates.find(t => t.id === templateId);
             if (!template) return;
+            activeTemplateId = templateId;
             const enabledDrivers = templateEnabledDrivers(template);
             const driverConfig = templateDriverConfig(template);
 
@@ -3916,8 +4822,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             }
 
             populateModuleGrid();
-            populateAppletGrid();
-            populateMarketAppGrid();
+            renderSelectedAppsVisibility();
             updateValidation();
         }
 
@@ -3926,10 +4831,13 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
             return module.configuration_options.map(option => {
                 const value = moduleConfigs[module.id]?.[option.id] ?? option.default;
+                const reqOpt = option.requires_option?.id ? String(option.requires_option.id) : '';
+                const reqVal = option.requires_option?.value != null ? String(option.requires_option.value) : '';
+                const fieldAttrs = `${reqOpt ? ` data-requires-option="${reqOpt}"` : ''}${reqOpt ? ` data-requires-value="${reqVal}"` : ''}`;
 
                 if (option.type === 'select') {
                     return `
-                        <div class="option-field">
+                        <div class="option-field"${fieldAttrs}>
                             <label>${option.name}</label>
                             <select data-module="${module.id}" data-option="${option.id}">
                                 ${option.options.map(opt =>
@@ -3941,7 +4849,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 }
                 if (option.type === 'number') {
                     return `
-                        <div class="option-field">
+                        <div class="option-field"${fieldAttrs}>
                             <label>${option.name}</label>
                             <input type="number"
                                    value="${value}"
@@ -3954,7 +4862,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 }
                 if (option.type === 'text') {
                     return `
-                        <div class="option-field">
+                        <div class="option-field"${fieldAttrs}>
                             <label>${option.name}</label>
                             <input type="text"
                                    value="${value}"
@@ -3963,8 +4871,46 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                         </div>
                     `;
                 }
+                if (option.type === 'file') {
+                    const accept = Array.isArray(option.accept) ? option.accept.join(',') : (option.accept || '');
+                    const fileName = moduleConfigs[module.id]?.[`${option.id}_name`] || '';
+                    return `
+                        <div class="option-field"${fieldAttrs}>
+                            <label>${option.name}</label>
+                            <input type="file"
+                                   accept="${accept}"
+                                   data-module="${module.id}"
+                                   data-option="${option.id}">
+                            ${option.help ? `<small style="color:#64748b;">${option.help}</small>` : ''}
+                            <small data-file-name-for="${module.id}:${option.id}" style="color:#64748b;">
+                                ${fileName ? `Selected: ${fileName}` : 'No file selected'}
+                            </small>
+                        </div>
+                    `;
+                }
                 return '';
             }).join('');
+        }
+
+        function encodeUtf8Base64(text) {
+            try {
+                return btoa(unescape(encodeURIComponent(text)));
+            } catch (e) {
+                console.warn('base64 encode failed', e);
+                return '';
+            }
+        }
+
+        function updateConditionalOptionVisibility(moduleId) {
+            const panel = document.getElementById(`options-${moduleId}`);
+            if (!panel) return;
+            panel.querySelectorAll('.option-field[data-requires-option]').forEach(field => {
+                const reqOpt = String(field.dataset.requiresOption || '').trim();
+                const reqVal = String(field.dataset.requiresValue || '').trim();
+                const current = moduleConfigs[moduleId]?.[reqOpt];
+                const show = String(current ?? '') === reqVal;
+                field.style.display = show ? '' : 'none';
+            });
         }
 
         function toggleModuleOptions(moduleId, buttonEl) {
@@ -3985,14 +4931,51 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
         function wireModuleOptionInputs(container) {
             container.querySelectorAll('.module-options input, .module-options select').forEach(el => {
-                el.addEventListener('change', () => {
+                el.addEventListener('change', async () => {
                     const moduleId = el.dataset.module;
                     const optionId = el.dataset.option;
                     if (!moduleId || !optionId) return;
                     if (!moduleConfigs[moduleId]) moduleConfigs[moduleId] = {};
+                    if (el.type === 'file') {
+                        const file = (el.files && el.files[0]) ? el.files[0] : null;
+                        if (file) {
+                            const lower = String(file.name || '').toLowerCase();
+                            if (!lower.endsWith('.c')) {
+                                notify('Only processed C source files are supported for splash right now (custom_image.c).', 'warning');
+                                el.value = '';
+                                delete moduleConfigs[moduleId][optionId];
+                                delete moduleConfigs[moduleId][`${optionId}_name`];
+                                delete moduleConfigs[moduleId][`${optionId}_content_b64`];
+                                updateConditionalOptionVisibility(moduleId);
+                                updateValidation();
+                                return;
+                            }
+                            const text = await file.text();
+                            const b64 = encodeUtf8Base64(text);
+                            if (!b64) {
+                                notify('Could not read selected file content.', 'error');
+                                return;
+                            }
+                            moduleConfigs[moduleId][optionId] = `local:${file.name}`;
+                            moduleConfigs[moduleId][`${optionId}_name`] = file.name;
+                            moduleConfigs[moduleId][`${optionId}_content_b64`] = b64;
+                        } else {
+                            delete moduleConfigs[moduleId][optionId];
+                            delete moduleConfigs[moduleId][`${optionId}_name`];
+                            delete moduleConfigs[moduleId][`${optionId}_content_b64`];
+                        }
+                        const label = container.querySelector(`[data-file-name-for="${moduleId}:${optionId}"]`);
+                        if (label) {
+                            label.textContent = file ? `Selected: ${file.name}` : 'No file selected';
+                        }
+                        updateConditionalOptionVisibility(moduleId);
+                        updateValidation();
+                        return;
+                    }
                     const raw = el.value;
                     const num = Number(raw);
                     moduleConfigs[moduleId][optionId] = Number.isFinite(num) && String(raw) === String(num) ? num : raw;
+                    updateConditionalOptionVisibility(moduleId);
                     updateValidation();
                 });
             });
@@ -4003,6 +4986,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 const moduleId = el.dataset.module;
                 const optionId = el.dataset.option;
                 if (!moduleId || !optionId) return;
+                if (el.type === 'file') return;
                 if (!moduleConfigs[moduleId]) moduleConfigs[moduleId] = {};
                 const raw = el.value;
                 const num = Number(raw);
@@ -4014,6 +4998,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         function handleModuleToggle(moduleId, enabled) {
             const module = modules.find(m => m.id === moduleId);
             if (!module) return;
+            activeTemplateId = null;
 
             module.enabled = enabled;
             moduleStates[moduleId] = enabled;
@@ -4215,6 +5200,8 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 `).join('');
             }
             updateMemoryEstimatePanels();
+            renderStatusChips();
+            renderBuildHealthBar();
         }
 
         function showWarning(message) {
@@ -4284,8 +5271,14 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
         // State
         let currentStep = 1;
-        let selectedPlatform = 'esp32';
+        let selectedPlatform = '';
         let selectedBoard = null;
+        let selectedManufacturer = '';
+        let selectedArchitecture = '';
+        let selectedFamily = '';
+        let selectedSilicon = '';
+        let loadedPlatformForModules = '';
+        let loadedPlatformForMarket = '';
         let moduleStates = {};
         let serialPort = null;
         let serialReader = null;
@@ -4387,20 +5380,26 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             const boardList = document.getElementById('board-list');
             boardList.innerHTML = '';
 
-            const ownedOnly = !!document.getElementById('owned-only-toggle')?.checked;
-            const ownedSet = new Set((userProfile.ownedBoards || []).map(String));
-            const platformBoards = (boards[selectedPlatform] || []).filter(board => {
-                return !ownedOnly || ownedSet.has(String(board.id));
-            });
-
-            if (!platformBoards.length) {
-                boardList.innerHTML = '<li class="board-empty">No boards match your current filter.</li>';
+            syncHierarchySelectors();
+            const filteredBoards = applyHierarchyFilters();
+            const platformSet = new Set(filteredBoards.map(b => String(b.platform || '')).filter(Boolean));
+            if (platformSet.size === 1) {
+                selectedPlatform = Array.from(platformSet)[0];
+            } else if (!selectedBoard) {
+                selectedPlatform = '';
+            }
+            const platformSelect = document.getElementById('platform-select');
+            if (platformSelect) platformSelect.value = selectedPlatform || '';
+            if (!filteredBoards.length) {
+                boardList.innerHTML = `<li class="board-empty">No boards match your current filter.<br>${buildBoardEmptyHint()}</li>`;
+                renderHardwarePath();
                 return;
             }
 
             const groups = {};
-            platformBoards.forEach(board => {
-                const group = boardGroupLabel(board);
+            filteredBoards.forEach(board => {
+                const tx = boardTaxonomy(board);
+                const group = `${tx.manufacturer} • ${tx.architecture} • ${tx.family}`;
                 if (!groups[group]) groups[group] = [];
                 groups[group].push(board);
             });
@@ -4414,24 +5413,47 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 title.textContent = `${groupName} (${groups[groupName].length})`;
                 groupWrap.appendChild(title);
 
-                groups[groupName].sort((a, b) => String(a.name).localeCompare(String(b.name))).forEach(board => {
+                groups[groupName]
+                    .sort((a, b) => String(a.name).localeCompare(String(b.name)))
+                    .forEach(board => {
                     const li = document.createElement('div');
                     li.className = 'board-item';
+                    const tx = boardTaxonomy(board);
                     li.textContent = board.name;
+                    li.title = `${tx.silicon} • ${String(board.platform || '').toUpperCase()}`;
                     li.dataset.boardId = board.id;
                     if (selectedBoard && String(selectedBoard.id) === String(board.id)) {
                         li.classList.add('selected');
                     }
-                    li.onclick = () => selectBoard(board, li);
+                    li.onclick = async () => { await selectBoard(board, li); };
                     groupWrap.appendChild(li);
-                });
+                    });
 
                 boardList.appendChild(groupWrap);
             });
+            renderHardwarePath();
         }
 
-        function selectBoard(board, sourceEl) {
+        async function selectBoard(board, sourceEl) {
+            const boardPlatform = String(board?.platform || '').trim();
+            const platformChanged = !!boardPlatform && boardPlatform !== selectedPlatform;
+            if (platformChanged) {
+                selectedPlatform = boardPlatform;
+                const platformSelect = document.getElementById('platform-select');
+                if (platformSelect) platformSelect.value = selectedPlatform;
+            }
+            if (boardPlatform && loadedPlatformForModules !== boardPlatform) {
+                await refreshModulesForPlatform(boardPlatform);
+            }
+            if (boardPlatform && loadedPlatformForMarket !== boardPlatform) {
+                await refreshMarketCatalogForPlatform(boardPlatform);
+            }
             selectedBoard = board;
+            const tx = boardTaxonomy(board);
+            selectedManufacturer = tx.manufacturer;
+            selectedArchitecture = tx.architecture;
+            selectedFamily = tx.family;
+            selectedSilicon = tx.silicon;
             
             // Update UI
             document.querySelectorAll('.board-item').forEach(item => {
@@ -4451,18 +5473,13 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             const targetName = targetId && targets[targetId] ? targets[targetId].name : (targetId || '—');
             document.getElementById('spec-target').textContent = targetName;
             
-            // Auto-enable drivers based on board defaults/capabilities
-            const defaultDrivers = (board.defaults && Array.isArray(board.defaults.drivers))
-                ? board.defaults.drivers
-                : (board.defaults && Array.isArray(board.defaults.modules) ? board.defaults.modules : null);
-            if (Array.isArray(defaultDrivers)) {
-                modules.forEach(m => { m.enabled = false; });
-                defaultDrivers.forEach(id => {
-                    const mod = modules.find(m => m.id === id);
-                    if (mod) mod.enabled = true;
-                });
+            // Start with no drivers selected by default; templates are the explicit preselection path.
+            if (activeTemplateId) {
+                const t = projectTemplates.find(x => x.id === activeTemplateId);
+                const selected = new Set(templateEnabledDrivers(t || {}));
+                modules.forEach(m => { m.enabled = selected.has(m.id); });
             } else {
-                autoEnableByBoardCapabilities(board);
+                modules.forEach(m => { m.enabled = false; });
             }
             
             const availableApplets = availableAppletsForBoard(board);
@@ -4487,17 +5504,22 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             setAvrAdvancedEditing(false);
 
             populateModuleGrid();
-            populateAppletGrid();
-            populateMarketAppGrid();
             renderSelectedAppsVisibility();
             renderMarketPage();
+            renderTemplateFilters();
+            renderTemplates();
             clearInlineOutput();
             refreshWebFlasher({ silent: true });
             refreshAvrFlasher({ silent: true });
+            updateLandingStats();
+            updateMemoryEstimatePanels();
+            renderHardwarePath();
         }
 
         function autoEnableByBoardCapabilities(board) {
             const caps = new Set(board.capabilities || []);
+            const targetId = String(board?.target_profile || '').toLowerCase();
+            const isAvrLike = selectedPlatform === 'avr' || selectedPlatform === 'atmega' || ['mega2560', 'atmega328p', 'atmega32u4'].includes(targetId);
             const enable = (id) => {
                 const mod = modules.find(m => m.id === id);
                 if (mod) mod.enabled = true;
@@ -4508,7 +5530,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             // Default to SPIFFS for internal storage
             enable('fs_spiffs');
             if (caps.has('psram')) enable('psram');
-            if (caps.has('uart')) enable('shell_full');
+            if (caps.has('uart')) enable(isAvrLike ? 'shell_tiny' : 'shell_full');
         }
 
         function moduleAllowed(module, caps) {
@@ -4544,6 +5566,164 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             return caps.has(module.id.replace('fs_', ''));
         }
 
+        function driverBucket(module) {
+            const id = String(module?.id || '');
+            const essential = new Set([
+                'gpio', 'uart', 'shell_tiny', 'shell_min', 'shell_full', 'timer', 'spi', 'i2c', 'adc'
+            ]);
+            const experimental = new Set([
+                'imu', 'dht22', 'mic', 'ads1115', 'mcp23017', 'hp4067', 'tp4056', 'display_ssd1306', 'rtc'
+            ]);
+            if (module?.experimental || experimental.has(id)) return 'experimental';
+            if (essential.has(id)) return 'essential';
+            return 'advanced';
+        }
+
+        function moduleCompatibilityInfo(module, caps, allowed) {
+            if (!selectedBoard) {
+                return { level: 'warn', text: 'Pick a board to check compatibility' };
+            }
+            if (allowed) {
+                return { level: 'ok', text: 'Works on selected board' };
+            }
+            const reqCaps = Array.isArray(module.requires_capabilities) ? module.requires_capabilities : [];
+            if (reqCaps.length > 0) {
+                const missing = reqCaps.filter(c => !caps.has(String(c)));
+                if (missing.length > 0) {
+                    return { level: 'err', text: `Missing capabilities: ${missing.join(', ')}` };
+                }
+            }
+            const deps = Array.isArray(module.depends) ? module.depends : [];
+            if (deps.length > 0) {
+                return { level: 'warn', text: `Needs: ${deps.join(', ')}` };
+            }
+            return { level: 'err', text: 'Not available for this board/target' };
+        }
+
+        function getBuildHealthState() {
+            const issues = buildValidationIssues({ includePins: true });
+            const errors = issues.filter(i => i.type === 'error').length;
+            const warnings = issues.filter(i => i.type === 'warning').length;
+            const enabledCount = modules.filter(m => m.enabled).length;
+            const mem = estimateMemoryUsage();
+            const progPct = mem.caps.prog > 0 ? Math.round((mem.usage.prog / mem.caps.prog) * 100) : 0;
+            const ramPct = mem.caps.ram > 0 ? Math.round((mem.usage.ram / mem.caps.ram) * 100) : 0;
+            const worstPct = Math.max(progPct, ramPct);
+            let level = 'ok';
+            let score = 100 - (errors * 35) - (warnings * 10) - (worstPct > 85 ? 20 : 0);
+            if (!selectedBoard) {
+                level = 'warn';
+                score = 35;
+            } else if (errors > 0) {
+                level = 'err';
+            } else if (warnings > 0 || worstPct >= 85) {
+                level = 'warn';
+            }
+            score = Math.max(5, Math.min(100, score));
+            return { level, score, errors, warnings, enabledCount, progPct, ramPct, issues };
+        }
+
+        function renderStatusChips() {
+            const wrap = document.getElementById('status-chips');
+            if (!wrap) return;
+            const health = getBuildHealthState();
+            const pin = checkPinConflicts();
+            const pinErrors = Array.isArray(pin?.errors) ? pin.errors.length : 0;
+            const chips = [];
+            if (!selectedBoard) {
+                chips.push({ cls: 'warn', text: 'Needs board selection' });
+            } else {
+                chips.push({ cls: 'ok', text: `${selectedBoard.name}` });
+            }
+            chips.push({ cls: health.progPct >= 90 ? 'err' : health.progPct >= 80 ? 'warn' : 'ok', text: `Flash ${Math.max(0, health.progPct)}%` });
+            chips.push({ cls: health.ramPct >= 90 ? 'err' : health.ramPct >= 80 ? 'warn' : 'ok', text: `RAM ${Math.max(0, health.ramPct)}%` });
+            if (pinErrors > 0) {
+                chips.push({ cls: 'err', text: `Pin conflicts ${pinErrors}` });
+            } else {
+                chips.push({ cls: 'ok', text: 'Pins clean' });
+            }
+            if (health.errors > 0) {
+                chips.push({ cls: 'err', text: `${health.errors} errors` });
+            } else if (health.warnings > 0) {
+                chips.push({ cls: 'warn', text: `${health.warnings} warnings` });
+            } else {
+                chips.push({ cls: 'ok', text: 'Ready to build' });
+            }
+            wrap.innerHTML = chips.map(chip => `<span class="status-chip ${chip.cls}">${chip.text}</span>`).join('');
+        }
+
+        function renderBuildHealthBar() {
+            const meta = document.getElementById('build-health-meta');
+            const progress = document.getElementById('build-health-progress');
+            const popover = document.getElementById('build-health-issues-popover');
+            if (!meta || !progress || !popover) return;
+            const h = getBuildHealthState();
+            const boardName = selectedBoard?.name || 'No board';
+            const issuePillText = h.errors > 0 ? `${h.errors} error(s)` : h.warnings > 0 ? `${h.warnings} warning(s)` : 'Looks good';
+            meta.innerHTML = `
+                <span class="health-pill ${h.level === 'ok' ? 'ok' : h.level === 'warn' ? 'warn' : 'err'}">Build Health</span>
+                <span class="health-pill">${selectedPlatform ? selectedPlatform.toUpperCase() : 'No platform'}</span>
+                <span class="health-pill">${boardName}</span>
+                <span class="health-pill">Drivers ${h.enabledCount}</span>
+                <span class="health-pill ${h.progPct >= 90 ? 'err' : h.progPct >= 80 ? 'warn' : 'ok'}">Flash ${Math.max(0, h.progPct)}%</span>
+                <span class="health-pill ${h.ramPct >= 90 ? 'err' : h.ramPct >= 80 ? 'warn' : 'ok'}">RAM ${Math.max(0, h.ramPct)}%</span>
+                <span id="build-health-issues-pill" class="health-pill ${h.errors > 0 ? 'err' : h.warnings > 0 ? 'warn' : 'ok'} ${h.issues.length ? 'issues-hover' : ''}">${issuePillText}</span>
+            `;
+            progress.style.width = `${h.score}%`;
+            progress.style.background = h.level === 'err' ? '#ef4444' : h.level === 'warn' ? '#f59e0b' : '#22c55e';
+            if (h.issues.length > 0) {
+                popover.innerHTML = h.issues.map(issue => `
+                    <div class="issues-popover-item">
+                        <strong>${issue.type === 'error' ? 'Error' : issue.type === 'warning' ? 'Warning' : 'Info'}:</strong> ${issue.message}
+                    </div>
+                `).join('');
+            } else {
+                popover.innerHTML = '<div class="issues-popover-item">No active issues.</div>';
+            }
+            const issuesPill = document.getElementById('build-health-issues-pill');
+            const showPopover = () => {
+                if (!h.issues.length) return;
+                if (issuesPopoverHideTimer) {
+                    clearTimeout(issuesPopoverHideTimer);
+                    issuesPopoverHideTimer = null;
+                }
+                popover.classList.add('active');
+            };
+            const hidePopover = () => {
+                if (issuesPopoverHideTimer) clearTimeout(issuesPopoverHideTimer);
+                issuesPopoverHideTimer = setTimeout(() => popover.classList.remove('active'), 120);
+            };
+            if (issuesPill) {
+                issuesPill.onmouseenter = showPopover;
+                issuesPill.onmouseleave = hidePopover;
+            }
+            popover.onmouseenter = () => {
+                if (issuesPopoverHideTimer) {
+                    clearTimeout(issuesPopoverHideTimer);
+                    issuesPopoverHideTimer = null;
+                }
+            };
+            popover.onmouseleave = hidePopover;
+        }
+
+        function applyQuickFixes() {
+            if (!selectedBoard) {
+                notify('Select a platform and board first.', 'warning');
+                currentStep = 1;
+                updateWizardSteps();
+                return;
+            }
+            const caps = new Set(selectedBoard?.capabilities || []);
+            modules.forEach(module => {
+                const allowed = moduleAllowed(module, caps);
+                if (!allowed && module.enabled) {
+                    module.enabled = false;
+                }
+            });
+            optimizeForSize();
+            notify('Applied common compatibility + size fixes.', 'success');
+        }
+
         function populateModuleGrid() {
             const grid = document.getElementById('module-grid');
             grid.innerHTML = '';
@@ -4556,8 +5736,13 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             modules.forEach(module => {
                 const enabled = !!module.enabled;
                 moduleStates[module.id] = enabled;
+                const bucket = driverBucket(module);
+                if (driverView !== 'all' && bucket !== driverView) {
+                    return;
+                }
 
                 const allowed = moduleAllowed(module, caps);
+                const compat = moduleCompatibilityInfo(module, caps, allowed);
 
                 const card = document.createElement('div');
                 card.className = `module-card ${enabled ? 'enabled' : ''}`;
@@ -4567,6 +5752,25 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 const depends = Array.isArray(module.depends) ? module.depends : [];
                 const provides = Array.isArray(module.provides) ? module.provides : [];
                 const conflicts = Array.isArray(module.conflicts) ? module.conflicts : [];
+                const riskyHint = module.id === 'shell_full'
+                    ? 'Full shell uses the most RAM/flash. Great for debugging, heavier for small boards.'
+                    : module.id === 'shell_min'
+                        ? 'Lite shell reduces memory usage but removes some filesystem and utility commands.'
+                        : module.id === 'shell_tiny'
+                            ? 'Tiny shell is best for constrained boards. Minimal command set.'
+                            : module.id === 'fs_sd'
+                                ? 'SD requires correct wiring and can add startup delay if card init fails.'
+                                : module.id === 'wifi' || module.id === 'bluetooth'
+                                    ? 'Wireless drivers add significant memory usage. Keep disabled unless needed.'
+                                    : module.id === 'twai'
+                                        ? 'Requires an external CAN transceiver and valid TX/RX pin mapping.'
+                                        : module.id === 'mcp2544fd'
+                                            ? 'Transceiver control only; still requires TWAI and proper CAN bus/transceiver wiring.'
+                                            : module.id === 'uln2003'
+                                                ? 'Stepper drivers can draw significant current. Use external motor power and common ground.'
+                                                : module.id === 'l298n'
+                                                    ? 'L298N is power-hungry and can get hot. Use proper motor supply and grounding.'
+                                    : '';
                 card.innerHTML = `
                     <div class="module-header">
                         <div style="display:flex; align-items:center;">
@@ -4579,12 +5783,15 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                         </label>
                     </div>
                     <div class="module-description">${module.description || ""}</div>
+                    <div class="compat-badge ${compat.level}">${compat.text}</div>
                     <div class="module-badges">
                         ${depends.length ? `<span class="badge badge-dep">Requires: ${depends.join(', ')}</span>` : ''}
                         ${provides.length ? `<span class="badge badge-provides">Provides: ${provides.join(', ')}</span>` : ''}
                         ${conflicts.length ? `<span class="badge badge-conflict">Conflicts: ${conflicts.join(', ')}</span>` : ''}
+                        <span class="badge badge-platform">Group: ${bucket}</span>
                     </div>
                     ${(module.pins && module.pins.length > 0) ? `<div class="module-pins">📌 ${module.pins.length} pins required</div>` : ''}
+                    ${riskyHint ? `<details class="plain-help"><summary>Why this can be risky</summary><div style="margin-top:6px;">${riskyHint}</div></details>` : ''}
                     ${hasOptions ? `
                         <button class="btn-config" data-module="${module.id}">⚙️ Configure</button>
                         <div class="module-options" id="options-${module.id}">
@@ -4604,6 +5811,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 }
 
                 wireModuleOptionInputs(card);
+                updateConditionalOptionVisibility(module.id);
                 const section = moduleSectionFor(module.id);
                 if (!groupedCards[section]) groupedCards[section] = [];
                 groupedCards[section].push({ card, enabled });
@@ -4616,7 +5824,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 const details = document.createElement('details');
                 details.className = 'module-section';
                 details.dataset.group = sectionId;
-                details.open = moduleSectionState[sectionId] !== false;
+                details.open = moduleSectionState[sectionId] === true;
                 details.innerHTML = `
                     <summary>
                         <span>${moduleSectionLabel(sectionId)}</span>
@@ -4637,6 +5845,39 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             initModuleFilters();
             refreshModuleSectionCounts();
             updateValidation();
+            renderStatusChips();
+        }
+
+        function optimizeForSize() {
+            if (!selectedBoard) {
+                notify('Select a board first, then run Optimize For Size.', 'warning');
+                return;
+            }
+            activeTemplateId = null;
+            const targetId = String(selectedBoard?.target_profile || '').toLowerCase();
+            const isAvrLike = selectedPlatform === 'avr' || selectedPlatform === 'atmega' || ['mega2560', 'atmega328p', 'atmega32u4'].includes(targetId);
+            const setEnabled = (id, on) => {
+                const mod = modules.find(m => m.id === id);
+                if (mod) {
+                    mod.enabled = !!on;
+                    moduleStates[id] = !!on;
+                }
+            };
+
+            if (isAvrLike) {
+                setEnabled('shell_full', false);
+                setEnabled('shell_min', false);
+                setEnabled('shell_tiny', true);
+                ['wifi', 'bluetooth', 'tft', 'fs_sd', 'fs_spiffs', 'mic', 'psram'].forEach(id => setEnabled(id, false));
+                if (modules.find(m => m.id === 'uart')) setEnabled('uart', true);
+            } else {
+                setEnabled('shell_full', false);
+                if (modules.find(m => m.id === 'shell_min')) setEnabled('shell_min', true);
+                ['wifi', 'bluetooth'].forEach(id => setEnabled(id, false));
+            }
+
+            populateModuleGrid();
+            notify(isAvrLike ? 'Size optimization applied: Shell (Tiny) + low-overhead profile.' : 'Size optimization applied.', 'success');
         }
 
         function populatePinTable() {
@@ -5015,6 +6256,15 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             }
 
             const module_config = collectModuleConfigFromUI();
+            for (const moduleId of ['display_ssd1306', 'tft']) {
+                const cfg = module_config[moduleId];
+                if (cfg && String(cfg.boot_splash || '') === 'local_file_upload' && !cfg.boot_splash_file_content_b64) {
+                    issues.push({
+                        type: 'warning',
+                        message: `${moduleId}: Local file upload selected, but no custom_image.c file is attached yet.`
+                    });
+                }
+            }
             const uartAssignments = [];
             Object.entries(module_config).forEach(([modId, opts]) => {
                 if (!opts || typeof opts !== 'object') return;
@@ -5046,6 +6296,47 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     }
                 });
             }
+
+            // On AVR bootloader boards, USB serial shell is on UART0 by default.
+            if ((targetId === 'mega2560' || targetId === 'atmega328p') && modules.some(m => (m.id === 'shell_full' || m.id === 'shell_min' || m.id === 'shell_tiny') && m.enabled)) {
+                const uartCfg = module_config.uart || {};
+                const uartNum = Number(uartCfg.uart_num ?? 0);
+                if (!Number.isNaN(uartNum) && uartNum !== 0) {
+                    issues.push({
+                        type: 'warning',
+                        message: `Shell is enabled but UART${uartNum} is selected. USB serial monitor is usually UART0 on this board.`
+                    });
+                }
+            }
+
+            const isAvrLike = selectedPlatform === 'avr' || selectedPlatform === 'atmega' || ['mega2560', 'atmega328p', 'atmega32u4'].includes(String(targetId || '').toLowerCase());
+            if (isAvrLike && enabledModules.includes('shell_full')) {
+                issues.push({
+                    type: 'warning',
+                    message: 'Shell (Full) on AVR has high RAM/flash overhead. Prefer Shell (Tiny) unless full command coverage is required.'
+                });
+            }
+
+            const mem = estimateMemoryUsage();
+            const checkMem = (label, used, cap) => {
+                if (!(cap > 0)) return;
+                const ratio = used / cap;
+                const pct = Math.round(ratio * 100);
+                if (ratio > 1.0) {
+                    issues.push({
+                        type: 'error',
+                        message: `${label} estimate exceeds device capacity (${pct}%). Reduce enabled drivers/apps.`
+                    });
+                } else if (ratio >= 0.85) {
+                    issues.push({
+                        type: 'warning',
+                        message: `${label} is high (${pct}%). Target <85% for stability margin.`
+                    });
+                }
+            };
+            checkMem('Program flash', mem.usage.prog, mem.caps.prog);
+            checkMem('RAM', mem.usage.ram, mem.caps.ram);
+            checkMem('Data flash', mem.usage.data, mem.caps.data);
 
             return issues;
         }
@@ -5169,6 +6460,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             } else {
                 refreshSerialTerminalVisibility();
             }
+            renderBuildHealthBar();
         }
 
         function nextStep() {
@@ -5314,8 +6606,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         }
 
         function attachEventListeners() {
-            const openDiyBtn = document.getElementById('btn-open-diy-board');
-            if (openDiyBtn) openDiyBtn.addEventListener('click', () => openDIYBoardModal());
             const closeDiyBtn = document.getElementById('btn-close-diy-board');
             if (closeDiyBtn) closeDiyBtn.addEventListener('click', () => closeDIYBoardModal());
             const cancelDiyBtn = document.getElementById('btn-cancel-diy-board');
@@ -5323,16 +6613,64 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             const saveDiyBtn = document.getElementById('btn-save-diy-board');
             if (saveDiyBtn) saveDiyBtn.addEventListener('click', () => saveDIYBoard());
 
+            const overflowBtn = document.getElementById('btn-overflow-menu');
+            if (overflowBtn) {
+                overflowBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleOverflowMenu();
+                });
+            }
+            const menuProfile = document.getElementById('menu-profile');
+            if (menuProfile) menuProfile.addEventListener('click', () => {
+                toggleOverflowMenu(false);
+                showProfilePage();
+            });
+            const menuSwitchUser = document.getElementById('menu-switch-user');
+            if (menuSwitchUser) menuSwitchUser.addEventListener('click', () => {
+                toggleOverflowMenu(false);
+                switchUserFlow();
+            });
+            const menuDiyBoard = document.getElementById('menu-diy-board');
+            if (menuDiyBoard) menuDiyBoard.addEventListener('click', () => {
+                toggleOverflowMenu(false);
+                openDIYBoardModal();
+            });
+            document.addEventListener('click', (e) => {
+                const menuWrap = document.querySelector('.topbar-menu');
+                if (!menuWrap) return;
+                const target = e.target;
+                if (target instanceof Node && !menuWrap.contains(target)) {
+                    toggleOverflowMenu(false);
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') toggleOverflowMenu(false);
+            });
+
             const startBtn = document.getElementById('btn-start-config');
             if (startBtn) startBtn.addEventListener('click', () => enterConfigurator(1));
             const startEsp32Btn = document.getElementById('btn-start-esp32');
             if (startEsp32Btn) {
                 startEsp32Btn.addEventListener('click', async () => {
+                    selectedManufacturer = 'Espressif';
+                    selectedArchitecture = '';
+                    selectedFamily = '';
+                    selectedSilicon = '';
+                    selectedPlatform = 'esp32';
                     const platformSel = document.getElementById('platform-select');
-                    if (platformSel && selectedPlatform !== 'esp32') {
-                        platformSel.value = 'esp32';
-                        platformSel.dispatchEvent(new Event('change'));
-                    }
+                    if (platformSel) platformSel.value = 'esp32';
+                    await refreshModulesForPlatform('esp32');
+                    await refreshMarketCatalogForPlatform('esp32');
+                    selectedBoard = null;
+                    const boardDetails = document.getElementById('board-details');
+                    if (boardDetails) boardDetails.style.display = 'none';
+                    populateBoardList();
+                    populateModuleGrid();
+                    renderSelectedAppsVisibility();
+                    renderMarketPage();
+                    renderTemplateFilters();
+                    renderTemplates();
+                    updateLandingStats();
                     enterConfigurator(1);
                 });
             }
@@ -5342,6 +6680,12 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             if (topMarketBtn) topMarketBtn.addEventListener('click', () => showMarketPage());
             const topHomeBtn = document.getElementById('btn-home');
             if (topHomeBtn) topHomeBtn.addEventListener('click', () => showLanding());
+            const btnProfileToConfig = document.getElementById('btn-profile-to-config');
+            if (btnProfileToConfig) btnProfileToConfig.addEventListener('click', () => enterConfigurator());
+            const btnProfileToHome = document.getElementById('btn-profile-to-home');
+            if (btnProfileToHome) btnProfileToHome.addEventListener('click', () => showLanding());
+            const btnProfileOpenDiy = document.getElementById('btn-profile-open-diy');
+            if (btnProfileOpenDiy) btnProfileOpenDiy.addEventListener('click', () => openDIYBoardModal());
             const btnMarketToConfig = document.getElementById('btn-market-to-config');
             if (btnMarketToConfig) btnMarketToConfig.addEventListener('click', () => enterConfigurator());
             const btnOpenMarketFromConfig = document.getElementById('btn-open-market-from-config');
@@ -5359,33 +6703,95 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             if (marketPageSearch) marketPageSearch.addEventListener('input', () => renderMarketPage());
             const btnMarketUpload = document.getElementById('btn-market-upload');
             if (btnMarketUpload) btnMarketUpload.addEventListener('click', () => uploadMarketApp());
-            const loginBtn = document.getElementById('btn-login');
-            if (loginBtn) {
-                loginBtn.addEventListener('click', () => {
-                    const current = String(userProfile?.name || '').trim();
-                    const next = window.prompt('Enter your builder name', current);
-                    if (next === null) return;
-                    userProfile.name = String(next || '').trim();
+            const btnOptimizeSize = document.getElementById('btn-optimize-size');
+            if (btnOptimizeSize) btnOptimizeSize.addEventListener('click', optimizeForSize);
+            const driverTabWrap = document.getElementById('driver-tabs');
+            if (driverTabWrap) {
+                driverTabWrap.querySelectorAll('[data-driver-view]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        driverView = String(btn.getAttribute('data-driver-view') || 'all');
+                        driverTabWrap.querySelectorAll('[data-driver-view]').forEach(el => {
+                            el.classList.toggle('active', el === btn);
+                        });
+                        populateModuleGrid();
+                    });
+                });
+            }
+            const btnBuildHealthFix = document.getElementById('btn-build-health-fix');
+            if (btnBuildHealthFix) btnBuildHealthFix.addEventListener('click', () => applyQuickFixes());
+            const profilePlatformSelect = document.getElementById('profile-platform-select');
+            if (profilePlatformSelect) {
+                profilePlatformSelect.addEventListener('change', () => {
+                    profileInventoryPlatform = String(profilePlatformSelect.value || '');
                     saveUserProfile();
                     renderProfilePanel();
-                    notify(userProfile.name ? `Signed in as ${userProfile.name}` : 'Signed out to guest mode.', 'success');
+                });
+            }
+            const btnProfileSelectVisible = document.getElementById('btn-profile-select-visible');
+            if (btnProfileSelectVisible) {
+                btnProfileSelectVisible.addEventListener('click', () => {
+                    const pool = profileInventoryPlatform
+                        ? (boards[profileInventoryPlatform] || [])
+                        : Object.values(boards || {}).flat();
+                    const owned = new Set((userProfile.ownedBoards || []).map(String));
+                    pool.forEach(board => owned.add(String(board.id)));
+                    userProfile.ownedBoards = Array.from(owned);
+                    saveUserProfile();
+                    renderProfilePanel();
+                    populateBoardList();
+                    notify('Added visible boards to inventory.', 'success', 1400);
+                });
+            }
+            const btnProfileClearInventory = document.getElementById('btn-profile-clear-inventory');
+            if (btnProfileClearInventory) {
+                btnProfileClearInventory.addEventListener('click', () => {
+                    userProfile.ownedBoards = [];
+                    saveUserProfile();
+                    renderProfilePanel();
+                    populateBoardList();
+                    notify('Inventory cleared.', 'success', 1400);
                 });
             }
 
             document.getElementById('platform-select').onchange = async (e) => {
                 selectedPlatform = e.target.value;
+                if (selectedPlatform) {
+                    const demoBoard = (boards[selectedPlatform] || [])[0] || null;
+                    if (demoBoard) {
+                        const tx = boardTaxonomy(demoBoard);
+                        selectedManufacturer = tx.manufacturer;
+                        selectedArchitecture = '';
+                        selectedFamily = '';
+                        selectedSilicon = '';
+                    }
+                } else {
+                    selectedManufacturer = '';
+                    selectedArchitecture = '';
+                    selectedFamily = '';
+                    selectedSilicon = '';
+                }
+                activeTemplateId = null;
+                selectedBoard = null;
+                const boardDetails = document.getElementById('board-details');
+                if (boardDetails) boardDetails.style.display = 'none';
                 if (selectedPlatform !== 'avr') {
                     const panel = document.getElementById('avr-config-panel');
                     if (panel) panel.style.display = 'none';
                 }
                 renderProfilePanel();
                 populateBoardList();
-                await refreshModulesForPlatform(selectedPlatform);
-                await refreshMarketCatalogForPlatform(selectedPlatform);
+                if (selectedPlatform) {
+                    await refreshModulesForPlatform(selectedPlatform);
+                    await refreshMarketCatalogForPlatform(selectedPlatform);
+                } else {
+                    modules = [];
+                    marketCatalog = [];
+                    loadedPlatformForModules = '';
+                    loadedPlatformForMarket = '';
+                }
                 updateLandingStats();
                 populateModuleGrid();
-                populateAppletGrid();
-                populateMarketAppGrid();
+                renderSelectedAppsVisibility();
                 renderMarketPage();
                 renderTemplateFilters();
                 renderTemplates();
@@ -5394,6 +6800,68 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 refreshAvrFlasher({ silent: true });
                 updateMemoryEstimatePanels();
             };
+
+            const manufacturerSel = document.getElementById('manufacturer-select');
+            if (manufacturerSel) {
+                manufacturerSel.addEventListener('change', () => {
+                    selectedManufacturer = String(manufacturerSel.value || '');
+                    selectedArchitecture = '';
+                    selectedFamily = '';
+                    selectedSilicon = '';
+                    selectedBoard = null;
+                    const boardDetails = document.getElementById('board-details');
+                    if (boardDetails) boardDetails.style.display = 'none';
+                    populateBoardList();
+                    renderTemplateFilters();
+                    renderTemplates();
+                    updateMemoryEstimatePanels();
+                });
+            }
+
+            const architectureSel = document.getElementById('architecture-select');
+            if (architectureSel) {
+                architectureSel.addEventListener('change', () => {
+                    selectedArchitecture = String(architectureSel.value || '');
+                    selectedFamily = '';
+                    selectedSilicon = '';
+                    selectedBoard = null;
+                    const boardDetails = document.getElementById('board-details');
+                    if (boardDetails) boardDetails.style.display = 'none';
+                    populateBoardList();
+                    renderTemplateFilters();
+                    renderTemplates();
+                    updateMemoryEstimatePanels();
+                });
+            }
+
+            const familySel = document.getElementById('family-select');
+            if (familySel) {
+                familySel.addEventListener('change', () => {
+                    selectedFamily = String(familySel.value || '');
+                    selectedSilicon = '';
+                    selectedBoard = null;
+                    const boardDetails = document.getElementById('board-details');
+                    if (boardDetails) boardDetails.style.display = 'none';
+                    populateBoardList();
+                    renderTemplateFilters();
+                    renderTemplates();
+                    updateMemoryEstimatePanels();
+                });
+            }
+
+            const siliconSel = document.getElementById('silicon-select');
+            if (siliconSel) {
+                siliconSel.addEventListener('change', () => {
+                    selectedSilicon = String(siliconSel.value || '');
+                    selectedBoard = null;
+                    const boardDetails = document.getElementById('board-details');
+                    if (boardDetails) boardDetails.style.display = 'none';
+                    populateBoardList();
+                    renderTemplateFilters();
+                    renderTemplates();
+                    updateMemoryEstimatePanels();
+                });
+            }
 
             const profileNameInput = document.getElementById('profile-name');
             if (profileNameInput) {
@@ -5429,25 +6897,8 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 });
             }
 
-            const marketSearch = document.getElementById('market-search');
-            if (marketSearch) {
-                marketSearch.addEventListener('input', () => {
-                    populateMarketAppGrid();
-                });
-            }
-            
-            document.getElementById('board-search').oninput = (e) => {
-                const search = e.target.value.toLowerCase();
-                document.querySelectorAll('.board-item').forEach(item => {
-                    const text = item.textContent.toLowerCase();
-                    item.style.display = text.includes(search) ? 'block' : 'none';
-                });
-                document.querySelectorAll('.board-group').forEach(group => {
-                    const hasVisible = Array.from(group.querySelectorAll('.board-item'))
-                        .some(item => item.style.display !== 'none');
-                    const title = group.querySelector('.board-group-title');
-                    if (title) title.style.display = hasVisible ? 'block' : 'none';
-                });
+            document.getElementById('board-search').oninput = () => {
+                populateBoardList();
             };
             
             document.getElementById('btn-next').onclick = nextStep;
@@ -5459,6 +6910,8 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             if (expandBtn) expandBtn.onclick = () => setAllModuleSections(true);
             const collapseBtn = document.getElementById('btn-collapse-modules');
             if (collapseBtn) collapseBtn.onclick = () => setAllModuleSections(false);
+            renderStatusChips();
+            renderBuildHealthBar();
         }
 
         // Initialize on load

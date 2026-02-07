@@ -1,0 +1,15 @@
+{
+  "id": "rtc",
+  "name": "RTC (DS3231/PCF8523)",
+  "description": "Real-time clock support over I2C",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic16"],
+  "provides": ["rtc"],
+  "depends": ["i2c"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_RTC"],
+  "pins": ["i2c_sda", "i2c_scl"],
+  "configuration_options": [
+    {"id": "driver", "name": "RTC Driver", "type": "select", "options": ["DS3231", "PCF8523"], "default": "DS3231"},
+    {"id": "address", "name": "I2C Address", "type": "text", "default": "0x68"}
+  ]
+}

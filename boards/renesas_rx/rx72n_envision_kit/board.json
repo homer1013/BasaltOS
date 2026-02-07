@@ -1,0 +1,41 @@
+{
+  "id": "rx72n_envision_kit",
+  "name": "Renesas RX72N Envision Kit",
+  "description": "RX72N Envision kit starter mapping for serial, I2C, SPI, and baseline GPIO drivers.",
+  "platform": "renesas_rx",
+  "target_profile": "rx65n",
+  "mcu": "R5F572NN",
+  "flash": "4MB",
+  "ram": "1MB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "ethernet"
+  ],
+  "pins": {
+    "uart_tx": "P20",
+    "uart_rx": "P21",
+    "i2c_sda": "P16",
+    "i2c_scl": "P17",
+    "spi_mosi": "P23",
+    "spi_miso": "P22",
+    "spi_sclk": "P24",
+    "spi_cs": "P25",
+    "led": -1,
+    "button": -1
+  },
+  "pin_definitions": {
+    "uart_tx": { "description": "SCI TX (example)", "alternatives": ["P20"], "type": "output" },
+    "uart_rx": { "description": "SCI RX (example)", "alternatives": ["P21"], "type": "input" },
+    "i2c_sda": { "description": "RIIC SDA (example)", "alternatives": ["P16"], "type": "bidirectional" },
+    "i2c_scl": { "description": "RIIC SCL (example)", "alternatives": ["P17"], "type": "output" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"]
+  },
+  "notes": "Template-level RX mapping varies by FIT configuration; this profile prioritizes quick experimentation."
+}

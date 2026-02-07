@@ -1,0 +1,46 @@
+{
+  "id": "raspberry_pi_4b",
+  "name": "Raspberry Pi 4 Model B",
+  "description": "Linux SBC reference board profile for BasaltOS planning and userspace-oriented configurations.",
+  "platform": "linux-sbc",
+  "target_profile": "linux_sbc_generic",
+  "mcu": "Broadcom BCM2711",
+  "flash": "microSD/USB storage",
+  "ram": "2GB+",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "wifi",
+    "bluetooth",
+    "ethernet",
+    "fs_sd",
+    "fs_spiffs"
+  ],
+  "pins": {
+    "uart_tx": "GPIO14",
+    "uart_rx": "GPIO15",
+    "i2c_sda": "GPIO2",
+    "i2c_scl": "GPIO3",
+    "spi_mosi": "GPIO10",
+    "spi_miso": "GPIO9",
+    "spi_sclk": "GPIO11",
+    "spi_cs": "GPIO8",
+    "led": -1,
+    "button": -1
+  },
+  "pin_definitions": {
+    "uart_tx": { "description": "PL011 TX", "alternatives": ["GPIO14"], "type": "output" },
+    "uart_rx": { "description": "PL011 RX", "alternatives": ["GPIO15"], "type": "input" },
+    "i2c_sda": { "description": "I2C1 SDA", "alternatives": ["GPIO2"], "type": "bidirectional" },
+    "i2c_scl": { "description": "I2C1 SCL", "alternatives": ["GPIO3"], "type": "output" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "i2c", "spi", "shell_full", "fs_sd"],
+    "clock": { "freq_hz": 1500000000 }
+  },
+  "notes": "Linux-SBC profiles model capabilities and pin plans; firmware generation/backends remain platform-specific."
+}

@@ -3,6 +3,7 @@
   "name": "ST Nucleo-F401RE",
   "description": "STM32 Nucleo board with STM32F401RE (Cortex-M4F). Pin names are STM32 port/pin labels.",
   "platform": "stm32",
+  "target_profile": "stm32f4_generic",
   "mcu": "STM32F401RE",
   "flash": "512KB",
   "ram": "96KB",

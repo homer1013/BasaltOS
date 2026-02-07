@@ -1,0 +1,28 @@
+{
+  "id": "twai",
+  "name": "TWAI / CAN",
+  "description": "ESP32 TWAI (CAN 2.0B) controller with shell diagnostics and frame send/receive.",
+  "platforms": ["esp32"],
+  "provides": ["twai", "can"],
+  "depends": ["uart"],
+  "requires_capabilities": ["twai"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_TWAI"],
+  "pins": ["can_tx", "can_rx"],
+  "configuration_options": [
+    {
+      "id": "bitrate",
+      "name": "Bus Bitrate (bps)",
+      "type": "select",
+      "options": [125000, 250000, 500000, 1000000],
+      "default": 500000
+    }
+  ],
+  "sdkconfig": [
+    "CONFIG_TWAI_ISR_IN_IRAM=n"
+  ],
+  "notes": [
+    "Requires an external CAN transceiver (e.g. SN65HVD230, TJA1050) connected to TX/RX pins.",
+    "Shell command: can [status|up|down|send <id> <hex>|recv [timeout_ms]]"
+  ]
+}

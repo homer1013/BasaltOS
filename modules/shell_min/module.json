@@ -1,7 +1,7 @@
 {
   "id": "shell_min",
-  "name": "Shell (Minimal)",
-  "description": "Minimal Basalt shell with basic navigation and run commands",
+  "name": "Shell (Lite)",
+  "description": "Lite Basalt shell with core navigation and run commands",
   "platforms": [
     "esp32",
     "stm32",
@@ -17,7 +17,8 @@
     "uart"
   ],
   "conflicts": [
-    "shell_full"
+    "shell_full",
+    "shell_tiny"
   ],
   "defines": [
     "BASALT_ENABLE_SHELL_MIN"
@@ -25,6 +26,6 @@
   "default_enabled": false,
   "notes": [
     "Requires UART for input",
-    "Smaller feature set for memory-constrained builds"
+    "Balanced shell for constrained builds"
   ]
 }

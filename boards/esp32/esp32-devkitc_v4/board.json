@@ -9,6 +9,7 @@
   "capabilities": [
     "wifi",
     "bluetooth",
+    "twai",
     "uart",
     "spi",
     "i2c",
@@ -25,6 +26,10 @@
     "spi_miso": 19,
     "spi_sclk": 18,
     "spi_cs": 5,
+    "can_tx": 17,
+    "can_rx": 16,
+    "can_stby": -1,
+    "can_en": -1,
     "led": 2,
     "button": 0
   },
@@ -85,6 +90,36 @@
         4,
         2
       ],
+      "type": "output"
+    },
+    "can_tx": {
+      "description": "TWAI/CAN TX (connect to transceiver TXD)",
+      "alternatives": [
+        17,
+        25,
+        26,
+        27
+      ],
+      "type": "output"
+    },
+    "can_rx": {
+      "description": "TWAI/CAN RX (connect to transceiver RXD)",
+      "alternatives": [
+        16,
+        34,
+        35,
+        36
+      ],
+      "type": "input"
+    },
+    "can_stby": {
+      "description": "CAN transceiver standby control (optional)",
+      "alternatives": [-1, 4, 16, 17, 25, 26, 27, 32, 33],
+      "type": "output"
+    },
+    "can_en": {
+      "description": "CAN transceiver enable control (optional)",
+      "alternatives": [-1, 4, 16, 17, 25, 26, 27, 32, 33],
       "type": "output"
     },
     "led": {

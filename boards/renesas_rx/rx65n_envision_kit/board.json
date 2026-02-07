@@ -3,6 +3,7 @@
   "name": "Renesas RX65N Envision Kit",
   "description": "Renesas RX65N Envision Kit (RXv2 core). Pin labels are placeholders; refine once you pick a concrete HAL/toolchain path.",
   "platform": "renesas_rx",
+  "target_profile": "rx65n",
   "mcu": "Renesas RX65N",
   "flash": "2MB (kit-dependent)",
   "ram": "640KB (kit-dependent)",

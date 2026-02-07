@@ -20,6 +20,20 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install CI dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install flask flask-cors
+          npm init -y >/dev/null 2>&1 || true
+          npm install --no-audit --no-fund playwright@1.51.1
+          npx playwright install chromium
+
       - name: Validate configurator entry points
         run: |
           set -euo pipefail
@@ -56,3 +70,34 @@ jobs:
           set -euo pipefail
           bash -n tools/board.sh
           bash tools/board.sh --list >/dev/null
+
+      - name: Configurator E2E smoke + deep
+        run: |
+          set -euo pipefail
+          python - <<'PY' > /tmp/basalt_config_server.log 2>&1 &
+from tools import basaltos_config_server as srv
+srv.app.run(debug=False, use_reloader=False, host="127.0.0.1", port=5000)
+PY
+          SERVER_PID=$!
+          cleanup() {
+            kill "$SERVER_PID" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+
+          python - <<'PY'
+import time, urllib.request, sys
+url='http://127.0.0.1:5000/'
+for _ in range(60):
+    try:
+        with urllib.request.urlopen(url, timeout=1) as r:
+            if r.status == 200:
+                print('server ready')
+                sys.exit(0)
+    except Exception:
+        time.sleep(0.5)
+print('server failed to start')
+sys.exit(1)
+PY
+
+          BASALT_UI_URL=http://127.0.0.1:5000 node tools/e2e/smoke_configurator.js
+          BASALT_UI_URL=http://127.0.0.1:5000 node tools/e2e/deep_configurator.js

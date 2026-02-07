@@ -1,0 +1,45 @@
+{
+  "id": "blackpill_f411ce",
+  "name": "STM32 Black Pill F411CE",
+  "description": "Compact STM32F411CE Black Pill board with rich GPIO and common hobbyist pinouts.",
+  "platform": "stm32",
+  "target_profile": "stm32f4_generic",
+  "mcu": "STM32F411CEU6",
+  "flash": "512KB",
+  "ram": "128KB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "debug_swd",
+    "usb_device"
+  ],
+  "pins": {
+    "uart_tx": "PA9",
+    "uart_rx": "PA10",
+    "i2c_sda": "PB7",
+    "i2c_scl": "PB6",
+    "spi_mosi": "PA7",
+    "spi_miso": "PA6",
+    "spi_sclk": "PA5",
+    "spi_cs": "PA4",
+    "led": "PC13",
+    "button": -1
+  },
+  "pin_definitions": {
+    "uart_tx": { "description": "USART1 TX", "alternatives": ["PA9", "PB6"], "type": "output" },
+    "uart_rx": { "description": "USART1 RX", "alternatives": ["PA10", "PB7"], "type": "input" },
+    "i2c_sda": { "description": "I2C1 SDA", "alternatives": ["PB7", "PB9"], "type": "bidirectional" },
+    "i2c_scl": { "description": "I2C1 SCL", "alternatives": ["PB6", "PB8"], "type": "output" },
+    "led": { "description": "Onboard LED (often active-low)", "alternatives": ["PC13"], "type": "output" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"],
+    "clock": { "freq_hz": 100000000 }
+  },
+  "led_active_low": true,
+  "notes": "Pin breakout and LED polarity can vary by clone; verify on first bring-up."
+}

@@ -1,0 +1,21 @@
+{
+  "id": "mic",
+  "name": "Microphone Input",
+  "description": "Audio input capture over ADC or I2S",
+  "platforms": ["esp32", "stm32", "rp2040"],
+  "provides": ["audio_in"],
+  "depends": ["adc"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_MIC"],
+  "pins": ["mic_in"],
+  "pin_requirements": {
+    "mic_in": {
+      "required": true,
+      "description": "Microphone analog input pin"
+    }
+  },
+  "configuration_options": [
+    {"id": "source", "name": "Capture Source", "type": "select", "options": ["adc", "i2s"], "default": "adc"},
+    {"id": "sample_rate", "name": "Sample Rate", "type": "select", "options": [8000, 16000, 22050, 44100], "default": 16000}
+  ]
+}

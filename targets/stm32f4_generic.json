@@ -1,0 +1,36 @@
+{
+  "id": "stm32f4_generic",
+  "kind": "target_profile",
+  "name": "STM32F4 Generic",
+  "vendor": "st",
+  "arch": "arm-cortex-m4",
+  "module_policy": {
+    "mode": "allowlist",
+    "allowed": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "pwm",
+      "timer",
+      "eeprom",
+      "remote_node",
+      "shell_tiny",
+      "shell_min",
+      "shell_full",
+      "display_ssd1306",
+      "tft",
+      "imu",
+      "rtc",
+      "dht22",
+      "mic",
+      "ads1115",
+      "mcp23017",
+      "hp4067",
+      "fs_sd",
+      "fs_spiffs"
+    ],
+    "notes": "STM32 targets are currently metadata/planning-first in configurator; codegen backend can be layered later."
+  }
+}

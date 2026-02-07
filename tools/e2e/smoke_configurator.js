@@ -1,0 +1,118 @@
+const { chromium } = require('playwright');
+
+const BASE = process.env.BASALT_UI_URL || 'http://127.0.0.1:5000';
+
+async function expect(cond, msg) {
+  if (!cond) throw new Error(msg);
+}
+
+async function textContent(page, sel) {
+  return (await page.locator(sel).first().textContent()) || '';
+}
+
+async function waitReady(page) {
+  await page.waitForFunction(() => {
+    const sel = document.getElementById('platform-select');
+    return !!sel && sel.options && sel.options.length > 1;
+  }, { timeout: 20000 });
+}
+
+async function openConfigurator(page) {
+  await waitReady(page);
+  await page.click('#btn-open-config');
+  await page.waitForFunction(() => {
+    const el = document.getElementById('configurator-shell');
+    return !!el && getComputedStyle(el).display !== 'none';
+  }, { timeout: 15000 });
+  await page.waitForSelector('#manufacturer-select', { state: 'visible', timeout: 15000 });
+}
+
+async function openMarket(page) {
+  await waitReady(page);
+  await page.click('#btn-market');
+  await page.waitForFunction(() => {
+    const el = document.getElementById('market-shell');
+    return !!el && getComputedStyle(el).display !== 'none';
+  }, { timeout: 15000 });
+}
+
+async function clickBoard(page, matcher) {
+  const boards = page.locator('#board-list .board-item');
+  const count = await boards.count();
+  await expect(count > 0, 'no board items available');
+  for (let i = 0; i < count; i++) {
+    const t = (await boards.nth(i).textContent()) || '';
+    if (matcher.test(t)) {
+      await boards.nth(i).click();
+      await page.waitForFunction(() => {
+        const el = document.getElementById('board-details');
+        return !!el && getComputedStyle(el).display !== 'none';
+      }, { timeout: 10000 });
+      return t;
+    }
+  }
+  throw new Error(`no board matched ${matcher}`);
+}
+
+async function run() {
+  const browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const pageErrors = [];
+  page.on('pageerror', e => pageErrors.push(String(e?.message || e)));
+
+  const results = [];
+  async function test(name, fn) {
+    try {
+      await page.goto(BASE, { waitUntil: 'domcontentloaded' });
+      await fn();
+      results.push({ name, ok: true });
+    } catch (e) {
+      results.push({ name, ok: false, error: String(e?.message || e) });
+    }
+  }
+
+  await test('landing and top navigation render', async () => {
+    await waitReady(page);
+    await expect(await page.locator('#btn-home').isVisible(), 'home missing');
+    await expect(await page.locator('#btn-open-config').isVisible(), 'config missing');
+    await expect(await page.locator('#btn-market').isVisible(), 'market missing');
+    await expect(await page.locator('#landing-home').isVisible(), 'landing missing');
+  });
+
+  await test('hierarchy selectors and board selection bind platform', async () => {
+    await openConfigurator(page);
+    await page.selectOption('#manufacturer-select', { label: 'Espressif' });
+    const picked = await clickBoard(page, /CYD|DevKit|M5|SuperMini/i);
+    await expect((await page.inputValue('#platform-select')) === 'esp32', 'platform not esp32');
+    await expect(/Espressif/i.test(await textContent(page, '#hardware-path')), 'missing breadcrumb');
+    await expect((await textContent(page, '#board-name')).includes(picked.split('(')[0].trim().split(' ').slice(0, 2).join(' ')), 'board name not updated');
+  });
+
+  await test('empty-state explains active filters', async () => {
+    await openConfigurator(page);
+    await page.selectOption('#manufacturer-select', { label: 'Renesas' });
+    await page.selectOption('#architecture-select', { label: 'ARM Cortex-M' });
+    await page.selectOption('#family-select', { label: 'RA4' });
+    await page.fill('#board-search', 'definitely-no-match-xyz');
+    const listText = await textContent(page, '#board-list');
+    await expect(listText.includes('No boards match your current filter'), 'missing no-match');
+    await expect(listText.includes('Active filters:'), 'missing filter hint');
+  });
+
+  await test('market add-to-build controls gated without board selection', async () => {
+    await openMarket(page);
+    const toggles = page.locator('[data-market-page-add]');
+    const count = await toggles.count();
+    if (count > 0) await expect(await toggles.first().isDisabled(), 'toggle expected disabled without board');
+  });
+
+  results.push({ name: 'no pageerror exceptions', ok: pageErrors.length === 0, error: pageErrors.join(' | ') });
+  for (const r of results) console.log(`${r.ok ? 'PASS' : 'FAIL'}: ${r.name}${r.ok ? '' : ` -> ${r.error}`}`);
+  await browser.close();
+  if (results.some(r => !r.ok)) process.exit(1);
+}
+
+run().catch(e => {
+  console.error('FATAL:', e);
+  process.exit(1);
+});

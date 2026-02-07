@@ -1,0 +1,31 @@
+{
+  "id": "shell_tiny",
+  "name": "Shell (Tiny)",
+  "description": "Tiny Basalt shell for ultra-constrained 8-bit targets",
+  "platforms": [
+    "esp32",
+    "stm32",
+    "rp2040",
+    "avr",
+    "pic",
+    "pic16"
+  ],
+  "provides": [
+    "shell"
+  ],
+  "depends": [
+    "uart"
+  ],
+  "conflicts": [
+    "shell_full",
+    "shell_min"
+  ],
+  "defines": [
+    "BASALT_ENABLE_SHELL_TINY"
+  ],
+  "default_enabled": false,
+  "notes": [
+    "Requires UART for input",
+    "Smallest command set: help, pwd, apps, run, stop, drivers, reboot"
+  ]
+}

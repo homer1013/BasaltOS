@@ -1,0 +1,39 @@
+{
+  "id": "linux_sbc_generic",
+  "kind": "target_profile",
+  "name": "Linux SBC Generic",
+  "vendor": "various",
+  "arch": "arm64",
+  "module_policy": {
+    "mode": "allowlist",
+    "allowed": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "pwm",
+      "timer",
+      "eeprom",
+      "remote_node",
+      "shell_tiny",
+      "shell_min",
+      "shell_full",
+      "display_ssd1306",
+      "tft",
+      "imu",
+      "rtc",
+      "dht22",
+      "mic",
+      "wifi",
+      "bluetooth",
+      "ads1115",
+      "mcp23017",
+      "hp4067",
+      "fs_sd",
+      "fs_spiffs",
+      "psram"
+    ],
+    "notes": "Linux-SBC profiles are oriented to planner/config UX and user-space integrations."
+  }
+}

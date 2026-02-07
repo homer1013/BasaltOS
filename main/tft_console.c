@@ -51,18 +51,37 @@
 #endif
 
 // --- Pins (generated from boards JSON) ---
-#define BASALT_TFT_ENABLE 1
+#ifndef BASALT_ENABLE_TFT
+#define BASALT_ENABLE_TFT 0
+#endif
+#define BASALT_TFT_ENABLE (BASALT_ENABLE_TFT ? 1 : 0)
 
 #define BASALT_TFT_HOST   SPI3_HOST
-#define BASALT_TFT_MOSI   BASALT_PIN_TFT_MOSI
+#ifdef BASALT_PIN_TFT_MOSI
+    #define BASALT_TFT_MOSI BASALT_PIN_TFT_MOSI
+#else
+    #define BASALT_TFT_MOSI -1
+#endif
 #ifdef BASALT_PIN_TFT_MISO
     #define BASALT_TFT_MISO BASALT_PIN_TFT_MISO
 #else
     #define BASALT_TFT_MISO -1
 #endif
-#define BASALT_TFT_SCLK   BASALT_PIN_TFT_SCLK
-#define BASALT_TFT_CS     BASALT_PIN_TFT_CS
-#define BASALT_TFT_DC     BASALT_PIN_TFT_DC
+#ifdef BASALT_PIN_TFT_SCLK
+    #define BASALT_TFT_SCLK BASALT_PIN_TFT_SCLK
+#else
+    #define BASALT_TFT_SCLK -1
+#endif
+#ifdef BASALT_PIN_TFT_CS
+    #define BASALT_TFT_CS BASALT_PIN_TFT_CS
+#else
+    #define BASALT_TFT_CS -1
+#endif
+#ifdef BASALT_PIN_TFT_DC
+    #define BASALT_TFT_DC BASALT_PIN_TFT_DC
+#else
+    #define BASALT_TFT_DC -1
+#endif
 #ifdef BASALT_PIN_TFT_RST
     #define BASALT_TFT_RST BASALT_PIN_TFT_RST
 #else

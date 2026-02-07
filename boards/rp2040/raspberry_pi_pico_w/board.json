@@ -1,0 +1,44 @@
+{
+  "id": "raspberry_pi_pico_w",
+  "name": "Raspberry Pi Pico W",
+  "description": "RP2040 Pico W board with onboard CYW43 wireless chip (wireless integration can be enabled later).",
+  "platform": "rp2040",
+  "target_profile": "rp2040_generic",
+  "mcu": "RP2040",
+  "flash": "2MB (onboard)",
+  "ram": "264KB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "usb_device",
+    "wifi"
+  ],
+  "pins": {
+    "uart_tx": 0,
+    "uart_rx": 1,
+    "i2c_sda": 4,
+    "i2c_scl": 5,
+    "spi_mosi": 3,
+    "spi_miso": 0,
+    "spi_sclk": 2,
+    "spi_cs": 1,
+    "led": "WL_GPIO0",
+    "button": -1
+  },
+  "pin_definitions": {
+    "uart_tx": { "description": "UART0 TX", "alternatives": [0, 12, 16], "type": "output" },
+    "uart_rx": { "description": "UART0 RX", "alternatives": [1, 13, 17], "type": "input" },
+    "i2c_sda": { "description": "I2C0 SDA", "alternatives": [4, 8, 12, 16, 20], "type": "bidirectional" },
+    "i2c_scl": { "description": "I2C0 SCL", "alternatives": [5, 9, 13, 17, 21], "type": "output" },
+    "led": { "description": "Wireless-chip routed LED", "alternatives": ["WL_GPIO0"], "type": "output" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"],
+    "clock": { "freq_hz": 133000000 }
+  },
+  "notes": "Wireless capability is board-level only; driver/runtime integration depends on your selected stack."
+}

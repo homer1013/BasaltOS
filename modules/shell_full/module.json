@@ -17,7 +17,8 @@
     "uart"
   ],
   "conflicts": [
-    "shell_min"
+    "shell_min",
+    "shell_tiny"
   ],
   "defines": [
     "BASALT_ENABLE_SHELL_FULL"

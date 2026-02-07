@@ -4,12 +4,26 @@
       "id": "display_app",
       "name": "Display Application",
       "description": "Basic TFT display app with console output and internal storage.",
-      "icon": "🖥️",
-      "platforms": ["esp32"],
-      "recommended_boards": ["cyd", "m5stickc_plus2"],
-      "enabled_modules": ["uart", "spi", "tft", "fs_spiffs", "shell_full"],
-      "applets": ["tft_hello", "system_info"],
-      "module_config": {
+      "icon": "\ud83d\udda5\ufe0f",
+      "platforms": [
+        "esp32"
+      ],
+      "recommended_boards": [
+        "cyd",
+        "m5stickc_plus2"
+      ],
+      "enabled_drivers": [
+        "uart",
+        "spi",
+        "tft",
+        "fs_spiffs",
+        "shell_full"
+      ],
+      "applets": [
+        "tft_hello",
+        "system_info"
+      ],
+      "driver_config": {
         "tft": {
           "tft_driver": "ST7796",
           "tft_width": 320,
@@ -23,18 +37,40 @@
           "uart_parity": "none"
         }
       },
-      "tags": ["display", "beginner", "popular"]
+      "tags": [
+        "display",
+        "beginner",
+        "popular"
+      ]
     },
     {
       "id": "cyd_full_stack",
       "name": "CYD Full Stack",
       "description": "TFT console + SPIFFS + SD + I2C baseline for CYD bring-up.",
-      "icon": "🟨",
-      "platforms": ["esp32"],
-      "recommended_boards": ["cyd"],
-      "enabled_modules": ["gpio", "uart", "spi", "i2c", "tft", "fs_spiffs", "fs_sd", "shell_full"],
-      "applets": ["tft_hello", "sd_probe", "fs_smoke", "system_info"],
-      "module_config": {
+      "icon": "\ud83d\udfe8",
+      "platforms": [
+        "esp32"
+      ],
+      "recommended_boards": [
+        "cyd"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "spi",
+        "i2c",
+        "tft",
+        "fs_spiffs",
+        "fs_sd",
+        "shell_full"
+      ],
+      "applets": [
+        "tft_hello",
+        "sd_probe",
+        "fs_smoke",
+        "system_info"
+      ],
+      "driver_config": {
         "tft": {
           "tft_driver": "ST7796",
           "tft_width": 320,
@@ -45,18 +81,37 @@
           "uart_baudrate": 115200
         }
       },
-      "tags": ["display", "storage", "popular", "cyd"]
+      "tags": [
+        "display",
+        "storage",
+        "popular",
+        "cyd"
+      ]
     },
     {
       "id": "cyd_ui_lab",
       "name": "CYD UI Lab",
       "description": "UI-focused setup with TFT + shell + applet set for display experiments.",
-      "icon": "🎛️",
-      "platforms": ["esp32"],
-      "recommended_boards": ["cyd"],
-      "enabled_modules": ["uart", "spi", "tft", "fs_spiffs", "shell_full"],
-      "applets": ["tft_hello", "system_info", "blink"],
-      "module_config": {
+      "icon": "\ud83c\udf9b\ufe0f",
+      "platforms": [
+        "esp32"
+      ],
+      "recommended_boards": [
+        "cyd"
+      ],
+      "enabled_drivers": [
+        "uart",
+        "spi",
+        "tft",
+        "fs_spiffs",
+        "shell_full"
+      ],
+      "applets": [
+        "tft_hello",
+        "system_info",
+        "blink"
+      ],
+      "driver_config": {
         "tft": {
           "tft_driver": "ST7796",
           "tft_width": 320,
@@ -67,34 +122,74 @@
           "uart_baudrate": 115200
         }
       },
-      "tags": ["ui", "display", "cyd"]
+      "tags": [
+        "ui",
+        "display",
+        "cyd"
+      ]
     },
     {
       "id": "cyd_sensor_logger",
       "name": "CYD Sensor Logger",
       "description": "I2C sensor stack with SD logging and diagnostic applets.",
-      "icon": "📈",
-      "platforms": ["esp32"],
-      "recommended_boards": ["cyd", "esp32-devkitc_v4"],
-      "enabled_modules": ["gpio", "uart", "i2c", "spi", "fs_sd", "fs_spiffs", "shell_full"],
-      "applets": ["i2c_scan", "sd_probe", "fs_smoke", "system_info"],
-      "module_config": {
+      "icon": "\ud83d\udcc8",
+      "platforms": [
+        "esp32"
+      ],
+      "recommended_boards": [
+        "cyd",
+        "esp32-devkitc_v4"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "i2c",
+        "spi",
+        "fs_sd",
+        "fs_spiffs",
+        "shell_full"
+      ],
+      "applets": [
+        "i2c_scan",
+        "sd_probe",
+        "fs_smoke",
+        "system_info"
+      ],
+      "driver_config": {
         "uart": {
           "uart_baudrate": 115200
         }
       },
-      "tags": ["sensors", "storage", "cyd"]
+      "tags": [
+        "sensors",
+        "storage",
+        "cyd"
+      ]
     },
     {
       "id": "cyd_remote_node",
       "name": "CYD Remote Node",
       "description": "UART remote node baseline with shell and status applets.",
-      "icon": "📡",
-      "platforms": ["esp32"],
-      "recommended_boards": ["cyd"],
-      "enabled_modules": ["gpio", "uart", "remote_node", "fs_spiffs", "shell_full"],
-      "applets": ["remote_node", "system_info", "blink"],
-      "module_config": {
+      "icon": "\ud83d\udce1",
+      "platforms": [
+        "esp32"
+      ],
+      "recommended_boards": [
+        "cyd"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "remote_node",
+        "fs_spiffs",
+        "shell_full"
+      ],
+      "applets": [
+        "remote_node",
+        "system_info",
+        "blink"
+      ],
+      "driver_config": {
         "uart": {
           "uart_baudrate": 115200
         },
@@ -104,98 +199,570 @@
           "protocol": "basalt-simple-v1"
         }
       },
-      "tags": ["remote", "uart", "cyd"]
+      "tags": [
+        "remote",
+        "uart",
+        "cyd"
+      ]
     },
     {
       "id": "data_logger",
       "name": "Data Logger",
       "description": "High-speed logger with SD card storage and serial output.",
-      "icon": "📊",
-      "platforms": ["esp32"],
-      "recommended_boards": ["esp32-devkitc_v4", "cyd"],
-      "enabled_modules": ["gpio", "uart", "spi", "fs_sd", "i2c"],
-      "applets": ["sd_probe", "fs_smoke", "i2c_scan"],
-      "module_config": {
+      "icon": "\ud83d\udcca",
+      "platforms": [
+        "esp32"
+      ],
+      "recommended_boards": [
+        "esp32-devkitc_v4",
+        "cyd"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "spi",
+        "fs_sd",
+        "i2c"
+      ],
+      "applets": [
+        "sd_probe",
+        "fs_smoke",
+        "i2c_scan"
+      ],
+      "driver_config": {
         "uart": {
           "uart_baudrate": 460800
         }
       },
-      "tags": ["logging", "storage", "advanced"]
+      "tags": [
+        "logging",
+        "storage",
+        "advanced"
+      ]
     },
     {
       "id": "minimal_embedded",
       "name": "Minimal Embedded System",
       "description": "Minimal shell + UART baseline for quick bring-up.",
-      "icon": "⚡",
-      "platforms": ["esp32", "atmega", "stm32"],
-      "recommended_boards": ["esp32-c3-supermini"],
-      "enabled_modules": ["uart", "shell_min"],
-      "applets": ["blink"],
-      "module_config": {
+      "icon": "\u26a1",
+      "platforms": [
+        "esp32",
+        "atmega",
+        "stm32"
+      ],
+      "recommended_boards": [
+        "esp32-c3-supermini"
+      ],
+      "enabled_drivers": [
+        "uart",
+        "shell_min"
+      ],
+      "applets": [
+        "blink"
+      ],
+      "driver_config": {
         "uart": {
           "uart_baudrate": 115200,
           "uart_buffer_size": 128
         }
       },
-      "tags": ["minimal", "low-power", "beginner"]
+      "tags": [
+        "minimal",
+        "low-power",
+        "beginner"
+      ]
     },
     {
       "id": "mega2560_bringup",
       "name": "Mega 2560 Bring-up",
       "description": "GPIO + UART + Timer baseline for Arduino Mega 2560.",
-      "icon": "🧰",
-      "platforms": ["avr"],
-      "recommended_boards": ["mega2560"],
-      "enabled_modules": ["gpio", "uart", "timer"],
-      "applets": ["blink", "uart_echo"],
-      "module_config": {
+      "icon": "\ud83e\uddf0",
+      "platforms": [
+        "avr"
+      ],
+      "recommended_boards": [
+        "mega2560"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "timer"
+      ],
+      "applets": [
+        "blink",
+        "uart_echo"
+      ],
+      "driver_config": {
         "uart": {
           "uart_num": 0,
           "uart_baudrate": 115200
         }
       },
-      "tags": ["avr", "baseline"]
+      "tags": [
+        "avr",
+        "baseline"
+      ]
+    },
+    {
+      "id": "mega2560_lite",
+      "name": "Mega 2560 Tiny Shell",
+      "description": "Mega baseline with Shell (Tiny) for interactive bring-up on USB serial.",
+      "icon": "\ud83e\udde9",
+      "platforms": [
+        "avr"
+      ],
+      "recommended_boards": [
+        "mega2560"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "timer",
+        "shell_tiny"
+      ],
+      "applets": [
+        "blink",
+        "uart_echo"
+      ],
+      "driver_config": {
+        "uart": {
+          "uart_num": 0,
+          "uart_baudrate": 115200
+        }
+      },
+      "tags": [
+        "avr",
+        "shell",
+        "lite",
+        "baseline"
+      ]
+    },
+    {
+      "id": "mega2560_tiny",
+      "name": "Mega 2560 Tiny Shell",
+      "description": "Ultra-constrained Mega profile with Shell (Tiny) for lowest overhead.",
+      "icon": "\ud83e\udeb6",
+      "platforms": [
+        "avr"
+      ],
+      "recommended_boards": [
+        "mega2560"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "shell_tiny"
+      ],
+      "applets": [
+        "blink"
+      ],
+      "driver_config": {
+        "uart": {
+          "uart_num": 0,
+          "uart_baudrate": 115200
+        }
+      },
+      "tags": [
+        "avr",
+        "shell",
+        "tiny",
+        "low-power"
+      ]
     },
     {
       "id": "uno_minimal",
       "name": "Uno Minimal",
       "description": "ATmega328P minimal config (GPIO + UART).",
-      "icon": "🧱",
-      "platforms": ["atmega"],
-      "recommended_boards": ["arduino_uno_r3"],
-      "enabled_modules": ["gpio", "uart"],
-      "applets": ["blink"],
-      "module_config": {
+      "icon": "\ud83e\uddf1",
+      "platforms": [
+        "atmega",
+        "avr"
+      ],
+      "recommended_boards": [
+        "arduino_uno_r3"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart"
+      ],
+      "applets": [
+        "blink"
+      ],
+      "driver_config": {
         "uart": {
           "uart_num": 0,
           "uart_baudrate": 115200
         }
       },
-      "tags": ["avr", "minimal"]
+      "tags": [
+        "avr",
+        "minimal"
+      ]
+    },
+    {
+      "id": "pro_micro_oled_lite",
+      "name": "Pro Micro OLED Tiny",
+      "description": "ATmega32U4 Pro Micro baseline with I2C SSD1306 + Shell (Tiny).",
+      "icon": "\ud83d\uddbc\ufe0f",
+      "platforms": [
+        "avr",
+        "atmega"
+      ],
+      "recommended_boards": [
+        "arduino_pro_micro_5v_usbc"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "i2c",
+        "display_ssd1306",
+        "shell_tiny"
+      ],
+      "applets": [
+        "blink",
+        "uart_echo"
+      ],
+      "driver_config": {
+        "uart": {
+          "uart_num": 0,
+          "uart_baudrate": 57600
+        },
+        "display_ssd1306": {
+          "address": "0x3C",
+          "width": 128,
+          "height": 64
+        }
+      },
+      "tags": [
+        "atmega32u4",
+        "oled",
+        "shell",
+        "starter"
+      ]
     },
     {
       "id": "pico_sensors",
       "name": "Pico Sensor Core",
       "description": "RP2040 sensor-ready baseline (I2C + UART).",
-      "icon": "🧪",
-      "platforms": ["rp2040"],
-      "recommended_boards": ["raspberry_pi_pico"],
-      "enabled_modules": ["gpio", "uart", "i2c", "timer"],
-      "applets": ["blink", "i2c_scan"],
-      "module_config": {},
-      "tags": ["rp2040", "sensors"]
+      "icon": "\ud83e\uddea",
+      "platforms": [
+        "rp2040"
+      ],
+      "recommended_boards": [
+        "raspberry_pi_pico"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "i2c",
+        "timer"
+      ],
+      "applets": [
+        "blink",
+        "i2c_scan"
+      ],
+      "driver_config": {},
+      "tags": [
+        "rp2040",
+        "sensors"
+      ]
     },
     {
       "id": "nucleo_console",
       "name": "Nucleo Console",
       "description": "STM32 console + GPIO baseline.",
-      "icon": "🧭",
-      "platforms": ["stm32"],
-      "recommended_boards": ["nucleo_f401re"],
-      "enabled_modules": ["gpio", "uart", "timer"],
-      "applets": ["blink", "uart_echo"],
-      "module_config": {},
-      "tags": ["stm32", "baseline"]
+      "icon": "\ud83e\udded",
+      "platforms": [
+        "stm32"
+      ],
+      "recommended_boards": [
+        "nucleo_f401re"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "timer"
+      ],
+      "applets": [
+        "blink",
+        "uart_echo"
+      ],
+      "driver_config": {},
+      "tags": [
+        "stm32",
+        "baseline"
+      ]
+    },
+    {
+      "id": "pico_w_bringup",
+      "name": "Pico W Bring-up",
+      "description": "RP2040 Pico W baseline for UART/I2C/SPI with compact shell defaults.",
+      "icon": "\ud83d\udcf6",
+      "platforms": [
+        "rp2040"
+      ],
+      "recommended_boards": [
+        "raspberry_pi_pico_w",
+        "raspberry_pi_pico"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "i2c",
+        "spi",
+        "timer",
+        "shell_min"
+      ],
+      "applets": [
+        "blink",
+        "i2c_scan",
+        "system_info"
+      ],
+      "driver_config": {},
+      "tags": [
+        "rp2040",
+        "baseline",
+        "starter"
+      ]
+    },
+    {
+      "id": "stm32_dev_console",
+      "name": "STM32 Dev Console",
+      "description": "General STM32F4 baseline with serial shell and bus drivers enabled.",
+      "icon": "\ud83e\udded",
+      "platforms": [
+        "stm32"
+      ],
+      "recommended_boards": [
+        "nucleo_f401re",
+        "nucleo_f446re",
+        "blackpill_f411ce"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "i2c",
+        "spi",
+        "timer",
+        "shell_min"
+      ],
+      "applets": [
+        "blink",
+        "system_info"
+      ],
+      "driver_config": {},
+      "tags": [
+        "stm32",
+        "baseline",
+        "starter"
+      ]
+    },
+    {
+      "id": "samd21_compact_node",
+      "name": "SAMD21 Compact Node",
+      "description": "ATSAMD21 compact profile for XIAO/Zero-class boards with low-overhead shell.",
+      "icon": "\ud83e\udde9",
+      "platforms": [
+        "atsam"
+      ],
+      "recommended_boards": [
+        "seeeduino_xiao_samd21",
+        "arduino_zero",
+        "adafruit_circuit_playground_express"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "i2c",
+        "timer",
+        "shell_tiny"
+      ],
+      "applets": [
+        "blink"
+      ],
+      "driver_config": {},
+      "tags": [
+        "atsam",
+        "low-power",
+        "starter"
+      ]
+    },
+    {
+      "id": "renesas_ra_console",
+      "name": "Renesas RA Console",
+      "description": "Renesas RA bring-up profile for UART shell + common bus drivers.",
+      "icon": "\ud83e\uddea",
+      "platforms": [
+        "renesas_ra"
+      ],
+      "recommended_boards": [
+        "arduino_uno_r4_minima",
+        "ek_ra4m1"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "i2c",
+        "spi",
+        "timer",
+        "shell_min"
+      ],
+      "applets": [
+        "blink",
+        "system_info"
+      ],
+      "driver_config": {},
+      "tags": [
+        "renesas",
+        "ra",
+        "baseline"
+      ]
+    },
+    {
+      "id": "linux_sbc_gateway",
+      "name": "Linux SBC Gateway",
+      "description": "Planner profile for SBC-style gateways with network + shell services.",
+      "icon": "\ud83d\udef0\ufe0f",
+      "platforms": [
+        "linux-sbc"
+      ],
+      "recommended_boards": [
+        "raspberry_pi_4b"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "i2c",
+        "spi",
+        "wifi",
+        "bluetooth",
+        "fs_sd",
+        "shell_full"
+      ],
+      "applets": [
+        "system_info"
+      ],
+      "driver_config": {},
+      "tags": [
+        "linux",
+        "gateway",
+        "advanced"
+      ]
+    },
+    {
+      "id": "nano_tiny_baseline",
+      "name": "Nano Tiny Baseline",
+      "description": "ATmega328P Nano profile tuned for memory-constrained bring-up.",
+      "icon": "\ud83e\udeb6",
+      "platforms": [
+        "atmega",
+        "avr"
+      ],
+      "recommended_boards": [
+        "arduino_nano_v3"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "timer",
+        "shell_tiny"
+      ],
+      "applets": [
+        "blink"
+      ],
+      "driver_config": {
+        "uart": {
+          "uart_baudrate": 115200
+        }
+      },
+      "tags": [
+        "atmega",
+        "tiny",
+        "baseline"
+      ]
+    },
+    {
+      "id": "pro_micro_tiny_core",
+      "name": "Pro Micro Tiny Core",
+      "description": "ATmega32U4 baseline with shell_tiny, UART, and GPIO for tight-memory bring-up.",
+      "icon": "\ud83e\udde9",
+      "platforms": [
+        "avr",
+        "atmega"
+      ],
+      "recommended_boards": [
+        "arduino_pro_micro_5v_usbc"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "shell_tiny"
+      ],
+      "driver_config": {},
+      "tags": [
+        "avr",
+        "tiny",
+        "starter",
+        "low-power"
+      ]
+    },
+    {
+      "id": "pro_micro_oled_diag",
+      "name": "Pro Micro OLED Diagnostics",
+      "description": "Pro Micro + I2C + SSD1306 with lightweight shell for fast hardware validation.",
+      "icon": "\ud83d\udcdf",
+      "platforms": [
+        "avr",
+        "atmega"
+      ],
+      "recommended_boards": [
+        "arduino_pro_micro_5v_usbc"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "i2c",
+        "display_ssd1306",
+        "shell_min"
+      ],
+      "driver_config": {
+        "display_ssd1306": {
+          "boot_splash": "test_glyph"
+        }
+      },
+      "tags": [
+        "avr",
+        "display",
+        "diagnostics",
+        "starter"
+      ]
+    },
+    {
+      "id": "mega2560_expander_lab",
+      "name": "Mega2560 Expander Lab",
+      "description": "ATmega2560 template for MCP23017 + ADS1115 prototyping with shell_lite flow.",
+      "icon": "\ud83e\uddea",
+      "platforms": [
+        "avr"
+      ],
+      "recommended_boards": [
+        "mega2560"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "i2c",
+        "mcp23017",
+        "ads1115",
+        "shell_min"
+      ],
+      "driver_config": {},
+      "tags": [
+        "avr",
+        "i2c",
+        "sensors",
+        "advanced"
+      ]
     }
   ]
 }

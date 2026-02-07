@@ -1,0 +1,18 @@
+{
+  "id": "bluetooth",
+  "name": "Bluetooth Core",
+  "description": "Bluetooth capability gate with shell diagnostics.",
+  "platforms": ["esp32"],
+  "provides": ["bluetooth", "bt"],
+  "depends": ["uart"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_BLUETOOTH"],
+  "sdkconfig": [
+    "CONFIG_BT_ENABLED=y"
+  ],
+  "default_enabled": false,
+  "notes": [
+    "Current runtime scope is diagnostics/status (no pairing stack exposed in shell yet).",
+    "Shell command: bluetooth [status]"
+  ]
+}

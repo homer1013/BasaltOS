@@ -3,24 +3,62 @@
     "id": "demo",
     "name": "Demo App",
     "description": "Simple LED/color demo script bundled with BasaltOS.",
-    "platforms": ["esp32"],
+    "platforms": [
+      "esp32"
+    ],
     "source_dir": "apps/demo.app",
-    "tags": ["demo", "starter", "ui"]
+    "tags": [
+      "demo",
+      "starter",
+      "ui"
+    ]
   },
   {
     "id": "example",
     "name": "Example App",
     "description": "Reference third-party app package structure.",
-    "platforms": ["esp32"],
+    "platforms": [
+      "esp32"
+    ],
     "source_dir": "apps/example.app",
-    "tags": ["example", "template"]
+    "tags": [
+      "example",
+      "template"
+    ]
   },
   {
     "id": "paint",
     "name": "Paint (Prototype)",
     "description": "Simple paint-style starter app for TFT/touch workflows.",
-    "platforms": ["esp32"],
+    "platforms": [
+      "esp32"
+    ],
     "source_dir": "apps/paint.app",
-    "tags": ["ui", "touch", "creative", "prototype"]
+    "tags": [
+      "ui",
+      "touch",
+      "creative",
+      "prototype"
+    ]
+  },
+  {
+    "id": "flappy_bird",
+    "name": "Flappy Bird",
+    "description": "Qubi-inspired flap game using Basalt UI APIs (TFT touch + SSD1306 OLED + optional GPIO button).",
+    "platforms": [
+      "esp32"
+    ],
+    "source_dir": "apps/flappy_bird.app",
+    "requires_capabilities": [
+      "display"
+    ],
+    "tags": [
+      "button",
+      "demo",
+      "game",
+      "oled",
+      "touch",
+      "ui"
+    ]
   }
 ]

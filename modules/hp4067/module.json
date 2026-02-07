@@ -1,0 +1,35 @@
+{
+  "id": "hp4067",
+  "name": "HP4067 / 74HC4067 Mux",
+  "description": "16-channel analog/digital multiplexer",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic16"],
+  "provides": ["analog_mux"],
+  "depends": ["gpio"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_HP4067"],
+  "pins": ["mux_4067_s0", "mux_4067_s1", "mux_4067_s2", "mux_4067_s3", "mux_4067_sig", "mux_4067_en"],
+  "configuration_options": [
+    {
+      "id": "signal_mode",
+      "name": "Signal Read Mode",
+      "type": "select",
+      "options": ["analog", "digital"],
+      "default": "analog"
+    },
+    {
+      "id": "settle_us",
+      "name": "Settle Time (us)",
+      "type": "number",
+      "default": 10,
+      "min": 0,
+      "max": 1000
+    },
+    {
+      "id": "enable_logic",
+      "name": "Enable Pin Logic",
+      "type": "select",
+      "options": ["active_low", "active_high", "not_connected"],
+      "default": "active_low"
+    }
+  ]
+}

@@ -6,6 +6,7 @@ Generates a minimal sketch scaffold and config header.
 from __future__ import annotations
 
 import json
+import base64
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -25,6 +26,10 @@ def _emit_basalt_config_h(
     fuses: Optional[dict] = None,
     applets: Optional[List[str]] = None,
 ) -> None:
+    def _skip_cfg_key(key: str) -> bool:
+        k = str(key).strip().lower()
+        return k.endswith("_name") or k.endswith("_content_b64")
+
     lines: List[str] = []
     lines.append("#pragma once")
     lines.append("")
@@ -61,6 +66,8 @@ def _emit_basalt_config_h(
             if not isinstance(options, dict):
                 continue
             for key, val in options.items():
+                if _skip_cfg_key(str(key)):
+                    continue
                 macro = f"BASALT_CFG_{str(module_id).upper()}_{str(key).upper()}"
                 if isinstance(val, bool):
                     lines.append(f"#define {macro} {1 if val else 0}")
@@ -161,20 +168,35 @@ def _emit_app_cpp(out_path: Path, applets: Optional[List[str]] = None) -> None:
                 "    g_active_applet = -1;",
                 "}",
                 "",
-                "#if defined(BASALT_ENABLE_SHELL_MIN) || defined(BASALT_ENABLE_SHELL_FULL)",
+                "#if defined(BASALT_ENABLE_SHELL_TINY) || defined(BASALT_ENABLE_SHELL_MIN) || defined(BASALT_ENABLE_SHELL_FULL)",
                 "void basalt_shell_init(void);",
                 "void basalt_shell_poll(void);",
+                "#endif",
+                "#if defined(BASALT_ENABLE_DISPLAY_SSD1306)",
+                "void basalt_i2c_init(void);",
+                "bool basalt_ssd1306_init(void);",
+                "bool basalt_ssd1306_boot_splash(void);",
                 "#endif",
                 "",
                 "void app_init(void) {",
                 "    // TODO: application init",
-                "#if defined(BASALT_ENABLE_SHELL_MIN) || defined(BASALT_ENABLE_SHELL_FULL)",
+                "#if defined(BASALT_ENABLE_DISPLAY_SSD1306)",
+                "    basalt_i2c_init();",
+                "    if (basalt_ssd1306_init()) {",
+                "#if defined(BASALT_CFG_DISPLAY_SSD1306_BOOT_SPLASH)",
+                "        if (strcmp(BASALT_CFG_DISPLAY_SSD1306_BOOT_SPLASH, \"none\") != 0) {",
+                "            basalt_ssd1306_boot_splash();",
+                "        }",
+                "#endif",
+                "    }",
+                "#endif",
+                "#if defined(BASALT_ENABLE_SHELL_TINY) || defined(BASALT_ENABLE_SHELL_MIN) || defined(BASALT_ENABLE_SHELL_FULL)",
                 "    basalt_shell_init();",
                 "#endif",
                 "}",
                 "",
                 "void app_loop(void) {",
-                "#if defined(BASALT_ENABLE_SHELL_MIN) || defined(BASALT_ENABLE_SHELL_FULL)",
+                "#if defined(BASALT_ENABLE_SHELL_TINY) || defined(BASALT_ENABLE_SHELL_MIN) || defined(BASALT_ENABLE_SHELL_FULL)",
                 "    basalt_shell_poll();",
                 "#endif",
                 "    if (g_active_applet < 0 || (size_t)g_active_applet >= k_applet_count) return;",
@@ -217,21 +239,19 @@ def _emit_uart_driver(out_path: Path) -> None:
         """#include <Arduino.h>
 #include "../basalt_config.h"
 
-static HardwareSerial &basalt_uart_port() {
 #if defined(BASALT_CFG_UART_UART_NUM)
 #if BASALT_CFG_UART_UART_NUM == 1
-    return Serial1;
+#define BASALT_UART_PORT Serial1
 #elif BASALT_CFG_UART_UART_NUM == 2
-    return Serial2;
+#define BASALT_UART_PORT Serial2
 #elif BASALT_CFG_UART_UART_NUM == 3
-    return Serial3;
+#define BASALT_UART_PORT Serial3
 #else
-    return Serial;
+#define BASALT_UART_PORT Serial
 #endif
 #else
-    return Serial;
+#define BASALT_UART_PORT Serial
 #endif
-}
 
 void basalt_uart_init() {
     const unsigned long baud =
@@ -240,19 +260,19 @@ void basalt_uart_init() {
 #else
         115200UL;
 #endif
-    basalt_uart_port().begin(baud);
+    BASALT_UART_PORT.begin(baud);
 }
 
 int basalt_uart_available() {
-    return basalt_uart_port().available();
+    return BASALT_UART_PORT.available();
 }
 
 int basalt_uart_read() {
-    return basalt_uart_port().read();
+    return BASALT_UART_PORT.read();
 }
 
 size_t basalt_uart_write(uint8_t b) {
-    return basalt_uart_port().write(b);
+    return BASALT_UART_PORT.write(b);
 }
 """,
         encoding="utf-8",
@@ -287,6 +307,405 @@ int basalt_i2c_request(uint8_t addr, size_t len) {
 
 int basalt_i2c_read() {
     return Wire.read();
+}
+""",
+        encoding="utf-8",
+    )
+
+
+def _emit_ads1115_driver(out_path: Path) -> None:
+    out_path.write_text(
+        """#include <Arduino.h>
+#include <Wire.h>
+#include <stdlib.h>
+#include <string.h>
+#include "../basalt_config.h"
+
+static uint8_t ads1115_addr() {
+#if defined(BASALT_CFG_ADS1115_ADDRESS)
+    return (uint8_t)strtoul(BASALT_CFG_ADS1115_ADDRESS, nullptr, 0);
+#else
+    return 0x48;
+#endif
+}
+
+static uint8_t ads1115_pga_bits() {
+#if defined(BASALT_CFG_ADS1115_PGA_MV)
+    const long pga = strtol(BASALT_CFG_ADS1115_PGA_MV, nullptr, 10);
+    if (pga >= 6144) return 0;
+    if (pga >= 4096) return 1;
+    if (pga >= 2048) return 2;
+    if (pga >= 1024) return 3;
+    if (pga >= 512) return 4;
+    return 5;
+#else
+    return 2; // +/-2.048V
+#endif
+}
+
+static int32_t ads1115_pga_mv() {
+#if defined(BASALT_CFG_ADS1115_PGA_MV)
+    const long pga = strtol(BASALT_CFG_ADS1115_PGA_MV, nullptr, 10);
+    if (pga >= 6144) return 6144;
+    if (pga >= 4096) return 4096;
+    if (pga >= 2048) return 2048;
+    if (pga >= 1024) return 1024;
+    if (pga >= 512) return 512;
+    return 256;
+#else
+    return 2048;
+#endif
+}
+
+static uint8_t ads1115_dr_bits() {
+#if defined(BASALT_CFG_ADS1115_SAMPLE_RATE_SPS)
+    const long sps = strtol(BASALT_CFG_ADS1115_SAMPLE_RATE_SPS, nullptr, 10);
+    if (sps <= 8) return 0;
+    if (sps <= 16) return 1;
+    if (sps <= 32) return 2;
+    if (sps <= 64) return 3;
+    if (sps <= 128) return 4;
+    if (sps <= 250) return 5;
+    if (sps <= 475) return 6;
+    return 7;
+#else
+    return 4; // 128 SPS
+#endif
+}
+
+static uint16_t ads1115_wait_ms() {
+#if defined(BASALT_CFG_ADS1115_SAMPLE_RATE_SPS)
+    const long sps = strtol(BASALT_CFG_ADS1115_SAMPLE_RATE_SPS, nullptr, 10);
+    if (sps >= 860) return 2;
+    if (sps >= 475) return 3;
+    if (sps >= 250) return 5;
+    if (sps >= 128) return 9;
+    if (sps >= 64) return 17;
+    if (sps >= 32) return 33;
+    if (sps >= 16) return 65;
+    return 130;
+#else
+    return 9;
+#endif
+}
+
+static bool ads1115_is_continuous() {
+#if defined(BASALT_CFG_ADS1115_MODE)
+    return strcmp(BASALT_CFG_ADS1115_MODE, "continuous") == 0;
+#else
+    return false;
+#endif
+}
+
+static bool ads1115_write_reg16(uint8_t reg, uint16_t value) {
+    Wire.beginTransmission(ads1115_addr());
+    Wire.write(reg);
+    Wire.write((uint8_t)((value >> 8) & 0xFF));
+    Wire.write((uint8_t)(value & 0xFF));
+    return Wire.endTransmission(true) == 0;
+}
+
+static bool ads1115_read_reg16(uint8_t reg, uint16_t *out) {
+    if (!out) return false;
+    Wire.beginTransmission(ads1115_addr());
+    Wire.write(reg);
+    if (Wire.endTransmission(false) != 0) return false;
+    if (Wire.requestFrom((int)ads1115_addr(), 2) < 2) return false;
+    *out = (uint16_t)(((uint16_t)Wire.read() << 8) | (uint16_t)Wire.read());
+    return true;
+}
+
+bool basalt_ads1115_available() {
+    Wire.beginTransmission(ads1115_addr());
+    return Wire.endTransmission(true) == 0;
+}
+
+bool basalt_ads1115_read_raw(uint8_t channel, int16_t *raw) {
+    if (!raw || channel > 3) return false;
+    const uint16_t mux = (uint16_t)(0x4 + channel); // single-ended AINx vs GND
+    uint16_t cfg = 0;
+    cfg |= (1u << 15); // OS start
+    cfg |= (uint16_t)(mux & 0x7u) << 12;
+    cfg |= (uint16_t)(ads1115_pga_bits() & 0x7u) << 9;
+    cfg |= (uint16_t)(ads1115_is_continuous() ? 0u : 1u) << 8;
+    cfg |= (uint16_t)(ads1115_dr_bits() & 0x7u) << 5;
+    cfg |= 0x0003u; // disable comparator
+    if (!ads1115_write_reg16(0x01, cfg)) return false;
+    if (!ads1115_is_continuous()) delay(ads1115_wait_ms());
+    uint16_t conv = 0;
+    if (!ads1115_read_reg16(0x00, &conv)) return false;
+    *raw = (int16_t)conv;
+    return true;
+}
+
+bool basalt_ads1115_read_mv(uint8_t channel, int32_t *mv) {
+    if (!mv) return false;
+    int16_t raw = 0;
+    if (!basalt_ads1115_read_raw(channel, &raw)) return false;
+    const int32_t fs = ads1115_pga_mv();
+    *mv = ((int32_t)raw * fs) / 32768;
+    return true;
+}
+""",
+        encoding="utf-8",
+    )
+
+
+def _emit_mcp23017_driver(out_path: Path) -> None:
+    out_path.write_text(
+        """#include <Arduino.h>
+#include <Wire.h>
+#include <stdlib.h>
+#include <string.h>
+#include "../basalt_config.h"
+
+static uint8_t s_iodir_a = 0xFF;
+static uint8_t s_iodir_b = 0xFF;
+static uint8_t s_gpio_a = 0x00;
+static uint8_t s_gpio_b = 0x00;
+
+static uint8_t mcp23017_addr() {
+#if defined(BASALT_CFG_MCP23017_ADDRESS)
+    return (uint8_t)strtoul(BASALT_CFG_MCP23017_ADDRESS, nullptr, 0);
+#else
+    return 0x20;
+#endif
+}
+
+static bool mcp23017_write8(uint8_t reg, uint8_t value) {
+    Wire.beginTransmission(mcp23017_addr());
+    Wire.write(reg);
+    Wire.write(value);
+    return Wire.endTransmission(true) == 0;
+}
+
+static bool mcp23017_read8(uint8_t reg, uint8_t *out) {
+    if (!out) return false;
+    Wire.beginTransmission(mcp23017_addr());
+    Wire.write(reg);
+    if (Wire.endTransmission(false) != 0) return false;
+    if (Wire.requestFrom((int)mcp23017_addr(), 1) < 1) return false;
+    *out = (uint8_t)Wire.read();
+    return true;
+}
+
+bool basalt_mcp23017_available() {
+    Wire.beginTransmission(mcp23017_addr());
+    return Wire.endTransmission(true) == 0;
+}
+
+bool basalt_mcp23017_init() {
+    if (!basalt_mcp23017_available()) return false;
+#if defined(BASALT_CFG_MCP23017_DEFAULT_DIRECTION)
+    const bool out_mode = strcmp(BASALT_CFG_MCP23017_DEFAULT_DIRECTION, "output") == 0;
+#else
+    const bool out_mode = false;
+#endif
+    s_iodir_a = out_mode ? 0x00 : 0xFF;
+    s_iodir_b = out_mode ? 0x00 : 0xFF;
+    if (!mcp23017_write8(0x00, s_iodir_a)) return false; // IODIRA
+    if (!mcp23017_write8(0x01, s_iodir_b)) return false; // IODIRB
+    if (!mcp23017_write8(0x12, s_gpio_a)) return false;  // GPIOA
+    if (!mcp23017_write8(0x13, s_gpio_b)) return false;  // GPIOB
+    return true;
+}
+
+bool basalt_mcp23017_pin_mode(uint8_t pin, uint8_t mode) {
+    if (pin > 15) return false;
+    const bool input = !(mode == OUTPUT);
+    uint8_t bit = (uint8_t)(1u << (pin & 7u));
+    if (pin < 8) {
+        if (input) s_iodir_a |= bit; else s_iodir_a &= (uint8_t)~bit;
+        return mcp23017_write8(0x00, s_iodir_a);
+    }
+    if (input) s_iodir_b |= bit; else s_iodir_b &= (uint8_t)~bit;
+    return mcp23017_write8(0x01, s_iodir_b);
+}
+
+bool basalt_mcp23017_digital_write(uint8_t pin, bool high) {
+    if (pin > 15) return false;
+    uint8_t bit = (uint8_t)(1u << (pin & 7u));
+    if (pin < 8) {
+        if (high) s_gpio_a |= bit; else s_gpio_a &= (uint8_t)~bit;
+        return mcp23017_write8(0x12, s_gpio_a);
+    }
+    if (high) s_gpio_b |= bit; else s_gpio_b &= (uint8_t)~bit;
+    return mcp23017_write8(0x13, s_gpio_b);
+}
+
+int basalt_mcp23017_digital_read(uint8_t pin) {
+    if (pin > 15) return -1;
+    uint8_t val = 0;
+    if (!mcp23017_read8(pin < 8 ? 0x12 : 0x13, &val)) return -1;
+    return (val & (uint8_t)(1u << (pin & 7u))) ? 1 : 0;
+}
+""",
+        encoding="utf-8",
+    )
+
+
+def _emit_hp4067_driver(out_path: Path) -> None:
+    out_path.write_text(
+        """#include <Arduino.h>
+#include <stdlib.h>
+#include <string.h>
+#include "../basalt_config.h"
+
+#ifndef BASALT_PIN_MUX_4067_S0
+#define BASALT_PIN_MUX_4067_S0 -1
+#endif
+#ifndef BASALT_PIN_MUX_4067_S1
+#define BASALT_PIN_MUX_4067_S1 -1
+#endif
+#ifndef BASALT_PIN_MUX_4067_S2
+#define BASALT_PIN_MUX_4067_S2 -1
+#endif
+#ifndef BASALT_PIN_MUX_4067_S3
+#define BASALT_PIN_MUX_4067_S3 -1
+#endif
+#ifndef BASALT_PIN_MUX_4067_SIG
+#define BASALT_PIN_MUX_4067_SIG -1
+#endif
+#ifndef BASALT_PIN_MUX_4067_EN
+#define BASALT_PIN_MUX_4067_EN -1
+#endif
+
+static uint16_t hp4067_settle_us() {
+#if defined(BASALT_CFG_HP4067_SETTLE_US)
+    long us = strtol(BASALT_CFG_HP4067_SETTLE_US, nullptr, 10);
+    if (us < 0) us = 0;
+    if (us > 10000) us = 10000;
+    return (uint16_t)us;
+#else
+    return 10;
+#endif
+}
+
+static bool hp4067_enable_is_active_low() {
+#if defined(BASALT_CFG_HP4067_ENABLE_LOGIC)
+    return strcmp(BASALT_CFG_HP4067_ENABLE_LOGIC, "active_high") != 0;
+#else
+    return true;
+#endif
+}
+
+static void hp4067_set_enabled(bool enabled) {
+    if (BASALT_PIN_MUX_4067_EN < 0) return;
+#if defined(BASALT_CFG_HP4067_ENABLE_LOGIC)
+    if (strcmp(BASALT_CFG_HP4067_ENABLE_LOGIC, "not_connected") == 0) return;
+#endif
+    const bool low_active = hp4067_enable_is_active_low();
+    digitalWrite((uint8_t)BASALT_PIN_MUX_4067_EN, (enabled ^ low_active) ? HIGH : LOW);
+}
+
+bool basalt_hp4067_init() {
+    if (BASALT_PIN_MUX_4067_S0 < 0 || BASALT_PIN_MUX_4067_S1 < 0 || BASALT_PIN_MUX_4067_S2 < 0 || BASALT_PIN_MUX_4067_S3 < 0) return false;
+    pinMode((uint8_t)BASALT_PIN_MUX_4067_S0, OUTPUT);
+    pinMode((uint8_t)BASALT_PIN_MUX_4067_S1, OUTPUT);
+    pinMode((uint8_t)BASALT_PIN_MUX_4067_S2, OUTPUT);
+    pinMode((uint8_t)BASALT_PIN_MUX_4067_S3, OUTPUT);
+    if (BASALT_PIN_MUX_4067_EN >= 0) pinMode((uint8_t)BASALT_PIN_MUX_4067_EN, OUTPUT);
+    hp4067_set_enabled(true);
+    return true;
+}
+
+bool basalt_hp4067_select(uint8_t channel) {
+    if (channel > 15) return false;
+    digitalWrite((uint8_t)BASALT_PIN_MUX_4067_S0, (channel & 0x01) ? HIGH : LOW);
+    digitalWrite((uint8_t)BASALT_PIN_MUX_4067_S1, (channel & 0x02) ? HIGH : LOW);
+    digitalWrite((uint8_t)BASALT_PIN_MUX_4067_S2, (channel & 0x04) ? HIGH : LOW);
+    digitalWrite((uint8_t)BASALT_PIN_MUX_4067_S3, (channel & 0x08) ? HIGH : LOW);
+    delayMicroseconds(hp4067_settle_us());
+    return true;
+}
+
+int basalt_hp4067_read_analog(uint8_t channel) {
+    if (BASALT_PIN_MUX_4067_SIG < 0) return -1;
+    if (!basalt_hp4067_select(channel)) return -1;
+    return analogRead((uint8_t)BASALT_PIN_MUX_4067_SIG);
+}
+
+int basalt_hp4067_read_digital(uint8_t channel) {
+    if (BASALT_PIN_MUX_4067_SIG < 0) return -1;
+    if (!basalt_hp4067_select(channel)) return -1;
+    pinMode((uint8_t)BASALT_PIN_MUX_4067_SIG, INPUT);
+    return digitalRead((uint8_t)BASALT_PIN_MUX_4067_SIG) ? 1 : 0;
+}
+""",
+        encoding="utf-8",
+    )
+
+
+def _emit_tp4056_driver(out_path: Path) -> None:
+    out_path.write_text(
+        """#include <Arduino.h>
+#include <string.h>
+#include "../basalt_config.h"
+
+#ifndef BASALT_PIN_TP4056_CHRG
+#define BASALT_PIN_TP4056_CHRG -1
+#endif
+#ifndef BASALT_PIN_TP4056_DONE
+#define BASALT_PIN_TP4056_DONE -1
+#endif
+#ifndef BASALT_PIN_TP4056_CE
+#define BASALT_PIN_TP4056_CE -1
+#endif
+
+static bool tp4056_status_active_low() {
+#if defined(BASALT_CFG_TP4056_STATUS_PINS_ACTIVE_LOW)
+    return BASALT_CFG_TP4056_STATUS_PINS_ACTIVE_LOW != 0;
+#else
+    return true;
+#endif
+}
+
+static bool tp4056_ce_present() {
+#if defined(BASALT_CFG_TP4056_CE_PIN_PRESENT)
+    return BASALT_CFG_TP4056_CE_PIN_PRESENT != 0;
+#else
+    return false;
+#endif
+}
+
+static bool tp4056_ce_active_high() {
+#if defined(BASALT_CFG_TP4056_CE_ACTIVE_HIGH)
+    return BASALT_CFG_TP4056_CE_ACTIVE_HIGH != 0;
+#else
+    return true;
+#endif
+}
+
+bool basalt_tp4056_set_enabled(bool enabled) {
+    if (!tp4056_ce_present() || BASALT_PIN_TP4056_CE < 0) return false;
+    const bool active_high = tp4056_ce_active_high();
+    const bool pin_high = active_high ? enabled : !enabled;
+    digitalWrite((uint8_t)BASALT_PIN_TP4056_CE, pin_high ? HIGH : LOW);
+    return true;
+}
+
+bool basalt_tp4056_init() {
+    if (BASALT_PIN_TP4056_CHRG >= 0) pinMode((uint8_t)BASALT_PIN_TP4056_CHRG, INPUT);
+    if (BASALT_PIN_TP4056_DONE >= 0) pinMode((uint8_t)BASALT_PIN_TP4056_DONE, INPUT);
+    if (tp4056_ce_present() && BASALT_PIN_TP4056_CE >= 0) {
+        pinMode((uint8_t)BASALT_PIN_TP4056_CE, OUTPUT);
+        basalt_tp4056_set_enabled(true);
+    }
+    return (BASALT_PIN_TP4056_CHRG >= 0 || BASALT_PIN_TP4056_DONE >= 0);
+}
+
+int basalt_tp4056_is_charging() {
+    if (BASALT_PIN_TP4056_CHRG < 0) return -1;
+    const int raw = digitalRead((uint8_t)BASALT_PIN_TP4056_CHRG);
+    const bool low_active = tp4056_status_active_low();
+    return low_active ? (raw == LOW ? 1 : 0) : (raw == HIGH ? 1 : 0);
+}
+
+int basalt_tp4056_is_done() {
+    if (BASALT_PIN_TP4056_DONE < 0) return -1;
+    const int raw = digitalRead((uint8_t)BASALT_PIN_TP4056_DONE);
+    const bool low_active = tp4056_status_active_low();
+    return low_active ? (raw == LOW ? 1 : 0) : (raw == HIGH ? 1 : 0);
 }
 """,
         encoding="utf-8",
@@ -394,6 +813,430 @@ void basalt_remote_node_poll() {}
     )
 
 
+def _emit_rtc_driver(out_path: Path) -> None:
+    out_path.write_text(
+        """#include <Arduino.h>
+#include <Wire.h>
+#include "../basalt_config.h"
+
+static uint8_t bcd2bin(uint8_t v) {
+    return (uint8_t)((v >> 4) * 10 + (v & 0x0F));
+}
+
+static uint8_t rtc_addr() {
+#if defined(BASALT_CFG_RTC_ADDRESS)
+    return (uint8_t)strtoul(BASALT_CFG_RTC_ADDRESS, nullptr, 0);
+#else
+    return 0x68;
+#endif
+}
+
+bool basalt_rtc_available() {
+    const uint8_t addr = rtc_addr();
+    Wire.beginTransmission(addr);
+    return Wire.endTransmission(true) == 0;
+}
+
+bool basalt_rtc_now(int *year, int *month, int *day, int *hour, int *minute, int *second) {
+    const uint8_t addr = rtc_addr();
+    Wire.beginTransmission(addr);
+    Wire.write((uint8_t)0x00);
+    if (Wire.endTransmission(false) != 0) return false;
+    if (Wire.requestFrom((int)addr, 7) < 7) return false;
+    uint8_t ss = Wire.read();
+    uint8_t mm = Wire.read();
+    uint8_t hh = Wire.read();
+    (void)Wire.read(); // day-of-week
+    uint8_t dd = Wire.read();
+    uint8_t mo = Wire.read();
+    uint8_t yy = Wire.read();
+    if (second) *second = (int)bcd2bin((uint8_t)(ss & 0x7F));
+    if (minute) *minute = (int)bcd2bin((uint8_t)(mm & 0x7F));
+    if (hour) *hour = (int)bcd2bin((uint8_t)(hh & 0x3F));
+    if (day) *day = (int)bcd2bin((uint8_t)(dd & 0x3F));
+    if (month) *month = (int)bcd2bin((uint8_t)(mo & 0x1F));
+    if (year) *year = 2000 + (int)bcd2bin(yy);
+    return true;
+}
+""",
+        encoding="utf-8",
+    )
+
+
+def _emit_imu_driver(out_path: Path) -> None:
+    out_path.write_text(
+        """#include <Arduino.h>
+#include <Wire.h>
+#include "../basalt_config.h"
+
+static uint8_t imu_addr() {
+#if defined(BASALT_CFG_IMU_ADDRESS)
+    return (uint8_t)strtoul(BASALT_CFG_IMU_ADDRESS, nullptr, 0);
+#else
+    return 0x68;
+#endif
+}
+
+static bool imu_write8(uint8_t reg, uint8_t val) {
+    const uint8_t addr = imu_addr();
+    Wire.beginTransmission(addr);
+    Wire.write(reg);
+    Wire.write(val);
+    return Wire.endTransmission(true) == 0;
+}
+
+static bool imu_readn(uint8_t reg, uint8_t *buf, size_t n) {
+    const uint8_t addr = imu_addr();
+    Wire.beginTransmission(addr);
+    Wire.write(reg);
+    if (Wire.endTransmission(false) != 0) return false;
+    if ((size_t)Wire.requestFrom((int)addr, (int)n) < n) return false;
+    for (size_t i = 0; i < n; ++i) buf[i] = (uint8_t)Wire.read();
+    return true;
+}
+
+bool basalt_imu_available() {
+    uint8_t who = 0;
+    if (!imu_readn(0x75, &who, 1)) return false; // MPU WHO_AM_I
+    return who != 0x00 && who != 0xFF;
+}
+
+bool basalt_imu_init() {
+    // Wake up MPU-style devices (MPU6050/MPU6886-compatible reg map)
+    return imu_write8(0x6B, 0x00);
+}
+
+bool basalt_imu_read_raw(int16_t *ax, int16_t *ay, int16_t *az, int16_t *gx, int16_t *gy, int16_t *gz) {
+    uint8_t b[14];
+    if (!imu_readn(0x3B, b, sizeof(b))) return false;
+    if (ax) *ax = (int16_t)((b[0] << 8) | b[1]);
+    if (ay) *ay = (int16_t)((b[2] << 8) | b[3]);
+    if (az) *az = (int16_t)((b[4] << 8) | b[5]);
+    if (gx) *gx = (int16_t)((b[8] << 8) | b[9]);
+    if (gy) *gy = (int16_t)((b[10] << 8) | b[11]);
+    if (gz) *gz = (int16_t)((b[12] << 8) | b[13]);
+    return true;
+}
+""",
+        encoding="utf-8",
+    )
+
+
+def _emit_dht22_driver(out_path: Path) -> None:
+    out_path.write_text(
+        """#include <Arduino.h>
+#include "../basalt_config.h"
+
+static int dht_pin() {
+#if defined(BASALT_PIN_DHT22_DATA)
+    return BASALT_PIN_DHT22_DATA;
+#else
+    return -1;
+#endif
+}
+
+static bool dht_wait_level(uint8_t level, uint32_t timeout_us) {
+    const uint32_t start = micros();
+    while ((uint8_t)digitalRead(dht_pin()) == level) {
+        if ((uint32_t)(micros() - start) > timeout_us) return false;
+    }
+    return true;
+}
+
+bool basalt_dht22_read(float *temp_c, float *rh) {
+    const int pin = dht_pin();
+    if (pin < 0) return false;
+    uint8_t data[5] = {0, 0, 0, 0, 0};
+
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, LOW);
+    delay(2);
+    digitalWrite(pin, HIGH);
+    delayMicroseconds(40);
+    pinMode(pin, INPUT_PULLUP);
+
+    if (!dht_wait_level(HIGH, 120)) return false;
+    if (!dht_wait_level(LOW, 120)) return false;
+    if (!dht_wait_level(HIGH, 120)) return false;
+
+    for (int i = 0; i < 40; ++i) {
+        if (!dht_wait_level(LOW, 90)) return false;
+        uint32_t t0 = micros();
+        if (!dht_wait_level(HIGH, 120)) return false;
+        uint32_t dt = (uint32_t)(micros() - t0);
+        data[i / 8] <<= 1;
+        if (dt > 40) data[i / 8] |= 1;
+    }
+
+    uint8_t sum = (uint8_t)(data[0] + data[1] + data[2] + data[3]);
+    if (sum != data[4]) return false;
+
+    uint16_t raw_rh = (uint16_t)((data[0] << 8) | data[1]);
+    uint16_t raw_t = (uint16_t)(((data[2] & 0x7F) << 8) | data[3]);
+    float t = (float)raw_t / 10.0f;
+    if (data[2] & 0x80) t = -t;
+    if (rh) *rh = (float)raw_rh / 10.0f;
+    if (temp_c) *temp_c = t;
+    return true;
+}
+""",
+        encoding="utf-8",
+    )
+
+
+def _emit_display_ssd1306_driver(out_path: Path) -> None:
+    out_path.write_text(
+        """#include <Arduino.h>
+#include <Wire.h>
+#include <string.h>
+#include "../basalt_config.h"
+
+static uint8_t s_addr = 0x00;
+
+static uint8_t ssd1306_cfg_addr() {
+#if defined(BASALT_CFG_DISPLAY_SSD1306_ADDRESS)
+    return (uint8_t)strtoul(BASALT_CFG_DISPLAY_SSD1306_ADDRESS, nullptr, 0);
+#else
+    return 0x3C;
+#endif
+}
+
+static uint8_t ssd1306_height() {
+#if defined(BASALT_CFG_DISPLAY_SSD1306_HEIGHT)
+    const long h = strtol(BASALT_CFG_DISPLAY_SSD1306_HEIGHT, nullptr, 10);
+    return (uint8_t)((h == 32) ? 32 : 64);
+#else
+    return 64;
+#endif
+}
+
+static bool ssd1306_probe_addr(uint8_t addr) {
+    Wire.beginTransmission(addr);
+    return Wire.endTransmission(true) == 0;
+}
+
+static bool ssd1306_select_addr() {
+    if (s_addr == 0x3C || s_addr == 0x3D) return true;
+    const uint8_t preferred = ssd1306_cfg_addr();
+    if (ssd1306_probe_addr(preferred)) {
+        s_addr = preferred;
+        return true;
+    }
+    const uint8_t alt = (preferred == 0x3C) ? 0x3D : 0x3C;
+    if (ssd1306_probe_addr(alt)) {
+        s_addr = alt;
+        return true;
+    }
+    return false;
+}
+
+static bool ssd1306_cmd(uint8_t cmd) {
+    if (!ssd1306_select_addr()) return false;
+    Wire.beginTransmission(s_addr);
+    Wire.write((uint8_t)0x00); // Co=0, D/C#=0
+    Wire.write(cmd);
+    return Wire.endTransmission(true) == 0;
+}
+
+static bool ssd1306_data(const uint8_t *buf, size_t n) {
+    if (!ssd1306_select_addr()) return false;
+    while (n > 0) {
+        const size_t chunk = (n > 16) ? 16 : n;
+        Wire.beginTransmission(s_addr);
+        Wire.write((uint8_t)0x40); // data stream
+        for (size_t i = 0; i < chunk; ++i) Wire.write(buf[i]);
+        if (Wire.endTransmission(true) != 0) return false;
+        buf += chunk;
+        n -= chunk;
+    }
+    return true;
+}
+
+bool basalt_ssd1306_init() {
+    if (!ssd1306_select_addr()) return false;
+    const uint8_t h = ssd1306_height();
+    const uint8_t multiplex = (uint8_t)(h - 1);
+    const uint8_t compins = (h == 32) ? 0x02 : 0x12;
+    const uint8_t init_seq[] = {
+        0xAE,       // display off
+        0xD5, 0x80, // clock
+        0xA8, multiplex,
+        0xD3, 0x00, // offset
+        0x40,       // start line
+        0x8D, 0x14, // charge pump on
+        0x20, 0x00, // horizontal addressing
+        0xA1,       // segment remap
+        0xC8,       // COM scan dec
+        0xDA, compins,
+        0x81, 0x7F, // contrast
+        0xD9, 0xF1, // precharge
+        0xDB, 0x40, // vcom detect
+        0xA4,       // display follows RAM
+        0xA6,       // normal display
+        0xAF        // display on
+    };
+    for (size_t i = 0; i < sizeof(init_seq); ++i) if (!ssd1306_cmd(init_seq[i])) return false;
+    return true;
+}
+
+bool basalt_ssd1306_clear() {
+    if (!ssd1306_cmd(0x21) || !ssd1306_cmd(0x00) || !ssd1306_cmd(0x7F)) return false;
+    const uint8_t pages = (uint8_t)(ssd1306_height() / 8);
+    if (!ssd1306_cmd(0x22) || !ssd1306_cmd(0x00) || !ssd1306_cmd((uint8_t)(pages - 1))) return false;
+    uint8_t z[16] = {0};
+    for (int i = 0; i < (128 * (int)ssd1306_height() / 8) / 16; ++i) {
+        if (!ssd1306_data(z, sizeof(z))) return false;
+    }
+    return true;
+}
+
+bool basalt_ssd1306_test_pattern() {
+    // High-confidence visibility pulse.
+    if (!ssd1306_cmd(0xA5)) return false; // entire display ON
+    delay(220);
+    if (!ssd1306_cmd(0xA4)) return false; // RAM content
+
+    if (!ssd1306_cmd(0x21) || !ssd1306_cmd(0x00) || !ssd1306_cmd(0x7F)) return false;
+    const uint8_t pages = (uint8_t)(ssd1306_height() / 8);
+    if (!ssd1306_cmd(0x22) || !ssd1306_cmd(0x00) || !ssd1306_cmd((uint8_t)(pages - 1))) return false;
+    uint8_t b[16];
+    const int p1 = (int)pages / 3;
+    const int p2 = (2 * (int)pages) / 3;
+    const int pm = (int)pages / 2;
+    for (int page = 0; page < (int)pages; ++page) {
+        for (int col = 0; col < 128; col += 16) {
+            for (int i = 0; i < 16; ++i) {
+                const int x = col + i;
+                uint8_t px = 0x00;
+                if (page < p1) {
+                    // Top: broad vertical bars.
+                    px = ((x / 8) & 1) ? 0xFF : 0x00;
+                } else if (page < p2) {
+                    // Mid: center crosshair with side stripes.
+                    if (page == pm) px = 0xFF;
+                    else if (x == 64) px = 0xFF;
+                    else px = ((x / 4) & 1) ? 0x18 : 0x00;
+                } else {
+                    // Bottom: coarse hatch.
+                    px = ((x + page) & 1) ? 0xF0 : 0x0F;
+                }
+                // Frame border.
+                if (page == 0 || page == (int)pages - 1 || x == 0 || x == 127) px = 0xFF;
+                b[i] = px;
+            }
+            if (!ssd1306_data(b, sizeof(b))) return false;
+        }
+    }
+    return true;
+}
+
+static bool basalt_ssd1306_brand_glyph() {
+    if (!basalt_ssd1306_clear()) return false;
+    const uint8_t pages = (uint8_t)(ssd1306_height() / 8);
+    if (pages == 0) return true;
+    const uint8_t page = (uint8_t)(pages / 2);
+
+    static const uint8_t k_text[] = {
+        // BASALT (5x7 style, columns)
+        0x7F, 0x49, 0x49, 0x49, 0x36, 0x00, // B
+        0x7E, 0x11, 0x11, 0x11, 0x7E, 0x00, // A
+        0x46, 0x49, 0x49, 0x49, 0x31, 0x00, // S
+        0x7E, 0x11, 0x11, 0x11, 0x7E, 0x00, // A
+        0x7F, 0x40, 0x40, 0x40, 0x40, 0x00, // L
+        0x01, 0x01, 0x7F, 0x01, 0x01        // T
+    };
+    const uint8_t text_w = (uint8_t)sizeof(k_text);
+    const uint8_t x0 = (text_w < 128) ? (uint8_t)((128 - text_w) / 2) : 0;
+    const uint8_t x1 = (uint8_t)(x0 + text_w - 1);
+
+    // top and bottom accent lines
+    if (page > 0) {
+        if (!ssd1306_cmd(0x21) || !ssd1306_cmd(8) || !ssd1306_cmd(119)) return false;
+        if (!ssd1306_cmd(0x22) || !ssd1306_cmd((uint8_t)(page - 1)) || !ssd1306_cmd((uint8_t)(page - 1))) return false;
+        uint8_t line[16];
+        for (int i = 0; i < 16; ++i) line[i] = 0x18;
+        for (int i = 0; i < (112 / 16); ++i) if (!ssd1306_data(line, sizeof(line))) return false;
+    }
+    if (page + 1 < pages) {
+        if (!ssd1306_cmd(0x21) || !ssd1306_cmd(8) || !ssd1306_cmd(119)) return false;
+        if (!ssd1306_cmd(0x22) || !ssd1306_cmd((uint8_t)(page + 1)) || !ssd1306_cmd((uint8_t)(page + 1))) return false;
+        uint8_t line[16];
+        for (int i = 0; i < 16; ++i) line[i] = 0x18;
+        for (int i = 0; i < (112 / 16); ++i) if (!ssd1306_data(line, sizeof(line))) return false;
+    }
+
+    // BASALT wordmark centered.
+    if (!ssd1306_cmd(0x21) || !ssd1306_cmd(x0) || !ssd1306_cmd(x1)) return false;
+    if (!ssd1306_cmd(0x22) || !ssd1306_cmd(page) || !ssd1306_cmd(page)) return false;
+    if (!ssd1306_data(k_text, sizeof(k_text))) return false;
+    return true;
+}
+
+#if defined(BASALT_CFG_DISPLAY_SSD1306_BOOT_SPLASH)
+extern "C" int basalt_custom_splash_render(void) __attribute__((weak));
+#endif
+
+bool basalt_ssd1306_boot_splash() {
+#if defined(BASALT_CFG_DISPLAY_SSD1306_BOOT_SPLASH)
+    if (strcmp(BASALT_CFG_DISPLAY_SSD1306_BOOT_SPLASH, "none") == 0) {
+        return true;
+    }
+    if (strcmp(BASALT_CFG_DISPLAY_SSD1306_BOOT_SPLASH, "test_pattern") == 0) {
+        return basalt_ssd1306_test_pattern();
+    }
+    if (strcmp(BASALT_CFG_DISPLAY_SSD1306_BOOT_SPLASH, "test_glyph") == 0) {
+        return basalt_ssd1306_brand_glyph();
+    }
+    if (strcmp(BASALT_CFG_DISPLAY_SSD1306_BOOT_SPLASH, "local_file_upload") == 0) {
+        // Processed C source hook (custom_image.c). Fallback to branded glyph.
+        if (basalt_custom_splash_render && basalt_custom_splash_render() != 0) return true;
+        return basalt_ssd1306_brand_glyph();
+    }
+#endif
+    if (!basalt_ssd1306_clear()) return false;
+
+    const uint8_t pages = (uint8_t)(ssd1306_height() / 8);
+    if (pages < 2) return true;
+    const uint8_t p0 = (pages >= 4) ? (uint8_t)(pages / 2 - 1) : 0;
+    const uint8_t p1 = (uint8_t)(p0 + 1);
+    if (!ssd1306_cmd(0x21) || !ssd1306_cmd(56) || !ssd1306_cmd(71)) return false;
+    if (!ssd1306_cmd(0x22) || !ssd1306_cmd(p0) || !ssd1306_cmd(p1)) return false;
+
+    static const uint8_t glyph_p0[16] = {
+        0x00, 0x00, 0x18, 0x3C, 0x66, 0x42, 0x7E, 0x42,
+        0x42, 0x7E, 0x42, 0x42, 0x66, 0x3C, 0x18, 0x00
+    };
+    static const uint8_t glyph_p1[16] = {
+        0x00, 0x00, 0x18, 0x3C, 0x66, 0x42, 0x7E, 0x42,
+        0x42, 0x7E, 0x42, 0x42, 0x66, 0x3C, 0x18, 0x00
+    };
+    if (!ssd1306_data(glyph_p0, sizeof(glyph_p0))) return false;
+    if (!ssd1306_data(glyph_p1, sizeof(glyph_p1))) return false;
+    return true;
+}
+""",
+        encoding="utf-8",
+    )
+
+
+def _emit_custom_image_stub(out_path: Path) -> None:
+    out_path.write_text(
+        """#include <stdint.h>
+
+// BasaltOS custom splash hook for processed display assets.
+// Replace this file with your generated custom_image.c implementation.
+// Contract:
+//   int basalt_custom_splash_render(void)
+// Return non-zero when your splash was rendered successfully.
+
+int basalt_custom_splash_render(void) {
+    return 0;
+}
+""",
+        encoding="utf-8",
+    )
+
+
 def _emit_applet_blink(out_path: Path) -> None:
     out_path.write_text(
         """#include <Arduino.h>
@@ -470,13 +1313,19 @@ void applet_remote_node_loop(void) {
     )
 
 
-def _emit_shell_runtime(out_path: Path, full_shell: bool) -> None:
+def _emit_shell_runtime(out_path: Path, shell_variant: str) -> None:
+    shell_variant = (shell_variant or "lite").strip().lower()
+    if shell_variant not in ("full", "lite", "tiny"):
+        shell_variant = "lite"
     unsupported_cmds = [
         "cat", "cd", "mkdir", "cp", "mv", "rm", "edit", "install", "remove", "logs", "wifi", "bluetooth", "imu"
-    ] if full_shell else [
-        "cat", "cd", "mkdir", "cp", "mv", "rm", "edit", "install", "remove", "logs", "wifi", "bluetooth", "imu"
     ]
+    if shell_variant == "tiny":
+        unsupported_cmds.extend(["ls", "apps_dev", "run_dev", "kill", "applet", "applets", "led_test", "devcheck"])
     unsupported_list = ", ".join([f"\"{c}\"" for c in unsupported_cmds])
+    help_cmds_primary = "help, pwd, apps, run <app>, stop, drivers, ads1115_read [ch], mcp23017_test, hp4067_scan [analog|digital], tp4056_status [on|off], reboot" if shell_variant == "tiny" else "help, pwd, ls, apps, run <app>, stop, led_test [pin], drivers, ads1115_read [ch], mcp23017_test, hp4067_scan [analog|digital], tp4056_status [on|off], reboot"
+    help_cmds_secondary = "" if shell_variant == "tiny" else "cat, cd, mkdir, cp, mv, rm, edit, install, remove, logs, wifi, bluetooth, imu (stubs)"
+    help_cmds_secondary_line = f'        BASALT_SHELL_PORT.println("{help_cmds_secondary}");\n' if help_cmds_secondary else ""
     out_path.write_text(
         f"""#include <Arduino.h>
 #include <string.h>
@@ -488,22 +1337,44 @@ const char *basalt_app_name(size_t idx);
 const char *basalt_app_active_name(void);
 bool basalt_app_run(const char *name);
 void basalt_app_stop(void);
+#if defined(BASALT_ENABLE_ADS1115)
+bool basalt_ads1115_available();
+bool basalt_ads1115_read_raw(uint8_t channel, int16_t *raw);
+bool basalt_ads1115_read_mv(uint8_t channel, int32_t *mv);
+#endif
+#if defined(BASALT_ENABLE_MCP23017)
+bool basalt_mcp23017_available();
+bool basalt_mcp23017_init();
+bool basalt_mcp23017_pin_mode(uint8_t pin, uint8_t mode);
+bool basalt_mcp23017_digital_write(uint8_t pin, bool high);
+int basalt_mcp23017_digital_read(uint8_t pin);
+#endif
+#if defined(BASALT_ENABLE_HP4067)
+bool basalt_hp4067_init();
+int basalt_hp4067_read_analog(uint8_t channel);
+int basalt_hp4067_read_digital(uint8_t channel);
+#endif
+#if defined(BASALT_ENABLE_TP4056)
+bool basalt_tp4056_init();
+int basalt_tp4056_is_charging();
+int basalt_tp4056_is_done();
+bool basalt_tp4056_set_enabled(bool enabled);
+#endif
 
-static HardwareSerial &shell_port() {{
+// Use macro-selected port so USB CDC Serial (ATmega32U4) is supported.
 #if defined(BASALT_CFG_UART_UART_NUM)
 #if BASALT_CFG_UART_UART_NUM == 1
-    return Serial1;
+#define BASALT_SHELL_PORT Serial1
 #elif BASALT_CFG_UART_UART_NUM == 2
-    return Serial2;
+#define BASALT_SHELL_PORT Serial2
 #elif BASALT_CFG_UART_UART_NUM == 3
-    return Serial3;
+#define BASALT_SHELL_PORT Serial3
 #else
-    return Serial;
+#define BASALT_SHELL_PORT Serial
 #endif
 #else
-    return Serial;
+#define BASALT_SHELL_PORT Serial
 #endif
-}}
 
 static unsigned long shell_baud() {{
 #if defined(BASALT_CFG_UART_UART_BAUDRATE)
@@ -517,7 +1388,7 @@ static char g_line[128];
 static size_t g_line_len = 0;
 
 static void sh_print_prompt() {{
-    shell_port().print("basalt> ");
+    BASALT_SHELL_PORT.print("basalt> ");
 }}
 
 static bool sh_equals(const char *a, const char *b) {{
@@ -526,24 +1397,39 @@ static bool sh_equals(const char *a, const char *b) {{
 
 static void sh_help(const char *arg) {{
     if (!arg || !*arg) {{
-        shell_port().println("Basalt shell. Type 'help -commands' for list.");
+        BASALT_SHELL_PORT.println("Basalt shell. Type 'help -commands' for list.");
         return;
     }}
     if (sh_equals(arg, "-commands")) {{
-        shell_port().println("help, pwd, ls, apps, run <app>, stop, led_test [pin], drivers, reboot");
-        shell_port().println("cat, cd, mkdir, cp, mv, rm, edit, install, remove, logs, wifi, bluetooth, imu (stubs)");
-        return;
+        BASALT_SHELL_PORT.println("{help_cmds_primary}");
+{help_cmds_secondary_line}        return;
     }}
     if (sh_equals(arg, "run")) {{
-        shell_port().println("run <app>: run one selected applet by name");
+        BASALT_SHELL_PORT.println("run <app>: run one selected applet by name");
         return;
     }}
     if (sh_equals(arg, "apps")) {{
-        shell_port().println("apps: list compiled applets");
+        BASALT_SHELL_PORT.println("apps: list compiled applets");
         return;
     }}
-    shell_port().print("help: no detailed entry for ");
-    shell_port().println(arg);
+    if (sh_equals(arg, "ads1115_read")) {{
+        BASALT_SHELL_PORT.println("ads1115_read [0..3]: read ADS1115 raw + mV");
+        return;
+    }}
+    if (sh_equals(arg, "mcp23017_test")) {{
+        BASALT_SHELL_PORT.println("mcp23017_test: basic expander I/O sanity test");
+        return;
+    }}
+    if (sh_equals(arg, "hp4067_scan")) {{
+        BASALT_SHELL_PORT.println("hp4067_scan [analog|digital]: scan channels 0..15");
+        return;
+    }}
+    if (sh_equals(arg, "tp4056_status")) {{
+        BASALT_SHELL_PORT.println("tp4056_status [on|off]: show charger status; optional CE control");
+        return;
+    }}
+    BASALT_SHELL_PORT.print("help: no detailed entry for ");
+    BASALT_SHELL_PORT.println(arg);
 }}
 
 static void sh_led_test(const char *arg) {{
@@ -553,12 +1439,12 @@ static void sh_led_test(const char *arg) {{
     if (pin < 0) pin = BASALT_PIN_LED;
 #endif
     if (pin < 0) {{
-        shell_port().println("led_test: no LED pin configured");
+        BASALT_SHELL_PORT.println("led_test: no LED pin configured");
         return;
     }}
     pinMode((uint8_t)pin, OUTPUT);
-    shell_port().print("led_test pin=");
-    shell_port().println((int)pin);
+    BASALT_SHELL_PORT.print("led_test pin=");
+    BASALT_SHELL_PORT.println((int)pin);
     for (int i = 0; i < 8; ++i) {{
         digitalWrite((uint8_t)pin, (i & 1) ? HIGH : LOW);
         delay(110);
@@ -567,45 +1453,211 @@ static void sh_led_test(const char *arg) {{
 }}
 
 static void sh_drivers() {{
-    shell_port().println("drivers:");
+    BASALT_SHELL_PORT.println("drivers:");
 #ifdef BASALT_ENABLE_GPIO
-    shell_port().println("  gpio: enabled");
+    BASALT_SHELL_PORT.println("  gpio: enabled");
 #else
-    shell_port().println("  gpio: disabled");
+    BASALT_SHELL_PORT.println("  gpio: disabled");
 #endif
 #ifdef BASALT_ENABLE_UART
-    shell_port().println("  uart: enabled");
+    BASALT_SHELL_PORT.println("  uart: enabled");
 #else
-    shell_port().println("  uart: disabled");
+    BASALT_SHELL_PORT.println("  uart: disabled");
 #endif
 #ifdef BASALT_ENABLE_I2C
-    shell_port().println("  i2c: enabled");
+    BASALT_SHELL_PORT.println("  i2c: enabled");
 #else
-    shell_port().println("  i2c: disabled");
+    BASALT_SHELL_PORT.println("  i2c: disabled");
 #endif
 #ifdef BASALT_ENABLE_SPI
-    shell_port().println("  spi: enabled");
+    BASALT_SHELL_PORT.println("  spi: enabled");
 #else
-    shell_port().println("  spi: disabled");
+    BASALT_SHELL_PORT.println("  spi: disabled");
+#endif
+#ifdef BASALT_ENABLE_RTC
+    BASALT_SHELL_PORT.println("  rtc: enabled");
+#else
+    BASALT_SHELL_PORT.println("  rtc: disabled");
+#endif
+#ifdef BASALT_ENABLE_IMU
+    BASALT_SHELL_PORT.println("  imu: enabled");
+#else
+    BASALT_SHELL_PORT.println("  imu: disabled");
+#endif
+#ifdef BASALT_ENABLE_DHT22
+    BASALT_SHELL_PORT.println("  dht22: enabled");
+#else
+    BASALT_SHELL_PORT.println("  dht22: disabled");
+#endif
+#ifdef BASALT_ENABLE_DISPLAY_SSD1306
+    BASALT_SHELL_PORT.println("  display_ssd1306: enabled");
+#else
+    BASALT_SHELL_PORT.println("  display_ssd1306: disabled");
+#endif
+#ifdef BASALT_ENABLE_ADS1115
+    BASALT_SHELL_PORT.println("  ads1115: enabled");
+#else
+    BASALT_SHELL_PORT.println("  ads1115: disabled");
+#endif
+#ifdef BASALT_ENABLE_MCP23017
+    BASALT_SHELL_PORT.println("  mcp23017: enabled");
+#else
+    BASALT_SHELL_PORT.println("  mcp23017: disabled");
+#endif
+#ifdef BASALT_ENABLE_HP4067
+    BASALT_SHELL_PORT.println("  hp4067: enabled");
+#else
+    BASALT_SHELL_PORT.println("  hp4067: disabled");
+#endif
+#ifdef BASALT_ENABLE_TP4056
+    BASALT_SHELL_PORT.println("  tp4056: enabled");
+#else
+    BASALT_SHELL_PORT.println("  tp4056: disabled");
 #endif
 #ifdef BASALT_ENABLE_SHELL_FULL
-    shell_port().println("  shell: full");
+    BASALT_SHELL_PORT.println("  shell: full");
+#elif defined(BASALT_ENABLE_SHELL_TINY)
+    BASALT_SHELL_PORT.println("  shell: tiny");
 #elif defined(BASALT_ENABLE_SHELL_MIN)
-    shell_port().println("  shell: minimal");
+    BASALT_SHELL_PORT.println("  shell: lite");
 #else
-    shell_port().println("  shell: off");
+    BASALT_SHELL_PORT.println("  shell: off");
+#endif
+}}
+
+static void sh_ads1115_read(const char *arg) {{
+#if defined(BASALT_ENABLE_ADS1115)
+    long ch = 0;
+    if (arg && *arg) ch = strtol(arg, nullptr, 10);
+    if (ch < 0 || ch > 3) {{
+        BASALT_SHELL_PORT.println("ads1115_read: channel must be 0..3");
+        return;
+    }}
+    if (!basalt_ads1115_available()) {{
+        BASALT_SHELL_PORT.println("ads1115_read: device not found");
+        return;
+    }}
+    int16_t raw = 0;
+    int32_t mv = 0;
+    if (!basalt_ads1115_read_raw((uint8_t)ch, &raw) || !basalt_ads1115_read_mv((uint8_t)ch, &mv)) {{
+        BASALT_SHELL_PORT.println("ads1115_read: read failed");
+        return;
+    }}
+    BASALT_SHELL_PORT.print("ads1115 ch");
+    BASALT_SHELL_PORT.print((int)ch);
+    BASALT_SHELL_PORT.print(": raw=");
+    BASALT_SHELL_PORT.print((int)raw);
+    BASALT_SHELL_PORT.print(" mv=");
+    BASALT_SHELL_PORT.println((long)mv);
+#else
+    (void)arg;
+    BASALT_SHELL_PORT.println("ads1115_read: driver disabled");
+#endif
+}}
+
+static void sh_mcp23017_test() {{
+#if defined(BASALT_ENABLE_MCP23017)
+    if (!basalt_mcp23017_available()) {{
+        BASALT_SHELL_PORT.println("mcp23017_test: device not found");
+        return;
+    }}
+    if (!basalt_mcp23017_init()) {{
+        BASALT_SHELL_PORT.println("mcp23017_test: init failed");
+        return;
+    }}
+    for (uint8_t pin = 0; pin < 4; ++pin) {{
+        basalt_mcp23017_pin_mode(pin, OUTPUT);
+        basalt_mcp23017_digital_write(pin, true);
+        delay(60);
+        basalt_mcp23017_digital_write(pin, false);
+    }}
+    basalt_mcp23017_pin_mode(7, INPUT);
+    int v = basalt_mcp23017_digital_read(7);
+    BASALT_SHELL_PORT.print("mcp23017_test: IN7=");
+    BASALT_SHELL_PORT.println(v);
+    BASALT_SHELL_PORT.println("mcp23017_test: done");
+#else
+    BASALT_SHELL_PORT.println("mcp23017_test: driver disabled");
+#endif
+}}
+
+static void sh_hp4067_scan(const char *arg) {{
+#if defined(BASALT_ENABLE_HP4067)
+    bool digital = false;
+    if (arg && *arg) {{
+        digital = (arg[0] == 'd' || arg[0] == 'D');
+    }} else {{
+#if defined(BASALT_CFG_HP4067_SIGNAL_MODE)
+        digital = (strcmp(BASALT_CFG_HP4067_SIGNAL_MODE, "digital") == 0);
+#endif
+    }}
+    if (!basalt_hp4067_init()) {{
+        BASALT_SHELL_PORT.println("hp4067_scan: init failed (check S0..S3/SIG pins)");
+        return;
+    }}
+    BASALT_SHELL_PORT.print("hp4067_scan mode=");
+    BASALT_SHELL_PORT.println(digital ? "digital" : "analog");
+    for (uint8_t ch = 0; ch < 16; ++ch) {{
+        int v = digital ? basalt_hp4067_read_digital(ch) : basalt_hp4067_read_analog(ch);
+        BASALT_SHELL_PORT.print("ch");
+        if (ch < 10) BASALT_SHELL_PORT.print('0');
+        BASALT_SHELL_PORT.print((int)ch);
+        BASALT_SHELL_PORT.print(": ");
+        BASALT_SHELL_PORT.println(v);
+        delay(8);
+    }}
+#else
+    (void)arg;
+    BASALT_SHELL_PORT.println("hp4067_scan: driver disabled");
+#endif
+}}
+
+static void sh_tp4056_status(const char *arg) {{
+#if defined(BASALT_ENABLE_TP4056)
+    if (!basalt_tp4056_init()) {{
+        BASALT_SHELL_PORT.println("tp4056_status: no status pins configured (CHRG/DONE)");
+        return;
+    }}
+    if (arg && *arg) {{
+        if ((arg[0] == 'o' || arg[0] == 'O') && (arg[1] == 'n' || arg[1] == 'N') && arg[2] == '\\0') {{
+            if (!basalt_tp4056_set_enabled(true)) BASALT_SHELL_PORT.println("tp4056_status: CE pin not configured");
+        }} else if ((arg[0] == 'o' || arg[0] == 'O') && (arg[1] == 'f' || arg[1] == 'F') && (arg[2] == 'f' || arg[2] == 'F') && arg[3] == '\\0') {{
+            if (!basalt_tp4056_set_enabled(false)) BASALT_SHELL_PORT.println("tp4056_status: CE pin not configured");
+        }} else {{
+            BASALT_SHELL_PORT.println("tp4056_status: arg must be on|off");
+            return;
+        }}
+        delay(2);
+    }}
+    const int charging = basalt_tp4056_is_charging();
+    const int done = basalt_tp4056_is_done();
+    BASALT_SHELL_PORT.print("tp4056.charging: ");
+    BASALT_SHELL_PORT.println(charging < 0 ? "n/a" : (charging ? "yes" : "no"));
+    BASALT_SHELL_PORT.print("tp4056.done: ");
+    BASALT_SHELL_PORT.println(done < 0 ? "n/a" : (done ? "yes" : "no"));
+    if (charging >= 0 && done >= 0) {{
+        const char *state = "standby/unknown";
+        if (charging && !done) state = "charging";
+        else if (!charging && done) state = "charge_complete";
+        else if (!charging && !done) state = "fault_or_no_battery";
+        BASALT_SHELL_PORT.print("tp4056.state: ");
+        BASALT_SHELL_PORT.println(state);
+    }}
+#else
+    (void)arg;
+    BASALT_SHELL_PORT.println("tp4056_status: driver disabled");
 #endif
 }}
 
 static void sh_apps() {{
     const size_t n = basalt_app_count();
     if (n == 0) {{
-        shell_port().println("apps: none");
+        BASALT_SHELL_PORT.println("apps: none");
         return;
     }}
     for (size_t i = 0; i < n; ++i) {{
-        shell_port().print("- ");
-        shell_port().println(basalt_app_name(i));
+        BASALT_SHELL_PORT.print("- ");
+        BASALT_SHELL_PORT.println(basalt_app_name(i));
     }}
 }}
 
@@ -622,11 +1674,11 @@ static void sh_handle_line(char *line) {{
         return;
     }}
     if (sh_equals(cmd, "pwd")) {{
-        shell_port().println("/");
+        BASALT_SHELL_PORT.println("/");
         return;
     }}
     if (sh_equals(cmd, "ls")) {{
-        shell_port().println("apps");
+        BASALT_SHELL_PORT.println("apps");
         return;
     }}
     if (sh_equals(cmd, "apps")) {{
@@ -635,21 +1687,21 @@ static void sh_handle_line(char *line) {{
     }}
     if (sh_equals(cmd, "run")) {{
         if (!arg || !*arg) {{
-            shell_port().println("run: missing app name");
+            BASALT_SHELL_PORT.println("run: missing app name");
             return;
         }}
         if (basalt_app_run(arg)) {{
-            shell_port().print("run: ");
-            shell_port().println(arg);
+            BASALT_SHELL_PORT.print("run: ");
+            BASALT_SHELL_PORT.println(arg);
         }} else {{
-            shell_port().print("run: unknown app: ");
-            shell_port().println(arg);
+            BASALT_SHELL_PORT.print("run: unknown app: ");
+            BASALT_SHELL_PORT.println(arg);
         }}
         return;
     }}
     if (sh_equals(cmd, "stop")) {{
         basalt_app_stop();
-        shell_port().println("stop: ok");
+        BASALT_SHELL_PORT.println("stop: ok");
         return;
     }}
     if (sh_equals(cmd, "led_test")) {{
@@ -660,8 +1712,24 @@ static void sh_handle_line(char *line) {{
         sh_drivers();
         return;
     }}
+    if (sh_equals(cmd, "ads1115_read")) {{
+        sh_ads1115_read(arg);
+        return;
+    }}
+    if (sh_equals(cmd, "mcp23017_test")) {{
+        sh_mcp23017_test();
+        return;
+    }}
+    if (sh_equals(cmd, "hp4067_scan")) {{
+        sh_hp4067_scan(arg);
+        return;
+    }}
+    if (sh_equals(cmd, "tp4056_status")) {{
+        sh_tp4056_status(arg);
+        return;
+    }}
     if (sh_equals(cmd, "reboot")) {{
-        shell_port().println("rebooting...");
+        BASALT_SHELL_PORT.println("rebooting...");
         delay(50);
         void (*reset_fn)(void) = 0;
         reset_fn();
@@ -671,29 +1739,29 @@ static void sh_handle_line(char *line) {{
     static const char *k_unsupported[] = {{{unsupported_list}}};
     for (size_t i = 0; i < sizeof(k_unsupported) / sizeof(k_unsupported[0]); ++i) {{
         if (sh_equals(cmd, k_unsupported[i])) {{
-            shell_port().print(cmd);
-            shell_port().println(": not supported on AVR runtime yet");
+            BASALT_SHELL_PORT.print(cmd);
+            BASALT_SHELL_PORT.println(": not supported on AVR runtime yet");
             return;
         }}
     }}
 
-    shell_port().print("unknown command: ");
-    shell_port().println(cmd);
+    BASALT_SHELL_PORT.print("unknown command: ");
+    BASALT_SHELL_PORT.println(cmd);
 }}
 
 void basalt_shell_init(void) {{
-    shell_port().begin(shell_baud());
+    BASALT_SHELL_PORT.begin(shell_baud());
     delay(20);
-    shell_port().println("Basalt shell (AVR) ready. Type 'help'.");
+    BASALT_SHELL_PORT.println("Basalt shell (AVR) ready. Type 'help'.");
     sh_print_prompt();
 }}
 
 void basalt_shell_poll(void) {{
-    while (shell_port().available() > 0) {{
-        const int ch = shell_port().read();
+    while (BASALT_SHELL_PORT.available() > 0) {{
+        const int ch = BASALT_SHELL_PORT.read();
         if (ch < 0) break;
         if (ch == '\\r' || ch == '\\n') {{
-            shell_port().println();
+            BASALT_SHELL_PORT.println();
             g_line[g_line_len] = 0;
             sh_handle_line(g_line);
             g_line_len = 0;
@@ -789,14 +1857,43 @@ def generate_avr_project(
         "timer": _emit_timer_driver,
         "eeprom": _emit_eeprom_driver,
         "remote_node": _emit_remote_node_driver,
+        "rtc": _emit_rtc_driver,
+        "imu": _emit_imu_driver,
+        "dht22": _emit_dht22_driver,
+        "display_ssd1306": _emit_display_ssd1306_driver,
+        "ads1115": _emit_ads1115_driver,
+        "mcp23017": _emit_mcp23017_driver,
+        "hp4067": _emit_hp4067_driver,
+        "tp4056": _emit_tp4056_driver,
     }
 
     for mid, emitter in module_to_driver.items():
         if mid in enabled_modules:
             emitter(drivers_dir / f"{mid}.cpp")
 
-    if "shell_min" in enabled_modules or "shell_full" in enabled_modules:
-        _emit_shell_runtime(src_dir / "shell.cpp", full_shell=("shell_full" in enabled_modules))
+    custom_image_path = drivers_dir / "custom_image.c"
+    ssd_cfg = (module_config or {}).get("display_ssd1306") if isinstance(module_config, dict) else None
+    boot_mode = ""
+    if isinstance(ssd_cfg, dict):
+        boot_mode = str(ssd_cfg.get("boot_splash", "")).strip().lower()
+    if "display_ssd1306" in enabled_modules and boot_mode == "local_file_upload":
+        raw_b64 = ""
+        if isinstance(ssd_cfg, dict):
+            raw_b64 = str(ssd_cfg.get("boot_splash_file_content_b64", "") or "").strip()
+        if raw_b64:
+            try:
+                decoded = base64.b64decode(raw_b64, validate=True).decode("utf-8")
+                custom_image_path.write_text(decoded, encoding="utf-8")
+            except Exception:
+                _emit_custom_image_stub(custom_image_path)
+        else:
+            _emit_custom_image_stub(custom_image_path)
+    elif custom_image_path.exists():
+        custom_image_path.unlink()
+
+    if "shell_tiny" in enabled_modules or "shell_min" in enabled_modules or "shell_full" in enabled_modules:
+        variant = "full" if "shell_full" in enabled_modules else ("tiny" if "shell_tiny" in enabled_modules else "lite")
+        _emit_shell_runtime(src_dir / "shell.cpp", shell_variant=variant)
 
     for applet in applets or []:
         safe = applet.strip().replace("-", "_")
@@ -872,7 +1969,9 @@ Use platformio.ini with `pio run`.
         "apps_dir": str(apps_dir),
         "README.md": str(readme),
     }
-    if "shell_min" in enabled_modules or "shell_full" in enabled_modules:
+    if custom_image_path.exists():
+        result["custom_image.c"] = str(custom_image_path)
+    if "shell_tiny" in enabled_modules or "shell_min" in enabled_modules or "shell_full" in enabled_modules:
         result["shell.cpp"] = str(src_dir / "shell.cpp")
     return result
 

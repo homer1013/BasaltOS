@@ -1,0 +1,34 @@
+{
+  "id": "ra4m1",
+  "kind": "target_profile",
+  "name": "Renesas RA4M1",
+  "vendor": "renesas",
+  "arch": "arm-cortex-m4",
+  "module_policy": {
+    "mode": "allowlist",
+    "allowed": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "pwm",
+      "timer",
+      "eeprom",
+      "remote_node",
+      "shell_tiny",
+      "shell_min",
+      "shell_full",
+      "display_ssd1306",
+      "imu",
+      "rtc",
+      "dht22",
+      "ads1115",
+      "mcp23017",
+      "hp4067",
+      "fs_sd",
+      "fs_spiffs"
+    ],
+    "notes": "RA targets align with FSP-based projects; advanced display/audio stacks can be enabled incrementally."
+  }
+}

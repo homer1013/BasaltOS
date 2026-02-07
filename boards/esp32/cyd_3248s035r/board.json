@@ -13,6 +13,7 @@
   "capabilities": [
     "wifi",
     "bluetooth",
+    "twai",
     "gpio",
     "tft",
     "touch",
@@ -39,6 +40,10 @@
     "i2c_scl": 22,
     "uart_tx": 1,
     "uart_rx": 3,
+    "can_tx": 26,
+    "can_rx": 25,
+    "can_stby": -1,
+    "can_en": -1,
     "led": 16,
     "button": 0
   },
@@ -122,6 +127,26 @@
       "description": "UART RX",
       "alternatives": [3, 16, 26],
       "type": "input"
+    },
+    "can_tx": {
+      "description": "TWAI/CAN TX (external transceiver TXD)",
+      "alternatives": [26, 25, 4, 17],
+      "type": "output"
+    },
+    "can_rx": {
+      "description": "TWAI/CAN RX (external transceiver RXD)",
+      "alternatives": [25, 26, 34, 35, 39],
+      "type": "input"
+    },
+    "can_stby": {
+      "description": "CAN transceiver standby control (optional)",
+      "alternatives": [-1, 4, 16, 17, 25, 26, 27, 32, 33],
+      "type": "output"
+    },
+    "can_en": {
+      "description": "CAN transceiver enable control (optional)",
+      "alternatives": [-1, 4, 16, 17, 25, 26, 27, 32, 33],
+      "type": "output"
     },
     "led": {
       "description": "Onboard LED",

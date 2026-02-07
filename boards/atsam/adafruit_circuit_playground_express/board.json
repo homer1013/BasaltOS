@@ -1,0 +1,101 @@
+{
+  "id": "adafruit_circuit_playground_express",
+  "name": "Adafruit Circuit Playground Express (ATSAMD21)",
+  "description": "All-in-one ATSAMD21 board with onboard LEDs/sensors, USB, and battery-friendly operation (approx 3-6V DC input).",
+  "platform": "atsam",
+  "target_profile": "samd21g18",
+  "mcu": "ATSAMD21G18",
+  "flash": "256KB",
+  "ram": "32KB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "usb_device"
+  ],
+  "pins": {
+    "uart_tx": "A7",
+    "uart_rx": "A6",
+    "i2c_sda": "SDA",
+    "i2c_scl": "SCL",
+    "spi_mosi": "MOSI",
+    "spi_miso": "MISO",
+    "spi_sclk": "SCK",
+    "spi_cs": "A5",
+    "led": "D13",
+    "button": "BUTTON_A"
+  },
+  "pin_definitions": {
+    "uart_tx": {
+      "description": "UART TX (Serial1)",
+      "alternatives": [
+        "A7",
+        "TX"
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "UART RX (Serial1)",
+      "alternatives": [
+        "A6",
+        "RX"
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C SDA",
+      "alternatives": [
+        "SDA",
+        "A4"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL",
+      "alternatives": [
+        "SCL",
+        "A5"
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "User LED",
+      "alternatives": [
+        "D13"
+      ],
+      "type": "output"
+    },
+    "button": {
+      "description": "Primary user button",
+      "alternatives": [
+        "BUTTON_A"
+      ],
+      "type": "input"
+    }
+  },
+  "defaults": {
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "pwm",
+      "timer",
+      "shell_min"
+    ],
+    "clock": {
+      "freq_hz": 48000000
+    },
+    "upload": {
+      "method": "bootloader",
+      "fqbn": "adafruit:samd:adafruit_circuitplayground_m0",
+      "mcu": "atsamd21g18",
+      "baud": 115200
+    }
+  },
+  "notes": "Nominal SAMD21 core clock is 48MHz. This board is often powered by USB or LiPo; external battery input is commonly in the ~3-6V range depending on setup."
+}

@@ -1,0 +1,35 @@
+{
+  "id": "tp4056",
+  "name": "TP4056 Li-Ion Charger",
+  "description": "Battery charger status via CHRG/DONE pins with optional CE control",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "atmega", "atsam", "renesas_ra", "renesas_rx", "pic16"],
+  "provides": ["power_charger", "battery_charging"],
+  "depends": ["gpio"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_TP4056"],
+  "pins": ["tp4056_chrg", "tp4056_done", "tp4056_ce"],
+  "configuration_options": [
+    {
+      "id": "status_pins_active_low",
+      "name": "Status Pins Active Low",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "ce_pin_present",
+      "name": "CE Pin Connected",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "id": "ce_active_high",
+      "name": "CE Enable Logic Active High",
+      "type": "boolean",
+      "default": true,
+      "requires_option": {
+        "id": "ce_pin_present",
+        "value": true
+      }
+    }
+  ]
+}

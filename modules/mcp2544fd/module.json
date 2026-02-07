@@ -1,0 +1,30 @@
+{
+  "id": "mcp2544fd",
+  "name": "MCP2544FD CAN PHY",
+  "description": "MCP2544FD CAN/CAN-FD transceiver control (STBY/EN pin handling) for ESP32 TWAI setups.",
+  "platforms": ["esp32"],
+  "provides": ["can_phy"],
+  "depends": ["gpio", "twai"],
+  "requires_capabilities": ["twai"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_MCP2544FD"],
+  "pins": ["can_stby", "can_en"],
+  "configuration_options": [
+    {
+      "id": "stby_active_high",
+      "name": "STBY Logic Active High",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "en_active_high",
+      "name": "EN Logic Active High",
+      "type": "boolean",
+      "default": true
+    }
+  ],
+  "notes": [
+    "Use with a TWAI-capable ESP32 and external MCP2544FD transceiver wiring.",
+    "Shell command: mcp2544fd [status|on|off|standby]"
+  ]
+}

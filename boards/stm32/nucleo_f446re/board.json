@@ -1,0 +1,44 @@
+{
+  "id": "nucleo_f446re",
+  "name": "ST Nucleo-F446RE",
+  "description": "STM32 Nucleo board with STM32F446RE (Cortex-M4F). Good general-purpose STM32 bring-up target.",
+  "platform": "stm32",
+  "target_profile": "stm32f4_generic",
+  "mcu": "STM32F446RE",
+  "flash": "512KB",
+  "ram": "128KB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "debug_swd"
+  ],
+  "pins": {
+    "uart_tx": "PA2",
+    "uart_rx": "PA3",
+    "i2c_sda": "PB9",
+    "i2c_scl": "PB8",
+    "spi_mosi": "PA7",
+    "spi_miso": "PA6",
+    "spi_sclk": "PA5",
+    "spi_cs": "PB6",
+    "led": "PA5",
+    "button": "PC13"
+  },
+  "pin_definitions": {
+    "uart_tx": { "description": "USART2 TX (VCP)", "alternatives": ["PA2", "PA9"], "type": "output" },
+    "uart_rx": { "description": "USART2 RX (VCP)", "alternatives": ["PA3", "PA10"], "type": "input" },
+    "i2c_sda": { "description": "I2C1 SDA", "alternatives": ["PB9", "PB7"], "type": "bidirectional" },
+    "i2c_scl": { "description": "I2C1 SCL", "alternatives": ["PB8", "PB6"], "type": "output" },
+    "led": { "description": "User LED", "alternatives": ["PA5"], "type": "output" },
+    "button": { "description": "User button", "alternatives": ["PC13"], "type": "input" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"],
+    "clock": { "freq_hz": 180000000 }
+  },
+  "notes": "USART2 defaults are aligned with ST-Link virtual COM port for quick serial shell bring-up."
+}

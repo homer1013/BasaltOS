@@ -3,7 +3,7 @@
 
 set(HAL_PORT_SRCS "")
 
-if(IDF_TARGET STREQUAL "esp32")
+if(IDF_TARGET STREQUAL "esp32" OR IDF_TARGET STREQUAL "esp32c3")
     set(PORT_DIR "ports/esp32")
     list(APPEND HAL_PORT_SRCS
         "${PORT_DIR}/hal_gpio.c"

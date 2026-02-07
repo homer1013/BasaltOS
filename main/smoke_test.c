@@ -46,11 +46,19 @@ static int check_rc(const char *name, int rc) {
     return -1;
 }
 
-static int smoke_gpio16_blink(void) {
+static int smoke_gpio_blink(int pin) {
     hal_gpio_t led;
     int rc = 0;
+    char name[48];
 
-    rc |= check_rc("hal_gpio_init(GPIO16)", hal_gpio_init(&led, 16));
+    if (pin < 0) {
+        ESP_LOGW(TAG, "GPIO smoke test skipped (no LED pin configured)");
+        printf("[smoke] GPIO smoke test skipped (no LED pin configured)\n");
+        return 0;
+    }
+
+    snprintf(name, sizeof(name), "hal_gpio_init(GPIO%d)", pin);
+    rc |= check_rc(name, hal_gpio_init(&led, pin));
     rc |= check_rc("hal_gpio_set_mode(OUT)", hal_gpio_set_mode(&led, HAL_GPIO_OUTPUT));
 
     // Blink a few times
@@ -63,8 +71,8 @@ static int smoke_gpio16_blink(void) {
 
     int val = -1;
     rc |= check_rc("hal_gpio_read()", hal_gpio_read(&led, &val));
-    ESP_LOGI(TAG, "GPIO16 readback: %d", val);
-    printf("[smoke] GPIO16 readback: %d\n", val);
+    ESP_LOGI(TAG, "GPIO%d readback: %d", pin, val);
+    printf("[smoke] GPIO%d readback: %d\n", pin, val);
 
     rc |= check_rc("hal_gpio_deinit()", hal_gpio_deinit(&led));
     return (rc == 0) ? 0 : -1;
@@ -154,7 +162,7 @@ int basalt_smoke_test_run(void) {
     printf("[smoke] heap free (8bit): %u\n", (unsigned)heap_free);
 
     int rc = 0;
-    rc |= smoke_gpio16_blink();
+    rc |= smoke_gpio_blink(BASALT_PIN_LED);
 
     // UART smoke test temporarily disabled
     // rc |= smoke_uart0_tx();

@@ -8,6 +8,9 @@ import os
 import sys
 import time
 import zipfile
+from pathlib import Path
+
+from app_validation import validate_app_dir
 
 
 def _norm_slashes(path: str) -> str:
@@ -36,6 +39,11 @@ def main() -> int:
         help="Name of the app folder inside the zip (default: app_dir basename)",
         default=None,
     )
+    parser.add_argument(
+        "--check-syntax",
+        action="store_true",
+        help="Run CPython syntax checks on .py files before packing (best-effort)",
+    )
     args = parser.parse_args()
 
     app_dir = os.path.abspath(args.app_dir)
@@ -48,13 +56,13 @@ def main() -> int:
         print("error: app name is empty", file=sys.stderr)
         return 1
 
-    app_toml = os.path.join(app_dir, "app.toml")
-    main_py = os.path.join(app_dir, "main.py")
-    if not (os.path.isfile(app_toml) or os.path.isfile(main_py)):
-        print(
-            "error: app must contain app.toml or main.py",
-            file=sys.stderr,
+    try:
+        validate_app_dir(
+            Path(app_dir),
+            check_py_syntax=args.check_syntax,
         )
+    except ValueError as e:
+        print(f"error: {e}", file=sys.stderr)
         return 1
 
     files = []

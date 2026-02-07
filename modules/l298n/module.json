@@ -1,0 +1,28 @@
+{
+  "id": "l298n",
+  "name": "L298N H-Bridge Driver",
+  "description": "Dual DC motor H-bridge control for L298N modules (IN/EN pins).",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "atmega", "atsam", "renesas_ra", "renesas_rx", "pic16"],
+  "provides": ["motor_dc"],
+  "depends": ["gpio"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_L298N"],
+  "pins": ["l298n_in1", "l298n_in2", "l298n_ena", "l298n_in3", "l298n_in4", "l298n_enb"],
+  "configuration_options": [
+    {
+      "id": "in_active_high",
+      "name": "IN Logic Active High",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "en_active_high",
+      "name": "EN Logic Active High",
+      "type": "boolean",
+      "default": true
+    }
+  ],
+  "notes": [
+    "Shell command (ESP32 runtime): l298n [status|stop|a <fwd|rev|stop>|b <fwd|rev|stop>]"
+  ]
+}

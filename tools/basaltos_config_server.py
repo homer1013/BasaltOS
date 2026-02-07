@@ -691,12 +691,21 @@ print("[uart_echo] done")
     def get_boards_by_platform(self, platform_id: str):
         """Return list of boards matching the given platform_id."""
         out = []
+        pid = str(platform_id or "").strip().lower()
+        aliases = {
+            "avr": {"avr", "atmega"},
+            "atmega": {"avr", "atmega"},
+        }
+        accepted = aliases.get(pid, {pid} if pid else set())
         for board_id, data in self.boards.items():
-            plat = data.get("platform")
-            if plat == platform_id:
+            plat = str(data.get("platform", "")).strip().lower()
+            if (accepted and plat in accepted) or (not accepted and plat == pid):
                 # ensure id is present for the GUI
                 item = dict(data)
                 item.setdefault("id", board_id)
+                # Present ATmega-family boards under AVR umbrella in the GUI.
+                if pid == "avr" and plat == "atmega":
+                    item["platform"] = "avr"
                 out.append(item)
         # stable ordering
         out.sort(key=lambda x: x.get("name", x.get("id", "")))
@@ -849,7 +858,16 @@ print("[uart_echo] done")
             try:
                 board_profile, allow = cfg.select_board_noninteractive(boards, platform, board_id)
             except cfg.ConfigError as ex:
-                raise ValueError(str(ex))
+                # AVR/ATmega compatibility alias: allow selecting ATmega boards from AVR UI flow.
+                if str(platform).strip().lower() in {"avr", "atmega"}:
+                    alt = "atmega" if str(platform).strip().lower() == "avr" else "avr"
+                    try:
+                        alt_boards = cfg.discover_boards(BASALTOS_ROOT, alt)
+                        board_profile, allow = cfg.select_board_noninteractive(alt_boards, alt, board_id)
+                    except cfg.ConfigError:
+                        raise ValueError(str(ex))
+                else:
+                    raise ValueError(str(ex))
             if allow is not None:
                 # Always allow internal SPIFFS on boards with defined capabilities
                 allow.add("fs_spiffs")
@@ -1417,6 +1435,7 @@ def _serial_ports_status() -> dict:
 @app.route('/api/platforms', methods=['GET'])
 def get_platforms():
     """Get list of available platforms"""
+    config_gen.load_all_configs()
     hidden_aliases = {"atmega"}
     platforms = []
     for platform_id, platform_data in config_gen.platforms.items():
@@ -1434,6 +1453,7 @@ def get_platforms():
 @app.route('/api/boards/<platform>', methods=['GET'])
 def get_boards(platform):
     """Get boards for a specific platform"""
+    config_gen.load_all_configs()
     boards = config_gen.get_boards_by_platform(platform)
     return jsonify(boards)
 
@@ -1441,6 +1461,7 @@ def get_boards(platform):
 @app.route('/api/targets', methods=['GET'])
 def get_targets():
     """Get target profiles"""
+    config_gen.load_all_configs()
     return jsonify(list(config_gen.targets.values()))
 
 
@@ -1734,6 +1755,9 @@ def _resolve_avr_project(board_id: str | None) -> tuple[Path | None, str | None]
         proj = CONFIG_OUTPUT_DIR / "avr" / bid
         if proj.exists() and proj.is_dir():
             return proj, bid
+        # When a board is explicitly requested, do not silently fall back to
+        # another board's generated project.
+        return None, bid
     root = CONFIG_OUTPUT_DIR / "avr"
     if not root.exists():
         return None, None
@@ -1806,6 +1830,21 @@ def _run_cmd(args: List[str], cwd: Path, timeout_s: int = 240) -> tuple[int, str
     return proc.returncode, tail
 
 
+def _extract_build_error_detail(output: str) -> str:
+    lines = [ln.strip() for ln in str(output or "").splitlines() if ln.strip()]
+    if not lines:
+        return ""
+    # Prefer concrete compiler/tool error lines.
+    for ln in lines:
+        low = ln.lower()
+        if " error:" in low or low.startswith("error:") or "fatal error:" in low:
+            return ln
+        if "undefined reference" in low or "collect2: error" in low:
+            return ln
+    # Fall back to the last non-empty line if no explicit marker was found.
+    return lines[-1]
+
+
 @app.route('/api/flash/avr/status', methods=['GET'])
 def flash_avr_status():
     board_id = request.args.get("board_id")
@@ -1846,6 +1885,7 @@ def build_avr():
             "fqbn": fqbn,
             "returncode": rc,
             "error": "AVR build failed.",
+            "error_detail": _extract_build_error_detail(out),
             "output": out,
         }), 500
     except subprocess.TimeoutExpired:

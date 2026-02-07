@@ -47,7 +47,15 @@
       "timer",
       "pwm",
       "eeprom",
+      "rtc",
+      "imu",
+      "dht22",
+      "display_ssd1306",
+      "ads1115",
+      "mcp23017",
+      "hp4067",
       "remote_node",
+      "shell_tiny",
       "shell_min",
       "shell_full"
     ],
@@ -124,6 +132,26 @@
         "path": "src/drivers/eeprom.cpp",
         "template": "avr/drivers/eeprom.cpp.j2",
         "when": "module_enabled('eeprom')"
+      },
+      {
+        "path": "src/drivers/rtc.cpp",
+        "template": "avr/drivers/rtc.cpp.j2",
+        "when": "module_enabled('rtc')"
+      },
+      {
+        "path": "src/drivers/imu.cpp",
+        "template": "avr/drivers/imu.cpp.j2",
+        "when": "module_enabled('imu')"
+      },
+      {
+        "path": "src/drivers/dht22.cpp",
+        "template": "avr/drivers/dht22.cpp.j2",
+        "when": "module_enabled('dht22')"
+      },
+      {
+        "path": "src/drivers/display_ssd1306.cpp",
+        "template": "avr/drivers/display_ssd1306.cpp.j2",
+        "when": "module_enabled('display_ssd1306')"
       },
       {
         "path": "README.md",

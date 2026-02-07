@@ -1,0 +1,43 @@
+{
+  "id": "adafruit_feather_rp2040",
+  "name": "Adafruit Feather RP2040",
+  "description": "Feather form-factor RP2040 board with battery-friendly layout and STEMMA QT I2C.",
+  "platform": "rp2040",
+  "target_profile": "rp2040_generic",
+  "mcu": "RP2040",
+  "flash": "8MB (variant-dependent)",
+  "ram": "264KB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "usb_device"
+  ],
+  "pins": {
+    "uart_tx": 0,
+    "uart_rx": 1,
+    "i2c_sda": 2,
+    "i2c_scl": 3,
+    "spi_mosi": 19,
+    "spi_miso": 20,
+    "spi_sclk": 18,
+    "spi_cs": 17,
+    "led": 13,
+    "button": -1
+  },
+  "pin_definitions": {
+    "uart_tx": { "description": "UART0 TX", "alternatives": [0, 12, 16], "type": "output" },
+    "uart_rx": { "description": "UART0 RX", "alternatives": [1, 13, 17], "type": "input" },
+    "i2c_sda": { "description": "STEMMA QT SDA", "alternatives": [2, 6, 10, 14], "type": "bidirectional" },
+    "i2c_scl": { "description": "STEMMA QT SCL", "alternatives": [3, 7, 11, 15], "type": "output" },
+    "led": { "description": "Onboard status LED", "alternatives": [13], "type": "output" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"],
+    "clock": { "freq_hz": 133000000 }
+  },
+  "notes": "Use I2C defaults for quick sensor bring-up via STEMMA QT/Qwiic ecosystems."
+}

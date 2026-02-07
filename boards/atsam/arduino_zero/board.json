@@ -3,6 +3,7 @@
   "name": "Arduino Zero (SAMD21G18)",
   "description": "Arduino Zero-class board based on ATSAMD21G18 (Cortex-M0+). Pin labels follow Arduino numbering where applicable.",
   "platform": "atsam",
+  "target_profile": "samd21g18",
   "mcu": "ATSAMD21G18",
   "flash": "256KB",
   "ram": "32KB",

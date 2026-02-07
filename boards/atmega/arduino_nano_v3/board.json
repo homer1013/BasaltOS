@@ -1,0 +1,48 @@
+{
+  "id": "arduino_nano_v3",
+  "name": "Arduino Nano V3 (ATmega328P)",
+  "description": "Compact ATmega328P Nano profile using classic Arduino pin labels.",
+  "platform": "atmega",
+  "target_profile": "atmega328p",
+  "mcu": "ATmega328P",
+  "flash": "32KB",
+  "ram": "2KB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm"
+  ],
+  "pins": {
+    "uart_tx": "D1",
+    "uart_rx": "D0",
+    "i2c_sda": "A4",
+    "i2c_scl": "A5",
+    "spi_mosi": "D11",
+    "spi_miso": "D12",
+    "spi_sclk": "D13",
+    "spi_cs": "D10",
+    "led": "D13",
+    "button": -1
+  },
+  "pin_definitions": {
+    "i2c_sda": { "description": "I2C SDA", "alternatives": ["A4"], "type": "bidirectional" },
+    "i2c_scl": { "description": "I2C SCL", "alternatives": ["A5"], "type": "output" },
+    "spi_cs": { "description": "SPI CS/SS", "alternatives": ["D10"], "type": "output" },
+    "led": { "description": "Onboard LED", "alternatives": ["D13"], "type": "output" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "timer", "shell_tiny"],
+    "clock": { "freq_hz": 16000000 },
+    "upload": {
+      "method": "bootloader",
+      "fqbn": "arduino:avr:nano",
+      "mcu": "atmega328p",
+      "programmer": "arduino",
+      "baud": 115200
+    }
+  },
+  "notes": "Prefer Shell (Tiny) on ATmega328P for headroom; Shell (Full) can exceed practical RAM margins quickly."
+}

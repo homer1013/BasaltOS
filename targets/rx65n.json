@@ -1,0 +1,34 @@
+{
+  "id": "rx65n",
+  "kind": "target_profile",
+  "name": "Renesas RX65N",
+  "vendor": "renesas",
+  "arch": "rx",
+  "module_policy": {
+    "mode": "allowlist",
+    "allowed": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "pwm",
+      "timer",
+      "eeprom",
+      "remote_node",
+      "shell_tiny",
+      "shell_min",
+      "shell_full",
+      "display_ssd1306",
+      "imu",
+      "rtc",
+      "dht22",
+      "ads1115",
+      "mcp23017",
+      "hp4067",
+      "fs_sd",
+      "fs_spiffs"
+    ],
+    "notes": "RX target policies keep configurations focused on portable driver subsets."
+  }
+}

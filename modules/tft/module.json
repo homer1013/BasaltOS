@@ -79,12 +79,27 @@
       "default": 10000000,
       "min": 1000000,
       "max": 80000000
+    },
+    {
+      "id": "boot_splash",
+      "name": "Boot Splash",
+      "type": "select",
+      "options": ["none", "test_glyph", "local_file_upload"],
+      "default": "none"
+    },
+    {
+      "id": "boot_splash_file",
+      "name": "Splash Source (custom_image.c)",
+      "type": "file",
+      "accept": [".c"],
+      "help": "Processed C source only for now (custom_image.c). PNG/BMP converter will be added later.",
+      "requires_option": {"id": "boot_splash", "value": "local_file_upload"}
     }
   ],
   "sdkconfig": [
     "# TFT Display Module",
-    "CONFIG_SPI_MASTER_IN_IRAM=y",
-    "CONFIG_SPI_MASTER_ISR_IN_IRAM=y"
+    "CONFIG_SPI_MASTER_IN_IRAM=n",
+    "CONFIG_SPI_MASTER_ISR_IN_IRAM=n"
   ],
   "source_files": [
     "modules/tft/tft_driver.c",
@@ -95,4 +110,3 @@
     "modules/tft/tft_console.h"
   ]
 }
-

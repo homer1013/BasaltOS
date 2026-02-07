@@ -1,0 +1,30 @@
+{
+  "id": "uln2003",
+  "name": "ULN2003 Stepper Driver",
+  "description": "ULN2003 Darlington transistor array driver for unipolar steppers (e.g. 28BYJ-48).",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "atmega", "atsam", "renesas_ra", "renesas_rx", "pic16"],
+  "provides": ["motor_stepper"],
+  "depends": ["gpio"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_ULN2003"],
+  "pins": ["uln2003_in1", "uln2003_in2", "uln2003_in3", "uln2003_in4"],
+  "configuration_options": [
+    {
+      "id": "active_high",
+      "name": "Coil Drive Active High",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "step_delay_ms",
+      "name": "Default Step Delay (ms)",
+      "type": "number",
+      "min": 1,
+      "max": 50,
+      "default": 4
+    }
+  ],
+  "notes": [
+    "Shell command (ESP32 runtime): uln2003 [status|off|step <steps> [delay_ms]]"
+  ]
+}

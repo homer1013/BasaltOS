@@ -13,19 +13,24 @@
     "i2c",
     "gpio",
     "adc",
-    "pwm"
+    "pwm",
+    "twai"
   ],
   "pins": {
     "uart_tx": 21,
     "uart_rx": 20,
-    "i2c_sda": 8,
-    "i2c_scl": 9,
-    "spi_mosi": 7,
-    "spi_miso": 2,
-    "spi_sclk": 6,
-    "spi_cs": 10,
-    "led": 8,
-    "button": 9
+    "i2c_sda": 4,
+    "i2c_scl": 3,
+    "can_tx": 5,
+    "can_rx": 2,
+    "can_stby": -1,
+    "can_en": -1,
+    "spi_mosi": -1,
+    "spi_miso": -1,
+    "spi_sclk": -1,
+    "spi_cs": -1,
+    "led": -1,
+    "button": 0
   },
   "pin_definitions": {
     "uart_tx": {
@@ -49,11 +54,12 @@
     "i2c_sda": {
       "description": "I2C SDA (example)",
       "alternatives": [
-        8,
         4,
+        3,
         5,
         6,
         7,
+        8,
         10
       ],
       "type": "bidirectional"
@@ -61,12 +67,62 @@
     "i2c_scl": {
       "description": "I2C SCL (example)",
       "alternatives": [
-        9,
+        3,
         4,
+        9,
         5,
         6,
         7,
         10
+      ],
+      "type": "output"
+    },
+    "can_tx": {
+      "description": "TWAI/CAN TX (connect to external transceiver TXD)",
+      "alternatives": [
+        5,
+        4,
+        3,
+        2,
+        1
+      ],
+      "type": "output"
+    },
+    "can_rx": {
+      "description": "TWAI/CAN RX (connect to external transceiver RXD)",
+      "alternatives": [
+        2,
+        3,
+        4,
+        5,
+        1,
+        0
+      ],
+      "type": "input"
+    },
+    "can_stby": {
+      "description": "CAN transceiver standby control (optional)",
+      "alternatives": [
+        -1,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "type": "output"
+    },
+    "can_en": {
+      "description": "CAN transceiver enable control (optional)",
+      "alternatives": [
+        -1,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
       ],
       "type": "output"
     },
@@ -99,11 +155,18 @@
     "modules": [
       "gpio",
       "uart",
-      "spi",
       "i2c",
       "fs_spiffs",
+      "display_ssd1306",
       "shell_full"
     ],
+    "driver_config": {
+      "display_ssd1306": {
+        "address": "0x3C",
+        "width": 128,
+        "height": 64
+      }
+    },
     "clock": {
       "freq_hz": 160000000
     }

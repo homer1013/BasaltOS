@@ -1,0 +1,25 @@
+{
+  "id": "display_ssd1306",
+  "name": "SSD1306 Display",
+  "description": "Monochrome OLED display driver (typically I2C)",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic16"],
+  "provides": ["display"],
+  "depends": ["i2c"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_DISPLAY_SSD1306"],
+  "pins": ["i2c_sda", "i2c_scl"],
+  "configuration_options": [
+    {"id": "address", "name": "I2C Address", "type": "select", "options": ["0x3C", "0x3D"], "default": "0x3C"},
+    {"id": "width", "name": "Width", "type": "select", "options": [128, 96, 64], "default": 128},
+    {"id": "height", "name": "Height", "type": "select", "options": [64, 32], "default": 64},
+    {"id": "boot_splash", "name": "Boot Splash", "type": "select", "options": ["none", "test_glyph", "local_file_upload"], "default": "none"},
+    {
+      "id": "boot_splash_file",
+      "name": "Splash Source (custom_image.c)",
+      "type": "file",
+      "accept": [".c"],
+      "help": "Processed C source only for now (custom_image.c). PNG/BMP converter will be added later.",
+      "requires_option": {"id": "boot_splash", "value": "local_file_upload"}
+    }
+  ]
+}

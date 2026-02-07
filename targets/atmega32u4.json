@@ -1,0 +1,99 @@
+{
+  "id": "atmega32u4",
+  "kind": "target_profile",
+  "name": "ATmega32U4 (Pro Micro/Leonardo-class)",
+  "vendor": "atmel",
+  "arch": "avr",
+  "toolchain": {
+    "family": "avr-gcc",
+    "ide": "arduino",
+    "min_version": "1.8.0"
+  },
+  "capabilities": {
+    "runtime_os": false,
+    "dynamic_apps": false,
+    "max_flash_bytes": 32768,
+    "max_ram_bytes": 2560,
+    "has_interrupts": true,
+    "has_eeprom": true,
+    "has_adc": true,
+    "has_uart": true,
+    "has_spi": true,
+    "has_i2c_hw": true,
+    "uart_ports": 1,
+    "has_native_usb": true
+  },
+  "limits": {
+    "max_modules": 7,
+    "max_tasks": 0,
+    "max_timers": 3,
+    "max_uart_ports": 1,
+    "max_i2c_buses": 1,
+    "max_spi_buses": 1,
+    "max_gpio_pins": 24
+  },
+  "module_policy": {
+    "mode": "allowlist",
+    "allowed": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "timer",
+      "pwm",
+      "eeprom",
+      "rtc",
+      "imu",
+      "dht22",
+      "display_ssd1306",
+      "ads1115",
+      "mcp23017",
+      "hp4067",
+      "remote_node",
+      "shell_tiny",
+      "shell_min",
+      "shell_full"
+    ],
+    "notes": "ATmega32U4 targets generate Arduino-style firmware (no Basalt runtime)."
+  },
+  "config_schema": {
+    "clock": {
+      "required": true,
+      "fields": {
+        "freq_hz": { "type": "integer", "min": 1000000, "max": 20000000 }
+      }
+    },
+    "pins": {
+      "required": true,
+      "fields": {
+        "map": { "type": "object" }
+      }
+    }
+  },
+  "codegen": {
+    "backend": "basalt_codegen_avr_arduino",
+    "output": {
+      "project_type": "arduino_sketch",
+      "language": "cpp",
+      "layout": "flat_src"
+    },
+    "emit": [
+      { "path": "include/basalt_config.h", "template": "avr/basalt_config.h.j2", "when": "always" },
+      { "path": "src/main.cpp", "template": "avr/main.cpp.j2", "when": "always" },
+      { "path": "src/drivers/gpio.cpp", "template": "avr/drivers/gpio.cpp.j2", "when": "module_enabled('gpio')" },
+      { "path": "src/drivers/uart.cpp", "template": "avr/drivers/uart.cpp.j2", "when": "module_enabled('uart')" },
+      { "path": "src/drivers/i2c.cpp", "template": "avr/drivers/i2c.cpp.j2", "when": "module_enabled('i2c')" },
+      { "path": "src/drivers/spi.cpp", "template": "avr/drivers/spi.cpp.j2", "when": "module_enabled('spi')" },
+      { "path": "src/drivers/adc.cpp", "template": "avr/drivers/adc.cpp.j2", "when": "module_enabled('adc')" },
+      { "path": "src/drivers/pwm.cpp", "template": "avr/drivers/pwm.cpp.j2", "when": "module_enabled('pwm')" },
+      { "path": "src/drivers/timer.cpp", "template": "avr/drivers/timer.cpp.j2", "when": "module_enabled('timer')" },
+      { "path": "src/drivers/eeprom.cpp", "template": "avr/drivers/eeprom.cpp.j2", "when": "module_enabled('eeprom')" },
+      { "path": "src/drivers/rtc.cpp", "template": "avr/drivers/rtc.cpp.j2", "when": "module_enabled('rtc')" },
+      { "path": "src/drivers/imu.cpp", "template": "avr/drivers/imu.cpp.j2", "when": "module_enabled('imu')" },
+      { "path": "src/drivers/dht22.cpp", "template": "avr/drivers/dht22.cpp.j2", "when": "module_enabled('dht22')" },
+      { "path": "src/drivers/display_ssd1306.cpp", "template": "avr/drivers/display_ssd1306.cpp.j2", "when": "module_enabled('display_ssd1306')" },
+      { "path": "README.md", "template": "avr/README.md.j2", "when": "always" }
+    ]
+  }
+}

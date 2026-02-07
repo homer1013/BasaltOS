@@ -1,0 +1,41 @@
+{
+  "id": "ads1115",
+  "name": "ADS1115 16-bit ADC + PGA",
+  "description": "External 16-bit I2C ADC with programmable gain amplifier",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic16"],
+  "provides": ["adc_ext", "adc"],
+  "depends": ["i2c"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_ADS1115"],
+  "pins": ["i2c_sda", "i2c_scl"],
+  "configuration_options": [
+    {
+      "id": "address",
+      "name": "I2C Address",
+      "type": "select",
+      "options": ["0x48", "0x49", "0x4A", "0x4B"],
+      "default": "0x48"
+    },
+    {
+      "id": "pga_mv",
+      "name": "Full-Scale Range (mV)",
+      "type": "select",
+      "options": [6144, 4096, 2048, 1024, 512, 256],
+      "default": 2048
+    },
+    {
+      "id": "sample_rate_sps",
+      "name": "Sample Rate (SPS)",
+      "type": "select",
+      "options": [8, 16, 32, 64, 128, 250, 475, 860],
+      "default": 128
+    },
+    {
+      "id": "mode",
+      "name": "Conversion Mode",
+      "type": "select",
+      "options": ["single_shot", "continuous"],
+      "default": "single_shot"
+    }
+  ]
+}
