@@ -1,6 +1,6 @@
 {
   "fields": {
-    "project": { "key": "SCRUM" },
+    "project": { "key": "PROJ" },
     "summary": "S1 BUG: <short title>",
     "issuetype": { "name": "Bug" },
     "labels": ["roadmap:s1", "release:v0.1.0"],

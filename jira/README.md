@@ -8,6 +8,7 @@ Local Jira planning + daily JSON exports + structured sync updates.
 - `updates/` (`pending/`, `applied/`, templates)
 - `exports/` (gitignored snapshots)
 - `logs/` (gitignored logs)
+- `reports/` (generated markdown, keep sanitized before commit)
 
 ## Daily loop
 
@@ -23,6 +24,11 @@ During day:
 End of day:
 1. Run sync updates for final status/comments/transitions.
 2. `bash jira/scripts/export_daily.sh` to snapshot state.
+
+## Privacy
+- Do not commit `jira/config/jira.env`.
+- Do not commit raw `jira/exports/*` or `jira/logs/*`.
+- Keep `jira/updates/applied/*` and `jira/reports/*` generic/sanitized if shared publicly.
 
 Blocker report:
 
