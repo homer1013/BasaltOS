@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
+## Unreleased
+
+### Changed
+- ESP32-C3 SuperMini board defaults now use I2C `SDA=GPIO8`, `SCL=GPIO9` for bench-aligned SSD1306 workflows.
+- Shell console path on ESP32-C3 hardened for USB-Serial/JTAG interactive use.
+
+### Fixed
+- SSD1306 demo app (`spiffs/apps/ssd1306_shapes/main.py`) no longer relies on `%` string formatting unsupported by current MicroPython operator set.
+- SSD1306 validation flow now verified on both `128x64` and `128x32` panels (`0x3C`) with render confirmation.
+
 ## v0.1.0 - 2026-02-09
 
 ### Added

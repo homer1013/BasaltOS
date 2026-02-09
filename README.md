@@ -42,15 +42,21 @@ These components may be offered under separate terms.
 
 ## Sponsor BasaltOS
 
-If BasaltOS helps your work, you can support development via GitHub Sponsors:
+If BasaltOS helps your work, you can support development via:
 
-- https://github.com/sponsors/homer1013
+- GitHub Sponsors: https://github.com/sponsors/homer1013
+- Buy Me a Coffee: https://buymeacoffee.com/homer.morrill
 
 Sponsorship helps fund core maintenance, board bring-up, docs, CI time, and release quality work.
 
 ---
 
 ## Status (v0.1.0)
+
+Release alignment:
+- Latest Git tag/release baseline: `v0.1.0`
+- `main` currently includes post-`v0.1.0` hardening and hardware-validation fixes
+- Jira sprint/release tracking should continue to reference `v0.1.0` until the next tag is cut
 
 What’s working today:
 
@@ -98,6 +104,7 @@ What’s working today:
   - connectivity: `wifi`, `bluetooth`, `twai` (CAN)
   - transceiver + motor: `mcp2544fd`, `uln2003`, `l298n`
   - sensing/display gates: `display_ssd1306`, `rtc`, `imu`, `dht22`, `mic`, `ads1115`, `mcp23017`, `hp4067`, `tp4056`
+  - SSD1306 hardware validation complete on ESP32-C3 SuperMini (I2C defaults `SDA=GPIO8`, `SCL=GPIO9`) for both `128x64` and `128x32` panels at `0x3C`
 
 This release focuses on **workflow quality + platform breadth**: cleaner configurator UX, board-first taxonomy across wizard/UI, gated app selection in App Market, expanded board/driver catalogs, and practical runtime UI APIs for device-side apps.
 
