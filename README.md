@@ -1,6 +1,6 @@
 # BasaltOS
 [![Configurator CI](https://github.com/homer1013/BasaltOS/actions/workflows/configurator-ci.yml/badge.svg)](https://github.com/homer1013/BasaltOS/actions/workflows/configurator-ci.yml)
-[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-30363d?logo=github)](https://github.com/homer1013/BasaltOS#readme)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-30363d?logo=github)](https://github.com/sponsors/homer1013)
 
 BasaltOS is a lightweight, portable embedded OS / application platform aimed at making **small hardware projects feel like installing and running apps**—even for non-engineers.
 
@@ -39,6 +39,14 @@ The BasaltOS ecosystem may include:
 - Educational material and documentation
 
 These components may be offered under separate terms.
+
+## Sponsor BasaltOS
+
+If BasaltOS helps your work, you can support development via GitHub Sponsors:
+
+- https://github.com/sponsors/homer1013
+
+Sponsorship helps fund core maintenance, board bring-up, docs, CI time, and release quality work.
 
 ---
 
