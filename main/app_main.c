@@ -154,6 +154,15 @@
 #ifndef BASALT_PIN_CAN_INT
 #define BASALT_PIN_CAN_INT -1
 #endif
+#ifndef BASALT_PIN_SPI_SCLK
+#define BASALT_PIN_SPI_SCLK -1
+#endif
+#ifndef BASALT_PIN_SPI_MISO
+#define BASALT_PIN_SPI_MISO -1
+#endif
+#ifndef BASALT_PIN_SPI_MOSI
+#define BASALT_PIN_SPI_MOSI -1
+#endif
 #ifndef BASALT_CFG_MCP2544FD_STBY_ACTIVE_HIGH
 #define BASALT_CFG_MCP2544FD_STBY_ACTIVE_HIGH 1
 #endif
@@ -1647,6 +1656,14 @@ static void bsh_cmd_drivers(void) {
 
 #if BASALT_ENABLE_MCP2515
 static bool s_mcp2515_stub_ready = false;
+static bool s_mcp2515_spi_ready = false;
+static spi_device_handle_t s_mcp2515_dev = NULL;
+
+#define MCP2515_CMD_RESET      0xC0
+#define MCP2515_CMD_READ       0x03
+#define MCP2515_CMD_WRITE      0x02
+#define MCP2515_REG_CANSTAT    0x0E
+#define MCP2515_REG_TXB0D0     0x36
 
 static bool bsh_mcp2515_stub_init(char *err, size_t err_len) {
     if (s_mcp2515_stub_ready) return true;
@@ -1677,22 +1694,132 @@ static bool bsh_mcp2515_stub_init(char *err, size_t err_len) {
 #endif
 }
 
+static bool bsh_mcp2515_spi_ensure(char *err, size_t err_len) {
+    if (s_mcp2515_spi_ready && s_mcp2515_dev) return true;
+    if (!bsh_mcp2515_stub_init(err, err_len)) return false;
+    if (BASALT_PIN_SPI_SCLK < 0 || BASALT_PIN_SPI_MISO < 0 || BASALT_PIN_SPI_MOSI < 0) {
+        if (err && err_len) snprintf(err, err_len, "missing SPI pins (sclk=%d miso=%d mosi=%d)", BASALT_PIN_SPI_SCLK, BASALT_PIN_SPI_MISO, BASALT_PIN_SPI_MOSI);
+        return false;
+    }
+
+    spi_bus_config_t bus_cfg = {
+        .mosi_io_num = BASALT_PIN_SPI_MOSI,
+        .miso_io_num = BASALT_PIN_SPI_MISO,
+        .sclk_io_num = BASALT_PIN_SPI_SCLK,
+        .quadwp_io_num = -1,
+        .quadhd_io_num = -1,
+    };
+    esp_err_t ret = spi_bus_initialize(SPI2_HOST, &bus_cfg, SPI_DMA_CH_AUTO);
+    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
+        if (err && err_len) snprintf(err, err_len, "spi bus init failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+
+    spi_device_interface_config_t dev_cfg = {
+        .clock_speed_hz = 1 * 1000 * 1000,
+        .mode = 0,
+        .spics_io_num = BASALT_PIN_CAN_CS,
+        .queue_size = 1,
+    };
+    ret = spi_bus_add_device(SPI2_HOST, &dev_cfg, &s_mcp2515_dev);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "spi add device failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+
+    s_mcp2515_spi_ready = true;
+    return true;
+}
+
+static bool bsh_mcp2515_spi_xfer(const uint8_t *tx, uint8_t *rx, size_t len, char *err, size_t err_len) {
+    if (!s_mcp2515_spi_ready || !s_mcp2515_dev) {
+        if (err && err_len) snprintf(err, err_len, "spi device not ready");
+        return false;
+    }
+    if (!tx || len == 0) {
+        if (err && err_len) snprintf(err, err_len, "invalid spi xfer args");
+        return false;
+    }
+
+    spi_transaction_t t = {
+        .length = (uint32_t)(len * 8),
+        .tx_buffer = tx,
+        .rx_buffer = rx,
+    };
+    esp_err_t ret = spi_device_transmit(s_mcp2515_dev, &t);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "spi xfer failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    return true;
+}
+
+static bool bsh_mcp2515_reg_read(uint8_t reg, uint8_t *val, char *err, size_t err_len) {
+    uint8_t tx[3] = {MCP2515_CMD_READ, reg, 0x00};
+    uint8_t rx[3] = {0};
+    if (!bsh_mcp2515_spi_xfer(tx, rx, sizeof(tx), err, err_len)) return false;
+    if (val) *val = rx[2];
+    return true;
+}
+
+static bool bsh_mcp2515_reg_write(uint8_t reg, uint8_t val, char *err, size_t err_len) {
+    uint8_t tx[3] = {MCP2515_CMD_WRITE, reg, val};
+    return bsh_mcp2515_spi_xfer(tx, NULL, sizeof(tx), err, err_len);
+}
+
 static void bsh_cmd_mcp2515(const char *sub) {
     if (!sub || strcmp(sub, "status") == 0) {
         basalt_printf("mcp2515.enabled: yes\n");
         basalt_printf("mcp2515.spi_required: %s\n", BASALT_ENABLE_SPI ? "yes" : "no");
         basalt_printf("mcp2515.pins: can_cs=%d can_int=%d\n", BASALT_PIN_CAN_CS, BASALT_PIN_CAN_INT);
+        basalt_printf("mcp2515.spi_pins: sclk=%d miso=%d mosi=%d\n", BASALT_PIN_SPI_SCLK, BASALT_PIN_SPI_MISO, BASALT_PIN_SPI_MOSI);
         basalt_printf("mcp2515.stub_ready: %s\n", s_mcp2515_stub_ready ? "yes" : "no");
-        basalt_printf("mcp2515.note: runtime SPI transaction path is a follow-up; this command validates pin-level init readiness.\n");
+        basalt_printf("mcp2515.spi_ready: %s\n", (s_mcp2515_spi_ready && s_mcp2515_dev) ? "yes" : "no");
+        basalt_printf("mcp2515.note: probe performs SPI register read/write smoke on TXB0D0 and reads CANSTAT.\n");
         return;
     }
     if (strcmp(sub, "probe") == 0) {
         char err[96];
-        if (!bsh_mcp2515_stub_init(err, sizeof(err))) {
+        if (!bsh_mcp2515_spi_ensure(err, sizeof(err))) {
             basalt_printf("mcp2515 probe: fail (%s)\n", err);
             return;
         }
-        basalt_printf("mcp2515 probe: ok (stub init complete)\n");
+
+        uint8_t reset_cmd[1] = {MCP2515_CMD_RESET};
+        if (!bsh_mcp2515_spi_xfer(reset_cmd, NULL, sizeof(reset_cmd), err, sizeof(err))) {
+            basalt_printf("mcp2515 probe: fail (%s)\n", err);
+            return;
+        }
+        vTaskDelay(pdMS_TO_TICKS(5));
+
+        uint8_t canstat = 0;
+        if (!bsh_mcp2515_reg_read(MCP2515_REG_CANSTAT, &canstat, err, sizeof(err))) {
+            basalt_printf("mcp2515 probe: fail (%s)\n", err);
+            return;
+        }
+
+        uint8_t before = 0;
+        if (!bsh_mcp2515_reg_read(MCP2515_REG_TXB0D0, &before, err, sizeof(err))) {
+            basalt_printf("mcp2515 probe: fail (%s)\n", err);
+            return;
+        }
+        uint8_t pattern = (uint8_t)(before ^ 0x5A);
+        if (!bsh_mcp2515_reg_write(MCP2515_REG_TXB0D0, pattern, err, sizeof(err))) {
+            basalt_printf("mcp2515 probe: fail (%s)\n", err);
+            return;
+        }
+        uint8_t after = 0;
+        if (!bsh_mcp2515_reg_read(MCP2515_REG_TXB0D0, &after, err, sizeof(err))) {
+            basalt_printf("mcp2515 probe: fail (%s)\n", err);
+            return;
+        }
+        (void)bsh_mcp2515_reg_write(MCP2515_REG_TXB0D0, before, NULL, 0);
+
+        if (after != pattern) {
+            basalt_printf("mcp2515 probe: fail (rw mismatch reg=0x%02X wrote=0x%02X read=0x%02X)\n", MCP2515_REG_TXB0D0, pattern, after);
+            return;
+        }
+        basalt_printf("mcp2515 probe: ok (CANSTAT=0x%02X TXB0D0 rw=ok)\n", canstat);
         return;
     }
     basalt_printf("usage: mcp2515 [status|probe]\n");
