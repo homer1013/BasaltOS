@@ -1,9 +1,17 @@
 cmake_minimum_required(VERSION 3.16)
 
-# Use generated sdkconfig defaults from BasaltOS configurator
+# Layer project defaults first (partitions, console, etc.), then generated defaults.
+# This keeps required base settings (e.g., SPIFFS storage partition) while allowing
+# configurator output to override feature-specific settings.
 set(SDKCONFIG_DEFAULTS
-    ${CMAKE_SOURCE_DIR}/config/generated/sdkconfig.defaults
+    ${CMAKE_SOURCE_DIR}/sdkconfig.defaults
 )
+
+if(EXISTS ${CMAKE_SOURCE_DIR}/config/generated/sdkconfig.defaults)
+    list(APPEND SDKCONFIG_DEFAULTS
+        ${CMAKE_SOURCE_DIR}/config/generated/sdkconfig.defaults
+    )
+endif()
 
 set(EXTRA_COMPONENT_DIRS
     ${CMAKE_SOURCE_DIR}/runtime/python/micropython_embed
