@@ -62,3 +62,8 @@ bash jira/scripts/report_daily_status.sh
 
 This writes `daily_status_*.md` and `daily_social_*.md` to `jira/reports/`.
 
+
+Sprint cadence policy:
+
+- See `jira/docs/SPRINT_OPERATING_MODEL.md` for the single active 2-week sprint rules.
+- Use `jira/updates/template.mid_sprint_add.json` for controlled mid-sprint intake.
