@@ -86,3 +86,20 @@ To re-enable for explicit local testing:
 ```bash
 BASALTOS_LOCAL_MARKET_ENABLED=1 python tools/basaltos_config_server.py
 ```
+
+## Local Mode Guard Checks
+
+Verify local-mode scope enforcement:
+
+```bash
+# API should return 404 when market endpoints are disabled by default
+curl -sS -w "\nHTTP_CODE:%{http_code}\n" "http://127.0.0.1:5000/api/market/catalog?platform=esp32"
+
+# UI guard test (requires playwright installed)
+node tools/e2e/local_mode_nav_guard.js
+```
+
+Expected:
+- market catalog request returns HTTP 404 with disabled-in-local-mode message
+- guard test exits 0
+

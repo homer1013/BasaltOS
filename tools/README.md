@@ -103,3 +103,10 @@ Configurator API smoke test:
 ```bash
 bash tools/tests/configurator_api_smoke.sh
 ```
+
+Local-mode UI/API guard test (market/profile hidden + market API disabled):
+
+```bash
+node tools/e2e/local_mode_nav_guard.js
+```
+
