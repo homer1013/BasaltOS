@@ -63,7 +63,7 @@ jobs:
       - name: Configurator E2E smoke + deep
         run: |
           set -euo pipefail
-          python -c 'from tools import basaltos_config_server as srv; srv.app.run(debug=False, use_reloader=False, host="127.0.0.1", port=5000)' > /tmp/basalt_config_server.log 2>&1 &
+          BASALTOS_LOCAL_MARKET_ENABLED=1 python -c 'from tools import basaltos_config_server as srv; srv.app.run(debug=False, use_reloader=False, host="127.0.0.1", port=5000)' > /tmp/basalt_config_server.log 2>&1 &
           SERVER_PID=$!
           cleanup() {
             kill "$SERVER_PID" >/dev/null 2>&1 || true
