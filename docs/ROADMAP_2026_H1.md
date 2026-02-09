@@ -97,6 +97,7 @@ Goals:
 Deliverables:
 - Strengthened validation paths (`tools/validate_metadata.py` and related checks).
 - Fill high-value board metadata gaps (prioritize commonly used boards).
+- Driver intake shortlist and acceptance criteria documented (`docs/NEXT_DRIVER_INTAKE.md`).
 - Improve `docs/boards.md` and board schema examples.
 
 Definition of done:
