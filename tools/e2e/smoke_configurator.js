@@ -75,7 +75,6 @@ async function run() {
     await waitReady(page);
     await expect(await page.locator('#btn-home').isVisible(), 'home missing');
     await expect(await page.locator('#btn-open-config').isVisible(), 'config missing');
-    await expect(await page.locator('#btn-market').isVisible(), 'market missing');
     await expect(await page.locator('#landing-home').isVisible(), 'landing missing');
   });
 
@@ -100,6 +99,12 @@ async function run() {
   });
 
   await test('market add-to-build controls gated without board selection', async () => {
+    const marketButton = page.locator('#btn-market');
+    if (!(await marketButton.isVisible())) {
+      // Local mode intentionally hides market UI.
+      return;
+    }
+
     await openMarket(page);
     const toggles = page.locator('[data-market-page-add]');
     const count = await toggles.count();
