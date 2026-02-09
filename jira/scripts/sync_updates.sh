@@ -52,6 +52,15 @@ source "$ENV_FILE"
 
 log() { printf '[sync] %s\n' "$*"; }
 
+require_issue() {
+  local issue="$1"
+  local action="$2"
+  if [[ -z "$issue" ]]; then
+    echo "${action} requires 'issue'" >&2
+    exit 1
+  fi
+}
+
 api_get() {
   local path="$1"
   curl --fail-with-body -sS -u "$JIRA_EMAIL:$JIRA_TOKEN" \
@@ -65,7 +74,7 @@ api_post() {
   curl --fail-with-body -sS -u "$JIRA_EMAIL:$JIRA_TOKEN" \
     -H "Accept: application/json" -H "Content-Type: application/json" \
     -X POST "$JIRA_SITE$path" \
-    -d "$payload" >/dev/null
+    -d "$payload"
 }
 
 api_put() {
@@ -92,8 +101,11 @@ if not isinstance(ops, list):
 for i, op in enumerate(ops, 1):
     if not isinstance(op, dict):
         raise SystemExit(f'operation {i} is not an object')
-    if 'action' not in op or 'issue' not in op:
-        raise SystemExit(f'operation {i} missing action/issue')
+    if 'action' not in op:
+        raise SystemExit(f'operation {i} missing action')
+    action = str(op['action'])
+    if action != 'create_issue' and 'issue' not in op:
+        raise SystemExit(f'operation {i} ({action}) missing issue')
     op['_index'] = i
     print(json.dumps(op, ensure_ascii=True))
 PY
@@ -108,24 +120,77 @@ while IFS= read -r op; do
   [[ -z "$op" ]] && continue
 
   action="$(python3 -c 'import json,sys; print(json.loads(sys.stdin.read())["action"])' <<< "$op")"
-  issue="$(python3 -c 'import json,sys; print(json.loads(sys.stdin.read())["issue"])' <<< "$op")"
+  issue="$(python3 -c 'import json,sys; print(json.loads(sys.stdin.read()).get("issue",""))' <<< "$op")"
   idx="$(python3 -c 'import json,sys; print(json.loads(sys.stdin.read())["_index"])' <<< "$op")"
 
-  log "#${idx} ${action} ${issue}"
+  if [[ -n "$issue" ]]; then
+    log "#${idx} ${action} ${issue}"
+  else
+    log "#${idx} ${action}"
+  fi
 
   case "$action" in
+    create_issue)
+      project_default="${JIRA_PROJECT_KEY:-}"
+      payload="$(python3 - "$op" "$project_default" <<'PY'
+import json,sys
+op=json.loads(sys.argv[1])
+project_default=sys.argv[2]
+project_key=op.get('project', project_default)
+summary=op.get('summary','').strip()
+issue_type=op.get('issue_type','Task')
+labels=op.get('labels',[])
+parent=op.get('parent')
+fields_extra=op.get('fields',{})
+desc=op.get('description','').strip()
+if not project_key:
+    raise SystemExit('create_issue missing project and JIRA_PROJECT_KEY is not set')
+if not summary:
+    raise SystemExit('create_issue missing summary')
+fields={
+    'project': {'key': project_key},
+    'summary': summary,
+    'issuetype': {'name': issue_type},
+}
+if labels:
+    fields['labels']=labels
+if parent:
+    fields['parent']={'key': parent}
+if desc:
+    fields['description']={
+        'type':'doc','version':1,
+        'content':[{'type':'paragraph','content':[{'type':'text','text':desc}]}],
+    }
+if isinstance(fields_extra, dict):
+    fields.update(fields_extra)
+print(json.dumps({'fields': fields}))
+PY
+)"
+      summary="$(python3 -c 'import json,sys; print(json.loads(sys.stdin.read()).get("summary",""))' <<< "$op")"
+      if [[ "$DRY_RUN" == true ]]; then
+        log "DRY-RUN create_issue: $summary"
+      else
+        resp="$(api_post '/rest/api/3/issue' "$payload")"
+        key="$(python3 -c 'import json,sys; print(json.loads(sys.stdin.read()).get("key",""))' <<< "$resp")"
+        [[ -n "$key" ]] || { echo "create_issue did not return key" >&2; exit 1; }
+        log "Created issue: $key"
+      fi
+      ;;
+
     comment)
+      require_issue "$issue" "$action"
       body="$(python3 -c 'import json,sys; print(json.loads(sys.stdin.read()).get("body",""))' <<< "$op")"
       [[ -n "$body" ]] || { echo "comment missing body for ${issue}" >&2; exit 1; }
       payload="$(python3 -c 'import json,sys; txt=sys.stdin.read(); print(json.dumps({"body":{"type":"doc","version":1,"content":[{"type":"paragraph","content":[{"type":"text","text":txt}]}]}}))' <<< "$body")"
       if [[ "$DRY_RUN" == true ]]; then
         log "DRY-RUN comment: $body"
       else
-        api_post "/rest/api/3/issue/${issue}/comment" "$payload"
+        api_post "/rest/api/3/issue/${issue}/comment" "$payload" >/dev/null
       fi
       ;;
 
     transition)
+      require_issue "$issue" "$action"
       to="$(python3 -c 'import json,sys; print(json.loads(sys.stdin.read()).get("to",""))' <<< "$op")"
       [[ -n "$to" ]] || { echo "transition missing 'to' for ${issue}" >&2; exit 1; }
       if [[ "$DRY_RUN" == true ]]; then
@@ -136,21 +201,23 @@ for t in d.get("transitions",[]):
     if t.get("name","").strip().lower()==target:
         print(t["id"]); raise SystemExit(0)
 raise SystemExit("transition not found")' "$to")"
-        api_post "/rest/api/3/issue/${issue}/transitions" "{\"transition\":{\"id\":\"${tid}\"}}"
+        api_post "/rest/api/3/issue/${issue}/transitions" "{\"transition\":{\"id\":\"${tid}\"}}" >/dev/null
       fi
       ;;
 
     transition_id)
+      require_issue "$issue" "$action"
       tid="$(python3 -c 'import json,sys; print(json.loads(sys.stdin.read()).get("id",""))' <<< "$op")"
       [[ -n "$tid" ]] || { echo "transition_id missing 'id' for ${issue}" >&2; exit 1; }
       if [[ "$DRY_RUN" == true ]]; then
         log "DRY-RUN transition id: $tid"
       else
-        api_post "/rest/api/3/issue/${issue}/transitions" "{\"transition\":{\"id\":\"${tid}\"}}"
+        api_post "/rest/api/3/issue/${issue}/transitions" "{\"transition\":{\"id\":\"${tid}\"}}" >/dev/null
       fi
       ;;
 
     assign_self)
+      require_issue "$issue" "$action"
       if [[ "$DRY_RUN" == true ]]; then
         log "DRY-RUN assign self"
       else
@@ -159,6 +226,7 @@ raise SystemExit("transition not found")' "$to")"
       ;;
 
     assign)
+      require_issue "$issue" "$action"
       account_id="$(python3 -c 'import json,sys; print(json.loads(sys.stdin.read()).get("accountId",""))' <<< "$op")"
       [[ -n "$account_id" ]] || { echo "assign missing accountId for ${issue}" >&2; exit 1; }
       if [[ "$DRY_RUN" == true ]]; then
@@ -169,6 +237,7 @@ raise SystemExit("transition not found")' "$to")"
       ;;
 
     set_fields)
+      require_issue "$issue" "$action"
       fields_payload="$(python3 -c 'import json,sys; d=json.loads(sys.stdin.read()); print(json.dumps({"fields": d.get("fields", {})}))' <<< "$op")"
       if [[ "$DRY_RUN" == true ]]; then
         log "DRY-RUN set_fields: $fields_payload"

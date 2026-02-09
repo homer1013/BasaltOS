@@ -17,3 +17,4 @@ This folder stores structured Jira mutations that can be applied by
 - assign_self
 - assign
 - set_fields
+- create_issue

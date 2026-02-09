@@ -5,6 +5,14 @@
   },
   "operations": [
     {
+      "action": "create_issue",
+      "project": "PROJ",
+      "issue_type": "Task",
+      "summary": "Define Sprint N acceptance criteria",
+      "description": "Add acceptance checklist and expected outputs for this sprint.",
+      "labels": ["roadmap:sprint-n", "area:docs"]
+    },
+    {
       "action": "transition",
       "issue": "PROJ-123",
       "to": "In Progress"
@@ -24,16 +32,6 @@
     {
       "action": "assign_self",
       "issue": "PROJ-124"
-    },
-    {
-      "action": "assign",
-      "issue": "PROJ-125",
-      "accountId": "ACCOUNT_ID_HERE"
-    },
-    {
-      "action": "transition_id",
-      "issue": "PROJ-123",
-      "id": "TRANSITION_ID_HERE"
     }
   ]
 }
