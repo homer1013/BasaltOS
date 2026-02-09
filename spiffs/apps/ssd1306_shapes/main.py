@@ -17,6 +17,7 @@ else:
         else:
             w = d.width()
             h = d.height()
+            print("ssd1306_shapes: ready=1 width=%d height=%d" % (w, h))
             cx = w // 2
             cy = h // 2
             wh_min = w if w < h else h
@@ -32,6 +33,7 @@ else:
             d.line(w - 1, 0, 0, h - 1, 1)
             if hasattr(d, "text_at"):
                 d.text_at(2, 2, "DBG SSD1306", 1)
+                d.text_at(2, h - 10, "%dx%d" % (w, h), 1)
             d.show()
             print("ssd1306_shapes: rendered")
     except Exception as e:
