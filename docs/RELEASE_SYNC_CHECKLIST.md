@@ -2,6 +2,13 @@
 
 Use this checklist whenever a new `BasaltOS_Main` tag is created.
 
+
+## 0) Preflight guard (required)
+- Update `docs/RELEASE_SYNC_STATUS.md` target release rows.
+- Run checker in main repo:
+  - `python3 tools/release_sync_check.py --version <tag>`
+- CI also runs self-check via `tools/tests/release_sync_check_smoke.sh`.
+
 ## 1) Main repo release
 - Create and push tag (example: `v0.2.0`).
 - Publish GitHub release notes including contract/schema changes.

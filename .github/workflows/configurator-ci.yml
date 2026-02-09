@@ -53,6 +53,7 @@ jobs:
           bash tools/tests/platformio_phase1_contract.sh
           bash tools/tests/configure_bme280_smoke.sh
           bash tools/tests/configure_mcp2515_smoke.sh
+          bash tools/tests/release_sync_check_smoke.sh
 
       - name: Validate board.sh selectors
         run: |

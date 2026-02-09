@@ -14,6 +14,7 @@
 - `new_app.py` – create a new app skeleton (app.toml + main.py)
 - `basaltos_config_server.py` – local configurator backend + App Market API
 - `platformio/bootstrap_from_features.py` – generate a PlatformIO phase-1 starter config from `config/generated/basalt.features.json`
+- `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 
 ## new_app.py
 
@@ -146,4 +147,23 @@ MCP2515 driver configure smoke:
 
 ```bash
 bash tools/tests/configure_mcp2515_smoke.sh
+```
+
+
+Release sync checker (self-only, CI-safe):
+
+```bash
+python3 tools/release_sync_check.py --self-only --version v0.1.0
+```
+
+Cross-repo release sync check (local workspace with sibling repos):
+
+```bash
+python3 tools/release_sync_check.py --version v0.1.0
+```
+
+Release sync checker smoke test:
+
+```bash
+bash tools/tests/release_sync_check_smoke.sh
 ```
