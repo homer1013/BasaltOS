@@ -129,3 +129,9 @@ Override board id if needed:
 ```bash
 python3 tools/platformio/bootstrap_from_features.py --pio-board esp32-c3-devkitm-1
 ```
+
+PlatformIO phase-1 contract smoke (bootstrap from generated features):
+
+```bash
+bash tools/tests/platformio_phase1_contract.sh
+```
