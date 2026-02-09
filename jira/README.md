@@ -67,3 +67,11 @@ Sprint cadence policy:
 
 - See `jira/docs/SPRINT_OPERATING_MODEL.md` for the single active 2-week sprint rules.
 - Use `jira/updates/template.mid_sprint_add.json` for controlled mid-sprint intake.
+
+Rough-edge burn-down report (CLI/configurator):
+
+```bash
+bash jira/scripts/report_rough_edges.sh
+```
+
+This writes a top-5 focus report to `jira/reports/`.
