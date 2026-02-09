@@ -2,6 +2,11 @@
 
 This document selects the next two high-impact driver targets and defines acceptance criteria before implementation.
 
+## Status Update (2026-02-09)
+- `bme280` and `mcp2515` driver intake items from this doc have been implemented at diagnostics level.
+- Hardware-focused MCP2515 validation checklist now lives in `docs/MCP2515_HARDWARE_VERIFICATION.md`.
+- Next iteration should focus on hardware-verified CAN workflow reliability and bitrate/network matrix testing.
+
 ## Selection Criteria
 - High hardware usage frequency in hobby/prototyping workflows.
 - Strong fit with existing BasaltOS module model and board metadata.
