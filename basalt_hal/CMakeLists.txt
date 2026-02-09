@@ -18,5 +18,5 @@ idf_component_register(
     SRCS ${HAL_PORT_SRCS}
     INCLUDE_DIRS "include"
     PRIV_INCLUDE_DIRS ${PORT_DIR}
-    REQUIRES driver
+    REQUIRES esp_driver_gpio esp_driver_uart esp_driver_i2c driver
 )

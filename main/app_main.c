@@ -27,7 +27,7 @@
 #include "esp_spiffs.h"
 #include "nvs_flash.h"
 #include "esp_private/esp_clk.h"
-#include "esp_rom_uart.h"
+#include "esp_rom_serial_output.h"
 #include "hal/uart_ll.h"
 #include "driver/gpio.h"
 #include "driver/i2c.h"
@@ -4326,7 +4326,7 @@ static int basalt_uart_readline(char *out, size_t out_len) {
     size_t n = 0;
     while (n + 1 < out_len) {
         uint8_t ch = 0;
-        if (esp_rom_uart_rx_one_char(&ch) != 0) {
+        if (esp_rom_output_rx_one_char(&ch) != 0) {
             vTaskDelay(pdMS_TO_TICKS(10));
             continue;
         }
@@ -4379,8 +4379,8 @@ static void basalt_console_init(void) {
     g_uart_num = uart_num;
 
     // Use ROM UART routines and disable UART interrupts to avoid driver ISR crashes.
-    esp_rom_uart_set_as_console(uart_num);
-    esp_rom_uart_set_clock_baudrate(uart_num, esp_clk_apb_freq(), baud);
+    esp_rom_output_set_as_console(uart_num);
+    uart_ll_set_baudrate(UART_LL_GET_HW(uart_num), baud, esp_clk_apb_freq());
     uart_ll_disable_intr_mask(UART_LL_GET_HW(uart_num), UINT32_MAX);
     uart_ll_clr_intsts_mask(UART_LL_GET_HW(uart_num), UINT32_MAX);
 
