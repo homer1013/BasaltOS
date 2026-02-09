@@ -954,6 +954,7 @@ print("[uart_echo] done")
             raise ValueError("Pin map is invalid.")
 
         platform = str((board or {}).get("platform", "")).strip().lower()
+        board_default_pins = ((board or {}).get("pins", {}) or {}) if isinstance((board or {}).get("pins", {}), dict) else {}
         pin_usage: Dict[Any, List[str]] = {}
         errors: List[str] = []
 
@@ -979,7 +980,7 @@ print("[uart_echo] done")
                     if value < 0 or value > 39:
                         errors.append(f"{sval}: GPIO{value} is out of range for ESP32 (0-39).")
                         continue
-                    if 6 <= value <= 11:
+                    if 6 <= value <= 11 and board_default_pins.get(sval) != value:
                         errors.append(f"{sval}: GPIO{value} is reserved for SPI flash and cannot be used.")
                     io_type = self._signal_io_type(board, sval)
                     if io_type in {"output", "bidirectional"} and 34 <= value <= 39:
@@ -998,6 +999,14 @@ print("[uart_echo] done")
             kinds = [self._spi_share_kind(s) for s in uniq]
             if all(k is not None for k in kinds) and len(set(kinds)) == 1:
                 # Allow shared SPI data lines (e.g. tft_mosi + sd_mosi).
+                continue
+
+            if all(str(s).lower().endswith("_cs") for s in uniq):
+                # Allow board-level shared CS helper defaults (e.g. spi_cs + can_cs).
+                continue
+
+            if all(board_default_pins.get(s) == pin for s in uniq):
+                # Trust board-declared default multiplexing; still validate user overrides.
                 continue
 
             errors.append(f"GPIO{pin} is assigned to multiple signals: {', '.join(uniq)}.")
