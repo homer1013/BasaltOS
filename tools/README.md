@@ -74,6 +74,12 @@ When running `python tools/basaltos_config_server.py`, these endpoints are avail
 
 ## CLI Regression Tests
 
+Metadata validator regression (report mode + required-field enforcement):
+
+```bash
+bash tools/tests/validate_metadata_report_regression.sh
+```
+
 Invalid-board hard-fail regression guard:
 
 ```bash

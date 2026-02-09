@@ -38,6 +38,7 @@ jobs:
         run: |
           set -euo pipefail
           python tools/validate_metadata.py
+          bash tools/tests/validate_metadata_report_regression.sh
           python tools/configure.py --help >/dev/null
           python tools/configure.py --list-modules >/dev/null
           python tools/configure.py --list-boards >/dev/null
