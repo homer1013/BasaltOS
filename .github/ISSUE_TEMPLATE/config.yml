@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Platform repo
+    url: https://github.com/homer1013/BasaltOS_Platform
+    about: Hosted platform features belong in the Platform repo.
+  - name: PlatformIO repo
+    url: https://github.com/homer1013/BasaltOS_PlatformIO
+    about: PlatformIO/VS Code integration belongs in the PlatformIO repo.

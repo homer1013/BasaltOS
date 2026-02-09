@@ -1,0 +1,22 @@
+name: Core Feature
+labels: ["enhancement", "area:core"]
+description: Request a core/runtime/metadata feature.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What developer pain does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+    validations:
+      required: true
+  - type: textarea
+    id: contract_impact
+    attributes:
+      label: Contract Impact
+      description: Does this change generated output schema or CLI behavior?

@@ -278,3 +278,7 @@ If you’re new to the repo:
 1. Run `python tools/configure.py --wizard`
 2. Build and flash for your board
 3. Open an issue with platform, board, and logs
+
+## Contracts
+
+See `CONTRACTS.md` and `docs/RELEASE_SYNC_CHECKLIST.md` for cross-repo ownership and release sync rules.

@@ -1,0 +1,29 @@
+name: Core Bug
+labels: ["bug", "area:core"]
+description: Report a bug in BasaltOS core/runtime/configure contracts.
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What broke and where?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction Steps
+      description: Exact commands/inputs used.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs Actual
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Main repo version/tag
+      placeholder: v0.1.0
