@@ -350,7 +350,7 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"bme280", "bme280 [status|probe]", "BME280 probe/status over configured I2C pins"},
     {"tp4056", "tp4056 [status|on|off]", "TP4056 charger status and optional CE control"},
     {"mcp2544fd", "mcp2544fd [status|on|off|standby]", "MCP2544FD CAN transceiver control pins"},
-    {"mcp2515", "mcp2515 [status|probe]", "MCP2515 SPI CAN controller diagnostics stub"},
+    {"mcp2515", "mcp2515 [status|probe|reset|read <reg>|write <reg> <val>]", "MCP2515 SPI diagnostics (probe/reset/register read/write)"},
     {"uln2003", "uln2003 [status|off|step <steps> [delay_ms]]", "ULN2003 stepper driver control"},
     {"l298n", "l298n [status|stop|a <fwd|rev|stop>|b <fwd|rev|stop>]", "L298N dual H-bridge motor control"},
     {"wifi", "wifi [status|scan|connect|reconnect|disconnect]", "Wi-Fi station tools"},
@@ -1767,7 +1767,16 @@ static bool bsh_mcp2515_reg_write(uint8_t reg, uint8_t val, char *err, size_t er
     return bsh_mcp2515_spi_xfer(tx, NULL, sizeof(tx), err, err_len);
 }
 
-static void bsh_cmd_mcp2515(const char *sub) {
+static bool bsh_parse_u8(const char *txt, uint8_t *out) {
+    if (!txt || !out) return false;
+    char *end = NULL;
+    long v = strtol(txt, &end, 0);
+    if (end == txt || (end && *end != '\0') || v < 0 || v > 0xFF) return false;
+    *out = (uint8_t)v;
+    return true;
+}
+
+static void bsh_cmd_mcp2515(const char *sub, const char *arg1, const char *arg2) {
     if (!sub || strcmp(sub, "status") == 0) {
         basalt_printf("mcp2515.enabled: yes\n");
         basalt_printf("mcp2515.spi_required: %s\n", BASALT_ENABLE_SPI ? "yes" : "no");
@@ -1778,13 +1787,60 @@ static void bsh_cmd_mcp2515(const char *sub) {
         basalt_printf("mcp2515.note: probe performs SPI register read/write smoke on TXB0D0 and reads CANSTAT.\n");
         return;
     }
-    if (strcmp(sub, "probe") == 0) {
-        char err[96];
-        if (!bsh_mcp2515_spi_ensure(err, sizeof(err))) {
-            basalt_printf("mcp2515 probe: fail (%s)\n", err);
+
+    char err[96];
+    if (!bsh_mcp2515_spi_ensure(err, sizeof(err))) {
+        basalt_printf("mcp2515: %s\n", err);
+        return;
+    }
+
+    if (strcmp(sub, "reset") == 0) {
+        uint8_t reset_cmd[1] = {MCP2515_CMD_RESET};
+        if (!bsh_mcp2515_spi_xfer(reset_cmd, NULL, sizeof(reset_cmd), err, sizeof(err))) {
+            basalt_printf("mcp2515 reset: fail (%s)\n", err);
             return;
         }
+        vTaskDelay(pdMS_TO_TICKS(5));
+        basalt_printf("mcp2515 reset: ok\n");
+        return;
+    }
 
+    if (strcmp(sub, "read") == 0) {
+        uint8_t reg = 0;
+        if (!bsh_parse_u8(arg1, &reg)) {
+            basalt_printf("mcp2515 read: invalid reg '%s' (expected 0..255 or 0x00..0xFF)\n", arg1 ? arg1 : "");
+            return;
+        }
+        uint8_t val = 0;
+        if (!bsh_mcp2515_reg_read(reg, &val, err, sizeof(err))) {
+            basalt_printf("mcp2515 read: fail (%s)\n", err);
+            return;
+        }
+        basalt_printf("mcp2515 read: reg=0x%02X val=0x%02X\n", reg, val);
+        return;
+    }
+
+    if (strcmp(sub, "write") == 0) {
+        uint8_t reg = 0;
+        uint8_t val = 0;
+        if (!bsh_parse_u8(arg1, &reg) || !bsh_parse_u8(arg2, &val)) {
+            basalt_printf("mcp2515 write: invalid args (usage: mcp2515 write <reg> <val>)\n");
+            return;
+        }
+        if (!bsh_mcp2515_reg_write(reg, val, err, sizeof(err))) {
+            basalt_printf("mcp2515 write: fail (%s)\n", err);
+            return;
+        }
+        uint8_t verify = 0;
+        if (!bsh_mcp2515_reg_read(reg, &verify, err, sizeof(err))) {
+            basalt_printf("mcp2515 write: wrote 0x%02X but verify read failed (%s)\n", val, err);
+            return;
+        }
+        basalt_printf("mcp2515 write: reg=0x%02X val=0x%02X verify=0x%02X\n", reg, val, verify);
+        return;
+    }
+
+    if (strcmp(sub, "probe") == 0) {
         uint8_t reset_cmd[1] = {MCP2515_CMD_RESET};
         if (!bsh_mcp2515_spi_xfer(reset_cmd, NULL, sizeof(reset_cmd), err, sizeof(err))) {
             basalt_printf("mcp2515 probe: fail (%s)\n", err);
@@ -1822,11 +1878,14 @@ static void bsh_cmd_mcp2515(const char *sub) {
         basalt_printf("mcp2515 probe: ok (CANSTAT=0x%02X TXB0D0 rw=ok)\n", canstat);
         return;
     }
-    basalt_printf("usage: mcp2515 [status|probe]\n");
+
+    basalt_printf("usage: mcp2515 [status|probe|reset|read <reg>|write <reg> <val>]\n");
 }
 #else
-static void bsh_cmd_mcp2515(const char *sub) {
+static void bsh_cmd_mcp2515(const char *sub, const char *arg1, const char *arg2) {
     (void)sub;
+    (void)arg1;
+    (void)arg2;
     basalt_printf("mcp2515: unavailable (enable mcp2515+spi drivers)\n");
 }
 #endif
@@ -3995,7 +4054,9 @@ static void bsh_handle_line(char *line) {
     } else if (strcmp(cmd, "mcp2515") == 0) {
 #if BASALT_SHELL_LEVEL >= 3
         char *sub = strtok(NULL, " \t\r\n");
-        bsh_cmd_mcp2515(sub);
+        char *arg1 = strtok(NULL, " \t\r\n");
+        char *arg2 = strtok(NULL, " \t\r\n");
+        bsh_cmd_mcp2515(sub, arg1, arg2);
 #else
         basalt_printf("mcp2515: disabled in this shell level\n");
 #endif
