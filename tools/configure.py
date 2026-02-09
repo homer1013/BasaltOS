@@ -1004,7 +1004,14 @@ def validate_required_module_pins(
                 errors.append(f"module '{mid}' requires pin '{pin_name}' but board profile does not define it")
                 continue
             value = pins.get(pin_name)
-            if not isinstance(value, int) or value < 0:
+            # Boards may encode pins as numeric GPIOs (e.g. ESP32) or symbolic
+            # names (e.g. STM32 "PA2", AVR "D1", PIC "RC6").
+            is_valid = False
+            if isinstance(value, int):
+                is_valid = value >= 0
+            elif isinstance(value, str):
+                is_valid = len(value.strip()) > 0
+            if not is_valid:
                 errors.append(f"module '{mid}' requires pin '{pin_name}' to be bound (got {value})")
     return errors
 
