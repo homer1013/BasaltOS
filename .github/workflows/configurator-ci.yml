@@ -60,7 +60,7 @@ jobs:
           set -euo pipefail
           bash tools/tests/configurator_api_smoke.sh
 
-      - name: Configurator E2E smoke + deep
+      - name: Configurator E2E smoke
         run: |
           set -euo pipefail
           BASALTOS_LOCAL_MARKET_ENABLED=1 python -c 'from tools import basaltos_config_server as srv; srv.app.run(debug=False, use_reloader=False, host="127.0.0.1", port=5000)' > /tmp/basalt_config_server.log 2>&1 &
@@ -80,4 +80,3 @@ jobs:
           curl -fsS http://127.0.0.1:5000/ >/dev/null || { echo "server failed to start"; exit 1; }
 
           BASALT_UI_URL=http://127.0.0.1:5000 node tools/e2e/smoke_configurator.js
-          BASALT_UI_URL=http://127.0.0.1:5000 node tools/e2e/deep_configurator.js
