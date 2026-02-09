@@ -50,7 +50,7 @@ Sponsorship helps fund core maintenance, board bring-up, docs, CI time, and rele
 
 ---
 
-## Status (v0.0.7)
+## Status (v0.1.0)
 
 What’s working today:
 

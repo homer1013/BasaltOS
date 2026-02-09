@@ -28,7 +28,7 @@ Options:
   --fast                 Skip 'idf.py fullclean' (still builds)
   --no-build             Do not run idf.py; package existing build artifacts
   --target <name>        Run 'idf.py set-target <name>' before build (e.g. esp32, esp32s3)
-  --version <tag>        Version label (e.g. v0.0.3) used in build_info and dist naming
+  --version <tag>        Version label (e.g. v0.1.0) used in build_info and dist naming
   --timestamped          Write outputs to dist/<UTCSTAMP>_<version>/ (no dist wipe)
   --port <device>        Default serial port used by generated dist/flash.sh (default: /dev/ttyUSB0)
   -h, --help             Show this help

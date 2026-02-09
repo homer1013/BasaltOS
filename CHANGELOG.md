@@ -2,6 +2,24 @@
 
 All notable changes to this project are documented in this file.
 
+## v0.1.0 - 2026-02-09
+
+### Added
+- Jira workspace automation for daily export/sync/reporting (`jira/scripts/export_daily.sh`, `sync_updates.sh`, blockers/sprint/release/daily reports).
+- Public funding metadata for GitHub Sponsors and Buy Me a Coffee (`.github/FUNDING.yml`).
+- CLI reliability acceptance matrix for Sprint 2 verification (`docs/CLI_RELIABILITY_ACCEPTANCE.md`).
+- Metadata validator regression test coverage in CI (`tools/tests/validate_metadata_report_regression.sh`).
+
+### Changed
+- Configurator CI/e2e flow hardened for local-mode scope and market-page visibility behavior.
+- Metadata validation tightened with required-field checks, duplicate detection, and remediation reporting (`tools/validate_metadata.py`).
+- Release/readiness docs and status reporting aligned to v0.1.0 delivery.
+
+### Fixed
+- CI workflow breakages in configurator pipeline and runner compatibility.
+- Local configurator navigation guardrails to prevent invalid market/profile paths.
+- JIRA sync workflow robustness for create-issue/update operations.
+
 ## v0.0.7 - 2026-02-07
 
 ### Added
