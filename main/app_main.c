@@ -124,6 +124,9 @@
 #ifndef BASALT_ENABLE_MCP2544FD
 #define BASALT_ENABLE_MCP2544FD 0
 #endif
+#ifndef BASALT_ENABLE_MCP2515
+#define BASALT_ENABLE_MCP2515 0
+#endif
 #ifndef BASALT_ENABLE_ULN2003
 #define BASALT_ENABLE_ULN2003 0
 #endif
@@ -144,6 +147,12 @@
 #endif
 #ifndef BASALT_PIN_CAN_EN
 #define BASALT_PIN_CAN_EN -1
+#endif
+#ifndef BASALT_PIN_CAN_CS
+#define BASALT_PIN_CAN_CS -1
+#endif
+#ifndef BASALT_PIN_CAN_INT
+#define BASALT_PIN_CAN_INT -1
 #endif
 #ifndef BASALT_CFG_MCP2544FD_STBY_ACTIVE_HIGH
 #define BASALT_CFG_MCP2544FD_STBY_ACTIVE_HIGH 1
@@ -332,6 +341,7 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"bme280", "bme280 [status|probe]", "BME280 probe/status over configured I2C pins"},
     {"tp4056", "tp4056 [status|on|off]", "TP4056 charger status and optional CE control"},
     {"mcp2544fd", "mcp2544fd [status|on|off|standby]", "MCP2544FD CAN transceiver control pins"},
+    {"mcp2515", "mcp2515 [status|probe]", "MCP2515 SPI CAN controller diagnostics stub"},
     {"uln2003", "uln2003 [status|off|step <steps> [delay_ms]]", "ULN2003 stepper driver control"},
     {"l298n", "l298n [status|stop|a <fwd|rev|stop>|b <fwd|rev|stop>]", "L298N dual H-bridge motor control"},
     {"wifi", "wifi [status|scan|connect|reconnect|disconnect]", "Wi-Fi station tools"},
@@ -355,7 +365,7 @@ static bool bsh_help_cmd_hidden_tiny(const char *name) {
         "ls", "cat", "cd", "mkdir", "cp", "mv", "rm",
         "apps_dev", "led_test", "devcheck", "edit",
         "run_dev", "kill", "applet",
-        "install", "remove", "logs", "imu", "bme280", "tp4056", "mcp2544fd", "uln2003", "l298n", "wifi", "bluetooth", "can"
+        "install", "remove", "logs", "imu", "bme280", "tp4056", "mcp2544fd", "mcp2515", "uln2003", "l298n", "wifi", "bluetooth", "can"
     };
     for (size_t i = 0; i < sizeof(k_hidden) / sizeof(k_hidden[0]); ++i) {
         if (strcmp(name, k_hidden[i]) == 0) return true;
@@ -1617,6 +1627,11 @@ static void bsh_cmd_drivers(void) {
 #else
     basalt_printf("  mcp2544fd: disabled\n");
 #endif
+#if BASALT_ENABLE_MCP2515
+    basalt_printf("  mcp2515: enabled (shell API: mcp2515 status/probe)\n");
+#else
+    basalt_printf("  mcp2515: disabled\n");
+#endif
 #if BASALT_ENABLE_ULN2003
     basalt_printf("  uln2003: enabled (shell API: uln2003 status/off/step)\n");
 #else
@@ -1629,6 +1644,65 @@ static void bsh_cmd_drivers(void) {
 #endif
     basalt_printf("hint: these are configuration gates today; runtime implementations are incremental.\n");
 }
+
+#if BASALT_ENABLE_MCP2515
+static bool s_mcp2515_stub_ready = false;
+
+static bool bsh_mcp2515_stub_init(char *err, size_t err_len) {
+    if (s_mcp2515_stub_ready) return true;
+#if !BASALT_ENABLE_SPI
+    if (err && err_len) snprintf(err, err_len, "spi driver not enabled");
+    return false;
+#else
+    if (BASALT_PIN_CAN_CS < 0 || BASALT_PIN_CAN_INT < 0) {
+        if (err && err_len) snprintf(err, err_len, "missing MCP2515 pins (can_cs=%d can_int=%d)", BASALT_PIN_CAN_CS, BASALT_PIN_CAN_INT);
+        return false;
+    }
+    esp_err_t ret = gpio_reset_pin((gpio_num_t)BASALT_PIN_CAN_CS);
+    if (ret == ESP_OK) ret = gpio_set_direction((gpio_num_t)BASALT_PIN_CAN_CS, GPIO_MODE_OUTPUT);
+    if (ret == ESP_OK) ret = gpio_set_level((gpio_num_t)BASALT_PIN_CAN_CS, 1);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "can_cs init failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    ret = gpio_reset_pin((gpio_num_t)BASALT_PIN_CAN_INT);
+    if (ret == ESP_OK) ret = gpio_set_direction((gpio_num_t)BASALT_PIN_CAN_INT, GPIO_MODE_INPUT);
+    if (ret == ESP_OK) ret = gpio_set_pull_mode((gpio_num_t)BASALT_PIN_CAN_INT, GPIO_PULLUP_ONLY);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "can_int init failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    s_mcp2515_stub_ready = true;
+    return true;
+#endif
+}
+
+static void bsh_cmd_mcp2515(const char *sub) {
+    if (!sub || strcmp(sub, "status") == 0) {
+        basalt_printf("mcp2515.enabled: yes\n");
+        basalt_printf("mcp2515.spi_required: %s\n", BASALT_ENABLE_SPI ? "yes" : "no");
+        basalt_printf("mcp2515.pins: can_cs=%d can_int=%d\n", BASALT_PIN_CAN_CS, BASALT_PIN_CAN_INT);
+        basalt_printf("mcp2515.stub_ready: %s\n", s_mcp2515_stub_ready ? "yes" : "no");
+        basalt_printf("mcp2515.note: runtime SPI transaction path is a follow-up; this command validates pin-level init readiness.\n");
+        return;
+    }
+    if (strcmp(sub, "probe") == 0) {
+        char err[96];
+        if (!bsh_mcp2515_stub_init(err, sizeof(err))) {
+            basalt_printf("mcp2515 probe: fail (%s)\n", err);
+            return;
+        }
+        basalt_printf("mcp2515 probe: ok (stub init complete)\n");
+        return;
+    }
+    basalt_printf("usage: mcp2515 [status|probe]\n");
+}
+#else
+static void bsh_cmd_mcp2515(const char *sub) {
+    (void)sub;
+    basalt_printf("mcp2515: unavailable (enable mcp2515+spi drivers)\n");
+}
+#endif
 
 #if BASALT_SHELL_LEVEL >= 3
 #if BASALT_ENABLE_IMU && BASALT_ENABLE_I2C
@@ -3790,6 +3864,13 @@ static void bsh_handle_line(char *line) {
         bsh_cmd_mcp2544fd(sub);
 #else
         basalt_printf("mcp2544fd: disabled in this shell level\n");
+#endif
+    } else if (strcmp(cmd, "mcp2515") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        bsh_cmd_mcp2515(sub);
+#else
+        basalt_printf("mcp2515: disabled in this shell level\n");
 #endif
     } else if (strcmp(cmd, "uln2003") == 0) {
 #if BASALT_SHELL_LEVEL >= 3
