@@ -350,7 +350,7 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"bme280", "bme280 [status|probe]", "BME280 probe/status over configured I2C pins"},
     {"tp4056", "tp4056 [status|on|off]", "TP4056 charger status and optional CE control"},
     {"mcp2544fd", "mcp2544fd [status|on|off|standby]", "MCP2544FD CAN transceiver control pins"},
-    {"mcp2515", "mcp2515 [status|probe|reset|read <reg>|write <reg> <val>]", "MCP2515 SPI diagnostics (probe/reset/register read/write)"},
+    {"mcp2515", "mcp2515 [status|probe|reset|read <reg>|write <reg> <val>|tx <id> <hex>|rx]", "MCP2515 SPI/CAN diagnostics (reg + tx/rx bring-up)"},
     {"uln2003", "uln2003 [status|off|step <steps> [delay_ms]]", "ULN2003 stepper driver control"},
     {"l298n", "l298n [status|stop|a <fwd|rev|stop>|b <fwd|rev|stop>]", "L298N dual H-bridge motor control"},
     {"wifi", "wifi [status|scan|connect|reconnect|disconnect]", "Wi-Fi station tools"},
@@ -1637,7 +1637,7 @@ static void bsh_cmd_drivers(void) {
     basalt_printf("  mcp2544fd: disabled\n");
 #endif
 #if BASALT_ENABLE_MCP2515
-    basalt_printf("  mcp2515: enabled (shell API: mcp2515 status/probe)\n");
+    basalt_printf("  mcp2515: enabled (shell API: mcp2515 status/probe/reset/read/write/tx/rx)\n");
 #else
     basalt_printf("  mcp2515: disabled\n");
 #endif
@@ -1659,11 +1659,24 @@ static bool s_mcp2515_stub_ready = false;
 static bool s_mcp2515_spi_ready = false;
 static spi_device_handle_t s_mcp2515_dev = NULL;
 
-#define MCP2515_CMD_RESET      0xC0
-#define MCP2515_CMD_READ       0x03
-#define MCP2515_CMD_WRITE      0x02
-#define MCP2515_REG_CANSTAT    0x0E
-#define MCP2515_REG_TXB0D0     0x36
+#define MCP2515_CMD_RESET          0xC0
+#define MCP2515_CMD_READ           0x03
+#define MCP2515_CMD_WRITE          0x02
+#define MCP2515_CMD_RTS_TXB0       0x81
+#define MCP2515_CMD_READ_RX_STATUS 0xB0
+
+#define MCP2515_REG_CANSTAT        0x0E
+#define MCP2515_REG_CANINTF        0x2C
+#define MCP2515_REG_TXB0CTRL       0x30
+#define MCP2515_REG_TXB0SIDH       0x31
+#define MCP2515_REG_TXB0SIDL       0x32
+#define MCP2515_REG_TXB0DLC        0x35
+#define MCP2515_REG_TXB0D0         0x36
+#define MCP2515_REG_RXB0DLC        0x65
+#define MCP2515_REG_RXB0D0         0x66
+
+#define MCP2515_CANINTF_RX0IF      0x01
+#define MCP2515_CANINTF_RX1IF      0x02
 
 static bool bsh_mcp2515_stub_init(char *err, size_t err_len) {
     if (s_mcp2515_stub_ready) return true;
@@ -1776,6 +1789,61 @@ static bool bsh_parse_u8(const char *txt, uint8_t *out) {
     return true;
 }
 
+static bool bsh_parse_u16(const char *txt, uint16_t *out) {
+    if (!txt || !out) return false;
+    char *end = NULL;
+    long v = strtol(txt, &end, 0);
+    if (end == txt || (end && *end != '\0') || v < 0 || v > 0xFFFF) return false;
+    *out = (uint16_t)v;
+    return true;
+}
+
+static int bsh_hex_nibble(char c) {
+    if (c >= '0' && c <= '9') return c - '0';
+    if (c >= 'a' && c <= 'f') return c - 'a' + 10;
+    if (c >= 'A' && c <= 'F') return c - 'A' + 10;
+    return -1;
+}
+
+static bool bsh_parse_hex_bytes(const char *hex, uint8_t *out, uint8_t *out_len) {
+    if (!hex || !out || !out_len) return false;
+    size_t n = strlen(hex);
+    if (n == 0 || (n % 2) != 0 || n > 16) return false;
+    uint8_t len = (uint8_t)(n / 2);
+    for (uint8_t i = 0; i < len; ++i) {
+        int hi = bsh_hex_nibble(hex[i * 2]);
+        int lo = bsh_hex_nibble(hex[i * 2 + 1]);
+        if (hi < 0 || lo < 0) return false;
+        out[i] = (uint8_t)((hi << 4) | lo);
+    }
+    *out_len = len;
+    return true;
+}
+
+static bool bsh_mcp2515_send_std(uint16_t sid, const uint8_t *data, uint8_t dlc, char *err, size_t err_len) {
+    if (sid > 0x7FF) {
+        if (err && err_len) snprintf(err, err_len, "standard id out of range (0x%03X)", sid);
+        return false;
+    }
+    if (dlc > 8) {
+        if (err && err_len) snprintf(err, err_len, "invalid dlc %u", (unsigned)dlc);
+        return false;
+    }
+
+    uint8_t sidh = (uint8_t)(sid >> 3);
+    uint8_t sidl = (uint8_t)((sid & 0x7) << 5);
+    if (!bsh_mcp2515_reg_write(MCP2515_REG_TXB0SIDH, sidh, err, err_len)) return false;
+    if (!bsh_mcp2515_reg_write(MCP2515_REG_TXB0SIDL, sidl, err, err_len)) return false;
+    if (!bsh_mcp2515_reg_write(MCP2515_REG_TXB0DLC, (uint8_t)(dlc & 0x0F), err, err_len)) return false;
+    for (uint8_t i = 0; i < dlc; ++i) {
+        if (!bsh_mcp2515_reg_write((uint8_t)(MCP2515_REG_TXB0D0 + i), data[i], err, err_len)) return false;
+    }
+
+    uint8_t rts[1] = {MCP2515_CMD_RTS_TXB0};
+    if (!bsh_mcp2515_spi_xfer(rts, NULL, sizeof(rts), err, err_len)) return false;
+    return true;
+}
+
 static void bsh_cmd_mcp2515(const char *sub, const char *arg1, const char *arg2) {
     if (!sub || strcmp(sub, "status") == 0) {
         basalt_printf("mcp2515.enabled: yes\n");
@@ -1784,7 +1852,7 @@ static void bsh_cmd_mcp2515(const char *sub, const char *arg1, const char *arg2)
         basalt_printf("mcp2515.spi_pins: sclk=%d miso=%d mosi=%d\n", BASALT_PIN_SPI_SCLK, BASALT_PIN_SPI_MISO, BASALT_PIN_SPI_MOSI);
         basalt_printf("mcp2515.stub_ready: %s\n", s_mcp2515_stub_ready ? "yes" : "no");
         basalt_printf("mcp2515.spi_ready: %s\n", (s_mcp2515_spi_ready && s_mcp2515_dev) ? "yes" : "no");
-        basalt_printf("mcp2515.note: probe performs SPI register read/write smoke on TXB0D0 and reads CANSTAT.\n");
+        basalt_printf("mcp2515.note: probe/read/write/tx/rx are bring-up diagnostics; full CAN workflow requires hardware validation.\n");
         return;
     }
 
@@ -1840,6 +1908,72 @@ static void bsh_cmd_mcp2515(const char *sub, const char *arg1, const char *arg2)
         return;
     }
 
+    if (strcmp(sub, "tx") == 0) {
+        uint16_t sid = 0;
+        if (!bsh_parse_u16(arg1, &sid) || sid > 0x7FF) {
+            basalt_printf("mcp2515 tx: invalid id '%s' (expected 0..0x7FF)\n", arg1 ? arg1 : "");
+            return;
+        }
+        uint8_t data[8] = {0};
+        uint8_t dlc = 0;
+        if (!bsh_parse_hex_bytes(arg2, data, &dlc)) {
+            basalt_printf("mcp2515 tx: invalid data '%s' (expected 1..8 bytes as hex pairs)\n", arg2 ? arg2 : "");
+            return;
+        }
+        if (!bsh_mcp2515_send_std(sid, data, dlc, err, sizeof(err))) {
+            basalt_printf("mcp2515 tx: fail (%s)\n", err);
+            return;
+        }
+        uint8_t txb0ctrl = 0;
+        if (!bsh_mcp2515_reg_read(MCP2515_REG_TXB0CTRL, &txb0ctrl, err, sizeof(err))) {
+            basalt_printf("mcp2515 tx: sent id=0x%03X dlc=%u (status read failed: %s)\n", sid, (unsigned)dlc, err);
+            return;
+        }
+        basalt_printf("mcp2515 tx: id=0x%03X dlc=%u txb0ctrl=0x%02X\n", sid, (unsigned)dlc, txb0ctrl);
+        return;
+    }
+
+    if (strcmp(sub, "rx") == 0) {
+        uint8_t rxst_tx[2] = {MCP2515_CMD_READ_RX_STATUS, 0x00};
+        uint8_t rxst_rx[2] = {0};
+        if (!bsh_mcp2515_spi_xfer(rxst_tx, rxst_rx, sizeof(rxst_tx), err, sizeof(err))) {
+            basalt_printf("mcp2515 rx: fail (%s)\n", err);
+            return;
+        }
+
+        uint8_t canintf = 0;
+        if (!bsh_mcp2515_reg_read(MCP2515_REG_CANINTF, &canintf, err, sizeof(err))) {
+            basalt_printf("mcp2515 rx: fail (%s)\n", err);
+            return;
+        }
+
+        basalt_printf("mcp2515 rx: rx_status=0x%02X canintf=0x%02X rx0if=%s rx1if=%s\n",
+                      rxst_rx[1], canintf,
+                      (canintf & MCP2515_CANINTF_RX0IF) ? "yes" : "no",
+                      (canintf & MCP2515_CANINTF_RX1IF) ? "yes" : "no");
+
+        if (canintf & MCP2515_CANINTF_RX0IF) {
+            uint8_t dlc = 0;
+            if (!bsh_mcp2515_reg_read(MCP2515_REG_RXB0DLC, &dlc, err, sizeof(err))) {
+                basalt_printf("mcp2515 rx: rx0 dlc read failed (%s)\n", err);
+                return;
+            }
+            uint8_t n = (uint8_t)(dlc & 0x0F);
+            if (n > 8) n = 8;
+            basalt_printf("mcp2515 rx0: dlc=%u data=", (unsigned)n);
+            for (uint8_t i = 0; i < n; ++i) {
+                uint8_t b = 0;
+                if (!bsh_mcp2515_reg_read((uint8_t)(MCP2515_REG_RXB0D0 + i), &b, err, sizeof(err))) {
+                    basalt_printf("<err:%s>", err);
+                    break;
+                }
+                basalt_printf("%02X", b);
+            }
+            basalt_printf("\n");
+        }
+        return;
+    }
+
     if (strcmp(sub, "probe") == 0) {
         uint8_t reset_cmd[1] = {MCP2515_CMD_RESET};
         if (!bsh_mcp2515_spi_xfer(reset_cmd, NULL, sizeof(reset_cmd), err, sizeof(err))) {
@@ -1879,8 +2013,9 @@ static void bsh_cmd_mcp2515(const char *sub, const char *arg1, const char *arg2)
         return;
     }
 
-    basalt_printf("usage: mcp2515 [status|probe|reset|read <reg>|write <reg> <val>]\n");
+    basalt_printf("usage: mcp2515 [status|probe|reset|read <reg>|write <reg> <val>|tx <id> <hex>|rx]\n");
 }
+
 #else
 static void bsh_cmd_mcp2515(const char *sub, const char *arg1, const char *arg2) {
     (void)sub;
