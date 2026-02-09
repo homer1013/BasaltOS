@@ -51,6 +51,7 @@ jobs:
           bash tools/tests/configure_smoke_multi_board.sh
           bash tools/tests/configure_deterministic_outputs.sh
           bash tools/tests/platformio_phase1_contract.sh
+          bash tools/tests/configure_bme280_smoke.sh
 
       - name: Validate board.sh selectors
         run: |

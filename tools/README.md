@@ -135,3 +135,9 @@ PlatformIO phase-1 contract smoke (bootstrap from generated features):
 ```bash
 bash tools/tests/platformio_phase1_contract.sh
 ```
+
+BME280 driver configure smoke:
+
+```bash
+bash tools/tests/configure_bme280_smoke.sh
+```
