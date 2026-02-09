@@ -128,6 +128,7 @@ Goals:
 
 Deliverables:
 - Initial PlatformIO platform skeleton in separate integration workspace/repo direction.
+- Scope boundary doc for v0.2.0 tracks: `docs/V0_2_SCOPE_BOUNDARIES.md`.
 - Draft `platform.json` and builder script approach validated against BasaltOS generation flow.
 - One reference board building through PlatformIO path.
 - Publish implementation plan for full PlatformIO phase.
