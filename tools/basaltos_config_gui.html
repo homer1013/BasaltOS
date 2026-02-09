@@ -1826,18 +1826,18 @@
                 <span class="brand-mark">B</span>
                 <div>
                     <div class="brand-title">BasaltOS Configurator</div>
-                    <div class="brand-sub">Build, configure, flash, and manage your board setups</div>
+                    <div class="brand-sub">Local-first config and generation for BasaltOS boards</div>
                 </div>
             </div>
             <div class="topbar-actions">
                 <button id="btn-home" class="btn-nav" type="button">Home</button>
                 <button id="btn-open-config" class="btn-nav" type="button">Open Configurator</button>
-                <button id="btn-market" class="btn-nav" type="button">App Market</button>
+                <button id="btn-market" class="btn-nav" type="button">Local App Catalog</button>
                 <div class="topbar-menu">
                     <button id="btn-overflow-menu" class="btn-overflow" type="button" aria-label="More options">⋯</button>
                     <div id="overflow-menu" class="overflow-menu">
                         <button id="menu-profile" type="button">Profile & Inventory</button>
-                        <button id="menu-switch-user" type="button">Switch User</button>
+                        <button id="menu-switch-user" type="button">Edit Local Builder Name</button>
                         <button id="menu-diy-board" type="button">DIY Board Creator</button>
                     </div>
                 </div>
@@ -1848,10 +1848,10 @@
         <section id="landing-home" class="landing-home">
             <div class="landing-grid">
                 <div class="landing-hero">
-                    <h1>Welcome to the BasaltOS Builder</h1>
+                    <h1>BasaltOS Local Configurator</h1>
                     <p>
-                        Start from templates, tune drivers and pins, then flash directly to ESP32 from the browser.
-                        This local tool is focused on reliable configuration and generation workflows.
+                        Choose a board, enable drivers, and generate deterministic config outputs for local builds.
+                        This tool is local-first and intentionally excludes accounts, cloud storage, and hosted platform features.
                     </p>
                     <div class="landing-cta">
                         <button id="btn-start-config" class="btn btn-success" type="button">Start Configuring</button>
@@ -1860,21 +1860,21 @@
                     <div class="landing-stat">
                         <div class="landing-stat-box"><strong id="stat-platforms">0</strong>Platforms</div>
                         <div class="landing-stat-box"><strong id="stat-boards">0</strong>Boards</div>
-                        <div class="landing-stat-box"><strong id="stat-market">0</strong>Market Apps</div>
+                        <div class="landing-stat-box"><strong id="stat-market">0</strong>Catalog Apps</div>
                     </div>
                 </div>
                 <div class="landing-card">
                     <h3>Getting Started</h3>
                     <ul>
                         <li>1. Pick a board or template</li>
-                        <li>2. Enable drivers and starter apps</li>
-                        <li>3. Generate + Build, then Connect & Flash</li>
+                        <li>2. Enable drivers required by your board and build profile</li>
+                        <li>3. Generate outputs, then Build and Flash</li>
                         <li>4. Run apps from shell: <code>run &lt;app&gt;</code></li>
                     </ul>
                     <h3 style="margin-top:12px;">Tips</h3>
                     <ul>
                         <li>Use templates for reproducible project presets.</li>
-                        <li>Use templates for reproducible project presets.</li>
+                        <li>Use board capability checks to avoid invalid driver combos.</li>
                         <li>Watch memory bars in every step and keep usage below ~85% when possible.</li>
                         <li>Web flasher supports Windows COM and Linux/macOS tty devices.</li>
                     </ul>
@@ -1885,13 +1885,13 @@
         <section id="market-shell" class="market-shell">
             <div class="market-header">
                 <div>
-                    <h2>App Market</h2>
+                    <h2>Local App Catalog</h2>
                     <div style="font-size:13px; color:#475569; margin-top:4px;">
-                        Browse curated apps, download packages, upload your own, and add apps to the current build.
+                        Browse local catalog apps, download packages, upload your own, and add compatible apps to the current build.
                     </div>
                 </div>
                 <div class="market-actions">
-                    <input type="text" id="market-page-search" class="search-box" placeholder="Search market apps..." style="margin:0; min-width: 260px;">
+                    <input type="text" id="market-page-search" class="search-box" placeholder="Search catalog apps..." style="margin:0; min-width: 260px;">
                     <button id="btn-market-refresh" class="btn btn-secondary" type="button">Refresh</button>
                     <button id="btn-market-to-config" class="btn btn-primary" type="button">Back to Configurator</button>
                 </div>
@@ -1910,7 +1910,7 @@
                     <input id="market-upload-package" type="file" accept=".zip,application/zip">
                 </div>
                 <div class="market-actions">
-                    <button id="btn-market-upload" class="btn btn-success" type="button">Upload to Market</button>
+                    <button id="btn-market-upload" class="btn btn-success" type="button">Add to Local Catalog</button>
                 </div>
             </div>
         </section>
@@ -2115,11 +2115,11 @@
 
                     <h3 style="margin-top: 30px;">Selected Apps</h3>
                     <div class="alert alert-info">
-                        App selection is managed in the App Market page. This panel is read-only visibility for current build selection.
+                        App selection is managed in the Local App Catalog page. This panel is read-only visibility for current build selection.
                     </div>
                     <div id="selected-apps-visibility" class="validation-panel"></div>
                     <div style="margin-top:10px;">
-                        <button id="btn-open-market-from-config" class="btn btn-secondary" type="button">Manage Apps in App Market</button>
+                        <button id="btn-open-market-from-config" class="btn btn-secondary" type="button">Manage Apps in Local Catalog</button>
                     </div>
                 </div>
 
@@ -3784,7 +3784,7 @@
 
         function showMarketPage() {
             if (!ENABLE_LOCAL_MARKET_UI) {
-                notify('App Market is disabled in local configurator mode.', 'warning');
+                notify('Local app catalog is disabled in local configurator mode.', 'warning');
                 return;
             }
             const landing = document.getElementById('landing-home');
@@ -3845,7 +3845,7 @@
                 </div>
                 <div class="validation-item info">
                     <span class="validation-icon">🛒</span>
-                    <div><strong>Market Apps:</strong> ${selectedMarket.length ? selectedMarket.join(', ') : '(none)'}</div>
+                    <div><strong>Catalog Apps:</strong> ${selectedMarket.length ? selectedMarket.join(', ') : '(none)'}</div>
                 </div>
             `;
             updateMemoryEstimatePanels();
@@ -3996,7 +3996,7 @@
                 if (verInput) verInput.value = '';
                 if (authorInput) authorInput.value = '';
                 if (fileInput) fileInput.value = '';
-                notify(`Uploaded market app: ${data.app?.id || 'unknown'}`, 'success');
+                notify(`Added app to local catalog: ${data.app?.id || 'unknown'}`, 'success');
             } catch (err) {
                 notify(`Upload failed: ${err.message || err}`, 'error');
             } finally {
@@ -4360,7 +4360,7 @@
                     } catch (err) {
                         marketCatalog = [];
                         loadedPlatformForMarket = '';
-                        notify(`Market catalog unavailable: ${err.message || err}`, 'warning');
+                        notify(`Local catalog unavailable: ${err.message || err}`, 'warning');
                     }
                 } else {
                     marketCatalog = [];
@@ -6162,7 +6162,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                         <div class="spec-value">${applets.filter(a => appletStates[a]).length}</div>
                     </div>
                     <div class="spec-item">
-                        <div class="spec-label">Market Apps</div>
+                        <div class="spec-label">Catalog Apps</div>
                         <div class="spec-value">${marketApps.filter(a => marketAppStates[a]).length}</div>
                     </div>
                     <div class="spec-item">
@@ -6748,7 +6748,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     await refreshMarketCatalogForPlatform(selectedPlatform);
                     updateLandingStats();
                     renderMarketPage();
-                    notify('Market refreshed.', 'success', 1400);
+                    notify('Local catalog refreshed.', 'success', 1400);
                 });
             }
             const marketPageSearch = document.getElementById('market-page-search');
