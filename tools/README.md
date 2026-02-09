@@ -80,6 +80,12 @@ Invalid-board hard-fail regression guard:
 bash tools/tests/configure_invalid_board_regression.sh
 ```
 
+Negative-path CLI validation (template/platform/driver/input failures):
+
+```bash
+bash tools/tests/configure_negative_paths.sh
+```
+
 Multi-board CLI smoke run (all discovered boards):
 
 ```bash

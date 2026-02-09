@@ -46,6 +46,7 @@ jobs:
         run: |
           set -euo pipefail
           bash tools/tests/configure_invalid_board_regression.sh
+          bash tools/tests/configure_negative_paths.sh
           bash tools/tests/configure_smoke_multi_board.sh
           bash tools/tests/configure_deterministic_outputs.sh
 

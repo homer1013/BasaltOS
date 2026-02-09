@@ -32,6 +32,7 @@ exec > >(tee -a "$OUT/commands.log") 2>&1
 | CLI-06 | Generation (RP2040) | `python3 tools/configure.py --platform rp2040 --board raspberry_pi_pico --enable-drivers uart --outdir "$OUT/artifacts/rp2040"` | Exit `0`; files generated | `artifacts/rp2040/*` | Must Pass |
 | CLI-07 | Generation (AVR) | `python3 tools/configure.py --platform atmega --board arduino_uno_r3 --enable-drivers uart --outdir "$OUT/artifacts/avr"` | Exit `0`; files generated | `artifacts/avr/*` | Must Pass |
 | CLI-08 | Invalid board hard-fail | `python3 tools/configure.py --platform esp32 --board does-not-exist --enable-drivers uart` | Exit non-zero; message contains invalid board context | `commands.log` | Must Pass |
+| CLI-08b | Negative-path bundle | `bash tools/tests/configure_negative_paths.sh` | Exit `0`; all failure-path assertions pass | `commands.log` | Must Pass |
 | CLI-09 | Selector script syntax | `bash -n tools/board.sh` | Exit `0` | `commands.log` | Must Pass |
 | CLI-10 | Selector list | `bash tools/board.sh --list` | Exit `0`; list output present | `commands.log` | Must Pass |
 | CLI-11 | Determinism | `bash tools/tests/configure_deterministic_outputs.sh` | Exit `0`; normalized outputs match across runs | `commands.log` | Must Pass |
