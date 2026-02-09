@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "name": "EOD close SCRUM-93 and note release/tag alignment",
+    "date": "2026-02-09"
+  },
+  "operations": [
+    {
+      "action": "comment",
+      "issue": "SCRUM-93",
+      "body": "Hardware validation complete on ESP32-C3 SuperMini for SSD1306 at I2C 0x3C with both panel geometries. Evidence captured in monitor logs: `init OK addr=0x3C 128x64` and `init OK addr=0x3C 128x32`, followed by `ssd1306_shapes: rendered`. Default C3 SuperMini board I2C mapping aligned to bench wiring (`SDA=GPIO8`, `SCL=GPIO9`). Console path hardened for USB-Serial/JTAG interactive use. Related commits: 49740f7 (runtime/hardware flow), 3a289ce (README/changelog alignment)."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-93",
+      "to": "Done"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-9",
+      "body": "Release/tag alignment checked at EOD: Git tags include v0.0.8 and v0.1.0, with v0.1.0 as the latest release baseline. README + CHANGELOG updated to state that `main` contains post-v0.1.0 hardening and hardware-validation fixes until the next tag is cut. Docs commit: 3a289ce."
+    }
+  ]
+}
