@@ -13,6 +13,7 @@
 - `validate_app.py` – validate app folders/zip packages before upload/install
 - `new_app.py` – create a new app skeleton (app.toml + main.py)
 - `basaltos_config_server.py` – local configurator backend + App Market API
+- `platformio/bootstrap_from_features.py` – generate a PlatformIO phase-1 starter config from `config/generated/basalt.features.json`
 
 ## new_app.py
 
@@ -116,3 +117,15 @@ Local-mode UI/API guard test (market/profile hidden + market API disabled):
 node tools/e2e/local_mode_nav_guard.js
 ```
 
+
+## PlatformIO Phase-1 Bootstrap
+
+```bash
+python3 tools/platformio/bootstrap_from_features.py
+```
+
+Override board id if needed:
+
+```bash
+python3 tools/platformio/bootstrap_from_features.py --pio-board esp32-c3-devkitm-1
+```
