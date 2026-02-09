@@ -2,5 +2,5 @@
 set -euo pipefail
 
 PORT="${1:-/dev/ttyUSB0}"
-
-idf.py -p "$PORT" flash
+DEFAULTS="sdkconfig.defaults;config/generated/sdkconfig.defaults"
+SDKCONFIG_DEFAULTS="${SDKCONFIG_DEFAULTS:-$DEFAULTS}" idf.py -p "$PORT" flash
