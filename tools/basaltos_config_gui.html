@@ -1851,7 +1851,7 @@
                     <h1>Welcome to the BasaltOS Builder</h1>
                     <p>
                         Start from templates, tune drivers and pins, then flash directly to ESP32 from the browser.
-                        You can keep a profile and board inventory so the workspace feels personal and repeatable.
+                        This local tool is focused on reliable configuration and generation workflows.
                     </p>
                     <div class="landing-cta">
                         <button id="btn-start-config" class="btn btn-success" type="button">Start Configuring</button>
@@ -1867,13 +1867,13 @@
                     <h3>Getting Started</h3>
                     <ul>
                         <li>1. Pick a board or template</li>
-                        <li>2. Enable drivers, starter apps, and market apps</li>
+                        <li>2. Enable drivers and starter apps</li>
                         <li>3. Generate + Build, then Connect & Flash</li>
                         <li>4. Run apps from shell: <code>run &lt;app&gt;</code></li>
                     </ul>
                     <h3 style="margin-top:12px;">Tips</h3>
                     <ul>
-                        <li>Use profile inventory to filter boards you own.</li>
+                        <li>Use templates for reproducible project presets.</li>
                         <li>Use templates for reproducible project presets.</li>
                         <li>Watch memory bars in every step and keep usage below ~85% when possible.</li>
                         <li>Web flasher supports Windows COM and Linux/macOS tty devices.</li>
@@ -3329,6 +3329,10 @@
             showPlatformError(`UI error: ${e.message}`);
         });
 
+        // Local scope feature flags
+        const ENABLE_LOCAL_MARKET_UI = false;
+        const ENABLE_LOCAL_PROFILE_UI = false;
+
         // Data structures
         let platforms = [];
         let boards = {};
@@ -3697,6 +3701,10 @@
         function updateTopProfileChip() {
             const chip = document.getElementById('top-profile-chip');
             if (!chip) return;
+            if (!ENABLE_LOCAL_PROFILE_UI) {
+                chip.style.display = 'none';
+                return;
+            }
             const name = String(userProfile?.name || '').trim();
             if (name) {
                 chip.textContent = name;
@@ -3713,10 +3721,35 @@
             const boardTotal = Object.values(boards || {}).reduce((sum, list) => {
                 return sum + (Array.isArray(list) ? list.length : 0);
             }, 0);
-            const marketTotal = Array.isArray(marketCatalog) ? marketCatalog.length : 0;
+            const marketTotal = ENABLE_LOCAL_MARKET_UI && Array.isArray(marketCatalog) ? marketCatalog.length : 0;
             if (platformCount) platformCount.textContent = String(platformTotal);
             if (boardCount) boardCount.textContent = String(boardTotal);
             if (marketCount) marketCount.textContent = String(marketTotal);
+        }
+
+        function applyLocalScopeMode() {
+            if (!ENABLE_LOCAL_MARKET_UI) {
+                const marketBtn = document.getElementById('btn-market');
+                if (marketBtn) marketBtn.style.display = 'none';
+                const marketShell = document.getElementById('market-shell');
+                if (marketShell) marketShell.style.display = 'none';
+                const openMarketFromConfig = document.getElementById('btn-open-market-from-config');
+                if (openMarketFromConfig) openMarketFromConfig.style.display = 'none';
+            }
+            if (!ENABLE_LOCAL_PROFILE_UI) {
+                const profileShell = document.getElementById('profile-shell');
+                if (profileShell) profileShell.style.display = 'none';
+                const menuProfile = document.getElementById('menu-profile');
+                if (menuProfile) menuProfile.style.display = 'none';
+                const menuSwitch = document.getElementById('menu-switch-user');
+                if (menuSwitch) menuSwitch.style.display = 'none';
+                const chip = document.getElementById('top-profile-chip');
+                if (chip) chip.style.display = 'none';
+            }
+            if (!ENABLE_LOCAL_MARKET_UI) {
+                const marketStat = document.getElementById('stat-market');
+                if (marketStat && marketStat.parentElement) marketStat.parentElement.style.display = 'none';
+            }
         }
 
         function showLanding() {
@@ -3750,6 +3783,10 @@
         }
 
         function showMarketPage() {
+            if (!ENABLE_LOCAL_MARKET_UI) {
+                notify('App Market is disabled in local configurator mode.', 'warning');
+                return;
+            }
             const landing = document.getElementById('landing-home');
             const shell = document.getElementById('configurator-shell');
             const marketShell = document.getElementById('market-shell');
@@ -3763,6 +3800,10 @@
         }
 
         function showProfilePage() {
+            if (!ENABLE_LOCAL_PROFILE_UI) {
+                notify('Profile features are disabled in local configurator mode.', 'warning');
+                return;
+            }
             const landing = document.getElementById('landing-home');
             const shell = document.getElementById('configurator-shell');
             const marketShell = document.getElementById('market-shell');
@@ -4307,18 +4348,23 @@
                     notify(`Targets API unavailable: ${err.message || err}`, 'warning');
                 }
 
-                try {
-                    if (selectedPlatform) {
-                        marketCatalog = await apiFetchJson(`/api/market/catalog?platform=${encodeURIComponent(selectedPlatform)}`);
-                        loadedPlatformForMarket = String(selectedPlatform || '');
-                    } else {
+                if (ENABLE_LOCAL_MARKET_UI) {
+                    try {
+                        if (selectedPlatform) {
+                            marketCatalog = await apiFetchJson(`/api/market/catalog?platform=${encodeURIComponent(selectedPlatform)}`);
+                            loadedPlatformForMarket = String(selectedPlatform || '');
+                        } else {
+                            marketCatalog = [];
+                            loadedPlatformForMarket = '';
+                        }
+                    } catch (err) {
                         marketCatalog = [];
                         loadedPlatformForMarket = '';
+                        notify(`Market catalog unavailable: ${err.message || err}`, 'warning');
                     }
-                } catch (err) {
+                } else {
                     marketCatalog = [];
                     loadedPlatformForMarket = '';
-                    notify(`Market catalog unavailable: ${err.message || err}`, 'warning');
                 }
 
                 return true;
@@ -4383,6 +4429,11 @@
         }
 
         async function refreshMarketCatalogForPlatform(platformId) {
+            if (!ENABLE_LOCAL_MARKET_UI) {
+                marketCatalog = [];
+                loadedPlatformForMarket = '';
+                return;
+            }
             const url = platformId ? `/api/market/catalog?platform=${encodeURIComponent(platformId)}` : '/api/market/catalog';
             marketCatalog = await apiFetchJson(url);
             if (!Array.isArray(marketCatalog)) marketCatalog = [];
@@ -5303,8 +5354,9 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             populateModuleGrid();
             loadTemplates();
             updateLandingStats();
+            applyLocalScopeMode();
             showLanding();
-            renderMarketPage();
+            if (ENABLE_LOCAL_MARKET_UI) renderMarketPage();
             renderSelectedAppsVisibility();
             attachEventListeners();
             const flasherBtn = document.getElementById('btn-refresh-flasher');
@@ -6621,12 +6673,12 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 });
             }
             const menuProfile = document.getElementById('menu-profile');
-            if (menuProfile) menuProfile.addEventListener('click', () => {
+            if (ENABLE_LOCAL_PROFILE_UI && menuProfile) menuProfile.addEventListener('click', () => {
                 toggleOverflowMenu(false);
                 showProfilePage();
             });
             const menuSwitchUser = document.getElementById('menu-switch-user');
-            if (menuSwitchUser) menuSwitchUser.addEventListener('click', () => {
+            if (ENABLE_LOCAL_PROFILE_UI && menuSwitchUser) menuSwitchUser.addEventListener('click', () => {
                 toggleOverflowMenu(false);
                 switchUserFlow();
             });
@@ -6677,21 +6729,21 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             const topOpenBtn = document.getElementById('btn-open-config');
             if (topOpenBtn) topOpenBtn.addEventListener('click', () => enterConfigurator());
             const topMarketBtn = document.getElementById('btn-market');
-            if (topMarketBtn) topMarketBtn.addEventListener('click', () => showMarketPage());
+            if (ENABLE_LOCAL_MARKET_UI && topMarketBtn) topMarketBtn.addEventListener('click', () => showMarketPage());
             const topHomeBtn = document.getElementById('btn-home');
             if (topHomeBtn) topHomeBtn.addEventListener('click', () => showLanding());
             const btnProfileToConfig = document.getElementById('btn-profile-to-config');
-            if (btnProfileToConfig) btnProfileToConfig.addEventListener('click', () => enterConfigurator());
+            if (ENABLE_LOCAL_PROFILE_UI && btnProfileToConfig) btnProfileToConfig.addEventListener('click', () => enterConfigurator());
             const btnProfileToHome = document.getElementById('btn-profile-to-home');
-            if (btnProfileToHome) btnProfileToHome.addEventListener('click', () => showLanding());
+            if (ENABLE_LOCAL_PROFILE_UI && btnProfileToHome) btnProfileToHome.addEventListener('click', () => showLanding());
             const btnProfileOpenDiy = document.getElementById('btn-profile-open-diy');
-            if (btnProfileOpenDiy) btnProfileOpenDiy.addEventListener('click', () => openDIYBoardModal());
+            if (ENABLE_LOCAL_PROFILE_UI && btnProfileOpenDiy) btnProfileOpenDiy.addEventListener('click', () => openDIYBoardModal());
             const btnMarketToConfig = document.getElementById('btn-market-to-config');
-            if (btnMarketToConfig) btnMarketToConfig.addEventListener('click', () => enterConfigurator());
+            if (ENABLE_LOCAL_MARKET_UI && btnMarketToConfig) btnMarketToConfig.addEventListener('click', () => enterConfigurator());
             const btnOpenMarketFromConfig = document.getElementById('btn-open-market-from-config');
-            if (btnOpenMarketFromConfig) btnOpenMarketFromConfig.addEventListener('click', () => showMarketPage());
+            if (ENABLE_LOCAL_MARKET_UI && btnOpenMarketFromConfig) btnOpenMarketFromConfig.addEventListener('click', () => showMarketPage());
             const btnMarketRefresh = document.getElementById('btn-market-refresh');
-            if (btnMarketRefresh) {
+            if (ENABLE_LOCAL_MARKET_UI && btnMarketRefresh) {
                 btnMarketRefresh.addEventListener('click', async () => {
                     await refreshMarketCatalogForPlatform(selectedPlatform);
                     updateLandingStats();
@@ -6700,9 +6752,9 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 });
             }
             const marketPageSearch = document.getElementById('market-page-search');
-            if (marketPageSearch) marketPageSearch.addEventListener('input', () => renderMarketPage());
+            if (ENABLE_LOCAL_MARKET_UI && marketPageSearch) marketPageSearch.addEventListener('input', () => renderMarketPage());
             const btnMarketUpload = document.getElementById('btn-market-upload');
-            if (btnMarketUpload) btnMarketUpload.addEventListener('click', () => uploadMarketApp());
+            if (ENABLE_LOCAL_MARKET_UI && btnMarketUpload) btnMarketUpload.addEventListener('click', () => uploadMarketApp());
             const btnOptimizeSize = document.getElementById('btn-optimize-size');
             if (btnOptimizeSize) btnOptimizeSize.addEventListener('click', optimizeForSize);
             const driverTabWrap = document.getElementById('driver-tabs');

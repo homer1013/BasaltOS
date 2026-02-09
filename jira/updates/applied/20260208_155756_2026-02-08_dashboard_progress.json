@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "name": "v0.1.0 dashboard setup completion",
+    "date": "2026-02-08"
+  },
+  "operations": [
+    {
+      "action": "comment",
+      "issue": "SCRUM-44",
+      "body": "Created saved filters for v0.1.0 tracking: All (10033), Blockers/Open (10034), and area filters cli/configurator/metadata/docs (10035-10038). Asset list in jira/updates/dashboard_assets_2026-02-08.md."
+    },
+    {"action": "transition", "issue": "SCRUM-44", "to": "Done"},
+
+    {
+      "action": "comment",
+      "issue": "SCRUM-45",
+      "body": "Created dashboard 'BasaltOS v0.1.0 Readiness' (id 10001) and added 2 gadgets: Filter Results (blockers) and Stats (status)."
+    },
+    {"action": "transition", "issue": "SCRUM-45", "to": "Done"},
+
+    {
+      "action": "comment",
+      "issue": "SCRUM-46",
+      "body": "Added area quick-filter equivalents as saved filters: area:cli (10035), area:configurator (10036), area:metadata (10037), area:docs (10038)."
+    },
+    {"action": "transition", "issue": "SCRUM-46", "to": "Done"},
+
+    {
+      "action": "comment",
+      "issue": "SCRUM-47",
+      "body": "Dashboard created with logged-in share/edit permissions so project members can access and collaborate."
+    },
+    {"action": "transition", "issue": "SCRUM-47", "to": "Done"},
+
+    {
+      "action": "comment",
+      "issue": "SCRUM-17",
+      "body": "Release gate dashboard workflow complete (SCRUM-44..47 done). Details captured in jira/updates/dashboard_assets_2026-02-08.md"
+    },
+    {"action": "transition", "issue": "SCRUM-17", "to": "Done"}
+  ]
+}

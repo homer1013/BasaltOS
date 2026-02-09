@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "name": "Top-10 gap list completion",
+    "date": "2026-02-08"
+  },
+  "operations": [
+    {"action": "assign_self", "issue": "SCRUM-53"},
+    {"action": "assign_self", "issue": "SCRUM-54"},
+    {"action": "assign_self", "issue": "SCRUM-55"},
+    {"action": "assign_self", "issue": "SCRUM-56"},
+    {"action": "assign_self", "issue": "SCRUM-57"},
+    {"action": "assign_self", "issue": "SCRUM-58"},
+    {"action": "assign_self", "issue": "SCRUM-59"},
+    {"action": "assign_self", "issue": "SCRUM-60"},
+    {"action": "assign_self", "issue": "SCRUM-61"},
+
+    {
+      "action": "comment",
+      "issue": "SCRUM-40",
+      "body": "Findings consolidated from CLI/configurator/metadata baselines with linked issues SCRUM-52..SCRUM-61."
+    },
+    {"action": "transition", "issue": "SCRUM-40", "to": "Done"},
+
+    {
+      "action": "comment",
+      "issue": "SCRUM-41",
+      "body": "Top-10 gaps ranked by severity and release risk in docs/V0_1_TOP10_GAPS.md."
+    },
+    {"action": "transition", "issue": "SCRUM-41", "to": "Done"},
+
+    {
+      "action": "comment",
+      "issue": "SCRUM-42",
+      "body": "Owner and target sprint captured for each top-10 gap in docs/V0_1_TOP10_GAPS.md; issues assigned to Homer Morrill."
+    },
+    {"action": "transition", "issue": "SCRUM-42", "to": "Done"},
+
+    {
+      "action": "comment",
+      "issue": "SCRUM-43",
+      "body": "Published final top-10 gap list with linked Jira issues: docs/V0_1_TOP10_GAPS.md"
+    },
+    {"action": "transition", "issue": "SCRUM-43", "to": "Done"},
+
+    {
+      "action": "comment",
+      "issue": "SCRUM-16",
+      "body": "Top-10 prioritized v0.1.0 gap list completed and published in docs/V0_1_TOP10_GAPS.md with linked issues SCRUM-52..SCRUM-61."
+    },
+    {"action": "transition", "issue": "SCRUM-16", "to": "Done"}
+  ]
+}

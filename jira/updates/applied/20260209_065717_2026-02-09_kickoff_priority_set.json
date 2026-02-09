@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "name": "Morning kickoff priority set",
+    "date": "2026-02-09"
+  },
+  "operations": [
+    {
+      "action": "transition",
+      "issue": "SCRUM-53",
+      "to": "In Progress"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-53",
+      "body": "Kickoff: updating configure.py next-step messaging so non-ESP platforms do not receive ESP-IDF instructions."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-54",
+      "to": "In Progress"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-54",
+      "body": "Kickoff: tightening configurator docs to align with local dev-tool scope and remove future-platform/product framing."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-56",
+      "to": "In Progress"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-56",
+      "body": "Kickoff: adding regression coverage for invalid-board hard-fail behavior in tools/configure.py."
+    }
+  ]
+}

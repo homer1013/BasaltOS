@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "name": "SCRUM-59 complete",
+    "date": "2026-02-09"
+  },
+  "operations": [
+    {
+      "action": "comment",
+      "issue": "SCRUM-59",
+      "body": "Added explicit CI-wired configurator API smoke gate: tools/tests/configurator_api_smoke.sh. This script boots the server, validates core API endpoints, exercises generate/preview paths, and verifies pin-conflict rejection (HTTP 400 + message). Workflow updated in .github/workflows/configurator-ci.yml to run this gate before UI E2E checks; tools/README.md updated with run command."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-59",
+      "to": "Done"
+    }
+  ]
+}

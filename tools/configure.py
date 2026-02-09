@@ -1259,7 +1259,7 @@ def main() -> int:
             if board_profile is None:
                 eprint(f"[configure] WARNING: board '{args.board}' not found under platform '{args.platform}'.")
                 eprint("[configure] TIP: run: python tools/configure.py --list-boards --platform <platform>")
-                # continue driver-only
+                return 3
 
         if not requested:
             requested = set()
@@ -1435,10 +1435,20 @@ def main() -> int:
         print(f"[configure] Board profile: {safe_rel(root, board_profile.path)}")
 
     print("")
-    print("[configure] Next steps (ESP-IDF):")
-    print("  1) Ensure your build includes config/generated in include paths")
-    print("  2) Apply defaults when building, e.g.:")
-    print("     SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build")
+    plat = (platform or "").lower()
+    if plat == "esp32":
+        print("[configure] Next steps (ESP-IDF):")
+        print("  1) Ensure your build includes config/generated in include paths")
+        print("  2) Apply defaults when building, e.g.:")
+        print("     SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build")
+    elif plat in {"avr", "atmega", "pic16"}:
+        print("[configure] Next steps (AVR/PIC toolchain):")
+        print("  1) Include generated headers from config/generated in your project build")
+        print("  2) Build/flash using your selected upload method settings in basalt.features.json")
+    else:
+        print("[configure] Next steps:")
+        print("  1) Include generated headers from config/generated in your project build")
+        print("  2) Apply generated defaults from config/generated/sdkconfig.defaults if your toolchain supports it")
     print("")
     if enabled_list:
         print(f"[configure] Enabled drivers: {', '.join(enabled_list)}")

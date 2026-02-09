@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "name": "Sprint 1 kickoff",
+    "date": "2026-02-08"
+  },
+  "operations": [
+    {
+      "action": "transition",
+      "issue": "SCRUM-19",
+      "to": "In Progress"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-19",
+      "body": "Kickoff: drafting the v0.1.0 acceptance checklist structure for CLI/configurator/metadata/smoke coverage."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-23",
+      "to": "In Progress"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-23",
+      "body": "Kickoff: starting ESP32 CLI baseline run and capturing generated artifact outputs/errors."
+    }
+  ]
+}

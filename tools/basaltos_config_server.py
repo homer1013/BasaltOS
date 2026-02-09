@@ -43,6 +43,10 @@ MARKET_APPS_CATALOG = BASALTOS_ROOT / "config" / "market_apps.json"
 MANAGED_APPLETS_STATE_FILE = CONFIG_OUTPUT_DIR / ".spiffs_state" / "applets.json"
 MANAGED_MARKET_APPS_STATE_FILE = CONFIG_OUTPUT_DIR / ".spiffs_state" / "market_apps.json"
 
+# Local configurator scope guard: marketplace features are disabled by default.
+MARKET_FEATURES_ENABLED = os.getenv("BASALTOS_LOCAL_MARKET_ENABLED", "0") == "1"
+
+
 # Reuse core configurator logic for correctness
 sys.path.append(str(BASALTOS_ROOT / "tools"))
 import configure as cfg
@@ -1476,14 +1480,18 @@ def get_modules():
 
 @app.route('/api/market/catalog', methods=['GET'])
 def get_market_catalog():
-    """Get curated app catalog for preinstall packaging."""
+    """Get curated app catalog for preinstall packaging (disabled by default in local mode)."""
+    if not MARKET_FEATURES_ENABLED:
+        return jsonify({"success": False, "error": "Local market endpoints are disabled in local configurator mode."}), 404
     platform = request.args.get('platform')
     return jsonify(config_gen.get_market_catalog(platform))
 
 
 @app.route('/api/market/download/<app_id>', methods=['GET'])
 def market_download(app_id):
-    """Download a market app package as zip."""
+    """Download a market app package as zip (disabled by default in local mode)."""
+    if not MARKET_FEATURES_ENABLED:
+        return jsonify({"success": False, "error": "Local market endpoints are disabled in local configurator mode."}), 404
     platform = request.args.get('platform')
     try:
         data = config_gen.make_market_app_zip_bytes(app_id, platform=platform)
@@ -1503,7 +1511,9 @@ def market_download(app_id):
 
 @app.route('/api/market/upload', methods=['POST'])
 def market_upload():
-    """Upload a market app zip and add/update it in local catalog."""
+    """Upload a market app zip and add/update it in local catalog (disabled by default in local mode)."""
+    if not MARKET_FEATURES_ENABLED:
+        return jsonify({"success": False, "error": "Local market endpoints are disabled in local configurator mode."}), 404
     try:
         if "package" not in request.files:
             return jsonify({"success": False, "error": "Missing file field 'package'"}), 400
@@ -2033,6 +2043,9 @@ def generate_config():
     config_data["enabled_drivers"] = config_gen._enabled_drivers_from_config(config_data)
     config_data["driver_config"] = config_gen._driver_config_from_config(config_data)
     config_data = config_gen._with_legacy_driver_keys(config_data)
+    # Local configurator scope: market app selection is disabled by default.
+    if not MARKET_FEATURES_ENABLED:
+        config_data["market_apps"] = []
 
     required_fields = ['platform', 'board_id']
     for field in required_fields:
@@ -2069,6 +2082,9 @@ def preview_config(config_type):
     config_data["enabled_drivers"] = config_gen._enabled_drivers_from_config(config_data)
     config_data["driver_config"] = config_gen._driver_config_from_config(config_data)
     config_data = config_gen._with_legacy_driver_keys(config_data)
+    # Local configurator scope: market app selection is disabled by default.
+    if not MARKET_FEATURES_ENABLED:
+        config_data["market_apps"] = []
     
     try:
         target = config_gen._select_target(config_data)

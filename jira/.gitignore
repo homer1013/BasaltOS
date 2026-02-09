@@ -1,0 +1,6 @@
+config/jira.env
+exports/*
+!exports/.gitkeep
+logs/*
+!logs/.gitkeep
+*.tmp

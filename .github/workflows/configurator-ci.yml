@@ -42,34 +42,23 @@ jobs:
           python tools/configure.py --list-modules >/dev/null
           python tools/configure.py --list-boards >/dev/null
 
-      - name: Generate config for every board
+      - name: Configure CLI smoke tests
         run: |
           set -euo pipefail
-          mkdir -p tmp/ci/config-check
-
-          while IFS='|' read -r platform board_dir; do
-            outdir="tmp/ci/config-check/${platform}/${board_dir}"
-            mkdir -p "$outdir"
-            echo "[ci] checking ${platform}/${board_dir}"
-            python tools/configure.py \
-              --platform "$platform" \
-              --board "$board_dir" \
-              --outdir "$outdir"
-
-            test -f "$outdir/basalt_config.h"
-            test -f "$outdir/basalt.features.json"
-            test -f "$outdir/sdkconfig.defaults"
-          done < <(
-            find boards -name board.json -print \
-              | sed -E 's#^boards/([^/]+)/([^/]+)/board\.json$#\1|\2#' \
-              | sort
-          )
+          bash tools/tests/configure_invalid_board_regression.sh
+          bash tools/tests/configure_smoke_multi_board.sh
+          bash tools/tests/configure_deterministic_outputs.sh
 
       - name: Validate board.sh selectors
         run: |
           set -euo pipefail
           bash -n tools/board.sh
           bash tools/board.sh --list >/dev/null
+
+      - name: Configurator API smoke
+        run: |
+          set -euo pipefail
+          bash tools/tests/configurator_api_smoke.sh
 
       - name: Configurator E2E smoke + deep
         run: |

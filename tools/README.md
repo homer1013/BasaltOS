@@ -71,3 +71,29 @@ When running `python tools/basaltos_config_server.py`, these endpoints are avail
     - `package` (required zip)
     - `id`, `name`, `description`, `version`, `author`, `platforms` (optional metadata)
   - server validates package structure + app entry before accepting upload
+
+## CLI Regression Tests
+
+Invalid-board hard-fail regression guard:
+
+```bash
+bash tools/tests/configure_invalid_board_regression.sh
+```
+
+Multi-board CLI smoke run (all discovered boards):
+
+```bash
+bash tools/tests/configure_smoke_multi_board.sh
+```
+
+Deterministic generation check (normalizes `generated_utc` JSON field before diff):
+
+```bash
+bash tools/tests/configure_deterministic_outputs.sh
+```
+
+Configurator API smoke test:
+
+```bash
+bash tools/tests/configurator_api_smoke.sh
+```

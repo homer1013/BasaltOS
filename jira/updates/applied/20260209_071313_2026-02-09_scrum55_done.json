@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "name": "SCRUM-55 complete",
+    "date": "2026-02-09"
+  },
+  "operations": [
+    {
+      "action": "transition",
+      "issue": "SCRUM-55",
+      "to": "In Progress"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-55",
+      "body": "Reduced local configurator marketplace/profile surface area. Backend: market endpoints now disabled by default unless BASALTOS_LOCAL_MARKET_ENABLED=1, and generate/preview sanitize market_apps when disabled. Frontend: local scope flags hide market/profile entry points and prevent market/profile event bindings; landing copy updated to dev-tool scope. Validation: core API smoke passes and /api/market/catalog returns 404 with explicit disabled message."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-55",
+      "to": "Done"
+    }
+  ]
+}

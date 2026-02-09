@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "name": "Checklist documentation progress",
+    "date": "2026-02-08"
+  },
+  "operations": [
+    {
+      "action": "comment",
+      "issue": "SCRUM-19",
+      "body": "Checklist skeleton created at docs/V0_1_ACCEPTANCE_CHECKLIST.md with scope, gates, evidence capture paths, and Jira mapping."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-19",
+      "to": "Done"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-20",
+      "body": "Added concrete command blocks and pass criteria for CLI, configurator API, metadata validation, and build/flash/monitor smoke workflow in docs/V0_1_ACCEPTANCE_CHECKLIST.md."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-20",
+      "to": "In Progress"
+    }
+  ]
+}

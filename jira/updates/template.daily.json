@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "name": "Daily Jira updates",
+    "date": "2026-02-09"
+  },
+  "operations": [
+    {
+      "action": "transition",
+      "issue": "SCRUM-23",
+      "to": "In Progress"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-23",
+      "body": "Started ESP32 CLI baseline run. Initial config generation successful."
+    },
+    {
+      "action": "set_fields",
+      "issue": "SCRUM-23",
+      "fields": {
+        "duedate": "2026-02-22"
+      }
+    },
+    {
+      "action": "assign_self",
+      "issue": "SCRUM-24"
+    },
+    {
+      "action": "assign",
+      "issue": "SCRUM-25",
+      "accountId": "712020:example"
+    },
+    {
+      "action": "transition_id",
+      "issue": "SCRUM-23",
+      "id": "31"
+    }
+  ]
+}

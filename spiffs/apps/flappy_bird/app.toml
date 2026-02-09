@@ -1,5 +1,0 @@
-name = "Flappy Bird"
-version = "0.2.0"
-entry = "main.py"
-author = "Homer Morrill / BasaltOS"
-description = "Qubi-inspired Flappy with Basalt UI APIs (TFT touch + SSD1306 OLED + optional GPIO button)."

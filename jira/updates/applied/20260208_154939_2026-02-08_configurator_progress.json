@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "name": "Configurator baseline completion",
+    "date": "2026-02-08"
+  },
+  "operations": [
+    {
+      "action": "comment",
+      "issue": "SCRUM-28",
+      "body": "Board selection flow validated via API (`GET /api/platforms`, `GET /api/boards/esp32`, `GET /api/board/esp32-c3-supermini`). Evidence in tmp/acceptance/v0.1.0/2026-02-08/artifacts/."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-28",
+      "to": "Done"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-29",
+      "body": "Driver selection and pin conflict behavior validated. `GET /api/drivers?platform=esp32` succeeded; conflict test with duplicate pin assignment returned expected HTTP 400 with clear message."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-29",
+      "to": "Done"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-30",
+      "body": "Generated output files validated via `POST /api/generate` and preview via `POST /api/preview/basalt_config_h`. Responses were successful and non-empty."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-30",
+      "to": "Done"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-31",
+      "body": "No blocking UI/API defects identified in this baseline pass. Configurator evidence documented in tmp/acceptance/v0.1.0/2026-02-08/configurator_notes.md."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-31",
+      "to": "Done"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-13",
+      "body": "Configurator baseline subtasks SCRUM-28..31 are complete with evidence captured. No blocking defects found in this pass."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-13",
+      "to": "Done"
+    }
+  ]
+}

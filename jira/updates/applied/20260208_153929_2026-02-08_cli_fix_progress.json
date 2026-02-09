@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "name": "CLI invalid-board fix progress",
+    "date": "2026-02-08"
+  },
+  "operations": [
+    {
+      "action": "comment",
+      "issue": "SCRUM-52",
+      "body": "Implemented fix in tools/configure.py: when --platform and --board are provided but board is not found, configurator now exits with code 3 immediately (no generation). Verification: rc_bad=3, rc_good=0, no output directory created for invalid case. Evidence in tmp/acceptance/v0.1.0/2026-02-08/artifacts/invalid_board_after_fix.txt and notes.md."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-52",
+      "to": "In Progress"
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-52",
+      "to": "Done"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-27",
+      "body": "Failure summary completed. Defect identified and fixed (SCRUM-52). CLI invalid-board path now hard-fails as expected."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-27",
+      "to": "Done"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-20",
+      "body": "Checklist command set and expected outputs completed in docs/V0_1_ACCEPTANCE_CHECKLIST.md and validated with real runs across ESP32/STM32/RP2040/AVR."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-20",
+      "to": "Done"
+    },
+    {
+      "action": "comment",
+      "issue": "SCRUM-12",
+      "body": "CLI baseline subtasks SCRUM-23..SCRUM-27 are complete, with one discovered defect fixed in SCRUM-52. Ready for final review/closure of SCRUM-12."
+    }
+  ]
+}

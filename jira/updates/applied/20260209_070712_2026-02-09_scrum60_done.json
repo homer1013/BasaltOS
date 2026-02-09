@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "name": "SCRUM-60 complete",
+    "date": "2026-02-09"
+  },
+  "operations": [
+    {
+      "action": "comment",
+      "issue": "SCRUM-60",
+      "body": "Implemented scripted release blocker reporting via jira/scripts/report_blockers.sh. The script queries release:v0.1.0 issues from Jira and writes a markdown readiness snapshot to jira/reports/v010_blockers_<date>.md including summary counts, area breakdown, open issues, and top-priority open list."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-60",
+      "to": "Done"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "name": "SCRUM-53 complete",
+    "date": "2026-02-09"
+  },
+  "operations": [
+    {
+      "action": "comment",
+      "issue": "SCRUM-53",
+      "body": "Implemented platform-aware next-step messaging in tools/configure.py. ESP32 keeps ESP-IDF guidance, AVR/PIC gets AVR-specific guidance, and other platforms get generic guidance. Verified with runs for esp32-c3-supermini, nucleo_f401re, and arduino_uno_r3; evidence in tmp/acceptance/v0.1.0/2026-02-09/artifacts/scrum53/*.out."
+    },
+    {
+      "action": "transition",
+      "issue": "SCRUM-53",
+      "to": "Done"
+    }
+  ]
+}
