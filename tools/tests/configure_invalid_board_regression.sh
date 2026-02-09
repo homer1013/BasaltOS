@@ -28,9 +28,16 @@ if [[ "$rc_bad" -eq 0 ]]; then
   exit 1
 fi
 
-if ! rg -q "not found under platform" "$LOG_BAD"; then
-  echo "FAIL: expected invalid-board error message not found"
-  exit 1
+if command -v rg >/dev/null 2>&1; then
+  if ! rg -q "not found under platform" "$LOG_BAD"; then
+    echo "FAIL: expected invalid-board error message not found"
+    exit 1
+  fi
+else
+  if ! grep -q "not found under platform" "$LOG_BAD"; then
+    echo "FAIL: expected invalid-board error message not found"
+    exit 1
+  fi
 fi
 
 if [[ -d "$BAD_OUT" ]]; then
