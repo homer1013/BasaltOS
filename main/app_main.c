@@ -25,14 +25,13 @@
 #include "esp_vfs_dev.h"
 #include "esp_vfs.h"
 #include "esp_spiffs.h"
-#include "nvs_flash.h"
 #include "esp_private/esp_clk.h"
-#include "esp_rom_serial_output.h"
-#include "hal/uart_ll.h"
+#include "nvs_flash.h"
 #include "driver/gpio.h"
 #include "driver/i2c.h"
 #include "driver/spi_master.h"
 #include "driver/uart.h"
+#include "driver/usb_serial_jtag.h"
 #include "driver/twai.h"
 #include "sdmmc_cmd.h"
 #include "esp_vfs_fat.h"
@@ -257,11 +256,28 @@ static const char *TAG = "basalt";
 static int g_uart_num = CONFIG_ESP_CONSOLE_UART_NUM;
 
 static void basalt_uart_write(const char *buf, int len) {
-    if (len <= 0) return;
-    if (g_uart_num >= 0) {
-        (void)uart_tx_chars((uart_port_t)g_uart_num, buf, (uint32_t)len);
+    if (len <= 0 || !buf) return;
+#if defined(CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG_ENABLED) && CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG_ENABLED
+    if (usb_serial_jtag_is_driver_installed()) {
+        int off = 0;
+        while (off < len) {
+            int wrote = usb_serial_jtag_write_bytes(buf + off, (size_t)(len - off), pdMS_TO_TICKS(100));
+            if (wrote > 0) {
+                off += wrote;
+                continue;
+            }
+            // Give the USB task/host a moment, then retry.
+            vTaskDelay(pdMS_TO_TICKS(2));
+        }
+        (void)usb_serial_jtag_wait_tx_done(pdMS_TO_TICKS(50));
+        return;
     }
+#endif
+    (void)g_uart_num;
+    (void)fwrite(buf, 1, (size_t)len, stdout);
+    fflush(stdout);
 }
+
 
 static int basalt_printf(const char *fmt, ...) {
     char buf[256];
@@ -4326,10 +4342,23 @@ static int basalt_uart_readline(char *out, size_t out_len) {
     size_t n = 0;
     while (n + 1 < out_len) {
         uint8_t ch = 0;
-        if (esp_rom_output_rx_one_char(&ch) != 0) {
+#if defined(CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG_ENABLED) && CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG_ENABLED
+        if (!usb_serial_jtag_is_driver_installed()) {
             vTaskDelay(pdMS_TO_TICKS(10));
             continue;
         }
+        int got = usb_serial_jtag_read_bytes(&ch, 1, 20 / portTICK_PERIOD_MS);
+        if (got <= 0) {
+            continue;
+        }
+#else
+        int c = getchar();
+        if (c == EOF) {
+            vTaskDelay(pdMS_TO_TICKS(10));
+            continue;
+        }
+        ch = (uint8_t)c;
+#endif
         if (ch == '\r' || ch == '\n') {
             out[n++] = '\n';
             out[n] = '\0';
@@ -4344,6 +4373,7 @@ static int basalt_uart_readline(char *out, size_t out_len) {
     out[n] = '\0';
     return (int)n;
 }
+
 
 static void bsh_task(void *arg) {
     char line[BASALT_INPUT_MAX];
@@ -4373,18 +4403,19 @@ static void bsh_task(void *arg) {
 
 static void basalt_console_init(void) {
 #if BASALT_ENABLE_UART
-    // Console over UART0 (ESP-IDF console config)
-    const int uart_num = CONFIG_ESP_CONSOLE_UART_NUM;
-    const int baud = CONFIG_ESP_CONSOLE_UART_BAUDRATE;
-    g_uart_num = uart_num;
-
-    // Use ROM UART routines and disable UART interrupts to avoid driver ISR crashes.
-    esp_rom_output_set_as_console(uart_num);
-    uart_ll_set_baudrate(UART_LL_GET_HW(uart_num), baud, esp_clk_apb_freq());
-    uart_ll_disable_intr_mask(UART_LL_GET_HW(uart_num), UINT32_MAX);
-    uart_ll_clr_intsts_mask(UART_LL_GET_HW(uart_num), UINT32_MAX);
-
-    ESP_LOGI(TAG, "Console: UART%d @ %d", uart_num, baud);
+    g_uart_num = CONFIG_ESP_CONSOLE_UART_NUM;
+#if defined(CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG_ENABLED) && CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG_ENABLED
+    if (!usb_serial_jtag_is_driver_installed()) {
+        usb_serial_jtag_driver_config_t usj = USB_SERIAL_JTAG_DRIVER_CONFIG_DEFAULT();
+        esp_err_t err = usb_serial_jtag_driver_install(&usj);
+        if (err != ESP_OK) {
+            ESP_LOGW(TAG, "Console: usb_serial_jtag install failed (%s), using stdio fallback", esp_err_to_name(err));
+        }
+    }
+    ESP_LOGI(TAG, "Console: usb_serial_jtag backend active");
+#else
+    ESP_LOGI(TAG, "Console: stdio backend active");
+#endif
 #else
     // UART module disabled by configurator: keep app running, but warn.
     g_uart_num = -1;

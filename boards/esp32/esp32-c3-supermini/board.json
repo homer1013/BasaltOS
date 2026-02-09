@@ -19,8 +19,8 @@
   "pins": {
     "uart_tx": 21,
     "uart_rx": 20,
-    "i2c_sda": 4,
-    "i2c_scl": 3,
+    "i2c_sda": 8,
+    "i2c_scl": 9,
     "can_tx": 5,
     "can_rx": 2,
     "can_stby": -1,

@@ -6,5 +6,5 @@ idf_component_register(
         "mpy_runtime.c"
     INCLUDE_DIRS "."
     REQUIRES nvs_flash spiffs console micropython_embed basalt_hal
-    PRIV_REQUIRES fatfs esp_wifi esp_event esp_netif bt
+    PRIV_REQUIRES fatfs esp_wifi esp_event esp_netif bt esp_driver_usb_serial_jtag
 )
