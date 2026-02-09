@@ -100,6 +100,9 @@
 #ifndef BASALT_ENABLE_DHT22
 #define BASALT_ENABLE_DHT22 0
 #endif
+#ifndef BASALT_ENABLE_BME280
+#define BASALT_ENABLE_BME280 0
+#endif
 #ifndef BASALT_ENABLE_MIC
 #define BASALT_ENABLE_MIC 0
 #endif
@@ -228,6 +231,9 @@
 #define BASALT_CFG_IMU_ADDRESS "0x68"
 #endif
 #endif
+#ifndef BASALT_CFG_BME280_I2C_ADDRESS
+#define BASALT_CFG_BME280_I2C_ADDRESS "0x76"
+#endif
 
 static const char *TAG = "basalt";
 static int g_uart_num = CONFIG_ESP_CONSOLE_UART_NUM;
@@ -323,6 +329,7 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"remove", "remove <app>", "Remove installed app"},
     {"logs", "logs", "Show runtime diagnostics and last app error"},
     {"imu", "imu [status|read|whoami|stream [hz] [samples]]", "IMU probe/read over configured I2C pins"},
+    {"bme280", "bme280 [status|probe]", "BME280 probe/status over configured I2C pins"},
     {"tp4056", "tp4056 [status|on|off]", "TP4056 charger status and optional CE control"},
     {"mcp2544fd", "mcp2544fd [status|on|off|standby]", "MCP2544FD CAN transceiver control pins"},
     {"uln2003", "uln2003 [status|off|step <steps> [delay_ms]]", "ULN2003 stepper driver control"},
@@ -348,7 +355,7 @@ static bool bsh_help_cmd_hidden_tiny(const char *name) {
         "ls", "cat", "cd", "mkdir", "cp", "mv", "rm",
         "apps_dev", "led_test", "devcheck", "edit",
         "run_dev", "kill", "applet",
-        "install", "remove", "logs", "imu", "tp4056", "mcp2544fd", "uln2003", "l298n", "wifi", "bluetooth", "can"
+        "install", "remove", "logs", "imu", "bme280", "tp4056", "mcp2544fd", "uln2003", "l298n", "wifi", "bluetooth", "can"
     };
     for (size_t i = 0; i < sizeof(k_hidden) / sizeof(k_hidden[0]); ++i) {
         if (strcmp(name, k_hidden[i]) == 0) return true;
@@ -1585,6 +1592,11 @@ static void bsh_cmd_drivers(void) {
 #else
     basalt_printf("  dht22: disabled\n");
 #endif
+#if BASALT_ENABLE_BME280
+    basalt_printf("  bme280: enabled (shell API: bme280 status/probe)\n");
+#else
+    basalt_printf("  bme280: disabled\n");
+#endif
 #if BASALT_ENABLE_MIC
     basalt_printf("  mic: enabled (stub only; runtime driver not implemented yet)\n");
 #ifdef BASALT_PIN_MIC_IN
@@ -1848,6 +1860,86 @@ static void bsh_cmd_imu_stream(const char *hz_arg, const char *samples_arg) {
     (void)hz_arg;
     (void)samples_arg;
     basalt_printf("imu: unavailable (enable imu+i2c drivers)\n");
+}
+#endif
+
+
+#if BASALT_ENABLE_BME280 && BASALT_ENABLE_I2C
+static bool s_bme280_i2c_ready = false;
+
+static uint8_t bsh_bme280_addr(void) {
+    long v = strtol(BASALT_CFG_BME280_I2C_ADDRESS, NULL, 0);
+    if (v <= 0 || v > 0x7F) v = 0x76;
+    return (uint8_t)v;
+}
+
+static bool bsh_bme280_i2c_ensure(char *err, size_t err_len) {
+    if (s_bme280_i2c_ready) return true;
+    if (BASALT_PIN_I2C_SDA < 0 || BASALT_PIN_I2C_SCL < 0) {
+        if (err && err_len) snprintf(err, err_len, "invalid I2C pins (sda=%d scl=%d)", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
+        return false;
+    }
+    i2c_config_t cfg = {
+        .mode = I2C_MODE_MASTER,
+        .sda_io_num = BASALT_PIN_I2C_SDA,
+        .scl_io_num = BASALT_PIN_I2C_SCL,
+        .sda_pullup_en = GPIO_PULLUP_ENABLE,
+        .scl_pullup_en = GPIO_PULLUP_ENABLE,
+        .master.clk_speed = 400000,
+    };
+    esp_err_t ret = i2c_param_config(I2C_NUM_0, &cfg);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "i2c_param_config failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    ret = i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0);
+    if (ret == ESP_ERR_INVALID_STATE) {
+        s_bme280_i2c_ready = true;
+        return true;
+    }
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "i2c_driver_install failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    s_bme280_i2c_ready = true;
+    return true;
+}
+
+static bool bsh_bme280_probe(uint8_t *chip_id, char *err, size_t err_len) {
+    if (!bsh_bme280_i2c_ensure(err, err_len)) return false;
+    uint8_t reg = 0xD0;
+    uint8_t who = 0;
+    const uint8_t addr = bsh_bme280_addr();
+    esp_err_t ret = i2c_master_write_read_device(I2C_NUM_0, addr, &reg, 1, &who, 1, pdMS_TO_TICKS(60));
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "chip-id read failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    if (chip_id) *chip_id = who;
+    if (who != 0x60) {
+        if (err && err_len) snprintf(err, err_len, "unexpected chip id 0x%02X", who);
+        return false;
+    }
+    return true;
+}
+
+static void bsh_cmd_bme280_status(void) {
+    basalt_printf("bme280.enabled: yes\n");
+    basalt_printf("bme280.addr_cfg: %s\n", BASALT_CFG_BME280_I2C_ADDRESS);
+    basalt_printf("bme280.i2c_pins: sda=%d scl=%d\n", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
+    uint8_t chip = 0;
+    char err[96];
+    if (!bsh_bme280_probe(&chip, err, sizeof(err))) {
+        basalt_printf("bme280.probe: fail (%s)\n", err);
+        return;
+    }
+    basalt_printf("bme280.probe: ok\n");
+    basalt_printf("bme280.chip_id: 0x%02X\n", chip);
+}
+
+#else
+static void bsh_cmd_bme280_status(void) {
+    basalt_printf("bme280: unavailable (enable bme280+i2c drivers)\n");
 }
 #endif
 
@@ -3652,6 +3744,18 @@ static void bsh_handle_line(char *line) {
         basalt_printf("hint: use idf.py monitor for full ESP-IDF logs\n");
 #else
         basalt_printf("logs: disabled in this shell level\n");
+#endif
+    } else if (strcmp(cmd, "bme280") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        if (!sub || strcmp(sub, "status") == 0 || strcmp(sub, "probe") == 0) {
+            bsh_cmd_bme280_status();
+        } else {
+            basalt_printf("bme280: unknown subcommand '%s'\n", sub);
+            basalt_printf("usage: bme280 [status|probe]\n");
+        }
+#else
+        basalt_printf("bme280: disabled in this shell level\n");
 #endif
     } else if (strcmp(cmd, "imu") == 0) {
 #if BASALT_SHELL_LEVEL >= 3
