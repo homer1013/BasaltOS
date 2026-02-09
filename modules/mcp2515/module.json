@@ -1,0 +1,27 @@
+{
+  "id": "mcp2515",
+  "name": "MCP2515 SPI CAN Controller",
+  "description": "External SPI CAN controller for boards without native TWAI/CAN.",
+  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic16"],
+  "provides": ["can_controller", "can"],
+  "depends": ["spi"],
+  "conflicts": [],
+  "defines": ["BASALT_ENABLE_MCP2515"],
+  "pins": ["can_cs", "can_int"],
+  "configuration_options": [
+    {
+      "id": "bitrate",
+      "name": "CAN Bitrate",
+      "type": "select",
+      "options": [125000, 250000, 500000],
+      "default": 500000
+    },
+    {
+      "id": "oscillator_hz",
+      "name": "Oscillator Frequency (Hz)",
+      "type": "select",
+      "options": [8000000, 16000000],
+      "default": 16000000
+    }
+  ]
+}

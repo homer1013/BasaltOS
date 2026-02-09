@@ -412,6 +412,8 @@ def board_capabilities(board_data: Optional[dict]) -> Optional[Set[str]]:
     # Driver-module convenience mapping based on transport capabilities.
     if "i2c" in out:
         out.update({"rtc", "imu", "display_ssd1306", "ads1115", "bme280"})
+    if "spi" in out:
+        out.add("mcp2515")
     if "gpio" in out:
         out.add("dht22")
     if "adc" in out or "i2s" in out:

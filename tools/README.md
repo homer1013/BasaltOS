@@ -141,3 +141,9 @@ BME280 driver configure smoke:
 ```bash
 bash tools/tests/configure_bme280_smoke.sh
 ```
+
+MCP2515 driver configure smoke:
+
+```bash
+bash tools/tests/configure_mcp2515_smoke.sh
+```
