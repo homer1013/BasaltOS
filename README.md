@@ -122,6 +122,8 @@ This is the “backend” that later becomes a GUI (Arduino/CubeMX-style), but i
 
 ## Getting started (ESP-IDF / ESP32)
 
+Quick path: `docs/ESP32_FIRST_SUCCESS_10_MIN.md`
+
 ### 1) Clone + init submodules
 ```bash
 git clone https://github.com/homer1013/BasaltOS
