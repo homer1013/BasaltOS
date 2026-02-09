@@ -15,6 +15,7 @@
 - `basaltos_config_server.py` – local configurator backend + App Market API
 - `platformio/bootstrap_from_features.py` – generate a PlatformIO phase-1 starter config from `config/generated/basalt.features.json`
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
+- `release_sync_update.py` – update release sync status rows in one command
 
 ## new_app.py
 
@@ -166,4 +167,18 @@ Release sync checker smoke test:
 
 ```bash
 bash tools/tests/release_sync_check_smoke.sh
+```
+
+
+Release sync status updater:
+
+```bash
+python3 tools/release_sync_update.py --version v0.1.1 --all-status in_progress
+python3 tools/release_sync_update.py --version v0.1.1 --main-status synced --platform-status synced --platformio-status in_progress
+```
+
+Release sync updater smoke test:
+
+```bash
+bash tools/tests/release_sync_update_smoke.sh
 ```

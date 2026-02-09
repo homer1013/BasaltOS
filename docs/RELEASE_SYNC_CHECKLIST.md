@@ -5,6 +5,8 @@ Use this checklist whenever a new `BasaltOS_Main` tag is created.
 
 ## 0) Preflight guard (required)
 - Update `docs/RELEASE_SYNC_STATUS.md` target release rows.
+- One-command update:
+  - `python3 tools/release_sync_update.py --version <tag> --all-status in_progress`
 - Run checker in main repo:
   - `python3 tools/release_sync_check.py --version <tag>`
 - CI also runs self-check via `tools/tests/release_sync_check_smoke.sh`.
@@ -27,3 +29,8 @@ Use this checklist whenever a new `BasaltOS_Main` tag is created.
 ## 4) Cross-repo closure
 - Link platform and platformio sync PR/issues back to main release.
 - Mark sync complete in all 3 repos.
+
+
+## Release finalization tip
+- After platform + platformio sync completes, mark final state in one command:
+  - `python3 tools/release_sync_update.py --version <tag> --all-status synced`
