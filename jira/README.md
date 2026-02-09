@@ -45,3 +45,12 @@ bash jira/scripts/report_sprint_review.sh
 ```
 
 This writes sprint review and carryover candidate markdown files to `jira/reports/`.
+
+Release checklist snapshot from latest export:
+
+```bash
+bash jira/scripts/report_release_checklist.sh
+```
+
+This writes a release checklist markdown snapshot to `jira/reports/`.
+
