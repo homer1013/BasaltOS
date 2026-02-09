@@ -25,12 +25,14 @@
     "can_rx": 2,
     "can_stby": -1,
     "can_en": -1,
-    "spi_mosi": -1,
-    "spi_miso": -1,
-    "spi_sclk": -1,
-    "spi_cs": -1,
+    "spi_mosi": 6,
+    "spi_miso": 7,
+    "spi_sclk": 10,
+    "spi_cs": 8,
     "led": -1,
-    "button": 0
+    "button": 0,
+    "can_cs": 8,
+    "can_int": 1
   },
   "pin_definitions": {
     "uart_tx": {
@@ -143,6 +145,80 @@
         0
       ],
       "type": "input"
+    },
+    "spi_mosi": {
+      "description": "SPI MOSI for external peripherals (template mapping; verify board variant)",
+      "alternatives": [
+        6,
+        7,
+        10,
+        4,
+        5
+      ],
+      "type": "output"
+    },
+    "spi_miso": {
+      "description": "SPI MISO for external peripherals (template mapping; verify board variant)",
+      "alternatives": [
+        7,
+        6,
+        10,
+        4,
+        5
+      ],
+      "type": "input"
+    },
+    "spi_sclk": {
+      "description": "SPI clock for external peripherals (template mapping; verify board variant)",
+      "alternatives": [
+        10,
+        6,
+        7,
+        4,
+        5
+      ],
+      "type": "output"
+    },
+    "spi_cs": {
+      "description": "Default SPI CS helper pin (optional)",
+      "alternatives": [
+        8,
+        1,
+        0,
+        2,
+        3,
+        4,
+        5
+      ],
+      "type": "output"
+    },
+    "can_cs": {
+      "description": "MCP2515 SPI chip select (verification template)",
+      "alternatives": [
+        8,
+        1,
+        0,
+        2,
+        3,
+        4,
+        5
+      ],
+      "type": "output"
+    },
+    "can_int": {
+      "description": "MCP2515 interrupt output to MCU input (verification template)",
+      "alternatives": [
+        1,
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        10
+      ],
+      "type": "input"
     }
   },
   "sdkconfig": [
@@ -158,18 +234,29 @@
       "i2c",
       "fs_spiffs",
       "display_ssd1306",
-      "shell_full"
+      "shell_full",
+      "spi",
+      "mcp2515",
+      "bme280"
     ],
     "driver_config": {
       "display_ssd1306": {
         "address": "0x3C",
         "width": 128,
         "height": 64
+      },
+      "mcp2515": {
+        "bitrate": 500000,
+        "oscillator_hz": 16000000
+      },
+      "bme280": {
+        "i2c_address": "0x76",
+        "sample_rate_hz": 1
       }
     },
     "clock": {
       "freq_hz": 160000000
     }
   },
-  "notes": "ESP32-C3 boards are wildly inconsistent across sellers. Confirm UART/LED/button pins with your board\u2019s silkscreen or schematic."
+  "notes": "ESP32-C3 boards are wildly inconsistent across sellers. Confirm UART/LED/button pins with your board\u2019s silkscreen or schematic. MCP2515/BME280 pin/config values are software bring-up defaults and require hardware verification per board variant."
 }

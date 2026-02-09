@@ -901,6 +901,114 @@ def append_driver_config_macros(out_path: Path, driver_config: Optional[dict]) -
             f.write("\n".join(lines) + "\n")
 
 
+
+
+def _driver_option_allows_value(opt: dict, value) -> bool:
+    opt_type = str(opt.get("type") or "").strip().lower()
+    if opt_type == "select":
+        options = opt.get("options") if isinstance(opt.get("options"), list) else []
+        # Accept either exact match or string-equal for numeric/string select mixes.
+        return any(value == o or str(value) == str(o) for o in options)
+
+    if opt_type == "number":
+        if not isinstance(value, (int, float)):
+            return False
+        min_v = opt.get("min")
+        max_v = opt.get("max")
+        if isinstance(min_v, (int, float)) and value < min_v:
+            return False
+        if isinstance(max_v, (int, float)) and value > max_v:
+            return False
+        return True
+
+    if opt_type == "boolean":
+        return isinstance(value, bool)
+
+    if opt_type in {"string", "text"}:
+        return isinstance(value, str)
+
+    # Unknown option type: do not hard-fail here.
+    return True
+
+
+def validate_driver_config(
+    modules: Dict[str, Module],
+    enabled_modules: List[str],
+    driver_config: Optional[dict],
+) -> List[str]:
+    errors: List[str] = []
+    if not driver_config or not isinstance(driver_config, dict):
+        return errors
+
+    enabled = set(enabled_modules)
+
+    for module_id, options in driver_config.items():
+        if module_id not in modules:
+            errors.append(f"driver_config references unknown module '{module_id}'")
+            continue
+        if module_id not in enabled:
+            errors.append(f"driver_config provided for module '{module_id}' that is not enabled")
+            continue
+        if not isinstance(options, dict):
+            errors.append(f"driver_config for module '{module_id}' must be an object")
+            continue
+
+        mod = modules[module_id]
+        raw_opts = mod.raw.get("configuration_options") if isinstance(mod.raw, dict) else None
+        opt_map = {}
+        if isinstance(raw_opts, list):
+            for entry in raw_opts:
+                if isinstance(entry, dict) and isinstance(entry.get("id"), str):
+                    opt_map[norm_slug(entry["id"])] = entry
+
+        for key, val in options.items():
+            k = norm_slug(str(key))
+            if k.endswith("_name") or k.endswith("_content_b64"):
+                continue
+            if not opt_map:
+                # Module has no explicit option schema.
+                continue
+            if k not in opt_map:
+                errors.append(f"driver_config.{module_id}.{key}: unknown option")
+                continue
+            if not _driver_option_allows_value(opt_map[k], val):
+                errors.append(f"driver_config.{module_id}.{key}: invalid value '{val}'")
+
+    return errors
+
+
+def validate_required_module_pins(
+    modules: Dict[str, Module],
+    enabled_modules: List[str],
+    board_data: Optional[dict],
+) -> List[str]:
+    errors: List[str] = []
+    if not board_data or not isinstance(board_data, dict):
+        return errors
+
+    pins = board_data.get("pins") if isinstance(board_data.get("pins"), dict) else {}
+
+    for mid in enabled_modules:
+        mod = modules.get(mid)
+        if not mod or not isinstance(mod.raw, dict):
+            continue
+        reqs = mod.raw.get("pin_requirements")
+        if not isinstance(reqs, dict):
+            continue
+        for pin_name, meta in reqs.items():
+            if not isinstance(meta, dict):
+                continue
+            if not bool(meta.get("required", False)):
+                continue
+            if pin_name not in pins:
+                errors.append(f"module '{mid}' requires pin '{pin_name}' but board profile does not define it")
+                continue
+            value = pins.get(pin_name)
+            if not isinstance(value, int) or value < 0:
+                errors.append(f"module '{mid}' requires pin '{pin_name}' to be bound (got {value})")
+    return errors
+
+
 def append_applet_macros(out_path: Path, applets: List[str]) -> None:
     selected = [norm_slug(a) for a in applets if norm_slug(a)]
     csv_val = ",".join(selected)
@@ -1339,6 +1447,12 @@ def main() -> int:
 
         enabled_list = resolve_modules(modules, enabled_set, allow=allow)
 
+    cfg_errors = validate_driver_config(modules, enabled_list, driver_config)
+    if cfg_errors:
+        for msg in cfg_errors:
+            eprint(f"[configure] ERROR: {msg}")
+        return 7
+
     outdir = Path(args.outdir).resolve()
     outdir.mkdir(parents=True, exist_ok=True)
 
@@ -1361,6 +1475,12 @@ def main() -> int:
     else:
         # If user passed --board without finding a profile, still set the macro (best-effort)
         board_define_name = args.board
+
+    pin_errors = validate_required_module_pins(modules, enabled_list, board_data)
+    if pin_errors:
+        for msg in pin_errors:
+            eprint(f"[configure] ERROR: {msg}")
+        return 8
 
     available_market = discover_market_app_ids(root, platform)
     unsupported_market = [a for a in selected_market_apps if a not in available_market]

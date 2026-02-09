@@ -347,7 +347,7 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"remove", "remove <app>", "Remove installed app"},
     {"logs", "logs", "Show runtime diagnostics and last app error"},
     {"imu", "imu [status|read|whoami|stream [hz] [samples]]", "IMU probe/read over configured I2C pins"},
-    {"bme280", "bme280 [status|probe]", "BME280 probe/status over configured I2C pins"},
+    {"bme280", "bme280 [status|probe|read]", "BME280 probe/status/raw-read over configured I2C pins"},
     {"tp4056", "tp4056 [status|on|off]", "TP4056 charger status and optional CE control"},
     {"mcp2544fd", "mcp2544fd [status|on|off|standby]", "MCP2544FD CAN transceiver control pins"},
     {"mcp2515", "mcp2515 [status|probe|reset|read <reg>|write <reg> <val>|tx <id> <hex>|rx]", "MCP2515 SPI/CAN diagnostics (reg + tx/rx bring-up)"},
@@ -1612,7 +1612,7 @@ static void bsh_cmd_drivers(void) {
     basalt_printf("  dht22: disabled\n");
 #endif
 #if BASALT_ENABLE_BME280
-    basalt_printf("  bme280: enabled (shell API: bme280 status/probe)\n");
+    basalt_printf("  bme280: enabled (shell API: bme280 status/probe/read)\n");
 #else
     basalt_printf("  bme280: disabled\n");
 #endif
@@ -2300,16 +2300,24 @@ static bool bsh_bme280_i2c_ensure(char *err, size_t err_len) {
     return true;
 }
 
-static bool bsh_bme280_probe(uint8_t *chip_id, char *err, size_t err_len) {
-    if (!bsh_bme280_i2c_ensure(err, err_len)) return false;
-    uint8_t reg = 0xD0;
-    uint8_t who = 0;
-    const uint8_t addr = bsh_bme280_addr();
-    esp_err_t ret = i2c_master_write_read_device(I2C_NUM_0, addr, &reg, 1, &who, 1, pdMS_TO_TICKS(60));
-    if (ret != ESP_OK) {
-        if (err && err_len) snprintf(err, err_len, "chip-id read failed (%s)", esp_err_to_name(ret));
+static bool bsh_bme280_read_regs(uint8_t reg, uint8_t *buf, size_t len, char *err, size_t err_len) {
+    if (!buf || len == 0) {
+        if (err && err_len) snprintf(err, err_len, "invalid read buffer");
         return false;
     }
+    if (!bsh_bme280_i2c_ensure(err, err_len)) return false;
+    const uint8_t addr = bsh_bme280_addr();
+    esp_err_t ret = i2c_master_write_read_device(I2C_NUM_0, addr, &reg, 1, buf, len, pdMS_TO_TICKS(60));
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "register read 0x%02X failed (%s)", reg, esp_err_to_name(ret));
+        return false;
+    }
+    return true;
+}
+
+static bool bsh_bme280_probe(uint8_t *chip_id, char *err, size_t err_len) {
+    uint8_t who = 0;
+    if (!bsh_bme280_read_regs(0xD0, &who, 1, err, err_len)) return false;
     if (chip_id) *chip_id = who;
     if (who != 0x60) {
         if (err && err_len) snprintf(err, err_len, "unexpected chip id 0x%02X", who);
@@ -2332,9 +2340,35 @@ static void bsh_cmd_bme280_status(void) {
     basalt_printf("bme280.chip_id: 0x%02X\n", chip);
 }
 
+static void bsh_cmd_bme280_read(void) {
+    char err[96];
+    uint8_t chip = 0;
+    if (!bsh_bme280_probe(&chip, err, sizeof(err))) {
+        basalt_printf("bme280 read: fail (%s)\n", err);
+        return;
+    }
+
+    uint8_t data[8] = {0};
+    if (!bsh_bme280_read_regs(0xF7, data, sizeof(data), err, sizeof(err))) {
+        basalt_printf("bme280 read: fail (%s)\n", err);
+        return;
+    }
+
+    uint32_t raw_press = ((uint32_t)data[0] << 12) | ((uint32_t)data[1] << 4) | ((uint32_t)(data[2] >> 4));
+    uint32_t raw_temp = ((uint32_t)data[3] << 12) | ((uint32_t)data[4] << 4) | ((uint32_t)(data[5] >> 4));
+    uint32_t raw_hum = ((uint32_t)data[6] << 8) | (uint32_t)data[7];
+
+    basalt_printf("bme280 read: chip_id=0x%02X\n", chip);
+    basalt_printf("bme280 raw: temp=%lu press=%lu hum=%lu\n", (unsigned long)raw_temp, (unsigned long)raw_press, (unsigned long)raw_hum);
+    basalt_printf("bme280 note: values are raw ADC outputs; compensation/calibration conversion is follow-up scope.\n");
+}
+
 #else
 static void bsh_cmd_bme280_status(void) {
     basalt_printf("bme280: unavailable (enable bme280+i2c drivers)\n");
+}
+static void bsh_cmd_bme280_read(void) {
+    basalt_printf("bme280 read: unavailable (enable bme280+i2c drivers)\n");
 }
 #endif
 
@@ -4145,9 +4179,11 @@ static void bsh_handle_line(char *line) {
         char *sub = strtok(NULL, " \t\r\n");
         if (!sub || strcmp(sub, "status") == 0 || strcmp(sub, "probe") == 0) {
             bsh_cmd_bme280_status();
+        } else if (strcmp(sub, "read") == 0) {
+            bsh_cmd_bme280_read();
         } else {
             basalt_printf("bme280: unknown subcommand '%s'\n", sub);
-            basalt_printf("usage: bme280 [status|probe]\n");
+            basalt_printf("usage: bme280 [status|probe|read]\n");
         }
 #else
         basalt_printf("bme280: disabled in this shell level\n");
