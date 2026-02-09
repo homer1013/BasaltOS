@@ -2,6 +2,10 @@
 
 This checklist is the acceptance gate for Sprint 1 (`SCRUM-19`, `SCRUM-20`) and the baseline reference for `v0.1.0`.
 
+## Related Sprint 2 Artifact
+
+- `docs/S2_CLI_RELIABILITY_MATRIX.md` (`SCRUM-62` / `SCRUM-63`)
+
 ## Scope
 
 Pass/fail is based on:

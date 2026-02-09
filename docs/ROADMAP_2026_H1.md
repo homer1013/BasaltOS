@@ -51,6 +51,8 @@ Definition of done:
 
 ### Sprint 2 (Weeks 3-4): CLI wizard reliability (`v0.1.0` gate 1)
 
+Execution artifact: `docs/S2_CLI_RELIABILITY_MATRIX.md`
+
 Goals:
 - Make CLI wizard the most reliable configuration path.
 - Ensure generated output consistency.
