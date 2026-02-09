@@ -54,3 +54,11 @@ bash jira/scripts/report_release_checklist.sh
 
 This writes a release checklist markdown snapshot to `jira/reports/`.
 
+Daily status digest + social draft from latest export:
+
+```bash
+bash jira/scripts/report_daily_status.sh
+```
+
+This writes `daily_status_*.md` and `daily_social_*.md` to `jira/reports/`.
+
