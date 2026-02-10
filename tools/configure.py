@@ -415,7 +415,7 @@ def board_capabilities(board_data: Optional[dict]) -> Optional[Set[str]]:
     if "spi" in out:
         out.add("mcp2515")
     if "gpio" in out:
-        out.add("dht22")
+        out.update({"dht22", "uln2003", "l298n"})
     if "adc" in out or "i2s" in out:
         out.add("mic")
     return out
