@@ -81,6 +81,7 @@ Expected:
 ### L298N
 ```text
 l298n status
+l298n test
 l298n a fwd
 l298n a rev
 l298n a stop
@@ -92,8 +93,11 @@ l298n stop
 
 Expected:
 - `status` prints enabled + pin map + active-high config.
+- `test` returns `l298n test: ...` and then `l298n test: done`.
 - channel commands return `l298n: channel a|b -> ...`.
 - `stop` returns `l298n: both channels stopped`.
+- Bench note: if motor starts at power-up before firmware commands, L298N inputs are likely floating; power motor rail after MCU init or add pull-down resistors on IN pins.
+- Bench note: if direction feels inverted, swap motor leads on the affected OUT pair.
 
 ## Evidence to capture for Jira
 - Board + module used (exact module variant if known).

@@ -370,7 +370,7 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"mcp2544fd", "mcp2544fd [status|on|off|standby]", "MCP2544FD CAN transceiver control pins"},
     {"mcp2515", "mcp2515 [status|probe|reset|read <reg>|write <reg> <val>|tx <id> <hex>|rx]", "MCP2515 SPI/CAN diagnostics (reg + tx/rx bring-up)"},
     {"uln2003", "uln2003 [status|off|test|step <steps> [delay_ms]]", "ULN2003 stepper driver control"},
-    {"l298n", "l298n [status|stop|a <fwd|rev|stop>|b <fwd|rev|stop>]", "L298N dual H-bridge motor control"},
+    {"l298n", "l298n [status|stop|test|a <fwd|rev|stop>|b <fwd|rev|stop>]", "L298N dual H-bridge motor control"},
     {"wifi", "wifi [status|scan|connect|reconnect|disconnect]", "Wi-Fi station tools"},
     {"bluetooth", "bluetooth [status|on|off|scan [seconds]]", "Bluetooth diagnostics and BLE scan tools"},
     {"can", "can [status|up|down|send <id> <hex>|recv [timeout_ms]]", "TWAI/CAN diagnostics and frame TX/RX"},
@@ -1665,7 +1665,7 @@ static void bsh_cmd_drivers(void) {
     basalt_printf("  uln2003: disabled\n");
 #endif
 #if BASALT_ENABLE_L298N
-    basalt_printf("  l298n: enabled (shell API: l298n status/stop/a/b)\n");
+    basalt_printf("  l298n: enabled (shell API: l298n status/stop/test/a/b)\n");
 #else
     basalt_printf("  l298n: disabled\n");
 #endif
@@ -2850,6 +2850,27 @@ static void bsh_cmd_l298n(const char *sub, const char *arg1) {
         return;
     }
 
+    if (strcmp(sub, "test") == 0) {
+        basalt_printf("l298n test: A fwd -> stop -> A rev -> stop -> B fwd -> stop -> B rev -> stop\n");
+        bsh_l298n_set_channel(0, 1);
+        vTaskDelay(pdMS_TO_TICKS(300));
+        bsh_l298n_set_channel(0, 0);
+        vTaskDelay(pdMS_TO_TICKS(150));
+        bsh_l298n_set_channel(0, 2);
+        vTaskDelay(pdMS_TO_TICKS(300));
+        bsh_l298n_set_channel(0, 0);
+        vTaskDelay(pdMS_TO_TICKS(150));
+        bsh_l298n_set_channel(1, 1);
+        vTaskDelay(pdMS_TO_TICKS(300));
+        bsh_l298n_set_channel(1, 0);
+        vTaskDelay(pdMS_TO_TICKS(150));
+        bsh_l298n_set_channel(1, 2);
+        vTaskDelay(pdMS_TO_TICKS(300));
+        bsh_l298n_set_channel(1, 0);
+        basalt_printf("l298n test: done\n");
+        return;
+    }
+
     if ((strcmp(sub, "a") == 0 || strcmp(sub, "b") == 0) && arg1 && arg1[0]) {
         int mode = bsh_l298n_mode_from_str(arg1);
         if (mode < 0) {
@@ -2862,7 +2883,7 @@ static void bsh_cmd_l298n(const char *sub, const char *arg1) {
         return;
     }
 
-    basalt_printf("usage: l298n [status|stop|a <fwd|rev|stop>|b <fwd|rev|stop>]\n");
+    basalt_printf("usage: l298n [status|stop|test|a <fwd|rev|stop>|b <fwd|rev|stop>]\n");
 }
 #else
 static void bsh_cmd_l298n(const char *sub, const char *arg1) {
@@ -4559,7 +4580,7 @@ static void basalt_log_driver_boot_summary(void) {
     ESP_LOGI(TAG, "uln2003 enabled: shell API available (uln2003 status/off/step).");
 #endif
 #if BASALT_ENABLE_L298N
-    ESP_LOGI(TAG, "l298n enabled: shell API available (l298n status/stop/a/b).");
+    ESP_LOGI(TAG, "l298n enabled: shell API available (l298n status/stop/test/a/b).");
 #endif
 }
 
