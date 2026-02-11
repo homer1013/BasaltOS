@@ -10,6 +10,95 @@ Copyright © 2026 Homer Morrill
 
 ---
 
+## Welcome
+
+You do not need to be an embedded engineer to try this project.
+
+If you can:
+- plug in a board
+- copy/paste terminal commands
+- read a serial console
+
+you can get to a first success with BasaltOS.
+
+## Choose Your Path
+
+- I just want to get something running fast:
+  use `docs/ESP32_FIRST_SUCCESS_10_MIN.md`
+- I want a guided setup flow:
+  run `python tools/configure.py --wizard`
+- I want API/app development details:
+  read `docs/third-party-app-dev.md` and `docs/api-basalt.md`
+
+## Current Stable Release
+
+- Stable baseline: `v0.1.0`
+- Release/tag link: https://github.com/homer1013/BasaltOS/releases/tag/v0.1.0
+
+---
+
+## Start Here (New to GitHub or Embedded)
+
+If this is your first time using a GitHub project, start with these 3 steps:
+
+1. Open the quickstart guide: `docs/ESP32_FIRST_SUCCESS_10_MIN.md`
+2. Follow the copy/paste terminal commands exactly in order
+3. If anything fails, open an issue and include:
+   - your board name
+   - your operating system
+   - the full error text
+
+## Quick Glossary
+
+- Platform: chip family/toolchain group (example: `esp32`)
+- Board: your exact hardware profile (example: ESP32-C3 SuperMini)
+- Driver: feature gate for hardware support (I2C, TFT, GPIO, etc.)
+- Applet/App: runnable code selected in config or loaded to the device
+
+---
+
+## What Works Today
+
+What’s working today:
+
+- **Basalt Shell (`bsh`)** over UART + TFT console output
+  - `help -commands` with clearer usage text
+  - improved path handling (`cd`, virtual roots, app/dev roots)
+  - app commands: `run`, `run_dev`, `stop`, `kill`, `apps`, `apps_dev`
+  - diagnostics: `led_test`, `devcheck`, `drivers`
+- **Filesystem support**
+  - SPIFFS internal flash (“storage” partition baked from `spiffs/`)
+  - Optional SD card filesystem (board/driver dependent)
+- **App lifecycle (early)**
+  - install/run/remove concepts
+  - “store-only zip” packaging tools (`tools/pack_app.py`)
+  - dev app workflow under `dev/apps_dev` with shell execution via `run_dev`
+- **Embedded MicroPython runtime**
+  - MicroPython is integrated as a submodule/runtime
+  - `basalt.*` APIs exist and are expanding
+  - UI API now includes draw + touch primitives used by apps like `paint`
+- **Configuration system (CLI + Web)**
+  - **Boards + Drivers + Platforms** model
+  - CLI wizard: `python tools/configure.py --wizard`
+  - CLI wizard now starts board-first with taxonomy filters:
+    - Manufacturer -> Architecture -> Family -> Processor/Silicon -> Board
+  - Local web configurator: `python tools/basaltos_config_server.py`
+  - dedicated **App Market page** for selecting compatible apps
+  - generated outputs:
+    - `config/generated/basalt_config.h`
+    - `config/generated/basalt.features.json`
+    - `config/generated/sdkconfig.defaults`
+- **Multi-target backend groundwork**
+  - runtime-capable flow for ESP32/IDF boards
+  - generated-firmware profile flow started for constrained targets (PIC/AVR direction)
+- **Driver/peripheral expansion**
+  - connectivity: `wifi`, `bluetooth`, `twai` (CAN)
+  - transceiver + motor: `mcp2544fd`, `uln2003`, `l298n`
+  - sensing/display gates: `display_ssd1306`, `rtc`, `imu`, `dht22`, `mic`, `ads1115`, `mcp23017`, `hp4067`, `tp4056`
+  - SSD1306 hardware validation complete on ESP32-C3 SuperMini (I2C defaults `SDA=GPIO8`, `SCL=GPIO9`) for both `128x64` and `128x32` panels at `0x3C`
+
+---
+
 ## Project Philosophy
 
 BasaltOS is an open-source embedded operating system and application platform designed to make embedded development more modular, approachable, and scalable.
@@ -51,65 +140,6 @@ Sponsorship helps fund core maintenance, board bring-up, docs, CI time, and rele
 
 ---
 
-## Status (v0.1.0)
-
-Release alignment:
-- Latest Git tag/release baseline: `v0.1.0`
-- `main` currently includes post-`v0.1.0` hardening and hardware-validation fixes
-- Jira sprint/release tracking should continue to reference `v0.1.0` until the next tag is cut
-
-What’s working today:
-
-- **Basalt Shell (`bsh`)** over UART + TFT console output
-  - `help -commands` with clearer usage text
-  - improved path handling (`cd`, virtual roots, app/dev roots)
-  - app commands: `run`, `run_dev`, `stop`, `kill`, `apps`, `apps_dev`
-  - diagnostics: `led_test`, `devcheck`, `drivers`
-- **Filesystem support**
-  - SPIFFS internal flash (“storage” partition baked from `spiffs/`)
-  - Optional SD card filesystem (board/driver dependent)
-- **App lifecycle (early)**
-  - install/run/remove concepts
-  - “store-only zip” packaging tools (`tools/pack_app.py`)
-  - dev app workflow under `dev/apps_dev` with shell execution via `run_dev`
-- **Embedded MicroPython runtime**
-  - MicroPython is integrated as a submodule/runtime
-  - `basalt.*` APIs exist and are expanding
-  - UI API now includes draw + touch primitives used by apps like `paint`
-- **Configuration system (CLI + Web)**
-  - **Boards + Drivers + Platforms** model
-  - CLI wizard: `python tools/configure.py --wizard`
-  - CLI wizard now starts board-first with taxonomy filters:
-    - Manufacturer -> Architecture -> Family -> Processor/Silicon -> Board
-  - Local web configurator: `python tools/basaltos_config_server.py`
-  - website-style landing + profile chip + board inventory
-  - dedicated **App Market page** for:
-    - browsing starter apps + market apps
-    - add-to-current-build selection (board/platform gated)
-    - uploading local market app zip packages
-    - downloading catalog app packages as zip
-  - ESP32 web flasher cache-hardening to avoid stale artifact flashes
-  - generated outputs:
-    - `config/generated/basalt_config.h`
-    - `config/generated/basalt.features.json`
-    - `config/generated/sdkconfig.defaults`
-  - display boot splash options in driver config:
-    - `none` (default)
-    - `test_glyph` (built-in Basalt test glyph/pattern)
-    - `local_file_upload` (currently expects processed `custom_image.c`; PNG/BMP conversion is planned later)
-- **Multi-target backend groundwork**
-  - runtime-capable flow for ESP32/IDF boards
-  - generated-firmware profile flow started for constrained targets (PIC/AVR direction)
-- **Driver/peripheral expansion**
-  - connectivity: `wifi`, `bluetooth`, `twai` (CAN)
-  - transceiver + motor: `mcp2544fd`, `uln2003`, `l298n`
-  - sensing/display gates: `display_ssd1306`, `rtc`, `imu`, `dht22`, `mic`, `ads1115`, `mcp23017`, `hp4067`, `tp4056`
-  - SSD1306 hardware validation complete on ESP32-C3 SuperMini (I2C defaults `SDA=GPIO8`, `SCL=GPIO9`) for both `128x64` and `128x32` panels at `0x3C`
-
-This release focuses on **workflow quality + platform breadth**: cleaner configurator UX, board-first taxonomy across wizard/UI, gated app selection in App Market, expanded board/driver catalogs, and practical runtime UI APIs for device-side apps.
-
----
-
 ## Big idea: Configure once, build anywhere
 
 BasaltOS is moving toward a model where you choose:
@@ -127,9 +157,14 @@ This is the “backend” that later becomes a GUI (Arduino/CubeMX-style), but i
 
 ---
 
-## Getting started (ESP-IDF / ESP32)
+## Getting Started (ESP-IDF / ESP32)
 
 Quick path: `docs/ESP32_FIRST_SUCCESS_10_MIN.md`
+
+Before you begin, make sure you have:
+- an ESP32 board connected by USB
+- Python 3 available in terminal
+- ESP-IDF installed (the guide above covers this)
 
 ### 1) Clone + init submodules
 ```bash
@@ -163,6 +198,9 @@ SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build
 idf.py -B build -p /dev/ttyUSB0 flash monitor
 ```
 
+If `/dev/ttyUSB0` is not your device, replace it with your serial port
+(common alternatives: `/dev/ttyACM0`, `COM3`, `COM4`).
+
 ### 5) Optional: run the local web configurator
 ```bash
 python tools/basaltos_config_server.py
@@ -174,6 +212,11 @@ http://localhost:5000
 ```
 
 This is intended for local workflow right now (no hosting/deployment required).
+
+First-success checkpoint:
+- device boots without crash/reset loop
+- serial monitor shows shell startup output
+- `help` command responds in shell
 
 Third-party app developers should start with:
 - `docs/third-party-app-dev.md`
