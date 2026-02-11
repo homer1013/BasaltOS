@@ -44,7 +44,7 @@ Set in `config/generated/basalt_config.h`:
 
 Optional config:
 - `BASALT_CFG_ULN2003_ACTIVE_HIGH 1`
-- `BASALT_CFG_ULN2003_STEP_DELAY_MS 4`
+- `BASALT_CFG_ULN2003_STEP_DELAY_MS 10`
 
 ### L298N-only mapping example
 Set in `config/generated/basalt_config.h`:
@@ -65,14 +65,17 @@ At `basalt>` prompt:
 ### ULN2003
 ```text
 uln2003 status
-uln2003 step 16 4
-uln2003 step -16 4
+uln2003 test
+uln2003 step 16 10
+uln2003 step -16 10
 uln2003 off
 ```
 
 Expected:
 - `status` prints enabled + pin map + config values.
+- `test` should cycle IN1..IN4 with visible ULN board LEDs.
 - `step` completes and returns `uln2003 step: done (...)`.
+- Bench note (ESP32-C3 SuperMini + 28BYJ-48): use >=10ms delay for reliable rotation.
 - `off` returns `uln2003: coils off`.
 
 ### L298N

@@ -184,7 +184,7 @@
 #define BASALT_CFG_ULN2003_ACTIVE_HIGH 1
 #endif
 #ifndef BASALT_CFG_ULN2003_STEP_DELAY_MS
-#define BASALT_CFG_ULN2003_STEP_DELAY_MS 4
+#define BASALT_CFG_ULN2003_STEP_DELAY_MS 10
 #endif
 #ifndef BASALT_PIN_L298N_IN1
 #define BASALT_PIN_L298N_IN1 -1
@@ -287,7 +287,9 @@ static int basalt_printf(const char *fmt, ...) {
     va_end(ap);
     if (n < 0) return n;
     if (n >= (int)sizeof(buf)) n = (int)sizeof(buf) - 1;
-    if (g_uart_num >= 0) basalt_uart_write(buf, n);
+    // Always write through the active console backend (USB-Serial/JTAG or stdio fallback).
+    // The shell prompt/echo already does this; command handlers should behave the same.
+    basalt_uart_write(buf, n);
 #if BASALT_TFT_LOGS
     if (tft_console_is_ready()) {
         tft_console_write(buf);
@@ -367,7 +369,7 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"tp4056", "tp4056 [status|on|off]", "TP4056 charger status and optional CE control"},
     {"mcp2544fd", "mcp2544fd [status|on|off|standby]", "MCP2544FD CAN transceiver control pins"},
     {"mcp2515", "mcp2515 [status|probe|reset|read <reg>|write <reg> <val>|tx <id> <hex>|rx]", "MCP2515 SPI/CAN diagnostics (reg + tx/rx bring-up)"},
-    {"uln2003", "uln2003 [status|off|step <steps> [delay_ms]]", "ULN2003 stepper driver control"},
+    {"uln2003", "uln2003 [status|off|test|step <steps> [delay_ms]]", "ULN2003 stepper driver control"},
     {"l298n", "l298n [status|stop|a <fwd|rev|stop>|b <fwd|rev|stop>]", "L298N dual H-bridge motor control"},
     {"wifi", "wifi [status|scan|connect|reconnect|disconnect]", "Wi-Fi station tools"},
     {"bluetooth", "bluetooth [status|on|off|scan [seconds]]", "Bluetooth diagnostics and BLE scan tools"},
@@ -2700,6 +2702,21 @@ static void bsh_cmd_uln2003(const char *sub, const char *arg1, const char *arg2)
         return;
     }
 
+    if (strcmp(sub, "test") == 0) {
+        static const uint8_t seq[4] = {0x01, 0x02, 0x04, 0x08};
+        static const char *names[4] = {"IN1", "IN2", "IN3", "IN4"};
+        basalt_printf("uln2003 test: energizing one coil at a time (300ms each)\n");
+        for (int i = 0; i < 4; ++i) {
+            basalt_printf("uln2003 test: %s on\n", names[i]);
+            bsh_uln2003_apply_mask(seq[i]);
+            vTaskDelay(pdMS_TO_TICKS(300));
+            bsh_uln2003_apply_mask(0);
+            vTaskDelay(pdMS_TO_TICKS(120));
+        }
+        basalt_printf("uln2003 test: done\n");
+        return;
+    }
+
     if (strcmp(sub, "step") == 0) {
         if (!arg1 || !arg1[0]) {
             basalt_printf("usage: uln2003 step <steps> [delay_ms]\n");
@@ -2733,7 +2750,7 @@ static void bsh_cmd_uln2003(const char *sub, const char *arg1, const char *arg2)
         return;
     }
 
-    basalt_printf("usage: uln2003 [status|off|step <steps> [delay_ms]]\n");
+    basalt_printf("usage: uln2003 [status|off|test|step <steps> [delay_ms]]\n");
 }
 #else
 static void bsh_cmd_uln2003(const char *sub, const char *arg1, const char *arg2) {
