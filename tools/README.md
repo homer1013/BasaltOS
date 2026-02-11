@@ -8,6 +8,7 @@
 - `build.sh` – wrapper for idf.py build
 - `flash.sh` – wrapper for idf.py flash
 - `monitor.sh` – wrapper for idf.py monitor
+- `pic16_curiosity_nano_run.sh` – PIC16F13145 Curiosity Nano helper (XC8 compile + drag-and-drop flash)
 - `gen_mpy_embed.sh` – build MicroPython embed sources
 - `pack_app.py` – create store-only zip app packages
 - `validate_app.py` – validate app folders/zip packages before upload/install
@@ -181,4 +182,18 @@ Release sync updater smoke test:
 
 ```bash
 bash tools/tests/release_sync_update_smoke.sh
+```
+
+## PIC16 Curiosity Nano Helper
+
+End-to-end helper for local PIC16 bench flow (XC8 + DFP + drag-drop flash):
+
+```bash
+bash tools/pic16_curiosity_nano_run.sh
+```
+
+Compile only (no flash):
+
+```bash
+bash tools/pic16_curiosity_nano_run.sh --no-flash
 ```

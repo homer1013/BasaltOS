@@ -1,7 +1,7 @@
 {
-  "id": "arduino_uno_r4_minima",
-  "name": "Arduino Uno R4 Minima (RA4M1)",
-  "description": "Arduino Uno R4 Minima uses Renesas RA4M1 (Cortex-M4). Pin labels follow Arduino numbering.",
+  "id": "arduino_uno_r4_wifi",
+  "name": "Arduino Uno R4 WiFi (RA4M1)",
+  "description": "Arduino Uno R4 WiFi uses Renesas RA4M1 (Cortex-M4) with ESP32-S3 networking co-processor. Pin labels follow Arduino numbering.",
   "platform": "renesas_ra",
   "target_profile": "ra4m1",
   "mcu": "Renesas RA4M1",
@@ -14,7 +14,9 @@
     "gpio",
     "adc",
     "pwm",
-    "timer"
+    "timer",
+    "wifi",
+    "bluetooth"
   ],
   "pins": {
     "uart_tx": "D1",
@@ -31,23 +33,17 @@
   "pin_definitions": {
     "i2c_sda": {
       "description": "I2C SDA (Arduino header)",
-      "alternatives": [
-        "SDA"
-      ],
+      "alternatives": ["SDA"],
       "type": "bidirectional"
     },
     "i2c_scl": {
       "description": "I2C SCL (Arduino header)",
-      "alternatives": [
-        "SCL"
-      ],
+      "alternatives": ["SCL"],
       "type": "output"
     },
     "led": {
       "description": "Onboard LED",
-      "alternatives": [
-        "D13"
-      ],
+      "alternatives": ["D13"],
       "type": "output"
     }
   },
@@ -57,18 +53,10 @@
     "MCU=ra4m1"
   ],
   "defaults": {
-    "modules": [
-      "gpio",
-      "uart",
-      "i2c",
-      "spi",
-      "adc",
-      "pwm",
-      "timer"
-    ],
+    "modules": ["gpio", "uart", "i2c", "spi", "adc", "pwm", "timer"],
     "clock": {
       "freq_hz": 48000000
     }
   },
-  "notes": "Pin mapping depends on Arduino core/FSP config. Use this as a starting point; later we can map RA port pins (Pxxx) if you want baremetal."
+  "notes": "WiFi/BLE are provided by the onboard ESP32-S3 co-processor via Arduino core/network stack. Basalt direct driver support is out of scope for this baseline profile."
 }

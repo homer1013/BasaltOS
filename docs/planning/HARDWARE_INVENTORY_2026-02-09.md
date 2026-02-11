@@ -11,7 +11,7 @@ Source: in-hand hardware snapshot provided by Homer.
 | Arduino Uno R4 WiFi | 1 | Renesas RA4M1 |
 | ESP32-C3 SuperMini | 5 | primary high-throughput dev board |
 | ESP32 CYD (ESP32-3248S035R) | 1 | display-focused |
-| M5Stack Core2 | 1 | display + touch ecosystem |
+| M5StickC Plus2 | 1 | compact display-focused ESP32 board |
 | ESP32-C6 DevKit | 1 | newer ESP32 target |
 | Circuit Playground Express (ATSAMD21) | 1 | ATSAMD21 platform coverage |
 | Raspberry Pi 5 | 1 | linux-sbc platform |
@@ -43,5 +43,5 @@ Source: in-hand hardware snapshot provided by Homer.
 
 ## Constraints
 
-- Not currently available in-hand: MCP2515, BME280, ESP32-S3-DevKitC-1.
+- Not currently available in-hand: MCP2515, BME280, ESP32-S3-DevKitC-1, M5Stack Core2.
 - Tasks requiring these should be marked **software-complete / hardware-pending** until hardware is available.

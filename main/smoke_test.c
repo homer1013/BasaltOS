@@ -162,7 +162,11 @@ int basalt_smoke_test_run(void) {
     printf("[smoke] heap free (8bit): %u\n", (unsigned)heap_free);
 
     int rc = 0;
-    rc |= smoke_gpio_blink(BASALT_PIN_LED);
+    int led_pin = -1;
+#if defined(BASALT_PIN_LED)
+    led_pin = BASALT_PIN_LED;
+#endif
+    rc |= smoke_gpio_blink(led_pin);
 
     // UART smoke test temporarily disabled
     // rc |= smoke_uart0_tx();

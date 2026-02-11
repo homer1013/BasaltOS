@@ -1,0 +1,61 @@
+{
+  "id": "esp32-cam",
+  "name": "ESP32-CAM (AI-Thinker baseline)",
+  "description": "Baseline profile for ESP32-CAM modules using external USB-UART for flashing/console. Verify exact pinout for your variant.",
+  "platform": "esp32",
+  "target": "esp32",
+  "mcu": "ESP32-D0WDQ6",
+  "flash": "4MB (typical)",
+  "ram": "520KB",
+  "capabilities": [
+    "wifi",
+    "bluetooth",
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm"
+  ],
+  "pins": {
+    "uart_tx": 1,
+    "uart_rx": 3,
+    "i2c_sda": 14,
+    "i2c_scl": 15,
+    "spi_mosi": 13,
+    "spi_miso": 12,
+    "spi_sclk": 14,
+    "spi_cs": 15,
+    "led": -1,
+    "button": 0,
+    "cam_xclk": 0,
+    "cam_siod": 26,
+    "cam_sioc": 27,
+    "cam_pwdn": 32,
+    "cam_reset": -1,
+    "cam_vsync": 25,
+    "cam_href": 23,
+    "cam_pclk": 22,
+    "cam_d0": 5,
+    "cam_d1": 18,
+    "cam_d2": 19,
+    "cam_d3": 21,
+    "cam_d4": 36,
+    "cam_d5": 39,
+    "cam_d6": 34,
+    "cam_d7": 35
+  },
+  "sdkconfig": [
+    "# ESP32-CAM baseline defaults",
+    "CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y",
+    "CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y",
+    "CONFIG_ESP_CONSOLE_UART_DEFAULT=y",
+    "CONFIG_ESP_CONSOLE_UART_NUM=0",
+    "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
+  ],
+  "defaults": {
+    "modules": ["gpio", "uart", "spi", "i2c", "fs_spiffs", "shell_full"],
+    "clock": { "freq_hz": 240000000 }
+  },
+  "notes": "ESP32-CAM typically requires IO0-to-GND for flashing and release/reset for normal boot. LED is unset to avoid board-variant assumptions during smoke tests."
+}

@@ -1,0 +1,96 @@
+{
+  "id": "esp32-c6",
+  "name": "ESP32-C6 DevKit (Baseline)",
+  "description": "Baseline ESP32-C6 profile for configurator and bring-up. Verify pinout against your exact devkit revision.",
+  "platform": "esp32",
+  "target": "esp32c6",
+  "mcu": "ESP32-C6",
+  "flash": "4MB (typical)",
+  "ram": "512KB (typical)",
+  "capabilities": [
+    "wifi",
+    "bluetooth",
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm"
+  ],
+  "pins": {
+    "uart_tx": 16,
+    "uart_rx": 17,
+    "i2c_sda": 6,
+    "i2c_scl": 7,
+    "spi_mosi": 7,
+    "spi_miso": 2,
+    "spi_sclk": 6,
+    "spi_cs": 10,
+    "led": 8,
+    "button": 9
+  },
+  "pin_definitions": {
+    "uart_tx": {
+      "description": "UART TX baseline pin (verify per board revision)",
+      "alternatives": [16, 17, 4, 5],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "UART RX baseline pin (verify per board revision)",
+      "alternatives": [17, 16, 4, 5],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C SDA baseline pin",
+      "alternatives": [6, 4, 5, 8, 10],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL baseline pin",
+      "alternatives": [7, 5, 4, 9, 11],
+      "type": "output"
+    },
+    "spi_mosi": {
+      "description": "SPI MOSI baseline pin",
+      "alternatives": [7, 6, 10, 4, 5],
+      "type": "output"
+    },
+    "spi_miso": {
+      "description": "SPI MISO baseline pin",
+      "alternatives": [2, 6, 7, 4, 5],
+      "type": "input"
+    },
+    "spi_sclk": {
+      "description": "SPI SCLK baseline pin",
+      "alternatives": [6, 7, 10, 4, 5],
+      "type": "output"
+    },
+    "spi_cs": {
+      "description": "SPI CS baseline pin",
+      "alternatives": [10, 8, 9, 4, 5],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED (board-dependent)",
+      "alternatives": [8, 15, 2, 3],
+      "type": "output"
+    },
+    "button": {
+      "description": "User/boot button (board-dependent)",
+      "alternatives": [9, 0, 1],
+      "type": "input"
+    }
+  },
+  "sdkconfig": [
+    "# ESP32-C6 baseline defaults",
+    "CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y",
+    "CONFIG_ESP_CONSOLE_UART_DEFAULT=y",
+    "CONFIG_ESP_CONSOLE_UART_NUM=0",
+    "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
+  ],
+  "defaults": {
+    "modules": ["gpio", "uart", "i2c", "spi", "fs_spiffs", "shell_full"],
+    "clock": { "freq_hz": 160000000 }
+  },
+  "notes": "This profile is a conservative baseline intended to unblock C6 configuration and early bring-up. Confirm all pins, especially SPI/I2C/LED, against your board documentation."
+}

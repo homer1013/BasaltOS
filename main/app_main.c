@@ -22,6 +22,8 @@
 #include "esp_system.h"
 #include "esp_log.h"
 #include "esp_err.h"
+#include "esp_timer.h"
+#include "esp_rom_sys.h"
 #include "esp_vfs_dev.h"
 #include "esp_vfs.h"
 #include "esp_spiffs.h"
@@ -33,6 +35,7 @@
 #include "driver/uart.h"
 #include "driver/usb_serial_jtag.h"
 #include "driver/twai.h"
+#include "driver/ledc.h"
 #include "sdmmc_cmd.h"
 #include "esp_vfs_fat.h"
 #include "esp_event.h"
@@ -102,6 +105,9 @@
 #ifndef BASALT_ENABLE_BME280
 #define BASALT_ENABLE_BME280 0
 #endif
+#ifndef BASALT_ENABLE_ADS1115
+#define BASALT_ENABLE_ADS1115 0
+#endif
 #ifndef BASALT_ENABLE_MIC
 #define BASALT_ENABLE_MIC 0
 #endif
@@ -125,6 +131,9 @@
 #endif
 #ifndef BASALT_ENABLE_MCP2515
 #define BASALT_ENABLE_MCP2515 0
+#endif
+#ifndef BASALT_ENABLE_MCP23017
+#define BASALT_ENABLE_MCP23017 0
 #endif
 #ifndef BASALT_ENABLE_ULN2003
 #define BASALT_ENABLE_ULN2003 0
@@ -210,11 +219,20 @@
 #ifndef BASALT_CFG_L298N_EN_ACTIVE_HIGH
 #define BASALT_CFG_L298N_EN_ACTIVE_HIGH 1
 #endif
+#ifndef BASALT_CFG_L298N_PWM_FREQ_HZ
+#define BASALT_CFG_L298N_PWM_FREQ_HZ 20000
+#endif
+#ifndef BASALT_CFG_L298N_DEFAULT_SPEED_PCT
+#define BASALT_CFG_L298N_DEFAULT_SPEED_PCT 100
+#endif
 #ifndef BASALT_PIN_I2C_SDA
 #define BASALT_PIN_I2C_SDA -1
 #endif
 #ifndef BASALT_PIN_I2C_SCL
 #define BASALT_PIN_I2C_SCL -1
+#endif
+#ifndef BASALT_PIN_DHT22_DATA
+#define BASALT_PIN_DHT22_DATA -1
 #endif
 #ifndef BASALT_PIN_TP4056_CHRG
 #define BASALT_PIN_TP4056_CHRG -1
@@ -240,7 +258,6 @@
 #else
 #define BASALT_CFG_IMU_DRIVER "MPU6886"
 #endif
-#endif
 #ifndef BASALT_CFG_IMU_ADDRESS
 #ifdef BASALT_IMU_ADDRESS
 #define BASALT_CFG_IMU_ADDRESS BASALT_IMU_ADDRESS
@@ -250,6 +267,30 @@
 #endif
 #ifndef BASALT_CFG_BME280_I2C_ADDRESS
 #define BASALT_CFG_BME280_I2C_ADDRESS "0x76"
+#endif
+#ifndef BASALT_CFG_DHT22_SAMPLE_MS
+#define BASALT_CFG_DHT22_SAMPLE_MS 2000
+#endif
+#ifndef BASALT_CFG_DHT_SENSOR_TYPE
+#define BASALT_CFG_DHT_SENSOR_TYPE "auto"
+#endif
+#ifndef BASALT_CFG_MCP23017_ADDRESS
+#define BASALT_CFG_MCP23017_ADDRESS "0x20"
+#endif
+#ifndef BASALT_CFG_MCP23017_DEFAULT_DIRECTION
+#define BASALT_CFG_MCP23017_DEFAULT_DIRECTION "input"
+#endif
+#ifndef BASALT_CFG_ADS1115_ADDRESS
+#define BASALT_CFG_ADS1115_ADDRESS "0x48"
+#endif
+#ifndef BASALT_CFG_ADS1115_PGA_MV
+#define BASALT_CFG_ADS1115_PGA_MV 2048
+#endif
+#ifndef BASALT_CFG_ADS1115_SAMPLE_RATE_SPS
+#define BASALT_CFG_ADS1115_SAMPLE_RATE_SPS 128
+#endif
+#ifndef BASALT_CFG_ADS1115_MODE
+#define BASALT_CFG_ADS1115_MODE "single_shot"
 #endif
 
 static const char *TAG = "basalt";
@@ -365,12 +406,15 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"remove", "remove <app>", "Remove installed app"},
     {"logs", "logs", "Show runtime diagnostics and last app error"},
     {"imu", "imu [status|read|whoami|stream [hz] [samples]]", "IMU probe/read over configured I2C pins"},
+    {"dht22", "dht22 [status|read [pin] [auto|dht22|dht11]]", "DHT22/DHT11-compatible single-wire probe and read"},
     {"bme280", "bme280 [status|probe|read]", "BME280 probe/status/raw-read over configured I2C pins"},
+    {"ads1115", "ads1115 [status|probe|read [0-3]]", "ADS1115 probe/status and single-ended raw/mV read"},
+    {"mcp23017", "mcp23017 [status|probe|scan|test|read <reg>|write <reg> <val>|pinmode <0-15> <in|out>|pinwrite <0-15> <0|1>|pinread <0-15>]", "MCP23017 I2C GPIO-expander diagnostics"},
     {"tp4056", "tp4056 [status|on|off]", "TP4056 charger status and optional CE control"},
     {"mcp2544fd", "mcp2544fd [status|on|off|standby]", "MCP2544FD CAN transceiver control pins"},
     {"mcp2515", "mcp2515 [status|probe|reset|read <reg>|write <reg> <val>|tx <id> <hex>|rx]", "MCP2515 SPI/CAN diagnostics (reg + tx/rx bring-up)"},
     {"uln2003", "uln2003 [status|off|test|step <steps> [delay_ms]]", "ULN2003 stepper driver control"},
-    {"l298n", "l298n [status|stop|test|a <fwd|rev|stop>|b <fwd|rev|stop>]", "L298N dual H-bridge motor control"},
+    {"l298n", "l298n [status|stop|test|speed <0-100>|a <fwd|rev|stop|speed <0-100>>|b <fwd|rev|stop|speed <0-100>>]", "L298N dual H-bridge motor control"},
     {"wifi", "wifi [status|scan|connect|reconnect|disconnect]", "Wi-Fi station tools"},
     {"bluetooth", "bluetooth [status|on|off|scan [seconds]]", "Bluetooth diagnostics and BLE scan tools"},
     {"can", "can [status|up|down|send <id> <hex>|recv [timeout_ms]]", "TWAI/CAN diagnostics and frame TX/RX"},
@@ -392,7 +436,7 @@ static bool bsh_help_cmd_hidden_tiny(const char *name) {
         "ls", "cat", "cd", "mkdir", "cp", "mv", "rm",
         "apps_dev", "led_test", "devcheck", "edit",
         "run_dev", "kill", "applet",
-        "install", "remove", "logs", "imu", "bme280", "tp4056", "mcp2544fd", "mcp2515", "uln2003", "l298n", "wifi", "bluetooth", "can"
+        "install", "remove", "logs", "imu", "dht22", "bme280", "ads1115", "mcp23017", "tp4056", "mcp2544fd", "mcp2515", "uln2003", "l298n", "wifi", "bluetooth", "can"
     };
     for (size_t i = 0; i < sizeof(k_hidden) / sizeof(k_hidden[0]); ++i) {
         if (strcmp(name, k_hidden[i]) == 0) return true;
@@ -1620,12 +1664,10 @@ static void bsh_cmd_drivers(void) {
     basalt_printf("  imu: disabled\n");
 #endif
 #if BASALT_ENABLE_DHT22
-    basalt_printf("  dht22: enabled (stub only; runtime driver not implemented yet)\n");
-#ifdef BASALT_PIN_DHT22_DATA
+    basalt_printf("  dht22: enabled (shell API: dht22 status/read [pin] [auto|dht22|dht11])\n");
     basalt_printf("    pin: GPIO%d\n", BASALT_PIN_DHT22_DATA);
-#else
-    basalt_printf("    pin: not bound (define BASALT_PIN_DHT22_DATA in board config)\n");
-#endif
+    basalt_printf("    sample_ms_cfg: %ld\n", (long)BASALT_CFG_DHT22_SAMPLE_MS);
+    basalt_printf("    sensor_type_cfg: %s\n", BASALT_CFG_DHT_SENSOR_TYPE);
 #else
     basalt_printf("  dht22: disabled\n");
 #endif
@@ -1633,6 +1675,16 @@ static void bsh_cmd_drivers(void) {
     basalt_printf("  bme280: enabled (shell API: bme280 status/probe/read)\n");
 #else
     basalt_printf("  bme280: disabled\n");
+#endif
+#if BASALT_ENABLE_ADS1115
+    basalt_printf("  ads1115: enabled (shell API: ads1115 status/probe/read)\n");
+#else
+    basalt_printf("  ads1115: disabled\n");
+#endif
+#if BASALT_ENABLE_MCP23017
+    basalt_printf("  mcp23017: enabled (shell API: mcp23017 status/probe/scan/test/read/write/pinmode/pinwrite/pinread)\n");
+#else
+    basalt_printf("  mcp23017: disabled\n");
 #endif
 #if BASALT_ENABLE_MIC
     basalt_printf("  mic: enabled (stub only; runtime driver not implemented yet)\n");
@@ -1665,7 +1717,7 @@ static void bsh_cmd_drivers(void) {
     basalt_printf("  uln2003: disabled\n");
 #endif
 #if BASALT_ENABLE_L298N
-    basalt_printf("  l298n: enabled (shell API: l298n status/stop/test/a/b)\n");
+    basalt_printf("  l298n: enabled (shell API: l298n status/stop/test/speed/a/b)\n");
 #else
     basalt_printf("  l298n: disabled\n");
 #endif
@@ -2276,6 +2328,315 @@ static void bsh_cmd_imu_stream(const char *hz_arg, const char *samples_arg) {
 }
 #endif
 
+#if BASALT_ENABLE_DHT22 && BASALT_ENABLE_GPIO
+static int64_t s_dht22_last_read_us = 0;
+static float s_dht22_last_temp_c = 0.0f;
+static float s_dht22_last_hum_pct = 0.0f;
+static bool s_dht22_has_last = false;
+static portMUX_TYPE s_dht22_lock = portMUX_INITIALIZER_UNLOCKED;
+
+typedef enum {
+    BSH_DHT_MODE_AUTO = 0,
+    BSH_DHT_MODE_DHT22 = 1,
+    BSH_DHT_MODE_DHT11 = 2,
+} bsh_dht_mode_t;
+
+static int bsh_dht22_pin_from_arg(const char *pin_arg, bool *ok) {
+    if (ok) *ok = false;
+    if (!pin_arg || !pin_arg[0]) {
+        if (ok) *ok = true;
+        return BASALT_PIN_DHT22_DATA;
+    }
+    char *end = NULL;
+    long v = strtol(pin_arg, &end, 0);
+    if (end == pin_arg || (end && *end != '\0') || v < 0 || v > 48) return -1;
+    if (ok) *ok = true;
+    return (int)v;
+}
+
+static bsh_dht_mode_t bsh_dht_mode_from_cfg(void) {
+    if (strcmp(BASALT_CFG_DHT_SENSOR_TYPE, "dht22") == 0) return BSH_DHT_MODE_DHT22;
+    if (strcmp(BASALT_CFG_DHT_SENSOR_TYPE, "dht11") == 0) return BSH_DHT_MODE_DHT11;
+    return BSH_DHT_MODE_AUTO;
+}
+
+static bsh_dht_mode_t bsh_dht_mode_from_arg(const char *arg, bool *ok) {
+    if (ok) *ok = false;
+    if (!arg || !arg[0]) {
+        if (ok) *ok = true;
+        return bsh_dht_mode_from_cfg();
+    }
+    if (strcmp(arg, "auto") == 0) {
+        if (ok) *ok = true;
+        return BSH_DHT_MODE_AUTO;
+    }
+    if (strcmp(arg, "dht22") == 0) {
+        if (ok) *ok = true;
+        return BSH_DHT_MODE_DHT22;
+    }
+    if (strcmp(arg, "dht11") == 0) {
+        if (ok) *ok = true;
+        return BSH_DHT_MODE_DHT11;
+    }
+    return BSH_DHT_MODE_AUTO;
+}
+
+static const char *bsh_dht_mode_name(bsh_dht_mode_t mode) {
+    if (mode == BSH_DHT_MODE_DHT22) return "dht22";
+    if (mode == BSH_DHT_MODE_DHT11) return "dht11";
+    return "auto";
+}
+
+static bool bsh_dht22_wait_level(int pin, int level, uint32_t timeout_us) {
+    const int64_t start = esp_timer_get_time();
+    while ((esp_timer_get_time() - start) < (int64_t)timeout_us) {
+        if (gpio_get_level((gpio_num_t)pin) == level) return true;
+    }
+    return false;
+}
+
+static int32_t bsh_dht22_expect_pulse_us(int pin, int level, uint32_t timeout_us) {
+    const int64_t start = esp_timer_get_time();
+    while (gpio_get_level((gpio_num_t)pin) == level) {
+        if ((esp_timer_get_time() - start) > (int64_t)timeout_us) return -1;
+    }
+    return (int32_t)(esp_timer_get_time() - start);
+}
+
+static bool bsh_dht22_read_raw(int pin, uint8_t out[5], char *err, size_t err_len) {
+    if (!out) {
+        if (err && err_len) snprintf(err, err_len, "invalid output buffer");
+        return false;
+    }
+    if (pin < 0) {
+        if (err && err_len) snprintf(err, err_len, "data pin is not configured");
+        return false;
+    }
+
+    memset(out, 0, 5);
+
+    esp_err_t ret = gpio_reset_pin((gpio_num_t)pin);
+    if (ret == ESP_OK) ret = gpio_set_direction((gpio_num_t)pin, GPIO_MODE_OUTPUT);
+    if (ret == ESP_OK) ret = gpio_set_level((gpio_num_t)pin, 1);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "pin init failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+
+    // Match Arduino DHT library style timing more closely:
+    // keep line high briefly, then issue a longer start-low pulse.
+    vTaskDelay(pdMS_TO_TICKS(2));
+    gpio_set_level((gpio_num_t)pin, 0);
+    vTaskDelay(pdMS_TO_TICKS(20));
+    gpio_set_level((gpio_num_t)pin, 1);
+    esp_rom_delay_us(40);
+
+    ret = gpio_set_direction((gpio_num_t)pin, GPIO_MODE_INPUT);
+    if (ret == ESP_OK) ret = gpio_set_pull_mode((gpio_num_t)pin, GPIO_PULLUP_ONLY);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "pin input mode failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+
+    int fail_stage = 0;
+    int fail_bit = -1;
+    portENTER_CRITICAL(&s_dht22_lock);
+    if (!bsh_dht22_wait_level(pin, 0, 1000)) {
+        fail_stage = 1;
+    } else if (bsh_dht22_expect_pulse_us(pin, 0, 1000) < 0) {
+        fail_stage = 2;
+    } else if (bsh_dht22_expect_pulse_us(pin, 1, 1000) < 0) {
+        fail_stage = 3;
+    } else {
+        for (int bit_idx = 0; bit_idx < 40; ++bit_idx) {
+            int32_t low_us = bsh_dht22_expect_pulse_us(pin, 0, 1000);
+            if (low_us < 0) {
+                fail_stage = 4;
+                fail_bit = bit_idx;
+                break;
+            }
+            int32_t high_us = bsh_dht22_expect_pulse_us(pin, 1, 1000);
+            if (high_us < 0) {
+                fail_stage = 5;
+                fail_bit = bit_idx;
+                break;
+            }
+            const uint8_t bit = (high_us > low_us) ? 1u : 0u;
+            out[bit_idx / 8] = (uint8_t)((out[bit_idx / 8] << 1) | bit);
+        }
+    }
+    portEXIT_CRITICAL(&s_dht22_lock);
+
+    if (fail_stage == 1) {
+        if (err && err_len) snprintf(err, err_len, "timeout waiting for sensor response low");
+        return false;
+    }
+    if (fail_stage == 2) {
+        if (err && err_len) snprintf(err, err_len, "timeout during sensor response low pulse");
+        return false;
+    }
+    if (fail_stage == 3) {
+        if (err && err_len) snprintf(err, err_len, "timeout during sensor response high pulse");
+        return false;
+    }
+    if (fail_stage == 4) {
+        if (err && err_len) snprintf(err, err_len, "timeout during bit %d low pulse", fail_bit);
+        return false;
+    }
+    if (fail_stage == 5) {
+        if (err && err_len) snprintf(err, err_len, "timeout during bit %d high pulse", fail_bit);
+        return false;
+    }
+
+    const uint8_t checksum = (uint8_t)(out[0] + out[1] + out[2] + out[3]);
+    if (checksum != out[4]) {
+        if (err && err_len) snprintf(err, err_len, "checksum mismatch (calc=0x%02X recv=0x%02X)", checksum, out[4]);
+        return false;
+    }
+    return true;
+}
+
+static void bsh_dht22_decode(const uint8_t raw[5], float *temp_c, float *hum_pct) {
+    if (!raw || !temp_c || !hum_pct) return;
+    const uint16_t hum_raw = (uint16_t)(((uint16_t)raw[0] << 8) | (uint16_t)raw[1]);
+    const uint16_t temp_raw_u = (uint16_t)(((uint16_t)raw[2] << 8) | (uint16_t)raw[3]);
+    const bool neg = (temp_raw_u & 0x8000u) != 0;
+    const uint16_t temp_mag = (uint16_t)(temp_raw_u & 0x7FFFu);
+
+    *hum_pct = ((float)hum_raw) / 10.0f;
+    *temp_c = ((float)temp_mag) / 10.0f;
+    if (neg) *temp_c = -*temp_c;
+}
+
+static void bsh_dht11_decode(const uint8_t raw[5], float *temp_c, float *hum_pct) {
+    if (!raw || !temp_c || !hum_pct) return;
+    *hum_pct = (float)raw[0] + ((float)raw[1] / 10.0f);
+    *temp_c = (float)raw[2] + ((float)raw[3] / 10.0f);
+}
+
+static bool bsh_dht_values_plausible(float temp_c, float hum_pct) {
+    if (hum_pct < 0.0f || hum_pct > 100.0f) return false;
+    if (temp_c < -40.0f || temp_c > 125.0f) return false;
+    return true;
+}
+
+static bool bsh_dht11_frame_plausible(const uint8_t raw[5], float temp_c, float hum_pct) {
+    if (!raw) return false;
+    // DHT11 uses integer + single decimal digit bytes (commonly 0).
+    if (raw[1] > 9 || raw[3] > 9) return false;
+    if (hum_pct < 0.0f || hum_pct > 100.0f) return false;
+    if (temp_c < 0.0f || temp_c > 80.0f) return false;
+    return true;
+}
+
+static void bsh_cmd_dht22_status(void) {
+    basalt_printf("dht22.enabled: yes\n");
+    basalt_printf("dht22.pin: %d\n", BASALT_PIN_DHT22_DATA);
+    basalt_printf("dht22.sample_ms_cfg: %ld\n", (long)BASALT_CFG_DHT22_SAMPLE_MS);
+    basalt_printf("dht22.sensor_type_cfg: %s\n", BASALT_CFG_DHT_SENSOR_TYPE);
+    basalt_printf("dht22.last_read_available: %s\n", s_dht22_has_last ? "yes" : "no");
+    if (s_dht22_has_last) {
+        const int64_t age_ms = (esp_timer_get_time() - s_dht22_last_read_us) / 1000;
+        basalt_printf("dht22.last_read_ms_ago: %lld\n", (long long)age_ms);
+        basalt_printf("dht22.last_temp_c: %.1f\n", (double)s_dht22_last_temp_c);
+        basalt_printf("dht22.last_humidity_pct: %.1f\n", (double)s_dht22_last_hum_pct);
+    }
+    if (BASALT_PIN_DHT22_DATA < 0) {
+        basalt_printf("dht22.status: pin not configured (set BASALT_PIN_DHT22_DATA)\n");
+    }
+}
+
+static void bsh_cmd_dht22_read(const char *pin_arg, const char *mode_arg) {
+    bool pin_ok = false;
+    const int pin = bsh_dht22_pin_from_arg(pin_arg, &pin_ok);
+    if (!pin_ok) {
+        basalt_printf("dht22 read: invalid pin '%s'\n", pin_arg);
+        return;
+    }
+    bool mode_ok = false;
+    bsh_dht_mode_t mode = bsh_dht_mode_from_arg(mode_arg, &mode_ok);
+    if (!mode_ok) {
+        basalt_printf("dht22 read: invalid mode '%s' (use auto|dht22|dht11)\n", mode_arg);
+        return;
+    }
+
+    const int64_t now = esp_timer_get_time();
+    const int64_t min_interval_us = (int64_t)BASALT_CFG_DHT22_SAMPLE_MS * 1000;
+    if (s_dht22_has_last && min_interval_us > 0) {
+        const int64_t delta = now - s_dht22_last_read_us;
+        if (delta > 0 && delta < min_interval_us) {
+            const int64_t wait_ms = (min_interval_us - delta + 999) / 1000;
+            basalt_printf("dht22 read: wait %lld ms (min interval %ld ms)\n", (long long)wait_ms, (long)BASALT_CFG_DHT22_SAMPLE_MS);
+            return;
+        }
+    }
+
+    uint8_t raw[5] = {0};
+    char err[96];
+    if (!bsh_dht22_read_raw(pin, raw, err, sizeof(err))) {
+        basalt_printf("dht22 read: fail (%s)\n", err);
+        return;
+    }
+
+    float temp_c = 0.0f;
+    float hum_pct = 0.0f;
+    float dht22_temp = 0.0f;
+    float dht22_hum = 0.0f;
+    float dht11_temp = 0.0f;
+    float dht11_hum = 0.0f;
+    bsh_dht22_decode(raw, &dht22_temp, &dht22_hum);
+    bsh_dht11_decode(raw, &dht11_temp, &dht11_hum);
+
+    const bool dht22_ok = bsh_dht_values_plausible(dht22_temp, dht22_hum);
+    const bool dht11_ok = bsh_dht11_frame_plausible(raw, dht11_temp, dht11_hum);
+    const char *detected = "dht22";
+    if (mode == BSH_DHT_MODE_DHT22) {
+        temp_c = dht22_temp;
+        hum_pct = dht22_hum;
+        detected = "dht22";
+    } else if (mode == BSH_DHT_MODE_DHT11) {
+        temp_c = dht11_temp;
+        hum_pct = dht11_hum;
+        detected = "dht11";
+    } else {
+        if (dht22_ok) {
+            temp_c = dht22_temp;
+            hum_pct = dht22_hum;
+            detected = "dht22";
+        } else {
+            temp_c = dht11_temp;
+            hum_pct = dht11_hum;
+            detected = "dht11";
+        }
+    }
+
+    s_dht22_last_temp_c = temp_c;
+    s_dht22_last_hum_pct = hum_pct;
+    s_dht22_last_read_us = esp_timer_get_time();
+    s_dht22_has_last = true;
+
+    basalt_printf("dht22 read: ok\n");
+    basalt_printf("dht22.pin_used: %d\n", pin);
+    basalt_printf("dht22.mode_used: %s\n", bsh_dht_mode_name(mode));
+    basalt_printf("dht22.sensor_detected: %s\n", detected);
+    basalt_printf("dht22.decode_valid.dht22: %s\n", dht22_ok ? "yes" : "no");
+    basalt_printf("dht22.decode_valid.dht11: %s\n", dht11_ok ? "yes" : "no");
+    basalt_printf("dht22.temp_c: %.1f\n", (double)temp_c);
+    basalt_printf("dht22.humidity_pct: %.1f\n", (double)hum_pct);
+    basalt_printf("dht22.raw: %02X %02X %02X %02X %02X\n",
+        raw[0], raw[1], raw[2], raw[3], raw[4]);
+}
+#else
+static void bsh_cmd_dht22_status(void) {
+    basalt_printf("dht22: unavailable (enable dht22+gpio drivers)\n");
+}
+static void bsh_cmd_dht22_read(const char *pin_arg, const char *mode_arg) {
+    (void)pin_arg;
+    (void)mode_arg;
+    basalt_printf("dht22 read: unavailable (enable dht22+gpio drivers)\n");
+}
+#endif
+
 
 #if BASALT_ENABLE_BME280 && BASALT_ENABLE_I2C
 static bool s_bme280_i2c_ready = false;
@@ -2387,6 +2748,566 @@ static void bsh_cmd_bme280_status(void) {
 }
 static void bsh_cmd_bme280_read(void) {
     basalt_printf("bme280 read: unavailable (enable bme280+i2c drivers)\n");
+}
+#endif
+
+#if BASALT_ENABLE_ADS1115 && BASALT_ENABLE_I2C
+static bool s_ads1115_i2c_ready = false;
+
+static uint8_t bsh_ads1115_addr(void) {
+    long v = strtol(BASALT_CFG_ADS1115_ADDRESS, NULL, 0);
+    if (v <= 0 || v > 0x7F) v = 0x48;
+    return (uint8_t)v;
+}
+
+static uint8_t bsh_ads1115_pga_bits(void) {
+    const long pga = (long)BASALT_CFG_ADS1115_PGA_MV;
+    if (pga >= 6144) return 0;
+    if (pga >= 4096) return 1;
+    if (pga >= 2048) return 2;
+    if (pga >= 1024) return 3;
+    if (pga >= 512) return 4;
+    return 5;
+}
+
+static int32_t bsh_ads1115_pga_mv(void) {
+    const long pga = (long)BASALT_CFG_ADS1115_PGA_MV;
+    if (pga >= 6144) return 6144;
+    if (pga >= 4096) return 4096;
+    if (pga >= 2048) return 2048;
+    if (pga >= 1024) return 1024;
+    if (pga >= 512) return 512;
+    return 256;
+}
+
+static uint8_t bsh_ads1115_dr_bits(void) {
+    const long sps = (long)BASALT_CFG_ADS1115_SAMPLE_RATE_SPS;
+    if (sps <= 8) return 0;
+    if (sps <= 16) return 1;
+    if (sps <= 32) return 2;
+    if (sps <= 64) return 3;
+    if (sps <= 128) return 4;
+    if (sps <= 250) return 5;
+    if (sps <= 475) return 6;
+    return 7;
+}
+
+static uint16_t bsh_ads1115_wait_ms(void) {
+    const long sps = (long)BASALT_CFG_ADS1115_SAMPLE_RATE_SPS;
+    if (sps >= 860) return 2;
+    if (sps >= 475) return 3;
+    if (sps >= 250) return 5;
+    if (sps >= 128) return 9;
+    if (sps >= 64) return 17;
+    if (sps >= 32) return 33;
+    if (sps >= 16) return 65;
+    return 130;
+}
+
+static bool bsh_ads1115_is_continuous(void) {
+    return strcmp(BASALT_CFG_ADS1115_MODE, "continuous") == 0;
+}
+
+static bool bsh_ads1115_i2c_ensure(char *err, size_t err_len) {
+    if (s_ads1115_i2c_ready) return true;
+    if (BASALT_PIN_I2C_SDA < 0 || BASALT_PIN_I2C_SCL < 0) {
+        if (err && err_len) snprintf(err, err_len, "invalid I2C pins (sda=%d scl=%d)", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
+        return false;
+    }
+    i2c_config_t cfg = {
+        .mode = I2C_MODE_MASTER,
+        .sda_io_num = BASALT_PIN_I2C_SDA,
+        .scl_io_num = BASALT_PIN_I2C_SCL,
+        .sda_pullup_en = GPIO_PULLUP_ENABLE,
+        .scl_pullup_en = GPIO_PULLUP_ENABLE,
+        .master.clk_speed = 400000,
+    };
+    esp_err_t ret = i2c_param_config(I2C_NUM_0, &cfg);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "i2c_param_config failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    ret = i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0);
+    if (ret == ESP_ERR_INVALID_STATE) {
+        s_ads1115_i2c_ready = true;
+        return true;
+    }
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "i2c_driver_install failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    s_ads1115_i2c_ready = true;
+    return true;
+}
+
+static bool bsh_ads1115_write_reg16(uint8_t reg, uint16_t value, char *err, size_t err_len) {
+    uint8_t payload[3] = {
+        reg,
+        (uint8_t)((value >> 8) & 0xFF),
+        (uint8_t)(value & 0xFF),
+    };
+    esp_err_t ret = i2c_master_write_to_device(
+        I2C_NUM_0, bsh_ads1115_addr(), payload, sizeof(payload), pdMS_TO_TICKS(60));
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "write reg 0x%02X failed (%s)", reg, esp_err_to_name(ret));
+        return false;
+    }
+    return true;
+}
+
+static bool bsh_ads1115_read_reg16(uint8_t reg, uint16_t *out, char *err, size_t err_len) {
+    if (!out) {
+        if (err && err_len) snprintf(err, err_len, "invalid output pointer");
+        return false;
+    }
+    uint8_t data[2] = {0};
+    esp_err_t ret = i2c_master_write_read_device(
+        I2C_NUM_0, bsh_ads1115_addr(), &reg, 1, data, sizeof(data), pdMS_TO_TICKS(60));
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "read reg 0x%02X failed (%s)", reg, esp_err_to_name(ret));
+        return false;
+    }
+    *out = (uint16_t)(((uint16_t)data[0] << 8) | (uint16_t)data[1]);
+    return true;
+}
+
+static bool bsh_ads1115_probe(uint16_t *cfg, char *err, size_t err_len) {
+    if (!bsh_ads1115_i2c_ensure(err, err_len)) return false;
+    uint16_t config = 0;
+    if (!bsh_ads1115_read_reg16(0x01, &config, err, err_len)) return false;
+    if (cfg) *cfg = config;
+    return true;
+}
+
+static bool bsh_ads1115_read_channel(uint8_t channel, int16_t *raw_out, int32_t *mv_out, char *err, size_t err_len) {
+    if (channel > 3) {
+        if (err && err_len) snprintf(err, err_len, "channel must be 0..3");
+        return false;
+    }
+    if (!raw_out || !mv_out) {
+        if (err && err_len) snprintf(err, err_len, "invalid output pointers");
+        return false;
+    }
+
+    uint16_t cfg = 0;
+    cfg |= (1u << 15); // OS: start conversion
+    cfg |= (uint16_t)((0x4u + (uint16_t)channel) & 0x7u) << 12; // AINx single-ended
+    cfg |= (uint16_t)(bsh_ads1115_pga_bits() & 0x7u) << 9;
+    cfg |= (uint16_t)(bsh_ads1115_is_continuous() ? 0u : 1u) << 8;
+    cfg |= (uint16_t)(bsh_ads1115_dr_bits() & 0x7u) << 5;
+    cfg |= 0x0003u; // disable comparator
+
+    if (!bsh_ads1115_write_reg16(0x01, cfg, err, err_len)) return false;
+    if (!bsh_ads1115_is_continuous()) vTaskDelay(pdMS_TO_TICKS(bsh_ads1115_wait_ms()));
+
+    uint16_t conv = 0;
+    if (!bsh_ads1115_read_reg16(0x00, &conv, err, err_len)) return false;
+
+    int16_t raw = (int16_t)conv;
+    int32_t mv = ((int32_t)raw * bsh_ads1115_pga_mv()) / 32768;
+    *raw_out = raw;
+    *mv_out = mv;
+    return true;
+}
+
+static void bsh_cmd_ads1115_status(void) {
+    basalt_printf("ads1115.enabled: yes\n");
+    basalt_printf("ads1115.addr_cfg: %s\n", BASALT_CFG_ADS1115_ADDRESS);
+    basalt_printf("ads1115.pga_mv_cfg: %ld\n", (long)bsh_ads1115_pga_mv());
+    basalt_printf("ads1115.sample_rate_sps_cfg: %ld\n", (long)BASALT_CFG_ADS1115_SAMPLE_RATE_SPS);
+    basalt_printf("ads1115.mode_cfg: %s\n", BASALT_CFG_ADS1115_MODE);
+    basalt_printf("ads1115.i2c_pins: sda=%d scl=%d\n", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
+
+    uint16_t cfg = 0;
+    char err[96];
+    if (!bsh_ads1115_probe(&cfg, err, sizeof(err))) {
+        basalt_printf("ads1115.probe: fail (%s)\n", err);
+        return;
+    }
+    basalt_printf("ads1115.probe: ok\n");
+    basalt_printf("ads1115.config_reg: 0x%04X\n", cfg);
+}
+
+static void bsh_cmd_ads1115_read(const char *channel_arg) {
+    uint8_t channel = 0;
+    if (channel_arg && channel_arg[0]) {
+        char *end = NULL;
+        long v = strtol(channel_arg, &end, 0);
+        if (end == channel_arg || (end && *end != '\0') || v < 0 || v > 3) {
+            basalt_printf("ads1115 read: invalid channel '%s' (expected 0..3)\n", channel_arg);
+            return;
+        }
+        channel = (uint8_t)v;
+    }
+
+    char err[96];
+    int16_t raw = 0;
+    int32_t mv = 0;
+    if (!bsh_ads1115_read_channel(channel, &raw, &mv, err, sizeof(err))) {
+        basalt_printf("ads1115 read: fail (%s)\n", err);
+        return;
+    }
+
+    basalt_printf("ads1115 read: ch=%u raw=%d mv=%ld\n", (unsigned)channel, (int)raw, (long)mv);
+}
+#else
+static void bsh_cmd_ads1115_status(void) {
+    basalt_printf("ads1115: unavailable (enable ads1115+i2c drivers)\n");
+}
+static void bsh_cmd_ads1115_read(const char *channel_arg) {
+    (void)channel_arg;
+    basalt_printf("ads1115 read: unavailable (enable ads1115+i2c drivers)\n");
+}
+#endif
+
+#if BASALT_ENABLE_MCP23017 && BASALT_ENABLE_I2C
+static bool s_mcp23017_i2c_ready = false;
+static uint8_t s_mcp23017_iodir_a = 0xFF;
+static uint8_t s_mcp23017_iodir_b = 0xFF;
+static uint8_t s_mcp23017_gpio_a = 0x00;
+static uint8_t s_mcp23017_gpio_b = 0x00;
+
+static uint8_t bsh_mcp23017_addr(void) {
+    long v = strtol(BASALT_CFG_MCP23017_ADDRESS, NULL, 0);
+    if (v <= 0 || v > 0x7F) v = 0x20;
+    return (uint8_t)v;
+}
+
+static bool bsh_mcp23017_default_output(void) {
+    return strcmp(BASALT_CFG_MCP23017_DEFAULT_DIRECTION, "output") == 0;
+}
+
+static bool bsh_mcp23017_i2c_ensure(char *err, size_t err_len) {
+    if (s_mcp23017_i2c_ready) return true;
+    if (BASALT_PIN_I2C_SDA < 0 || BASALT_PIN_I2C_SCL < 0) {
+        if (err && err_len) snprintf(err, err_len, "invalid I2C pins (sda=%d scl=%d)", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
+        return false;
+    }
+    i2c_config_t cfg = {
+        .mode = I2C_MODE_MASTER,
+        .sda_io_num = BASALT_PIN_I2C_SDA,
+        .scl_io_num = BASALT_PIN_I2C_SCL,
+        .sda_pullup_en = GPIO_PULLUP_ENABLE,
+        .scl_pullup_en = GPIO_PULLUP_ENABLE,
+        .master.clk_speed = 400000,
+    };
+    esp_err_t ret = i2c_param_config(I2C_NUM_0, &cfg);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "i2c_param_config failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    ret = i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0);
+    if (ret == ESP_ERR_INVALID_STATE) {
+        s_mcp23017_i2c_ready = true;
+        return true;
+    }
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "i2c_driver_install failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+    s_mcp23017_i2c_ready = true;
+    return true;
+}
+
+static bool bsh_mcp23017_write8(uint8_t reg, uint8_t val, char *err, size_t err_len) {
+    uint8_t payload[2] = {reg, val};
+    esp_err_t ret = i2c_master_write_to_device(
+        I2C_NUM_0, bsh_mcp23017_addr(), payload, sizeof(payload), pdMS_TO_TICKS(60));
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "write reg 0x%02X failed (%s)", reg, esp_err_to_name(ret));
+        return false;
+    }
+    return true;
+}
+
+static bool bsh_mcp23017_read8(uint8_t reg, uint8_t *out, char *err, size_t err_len) {
+    if (!out) {
+        if (err && err_len) snprintf(err, err_len, "invalid output pointer");
+        return false;
+    }
+    esp_err_t ret = i2c_master_write_read_device(
+        I2C_NUM_0, bsh_mcp23017_addr(), &reg, 1, out, 1, pdMS_TO_TICKS(60));
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "read reg 0x%02X failed (%s)", reg, esp_err_to_name(ret));
+        return false;
+    }
+    return true;
+}
+
+static bool bsh_mcp23017_probe(char *err, size_t err_len) {
+    if (!bsh_mcp23017_i2c_ensure(err, err_len)) return false;
+    uint8_t iodira = 0;
+    return bsh_mcp23017_read8(0x00, &iodira, err, err_len);
+}
+
+static bool bsh_mcp23017_probe_addr(uint8_t addr, uint8_t *iodira) {
+    uint8_t reg = 0x00;
+    uint8_t val = 0;
+    esp_err_t ret = i2c_master_write_read_device(
+        I2C_NUM_0, addr, &reg, 1, &val, 1, pdMS_TO_TICKS(40));
+    if (ret != ESP_OK) return false;
+    if (iodira) *iodira = val;
+    return true;
+}
+
+static bool bsh_mcp23017_init_defaults(char *err, size_t err_len) {
+    if (!bsh_mcp23017_probe(err, err_len)) return false;
+    bool out_mode = bsh_mcp23017_default_output();
+    s_mcp23017_iodir_a = out_mode ? 0x00 : 0xFF;
+    s_mcp23017_iodir_b = out_mode ? 0x00 : 0xFF;
+    if (!bsh_mcp23017_write8(0x00, s_mcp23017_iodir_a, err, err_len)) return false;
+    if (!bsh_mcp23017_write8(0x01, s_mcp23017_iodir_b, err, err_len)) return false;
+    if (!bsh_mcp23017_write8(0x12, s_mcp23017_gpio_a, err, err_len)) return false;
+    if (!bsh_mcp23017_write8(0x13, s_mcp23017_gpio_b, err, err_len)) return false;
+    return true;
+}
+
+static bool bsh_mcp23017_parse_pin(const char *arg, uint8_t *out) {
+    if (!arg || !out) return false;
+    char *end = NULL;
+    long v = strtol(arg, &end, 0);
+    if (end == arg || (end && *end != '\0') || v < 0 || v > 15) return false;
+    *out = (uint8_t)v;
+    return true;
+}
+
+static bool bsh_mcp23017_pin_mode(uint8_t pin, bool input, char *err, size_t err_len) {
+    if (pin > 15) {
+        if (err && err_len) snprintf(err, err_len, "pin must be 0..15");
+        return false;
+    }
+    uint8_t bit = (uint8_t)(1u << (pin & 7u));
+    if (pin < 8) {
+        if (input) s_mcp23017_iodir_a |= bit; else s_mcp23017_iodir_a &= (uint8_t)~bit;
+        return bsh_mcp23017_write8(0x00, s_mcp23017_iodir_a, err, err_len);
+    }
+    if (input) s_mcp23017_iodir_b |= bit; else s_mcp23017_iodir_b &= (uint8_t)~bit;
+    return bsh_mcp23017_write8(0x01, s_mcp23017_iodir_b, err, err_len);
+}
+
+static bool bsh_mcp23017_pin_write(uint8_t pin, bool high, char *err, size_t err_len) {
+    if (pin > 15) {
+        if (err && err_len) snprintf(err, err_len, "pin must be 0..15");
+        return false;
+    }
+    uint8_t bit = (uint8_t)(1u << (pin & 7u));
+    if (pin < 8) {
+        if (high) s_mcp23017_gpio_a |= bit; else s_mcp23017_gpio_a &= (uint8_t)~bit;
+        return bsh_mcp23017_write8(0x12, s_mcp23017_gpio_a, err, err_len);
+    }
+    if (high) s_mcp23017_gpio_b |= bit; else s_mcp23017_gpio_b &= (uint8_t)~bit;
+    return bsh_mcp23017_write8(0x13, s_mcp23017_gpio_b, err, err_len);
+}
+
+static int bsh_mcp23017_pin_read(uint8_t pin, char *err, size_t err_len) {
+    if (pin > 15) {
+        if (err && err_len) snprintf(err, err_len, "pin must be 0..15");
+        return -1;
+    }
+    uint8_t val = 0;
+    if (!bsh_mcp23017_read8((pin < 8) ? 0x12 : 0x13, &val, err, err_len)) return -1;
+    return (val & (uint8_t)(1u << (pin & 7u))) ? 1 : 0;
+}
+
+static void bsh_cmd_mcp23017(const char *sub, const char *arg1, const char *arg2) {
+    char err[96];
+    if (!sub || strcmp(sub, "status") == 0) {
+        basalt_printf("mcp23017.enabled: yes\n");
+        basalt_printf("mcp23017.addr_cfg: %s\n", BASALT_CFG_MCP23017_ADDRESS);
+        basalt_printf("mcp23017.default_direction_cfg: %s\n", BASALT_CFG_MCP23017_DEFAULT_DIRECTION);
+        basalt_printf("mcp23017.i2c_pins: sda=%d scl=%d\n", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
+        if (!bsh_mcp23017_probe(err, sizeof(err))) {
+            basalt_printf("mcp23017.probe: fail (%s)\n", err);
+            return;
+        }
+        basalt_printf("mcp23017.probe: ok\n");
+        uint8_t iodira = 0, iodirb = 0, gpioa = 0, gpiob = 0;
+        if (bsh_mcp23017_read8(0x00, &iodira, err, sizeof(err)) &&
+            bsh_mcp23017_read8(0x01, &iodirb, err, sizeof(err)) &&
+            bsh_mcp23017_read8(0x12, &gpioa, err, sizeof(err)) &&
+            bsh_mcp23017_read8(0x13, &gpiob, err, sizeof(err))) {
+            basalt_printf("mcp23017.iodir: A=0x%02X B=0x%02X\n", iodira, iodirb);
+            basalt_printf("mcp23017.gpio: A=0x%02X B=0x%02X\n", gpioa, gpiob);
+            s_mcp23017_iodir_a = iodira;
+            s_mcp23017_iodir_b = iodirb;
+            s_mcp23017_gpio_a = gpioa;
+            s_mcp23017_gpio_b = gpiob;
+        }
+        return;
+    }
+
+    if (!bsh_mcp23017_i2c_ensure(err, sizeof(err))) {
+        basalt_printf("mcp23017: %s\n", err);
+        return;
+    }
+
+    if (strcmp(sub, "probe") == 0) {
+        if (!bsh_mcp23017_probe(err, sizeof(err))) {
+            basalt_printf("mcp23017 probe: fail (%s)\n", err);
+            return;
+        }
+        basalt_printf("mcp23017 probe: ok\n");
+        return;
+    }
+
+    if (strcmp(sub, "scan") == 0) {
+        basalt_printf("mcp23017 scan: checking 0x20..0x27\n");
+        bool any = false;
+        for (uint8_t addr = 0x20; addr <= 0x27; ++addr) {
+            uint8_t iodira = 0;
+            if (bsh_mcp23017_probe_addr(addr, &iodira)) {
+                any = true;
+                basalt_printf("mcp23017 scan: found addr=0x%02X iodira=0x%02X\n", addr, iodira);
+            }
+        }
+        if (!any) basalt_printf("mcp23017 scan: no device response in 0x20..0x27\n");
+        return;
+    }
+
+    if (strcmp(sub, "read") == 0) {
+        uint8_t reg = 0;
+        if (!arg1 || !arg1[0]) {
+            basalt_printf("mcp23017 read: missing reg\n");
+            return;
+        }
+        char *end = NULL;
+        long v = strtol(arg1, &end, 0);
+        if (end == arg1 || (end && *end != '\0') || v < 0 || v > 0xFF) {
+            basalt_printf("mcp23017 read: invalid reg '%s'\n", arg1);
+            return;
+        }
+        reg = (uint8_t)v;
+        uint8_t val = 0;
+        if (!bsh_mcp23017_read8(reg, &val, err, sizeof(err))) {
+            basalt_printf("mcp23017 read: fail (%s)\n", err);
+            return;
+        }
+        basalt_printf("mcp23017 read: reg=0x%02X val=0x%02X\n", reg, val);
+        return;
+    }
+
+    if (strcmp(sub, "write") == 0) {
+        if (!arg1 || !arg2) {
+            basalt_printf("usage: mcp23017 write <reg> <val>\n");
+            return;
+        }
+        char *end1 = NULL, *end2 = NULL;
+        long reg_v = strtol(arg1, &end1, 0);
+        long val_v = strtol(arg2, &end2, 0);
+        if (end1 == arg1 || (end1 && *end1 != '\0') || reg_v < 0 || reg_v > 0xFF ||
+            end2 == arg2 || (end2 && *end2 != '\0') || val_v < 0 || val_v > 0xFF) {
+            basalt_printf("mcp23017 write: invalid args\n");
+            return;
+        }
+        uint8_t reg = (uint8_t)reg_v;
+        uint8_t val = (uint8_t)val_v;
+        if (!bsh_mcp23017_write8(reg, val, err, sizeof(err))) {
+            basalt_printf("mcp23017 write: fail (%s)\n", err);
+            return;
+        }
+        uint8_t verify = 0;
+        if (!bsh_mcp23017_read8(reg, &verify, err, sizeof(err))) {
+            basalt_printf("mcp23017 write: verify read failed (%s)\n", err);
+            return;
+        }
+        basalt_printf("mcp23017 write: reg=0x%02X val=0x%02X verify=0x%02X\n", reg, val, verify);
+        return;
+    }
+
+    if (strcmp(sub, "pinmode") == 0) {
+        uint8_t pin = 0;
+        if (!bsh_mcp23017_parse_pin(arg1, &pin) || !arg2) {
+            basalt_printf("usage: mcp23017 pinmode <0-15> <in|out>\n");
+            return;
+        }
+        bool input = (strcmp(arg2, "in") == 0 || strcmp(arg2, "input") == 0);
+        bool output = (strcmp(arg2, "out") == 0 || strcmp(arg2, "output") == 0);
+        if (!input && !output) {
+            basalt_printf("mcp23017 pinmode: mode must be in|out\n");
+            return;
+        }
+        if (!bsh_mcp23017_pin_mode(pin, input, err, sizeof(err))) {
+            basalt_printf("mcp23017 pinmode: fail (%s)\n", err);
+            return;
+        }
+        basalt_printf("mcp23017 pinmode: pin=%u mode=%s\n", (unsigned)pin, input ? "in" : "out");
+        return;
+    }
+
+    if (strcmp(sub, "pinwrite") == 0) {
+        uint8_t pin = 0;
+        if (!bsh_mcp23017_parse_pin(arg1, &pin) || !arg2) {
+            basalt_printf("usage: mcp23017 pinwrite <0-15> <0|1>\n");
+            return;
+        }
+        bool high = (strcmp(arg2, "1") == 0 || strcmp(arg2, "high") == 0 || strcmp(arg2, "on") == 0);
+        bool low = (strcmp(arg2, "0") == 0 || strcmp(arg2, "low") == 0 || strcmp(arg2, "off") == 0);
+        if (!high && !low) {
+            basalt_printf("mcp23017 pinwrite: value must be 0|1\n");
+            return;
+        }
+        if (!bsh_mcp23017_pin_write(pin, high, err, sizeof(err))) {
+            basalt_printf("mcp23017 pinwrite: fail (%s)\n", err);
+            return;
+        }
+        basalt_printf("mcp23017 pinwrite: pin=%u val=%d\n", (unsigned)pin, high ? 1 : 0);
+        return;
+    }
+
+    if (strcmp(sub, "pinread") == 0) {
+        uint8_t pin = 0;
+        if (!bsh_mcp23017_parse_pin(arg1, &pin)) {
+            basalt_printf("usage: mcp23017 pinread <0-15>\n");
+            return;
+        }
+        int v = bsh_mcp23017_pin_read(pin, err, sizeof(err));
+        if (v < 0) {
+            basalt_printf("mcp23017 pinread: fail (%s)\n", err);
+            return;
+        }
+        basalt_printf("mcp23017 pinread: pin=%u val=%d\n", (unsigned)pin, v);
+        return;
+    }
+
+    if (strcmp(sub, "test") == 0) {
+        if (!bsh_mcp23017_init_defaults(err, sizeof(err))) {
+            basalt_printf("mcp23017 test: init failed (%s)\n", err);
+            return;
+        }
+        for (uint8_t pin = 0; pin < 4; ++pin) {
+            if (!bsh_mcp23017_pin_mode(pin, false, err, sizeof(err)) ||
+                !bsh_mcp23017_pin_write(pin, true, err, sizeof(err))) {
+                basalt_printf("mcp23017 test: fail (%s)\n", err);
+                return;
+            }
+            vTaskDelay(pdMS_TO_TICKS(120));
+            if (!bsh_mcp23017_pin_write(pin, false, err, sizeof(err))) {
+                basalt_printf("mcp23017 test: fail (%s)\n", err);
+                return;
+            }
+        }
+        if (!bsh_mcp23017_pin_mode(7, true, err, sizeof(err))) {
+            basalt_printf("mcp23017 test: fail (%s)\n", err);
+            return;
+        }
+        int in7 = bsh_mcp23017_pin_read(7, err, sizeof(err));
+        if (in7 < 0) {
+            basalt_printf("mcp23017 test: fail (%s)\n", err);
+            return;
+        }
+        basalt_printf("mcp23017 test: IN7=%d\n", in7);
+        basalt_printf("mcp23017 test: done\n");
+        return;
+    }
+
+    basalt_printf("usage: mcp23017 [status|probe|scan|test|read <reg>|write <reg> <val>|pinmode <0-15> <in|out>|pinwrite <0-15> <0|1>|pinread <0-15>]\n");
+}
+#else
+static void bsh_cmd_mcp23017(const char *sub, const char *arg1, const char *arg2) {
+    (void)sub;
+    (void)arg1;
+    (void)arg2;
+    basalt_printf("mcp23017: unavailable (enable mcp23017+i2c drivers)\n");
 }
 #endif
 
@@ -2763,6 +3684,9 @@ static void bsh_cmd_uln2003(const char *sub, const char *arg1, const char *arg2)
 
 #if BASALT_ENABLE_L298N
 static bool s_l298n_gpio_ready = false;
+static bool s_l298n_pwm_ready = false;
+static bool s_l298n_pwm_supported = false;
+static int s_l298n_speed_pct[2] = {BASALT_CFG_L298N_DEFAULT_SPEED_PCT, BASALT_CFG_L298N_DEFAULT_SPEED_PCT};
 
 static bool bsh_l298n_in_active_high(void) {
     return BASALT_CFG_L298N_IN_ACTIVE_HIGH ? true : false;
@@ -2770,6 +3694,75 @@ static bool bsh_l298n_in_active_high(void) {
 
 static bool bsh_l298n_en_active_high(void) {
     return BASALT_CFG_L298N_EN_ACTIVE_HIGH ? true : false;
+}
+
+static int bsh_l298n_clamp_speed(int pct) {
+    if (pct < 0) return 0;
+    if (pct > 100) return 100;
+    return pct;
+}
+
+static uint32_t bsh_l298n_pwm_max_duty(void) {
+    return 255u;
+}
+
+static bool bsh_l298n_pwm_ensure(char *err, size_t err_len) {
+    if (s_l298n_pwm_ready) return true;
+    s_l298n_pwm_ready = true;
+    if (BASALT_PIN_L298N_ENA < 0 && BASALT_PIN_L298N_ENB < 0) {
+        s_l298n_pwm_supported = false;
+        return true;
+    }
+
+    ledc_timer_config_t tcfg = {
+        .speed_mode = LEDC_LOW_SPEED_MODE,
+        .duty_resolution = LEDC_TIMER_8_BIT,
+        .timer_num = LEDC_TIMER_0,
+        .freq_hz = BASALT_CFG_L298N_PWM_FREQ_HZ,
+        .clk_cfg = LEDC_AUTO_CLK,
+    };
+    esp_err_t ret = ledc_timer_config(&tcfg);
+    if (ret != ESP_OK) {
+        if (err && err_len) snprintf(err, err_len, "pwm timer init failed (%s)", esp_err_to_name(ret));
+        return false;
+    }
+
+    if (BASALT_PIN_L298N_ENA >= 0) {
+        ledc_channel_config_t ccfg = {
+            .gpio_num = BASALT_PIN_L298N_ENA,
+            .speed_mode = LEDC_LOW_SPEED_MODE,
+            .channel = LEDC_CHANNEL_0,
+            .intr_type = LEDC_INTR_DISABLE,
+            .timer_sel = LEDC_TIMER_0,
+            .duty = 0,
+            .hpoint = 0,
+        };
+        ret = ledc_channel_config(&ccfg);
+        if (ret != ESP_OK) {
+            if (err && err_len) snprintf(err, err_len, "pwm ENA init failed (%s)", esp_err_to_name(ret));
+            return false;
+        }
+    }
+
+    if (BASALT_PIN_L298N_ENB >= 0) {
+        ledc_channel_config_t ccfg = {
+            .gpio_num = BASALT_PIN_L298N_ENB,
+            .speed_mode = LEDC_LOW_SPEED_MODE,
+            .channel = LEDC_CHANNEL_1,
+            .intr_type = LEDC_INTR_DISABLE,
+            .timer_sel = LEDC_TIMER_0,
+            .duty = 0,
+            .hpoint = 0,
+        };
+        ret = ledc_channel_config(&ccfg);
+        if (ret != ESP_OK) {
+            if (err && err_len) snprintf(err, err_len, "pwm ENB init failed (%s)", esp_err_to_name(ret));
+            return false;
+        }
+    }
+
+    s_l298n_pwm_supported = true;
+    return true;
 }
 
 static bool bsh_l298n_gpio_ensure(char *err, size_t err_len) {
@@ -2794,6 +3787,7 @@ static bool bsh_l298n_gpio_ensure(char *err, size_t err_len) {
             return false;
         }
     }
+    if (!bsh_l298n_pwm_ensure(err, err_len)) return false;
     s_l298n_gpio_ready = true;
     return true;
 }
@@ -2804,19 +3798,35 @@ static void bsh_l298n_set_pin_logic(int pin, bool asserted, bool active_high) {
     gpio_set_level((gpio_num_t)pin, level);
 }
 
+static void bsh_l298n_apply_enable(int ch, bool enabled) {
+    int en = (ch == 0) ? BASALT_PIN_L298N_ENA : BASALT_PIN_L298N_ENB;
+    if (en < 0) return;
+
+    int pct = bsh_l298n_clamp_speed(s_l298n_speed_pct[ch]);
+    uint32_t max = bsh_l298n_pwm_max_duty();
+    uint32_t on_duty = enabled ? (uint32_t)((max * (uint32_t)pct) / 100u) : 0u;
+    uint32_t duty = bsh_l298n_en_active_high() ? on_duty : (max - on_duty);
+
+    if (!s_l298n_pwm_supported) {
+        bool en_on = enabled && (pct > 0);
+        bsh_l298n_set_pin_logic(en, en_on, bsh_l298n_en_active_high());
+        return;
+    }
+
+    ledc_channel_t channel = (ch == 0) ? LEDC_CHANNEL_0 : LEDC_CHANNEL_1;
+    ledc_set_duty(LEDC_LOW_SPEED_MODE, channel, duty);
+    ledc_update_duty(LEDC_LOW_SPEED_MODE, channel);
+}
+
 static void bsh_l298n_set_channel(int ch, int mode) {
     int in_a = (ch == 0) ? BASALT_PIN_L298N_IN1 : BASALT_PIN_L298N_IN3;
     int in_b = (ch == 0) ? BASALT_PIN_L298N_IN2 : BASALT_PIN_L298N_IN4;
-    int en = (ch == 0) ? BASALT_PIN_L298N_ENA : BASALT_PIN_L298N_ENB;
     // mode: 0=stop, 1=fwd, 2=rev
     bool a_on = (mode == 1);
     bool b_on = (mode == 2);
     bsh_l298n_set_pin_logic(in_a, a_on, bsh_l298n_in_active_high());
     bsh_l298n_set_pin_logic(in_b, b_on, bsh_l298n_in_active_high());
-    if (en >= 0) {
-        bool en_on = (mode != 0);
-        bsh_l298n_set_pin_logic(en, en_on, bsh_l298n_en_active_high());
-    }
+    bsh_l298n_apply_enable(ch, mode != 0);
 }
 
 static int bsh_l298n_mode_from_str(const char *s) {
@@ -2827,7 +3837,7 @@ static int bsh_l298n_mode_from_str(const char *s) {
     return -1;
 }
 
-static void bsh_cmd_l298n(const char *sub, const char *arg1) {
+static void bsh_cmd_l298n(const char *sub, const char *arg1, const char *arg2) {
     char err[96];
     if (!bsh_l298n_gpio_ensure(err, sizeof(err))) {
         basalt_printf("l298n: %s\n", err);
@@ -2840,6 +3850,10 @@ static void bsh_cmd_l298n(const char *sub, const char *arg1) {
         basalt_printf("l298n.pins.b: in3=%d in4=%d enb=%d\n", BASALT_PIN_L298N_IN3, BASALT_PIN_L298N_IN4, BASALT_PIN_L298N_ENB);
         basalt_printf("l298n.in_active_high: %s\n", bsh_l298n_in_active_high() ? "yes" : "no");
         basalt_printf("l298n.en_active_high: %s\n", bsh_l298n_en_active_high() ? "yes" : "no");
+        basalt_printf("l298n.speed.a_pct: %d\n", s_l298n_speed_pct[0]);
+        basalt_printf("l298n.speed.b_pct: %d\n", s_l298n_speed_pct[1]);
+        basalt_printf("l298n.pwm: %s\n", s_l298n_pwm_supported ? "enabled" : "disabled (no EN pins)");
+        if (s_l298n_pwm_supported) basalt_printf("l298n.pwm.freq_hz: %d\n", BASALT_CFG_L298N_PWM_FREQ_HZ);
         return;
     }
 
@@ -2847,6 +3861,18 @@ static void bsh_cmd_l298n(const char *sub, const char *arg1) {
         bsh_l298n_set_channel(0, 0);
         bsh_l298n_set_channel(1, 0);
         basalt_printf("l298n: both channels stopped\n");
+        return;
+    }
+
+    if (strcmp(sub, "speed") == 0) {
+        if (!arg1 || !arg1[0]) {
+            basalt_printf("usage: l298n speed <0-100>\n");
+            return;
+        }
+        int pct = bsh_l298n_clamp_speed((int)strtol(arg1, NULL, 10));
+        s_l298n_speed_pct[0] = pct;
+        s_l298n_speed_pct[1] = pct;
+        basalt_printf("l298n: speed a=%d%% b=%d%%\n", s_l298n_speed_pct[0], s_l298n_speed_pct[1]);
         return;
     }
 
@@ -2871,26 +3897,40 @@ static void bsh_cmd_l298n(const char *sub, const char *arg1) {
         return;
     }
 
-    if ((strcmp(sub, "a") == 0 || strcmp(sub, "b") == 0) && arg1 && arg1[0]) {
-        int mode = bsh_l298n_mode_from_str(arg1);
-        if (mode < 0) {
-            basalt_printf("l298n: invalid mode '%s' (use fwd|rev|stop)\n", arg1);
+    if (strcmp(sub, "a") == 0 || strcmp(sub, "b") == 0) {
+        int ch = (strcmp(sub, "a") == 0) ? 0 : 1;
+        if (arg1 && strcmp(arg1, "speed") == 0) {
+            if (!arg2 || !arg2[0]) {
+                basalt_printf("usage: l298n %s speed <0-100>\n", sub);
+                return;
+            }
+            int pct = bsh_l298n_clamp_speed((int)strtol(arg2, NULL, 10));
+            s_l298n_speed_pct[ch] = pct;
+            basalt_printf("l298n: channel %s speed -> %d%%\n", sub, pct);
             return;
         }
-        int ch = (strcmp(sub, "a") == 0) ? 0 : 1;
-        bsh_l298n_set_channel(ch, mode);
-        basalt_printf("l298n: channel %s -> %s\n", sub, mode == 0 ? "stop" : (mode == 1 ? "fwd" : "rev"));
-        return;
+        if (arg1 && arg1[0]) {
+            int mode = bsh_l298n_mode_from_str(arg1);
+            if (mode < 0) {
+                basalt_printf("l298n: invalid mode '%s' (use fwd|rev|stop|speed)\n", arg1);
+                return;
+            }
+            bsh_l298n_set_channel(ch, mode);
+            basalt_printf("l298n: channel %s -> %s\n", sub, mode == 0 ? "stop" : (mode == 1 ? "fwd" : "rev"));
+            return;
+        }
     }
 
-    basalt_printf("usage: l298n [status|stop|test|a <fwd|rev|stop>|b <fwd|rev|stop>]\n");
+    basalt_printf("usage: l298n [status|stop|test|speed <0-100>|a <fwd|rev|stop|speed <0-100>>|b <fwd|rev|stop|speed <0-100>>]\n");
 }
 #else
-static void bsh_cmd_l298n(const char *sub, const char *arg1) {
+static void bsh_cmd_l298n(const char *sub, const char *arg1, const char *arg2) {
     (void)sub;
     (void)arg1;
+    (void)arg2;
     basalt_printf("l298n: unavailable (enable l298n+gpio drivers)\n");
 }
+#endif
 #endif
 
 static void bsh_cmd_install(const char *src, const char *name) {
@@ -3933,7 +4973,7 @@ static bool bsh_tiny_is_blocked(const char *cmd) {
         "ls", "cat", "cd", "mkdir", "cp", "mv", "rm",
         "apps_dev", "led_test", "devcheck", "edit",
         "run_dev", "kill", "applet", "applets",
-        "install", "remove", "logs", "imu", "tp4056", "mcp2544fd", "uln2003", "l298n", "wifi", "bluetooth", "bt", "can"
+        "install", "remove", "logs", "imu", "dht22", "ads1115", "mcp23017", "tp4056", "mcp2544fd", "uln2003", "l298n", "wifi", "bluetooth", "bt", "can"
     };
     for (size_t i = 0; i < sizeof(k_blocked) / sizeof(k_blocked[0]); ++i) {
         if (strcmp(cmd, k_blocked[i]) == 0) return true;
@@ -4242,6 +5282,46 @@ static void bsh_handle_line(char *line) {
 #else
         basalt_printf("bme280: disabled in this shell level\n");
 #endif
+    } else if (strcmp(cmd, "dht22") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        char *arg1 = strtok(NULL, " \t\r\n");
+        char *arg2 = strtok(NULL, " \t\r\n");
+        if (!sub || strcmp(sub, "status") == 0 || strcmp(sub, "probe") == 0) {
+            bsh_cmd_dht22_status();
+        } else if (strcmp(sub, "read") == 0) {
+            bsh_cmd_dht22_read(arg1, arg2);
+        } else {
+            basalt_printf("dht22: unknown subcommand '%s'\n", sub);
+            basalt_printf("usage: dht22 [status|read [pin] [auto|dht22|dht11]]\n");
+        }
+#else
+        basalt_printf("dht22: disabled in this shell level\n");
+#endif
+    } else if (strcmp(cmd, "ads1115") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        char *arg1 = strtok(NULL, " \t\r\n");
+        if (!sub || strcmp(sub, "status") == 0 || strcmp(sub, "probe") == 0) {
+            bsh_cmd_ads1115_status();
+        } else if (strcmp(sub, "read") == 0) {
+            bsh_cmd_ads1115_read(arg1);
+        } else {
+            basalt_printf("ads1115: unknown subcommand '%s'\n", sub);
+            basalt_printf("usage: ads1115 [status|probe|read [0-3]]\n");
+        }
+#else
+        basalt_printf("ads1115: disabled in this shell level\n");
+#endif
+    } else if (strcmp(cmd, "mcp23017") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        char *arg1 = strtok(NULL, " \t\r\n");
+        char *arg2 = strtok(NULL, " \t\r\n");
+        bsh_cmd_mcp23017(sub, arg1, arg2);
+#else
+        basalt_printf("mcp23017: disabled in this shell level\n");
+#endif
     } else if (strcmp(cmd, "imu") == 0) {
 #if BASALT_SHELL_LEVEL >= 3
         char *sub = strtok(NULL, " \t\r\n");
@@ -4298,7 +5378,8 @@ static void bsh_handle_line(char *line) {
 #if BASALT_SHELL_LEVEL >= 3
         char *sub = strtok(NULL, " \t\r\n");
         char *arg1 = strtok(NULL, " \t\r\n");
-        bsh_cmd_l298n(sub, arg1);
+        char *arg2 = strtok(NULL, " \t\r\n");
+        bsh_cmd_l298n(sub, arg1, arg2);
 #else
         basalt_printf("l298n: disabled in this shell level\n");
 #endif
@@ -4549,7 +5630,7 @@ static void basalt_sd_init(void) {
 }
 
 static void basalt_log_driver_boot_summary(void) {
-#if BASALT_ENABLE_DISPLAY_SSD1306 || BASALT_ENABLE_RTC || BASALT_ENABLE_IMU || BASALT_ENABLE_DHT22 || BASALT_ENABLE_MIC || BASALT_ENABLE_TP4056 || BASALT_ENABLE_TWAI || BASALT_ENABLE_MCP2544FD || BASALT_ENABLE_ULN2003 || BASALT_ENABLE_L298N
+#if BASALT_ENABLE_DISPLAY_SSD1306 || BASALT_ENABLE_RTC || BASALT_ENABLE_IMU || BASALT_ENABLE_DHT22 || BASALT_ENABLE_BME280 || BASALT_ENABLE_ADS1115 || BASALT_ENABLE_MCP23017 || BASALT_ENABLE_MIC || BASALT_ENABLE_TP4056 || BASALT_ENABLE_TWAI || BASALT_ENABLE_MCP2544FD || BASALT_ENABLE_ULN2003 || BASALT_ENABLE_L298N
     ESP_LOGW(TAG, "Experimental drivers enabled; some are config-only stubs in this build.");
 #endif
 #if BASALT_ENABLE_DISPLAY_SSD1306
@@ -4561,8 +5642,17 @@ static void basalt_log_driver_boot_summary(void) {
 #if BASALT_ENABLE_IMU
     ESP_LOGI(TAG, "imu enabled: shell IMU command available (imu status/read/whoami).");
 #endif
+#if BASALT_ENABLE_BME280
+    ESP_LOGI(TAG, "bme280 enabled: shell API available (bme280 status/probe/read).");
+#endif
+#if BASALT_ENABLE_ADS1115
+    ESP_LOGI(TAG, "ads1115 enabled: shell API available (ads1115 status/probe/read).");
+#endif
+#if BASALT_ENABLE_MCP23017
+    ESP_LOGI(TAG, "mcp23017 enabled: shell API available (mcp23017 status/probe/scan/test/read/write/pinmode/pinwrite/pinread).");
+#endif
 #if BASALT_ENABLE_DHT22
-    ESP_LOGW(TAG, "dht22 enabled: runtime driver not implemented yet.");
+    ESP_LOGI(TAG, "dht22 enabled: shell API available (dht22 status/read [pin] [auto|dht22|dht11]).");
 #endif
 #if BASALT_ENABLE_MIC
     ESP_LOGW(TAG, "mic enabled: runtime driver not implemented yet.");
@@ -4580,7 +5670,7 @@ static void basalt_log_driver_boot_summary(void) {
     ESP_LOGI(TAG, "uln2003 enabled: shell API available (uln2003 status/off/step).");
 #endif
 #if BASALT_ENABLE_L298N
-    ESP_LOGI(TAG, "l298n enabled: shell API available (l298n status/stop/test/a/b).");
+    ESP_LOGI(TAG, "l298n enabled: shell API available (l298n status/stop/test/speed/a/b).");
 #endif
 }
 

@@ -1,0 +1,60 @@
+{
+  "id": "m5stack_core2",
+  "name": "M5Stack Core2 (Baseline)",
+  "description": "Baseline profile for M5Stack Core2 bring-up. Verify display/touch/audio pins against your unit revision.",
+  "platform": "esp32",
+  "target": "esp32",
+  "mcu": "ESP32-D0WDQ6-V3",
+  "flash": "16MB (typical)",
+  "ram": "520KB + PSRAM",
+  "capabilities": [
+    "wifi",
+    "bluetooth",
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "tft",
+    "fs_spiffs",
+    "psram"
+  ],
+  "pins": {
+    "uart_tx": 1,
+    "uart_rx": 3,
+    "i2c_sda": 21,
+    "i2c_scl": 22,
+    "spi_mosi": 23,
+    "spi_miso": 38,
+    "spi_sclk": 18,
+    "spi_cs": 5,
+    "tft_cs": 5,
+    "tft_dc": 15,
+    "tft_rst": -1,
+    "tft_mosi": 23,
+    "tft_sclk": 18,
+    "tft_bl": 32,
+    "button": 39
+  },
+  "sdkconfig": [
+    "# M5Stack Core2 baseline defaults",
+    "CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y",
+    "CONFIG_ESP_CONSOLE_UART_DEFAULT=y",
+    "CONFIG_ESP_CONSOLE_UART_NUM=0",
+    "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
+  ],
+  "defaults": {
+    "modules": [
+      "gpio",
+      "uart",
+      "spi",
+      "i2c",
+      "tft",
+      "fs_spiffs",
+      "shell_full"
+    ],
+    "clock": {
+      "freq_hz": 240000000
+    }
+  },
+  "notes": "Core2 hardware variants exist. Use this as an initial software baseline and validate each peripheral pin mapping on hardware."
+}

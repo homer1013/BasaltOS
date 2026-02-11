@@ -19,6 +19,8 @@
     }
   },
   "pins": {
+    "uart_tx": 1,
+    "uart_rx": 3,
     "i2c_sda": 21,
     "i2c_scl": 22,
     "uart0_tx": 1,

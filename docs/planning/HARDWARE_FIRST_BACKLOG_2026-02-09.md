@@ -32,7 +32,7 @@ Goal: maximize completed, hardware-validated value using hardware currently on h
 
 8. Board validation pass for in-hand boards
 - ESP32-C6 DevKit
-- M5Stack Core2
+- M5StickC Plus2
 - Arduino Uno R3 / Mega 2560 / Uno R4 WiFi
 - Pro Micro USB-C
 - PIC16F13145 Curiosity Nano

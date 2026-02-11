@@ -813,6 +813,7 @@ def emit_sdkconfig_defaults(
     modules: Dict[str, Module],
 ) -> None:
     parts: List[Tuple[str, Path]] = []
+    spiram_enabled_by_defaults = False
 
     if platform:
         p = root / "platforms" / platform / "idf_defaults.sdkconfig"
@@ -837,8 +838,11 @@ def emit_sdkconfig_defaults(
         out_lines.append("")
 
     for label, path in parts:
+        block = path.read_text(encoding="utf-8", errors="replace").rstrip()
+        if "CONFIG_SPIRAM=y" in block:
+            spiram_enabled_by_defaults = True
         out_lines.append(f"# --- BEGIN {label} ---")
-        out_lines.append(path.read_text(encoding="utf-8", errors="replace").rstrip())
+        out_lines.append(block)
         out_lines.append(f"# --- END {label} ---")
         out_lines.append("")
 
@@ -856,7 +860,7 @@ def emit_sdkconfig_defaults(
             mod_lines.append("")
 
     # If PSRAM is not enabled via driver, explicitly disable it by default.
-    if "psram" not in enabled_modules:
+    if "psram" not in enabled_modules and not spiram_enabled_by_defaults:
         out_lines.append("# --- BEGIN driver defaults: psram (disabled) ---")
         out_lines.append("CONFIG_SPIRAM=n")
         out_lines.append("# --- END driver defaults: psram (disabled) ---")
