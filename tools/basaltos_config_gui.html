@@ -386,6 +386,25 @@
             font-size: 13px;
         }
 
+        #board-list.board-list {
+            max-height: 430px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        #board-list.virtualized .board-group-title-row,
+        #board-list.virtualized .board-item {
+            margin-bottom: 6px;
+        }
+
+        .board-virtual-spacer {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            list-style: none;
+            background: transparent;
+        }
+
         .main-content {
             background: white;
             padding: 30px;
@@ -3117,6 +3136,15 @@
         let driverView = 'essential';
         let issuesPopoverHideTimer = null;
         let boardSearchDebounceTimer = null;
+        const BOARD_VIRTUAL_ROW_THRESHOLD = 180;
+        const BOARD_VIRTUAL_OVERSCAN_PX = 360;
+        const BOARD_VIRTUAL_GROUP_ROW_H = 34;
+        const BOARD_VIRTUAL_ITEM_ROW_H = 58;
+        let boardVirtualEnabled = false;
+        let boardVirtualRows = [];
+        let boardVirtualOffsets = [];
+        let boardVirtualTotalHeight = 0;
+        let boardVirtualRafId = 0;
 
         const MODULE_ICONS = {
             uart: '📡',
@@ -5029,9 +5057,150 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             notify('Welcome to BasaltOS Configurator.', 'success', 1800);
         }
 
+        function buildBoardGroups(filteredBoards) {
+            const groups = {};
+            filteredBoards.forEach(board => {
+                const tx = boardTaxonomy(board);
+                const group = `${tx.manufacturer} • ${tx.architecture} • ${tx.family}`;
+                if (!groups[group]) groups[group] = [];
+                groups[group].push(board);
+            });
+            return Object.keys(groups)
+                .sort()
+                .map(groupName => ({
+                    groupName,
+                    boards: groups[groupName].sort((a, b) => String(a.name).localeCompare(String(b.name)))
+                }));
+        }
+
+        function createBoardGroupTitleNode(groupName, count) {
+            const title = document.createElement('li');
+            title.className = 'board-group-title board-group-title-row';
+            title.textContent = `${groupName} (${count})`;
+            return title;
+        }
+
+        function createBoardItemNode(board) {
+            const li = document.createElement('li');
+            li.className = 'board-item';
+            const tx = boardTaxonomy(board);
+            li.textContent = board.name;
+            li.title = `${tx.silicon} • ${String(board.platform || '').toUpperCase()}`;
+            li.dataset.boardId = board.id;
+            if (selectedBoard && String(selectedBoard.id) === String(board.id)) {
+                li.classList.add('selected');
+            }
+            li.onclick = async () => { await selectBoard(board, li); };
+            return li;
+        }
+
+        function boardVirtualRowHeight(row) {
+            return row.type === 'group' ? BOARD_VIRTUAL_GROUP_ROW_H : BOARD_VIRTUAL_ITEM_ROW_H;
+        }
+
+        function prepareBoardVirtualRows(groupEntries) {
+            const rows = [];
+            groupEntries.forEach(g => {
+                rows.push({ type: 'group', groupName: g.groupName, count: g.boards.length });
+                g.boards.forEach(board => rows.push({ type: 'item', board }));
+            });
+            const offsets = new Array(rows.length);
+            let y = 0;
+            for (let i = 0; i < rows.length; i++) {
+                offsets[i] = y;
+                y += boardVirtualRowHeight(rows[i]);
+            }
+            boardVirtualRows = rows;
+            boardVirtualOffsets = offsets;
+            boardVirtualTotalHeight = y;
+        }
+
+        function findBoardVirtualRowIndex(y) {
+            if (!boardVirtualOffsets.length) return 0;
+            let lo = 0;
+            let hi = boardVirtualOffsets.length - 1;
+            while (lo < hi) {
+                const mid = Math.floor((lo + hi + 1) / 2);
+                if (boardVirtualOffsets[mid] <= y) lo = mid;
+                else hi = mid - 1;
+            }
+            return lo;
+        }
+
+        function renderBoardVirtualWindow() {
+            if (!boardVirtualEnabled) return;
+            const boardList = document.getElementById('board-list');
+            if (!boardList) return;
+            const viewportH = Math.max(boardList.clientHeight || 0, 1);
+            const scrollTop = Math.max(boardList.scrollTop || 0, 0);
+            const startY = Math.max(0, scrollTop - BOARD_VIRTUAL_OVERSCAN_PX);
+            const endY = Math.max(startY, scrollTop + viewportH + BOARD_VIRTUAL_OVERSCAN_PX);
+            const startIdx = findBoardVirtualRowIndex(startY);
+            const endIdx = Math.min(boardVirtualRows.length - 1, findBoardVirtualRowIndex(endY));
+            const topPad = boardVirtualOffsets[startIdx] || 0;
+            const endBottom = (boardVirtualOffsets[endIdx] || 0) + boardVirtualRowHeight(boardVirtualRows[endIdx]);
+            const bottomPad = Math.max(0, boardVirtualTotalHeight - endBottom);
+
+            boardList.innerHTML = '';
+            const frag = document.createDocumentFragment();
+            if (topPad > 0) {
+                const spacerTop = document.createElement('li');
+                spacerTop.className = 'board-virtual-spacer';
+                spacerTop.style.height = `${topPad}px`;
+                frag.appendChild(spacerTop);
+            }
+            for (let i = startIdx; i <= endIdx; i++) {
+                const row = boardVirtualRows[i];
+                if (row.type === 'group') frag.appendChild(createBoardGroupTitleNode(row.groupName, row.count));
+                else frag.appendChild(createBoardItemNode(row.board));
+            }
+            if (bottomPad > 0) {
+                const spacerBottom = document.createElement('li');
+                spacerBottom.className = 'board-virtual-spacer';
+                spacerBottom.style.height = `${bottomPad}px`;
+                frag.appendChild(spacerBottom);
+            }
+            boardList.appendChild(frag);
+        }
+
+        function scheduleBoardVirtualRender() {
+            if (!boardVirtualEnabled) return;
+            if (boardVirtualRafId) return;
+            boardVirtualRafId = window.requestAnimationFrame(() => {
+                boardVirtualRafId = 0;
+                renderBoardVirtualWindow();
+            });
+        }
+
+        function renderBoardListFull(groupEntries) {
+            const boardList = document.getElementById('board-list');
+            if (!boardList) return;
+            boardList.innerHTML = '';
+            const frag = document.createDocumentFragment();
+            groupEntries.forEach(g => {
+                const groupWrap = document.createElement('li');
+                groupWrap.className = 'board-group';
+                groupWrap.appendChild(createBoardGroupTitleNode(g.groupName, g.boards.length));
+                g.boards.forEach(board => groupWrap.appendChild(createBoardItemNode(board)));
+                frag.appendChild(groupWrap);
+            });
+            boardList.appendChild(frag);
+        }
+
         function populateBoardList() {
             const boardList = document.getElementById('board-list');
+            if (!boardList) return;
             boardList.innerHTML = '';
+            boardList.classList.remove('virtualized');
+            boardVirtualEnabled = false;
+            boardVirtualRows = [];
+            boardVirtualOffsets = [];
+            boardVirtualTotalHeight = 0;
+            if (boardVirtualRafId) {
+                window.cancelAnimationFrame(boardVirtualRafId);
+                boardVirtualRafId = 0;
+            }
+            boardList.onscroll = null;
 
             syncHierarchySelectors();
             const filteredBoards = applyHierarchyFilters();
@@ -5046,44 +5215,21 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             if (!filteredBoards.length) {
                 boardList.innerHTML = `<li class="board-empty">No boards match your current filter.<br>${buildBoardEmptyHint()}</li>`;
                 renderHardwarePath();
+                persistFilterStateToUrl();
                 return;
             }
 
-            const groups = {};
-            filteredBoards.forEach(board => {
-                const tx = boardTaxonomy(board);
-                const group = `${tx.manufacturer} • ${tx.architecture} • ${tx.family}`;
-                if (!groups[group]) groups[group] = [];
-                groups[group].push(board);
-            });
-
-            Object.keys(groups).sort().forEach(groupName => {
-                const groupWrap = document.createElement('li');
-                groupWrap.className = 'board-group';
-
-                const title = document.createElement('div');
-                title.className = 'board-group-title';
-                title.textContent = `${groupName} (${groups[groupName].length})`;
-                groupWrap.appendChild(title);
-
-                groups[groupName]
-                    .sort((a, b) => String(a.name).localeCompare(String(b.name)))
-                    .forEach(board => {
-                    const li = document.createElement('div');
-                    li.className = 'board-item';
-                    const tx = boardTaxonomy(board);
-                    li.textContent = board.name;
-                    li.title = `${tx.silicon} • ${String(board.platform || '').toUpperCase()}`;
-                    li.dataset.boardId = board.id;
-                    if (selectedBoard && String(selectedBoard.id) === String(board.id)) {
-                        li.classList.add('selected');
-                    }
-                    li.onclick = async () => { await selectBoard(board, li); };
-                    groupWrap.appendChild(li);
-                    });
-
-                boardList.appendChild(groupWrap);
-            });
+            const groupEntries = buildBoardGroups(filteredBoards);
+            const totalRows = groupEntries.reduce((n, g) => n + g.boards.length + 1, 0);
+            if (totalRows > BOARD_VIRTUAL_ROW_THRESHOLD) {
+                prepareBoardVirtualRows(groupEntries);
+                boardVirtualEnabled = true;
+                boardList.classList.add('virtualized');
+                boardList.onscroll = () => scheduleBoardVirtualRender();
+                renderBoardVirtualWindow();
+            } else {
+                renderBoardListFull(groupEntries);
+            }
             renderHardwarePath();
             persistFilterStateToUrl();
         }
