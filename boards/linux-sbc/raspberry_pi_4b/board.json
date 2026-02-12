@@ -19,7 +19,10 @@
     "bluetooth",
     "ethernet",
     "fs_sd",
-    "fs_spiffs"
+    "fs_spiffs",
+    "remote_node",
+    "mcp23017",
+    "hp4067"
   ],
   "pins": {
     "uart_tx": "GPIO14",

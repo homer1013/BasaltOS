@@ -15,7 +15,10 @@
     "gpio",
     "adc",
     "pwm",
-    "timer"
+    "timer",
+    "remote_node",
+    "mcp23017",
+    "hp4067"
   ],
   "pins": {
     "uart_tx": "D1",

@@ -80,7 +80,7 @@
       "architecture": "AVR 8-bit",
       "family": "ATmega328",
       "mcu": "ATmega328P",
-      "caps_count": 6
+      "caps_count": 9
     },
     {
       "platform": "atmega",
@@ -91,7 +91,7 @@
       "architecture": "AVR 8-bit",
       "family": "ATmega328",
       "mcu": "ATmega328P",
-      "caps_count": 7
+      "caps_count": 10
     },
     {
       "platform": "atsam",
@@ -102,7 +102,7 @@
       "architecture": "ARM Cortex-M",
       "family": "SAMD21",
       "mcu": "ATSAMD21G18",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "atsam",
@@ -113,7 +113,7 @@
       "architecture": "ARM Cortex-M",
       "family": "SAMD21",
       "mcu": "ATSAMD21G18",
-      "caps_count": 7
+      "caps_count": 10
     },
     {
       "platform": "atsam",
@@ -124,7 +124,7 @@
       "architecture": "ARM Cortex-M",
       "family": "SAMD21",
       "mcu": "ATSAMD21G18A",
-      "caps_count": 7
+      "caps_count": 10
     },
     {
       "platform": "avr",
@@ -135,7 +135,7 @@
       "architecture": "AVR 8-bit",
       "family": "ATmega32U4",
       "mcu": "ATmega32U4",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "avr",
@@ -146,7 +146,7 @@
       "architecture": "AVR 8-bit",
       "family": "ATmega2560",
       "mcu": "ATmega2560",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "esp32",
@@ -289,7 +289,7 @@
       "architecture": "ARM Cortex-A",
       "family": "BCM2711",
       "mcu": "Broadcom BCM2711",
-      "caps_count": 11
+      "caps_count": 14
     },
     {
       "platform": "pic16",
@@ -300,7 +300,7 @@
       "architecture": "PIC 8-bit",
       "family": "PIC16",
       "mcu": "PIC16F13145",
-      "caps_count": 9
+      "caps_count": 12
     },
     {
       "platform": "pic16",
@@ -311,7 +311,7 @@
       "architecture": "PIC 8-bit",
       "family": "PIC16",
       "mcu": "PIC16F873",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "renesas_ra",
@@ -322,7 +322,7 @@
       "architecture": "ARM Cortex-M",
       "family": "RA4",
       "mcu": "Renesas RA4M1",
-      "caps_count": 7
+      "caps_count": 10
     },
     {
       "platform": "renesas_ra",
@@ -333,7 +333,7 @@
       "architecture": "ARM Cortex-M",
       "family": "RA4",
       "mcu": "Renesas RA4M1",
-      "caps_count": 9
+      "caps_count": 12
     },
     {
       "platform": "renesas_ra",
@@ -344,7 +344,7 @@
       "architecture": "ARM Cortex-M",
       "family": "Renesas RA",
       "mcu": "R7FA4M1AB3CFM",
-      "caps_count": 7
+      "caps_count": 10
     },
     {
       "platform": "renesas_rx",
@@ -355,7 +355,7 @@
       "architecture": "Renesas RX 32-bit",
       "family": "RX65",
       "mcu": "Renesas RX65N",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "renesas_rx",
@@ -366,7 +366,7 @@
       "architecture": "Renesas RX 32-bit",
       "family": "Renesas RX",
       "mcu": "R5F572NN",
-      "caps_count": 7
+      "caps_count": 10
     },
     {
       "platform": "rp2040",
@@ -388,7 +388,7 @@
       "architecture": "ARM Cortex-M0+",
       "family": "RP2040",
       "mcu": "RP2040",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "rp2040",
@@ -399,7 +399,7 @@
       "architecture": "ARM Cortex-M0+",
       "family": "RP2040",
       "mcu": "RP2040",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "rp2040",
@@ -432,7 +432,7 @@
       "architecture": "ARM Cortex-M",
       "family": "STM32F4",
       "mcu": "STM32F411CEU6",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "stm32",
@@ -443,7 +443,7 @@
       "architecture": "ARM Cortex-M",
       "family": "STM32F4",
       "mcu": "STM32F401RE",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "stm32",
@@ -454,7 +454,7 @@
       "architecture": "ARM Cortex-M",
       "family": "STM32F4",
       "mcu": "STM32F446RE",
-      "caps_count": 7
+      "caps_count": 10
     }
   ]
 }

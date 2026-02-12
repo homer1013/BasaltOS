@@ -2,7 +2,7 @@
   "id": "mcp23017",
   "name": "MCP23017 I/O Expander",
   "description": "16-bit I2C GPIO expander (2x8-bit ports)",
-  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic16"],
+  "platforms": ["esp32", "stm32", "rp2040", "linux-sbc", "avr", "pic16", "atsam", "renesas_ra", "renesas_rx"],
   "provides": ["gpio_ext", "gpio"],
   "depends": ["i2c"],
   "conflicts": [],

@@ -2,7 +2,7 @@
   "id": "hp4067",
   "name": "HP4067 / 74HC4067 Mux",
   "description": "16-channel analog/digital multiplexer",
-  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic16"],
+  "platforms": ["esp32", "stm32", "rp2040", "linux-sbc", "avr", "pic16", "atsam", "renesas_ra", "renesas_rx"],
   "provides": ["analog_mux"],
   "depends": ["gpio"],
   "conflicts": [],

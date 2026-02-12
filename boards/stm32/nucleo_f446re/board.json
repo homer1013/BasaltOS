@@ -15,7 +15,10 @@
     "gpio",
     "adc",
     "pwm",
-    "debug_swd"
+    "debug_swd",
+    "remote_node",
+    "mcp23017",
+    "hp4067"
   ],
   "pins": {
     "uart_tx": "PA2",

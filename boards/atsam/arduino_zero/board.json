@@ -15,7 +15,10 @@
     "gpio",
     "adc",
     "pwm",
-    "usb_device"
+    "usb_device",
+    "remote_node",
+    "mcp23017",
+    "hp4067"
   ],
   "pins": {
     "uart_tx": "D1",

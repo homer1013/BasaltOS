@@ -3,7 +3,7 @@
   "platform_count": 10,
   "platforms": {
     "atmega": {
-      "unsupported_or_gap_rows": 26,
+      "unsupported_or_gap_rows": 20,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -15,14 +15,6 @@
         },
         {
           "module_id": "fs_sd",
-          "count": 2
-        },
-        {
-          "module_id": "hp4067",
-          "count": 2
-        },
-        {
-          "module_id": "mcp23017",
           "count": 2
         },
         {
@@ -38,11 +30,19 @@
           "count": 2
         },
         {
-          "module_id": "remote_node",
+          "module_id": "tft",
           "count": 2
         },
         {
-          "module_id": "tft",
+          "module_id": "tp4056",
+          "count": 2
+        },
+        {
+          "module_id": "twai",
+          "count": 2
+        },
+        {
+          "module_id": "wifi",
           "count": 2
         }
       ],
@@ -60,14 +60,6 @@
           "count": 2
         },
         {
-          "reason": "not_allowed:hp4067",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:mcp23017",
-          "count": 2
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 2
         },
@@ -77,12 +69,20 @@
         },
         {
           "reason": "not_allowed:psram",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:tft",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:tp4056",
           "count": 2
         }
       ]
     },
     "atsam": {
-      "unsupported_or_gap_rows": 36,
+      "unsupported_or_gap_rows": 27,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -97,14 +97,6 @@
           "count": 3
         },
         {
-          "module_id": "hp4067",
-          "count": 3
-        },
-        {
-          "module_id": "mcp23017",
-          "count": 3
-        },
-        {
           "module_id": "mcp2544fd",
           "count": 3
         },
@@ -113,15 +105,19 @@
           "count": 3
         },
         {
-          "module_id": "remote_node",
-          "count": 3
-        },
-        {
           "module_id": "tft",
           "count": 3
         },
         {
           "module_id": "tp4056",
+          "count": 3
+        },
+        {
+          "module_id": "twai",
+          "count": 3
+        },
+        {
+          "module_id": "wifi",
           "count": 3
         }
       ],
@@ -139,14 +135,6 @@
           "count": 3
         },
         {
-          "reason": "not_allowed:hp4067",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:mcp23017",
-          "count": 3
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 3
         },
@@ -155,13 +143,21 @@
           "count": 3
         },
         {
-          "reason": "not_allowed:remote_node",
+          "reason": "not_allowed:tft",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:tp4056",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:twai",
           "count": 3
         }
       ]
     },
     "avr": {
-      "unsupported_or_gap_rows": 24,
+      "unsupported_or_gap_rows": 18,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -169,14 +165,6 @@
         },
         {
           "module_id": "fs_sd",
-          "count": 2
-        },
-        {
-          "module_id": "hp4067",
-          "count": 2
-        },
-        {
-          "module_id": "mcp23017",
           "count": 2
         },
         {
@@ -192,15 +180,19 @@
           "count": 2
         },
         {
-          "module_id": "remote_node",
-          "count": 2
-        },
-        {
           "module_id": "tft",
           "count": 2
         },
         {
           "module_id": "tp4056",
+          "count": 2
+        },
+        {
+          "module_id": "twai",
+          "count": 2
+        },
+        {
+          "module_id": "wifi",
           "count": 2
         }
       ],
@@ -211,14 +203,6 @@
         },
         {
           "reason": "not_allowed:fs_sd",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:hp4067",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:mcp23017",
           "count": 2
         },
         {
@@ -234,7 +218,15 @@
           "count": 2
         },
         {
-          "reason": "not_allowed:remote_node",
+          "reason": "not_allowed:tft",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:tp4056",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:twai",
           "count": 2
         }
       ]
@@ -303,7 +295,7 @@
       ]
     },
     "linux-sbc": {
-      "unsupported_or_gap_rows": 11,
+      "unsupported_or_gap_rows": 8,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -314,23 +306,11 @@
           "count": 1
         },
         {
-          "module_id": "hp4067",
-          "count": 1
-        },
-        {
-          "module_id": "mcp23017",
-          "count": 1
-        },
-        {
           "module_id": "mcp2544fd",
           "count": 1
         },
         {
           "module_id": "psram",
-          "count": 1
-        },
-        {
-          "module_id": "remote_node",
           "count": 1
         },
         {
@@ -344,6 +324,10 @@
         {
           "module_id": "twai",
           "count": 1
+        },
+        {
+          "module_id": "wifi",
+          "count": 1
         }
       ],
       "top_reasons": [
@@ -356,14 +340,6 @@
           "count": 1
         },
         {
-          "reason": "not_allowed:hp4067",
-          "count": 1
-        },
-        {
-          "reason": "not_allowed:mcp23017",
-          "count": 1
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 1
         },
@@ -372,17 +348,21 @@
           "count": 1
         },
         {
-          "reason": "not_allowed:remote_node",
+          "reason": "not_allowed:tft",
           "count": 1
         },
         {
-          "reason": "not_allowed:tft",
+          "reason": "not_allowed:tp4056",
+          "count": 1
+        },
+        {
+          "reason": "not_allowed:twai",
           "count": 1
         }
       ]
     },
     "pic16": {
-      "unsupported_or_gap_rows": 24,
+      "unsupported_or_gap_rows": 18,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -390,14 +370,6 @@
         },
         {
           "module_id": "fs_sd",
-          "count": 2
-        },
-        {
-          "module_id": "hp4067",
-          "count": 2
-        },
-        {
-          "module_id": "mcp23017",
           "count": 2
         },
         {
@@ -413,15 +385,19 @@
           "count": 2
         },
         {
-          "module_id": "remote_node",
-          "count": 2
-        },
-        {
           "module_id": "tft",
           "count": 2
         },
         {
           "module_id": "tp4056",
+          "count": 2
+        },
+        {
+          "module_id": "twai",
+          "count": 2
+        },
+        {
+          "module_id": "wifi",
           "count": 2
         }
       ],
@@ -432,14 +408,6 @@
         },
         {
           "reason": "not_allowed:fs_sd",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:hp4067",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:mcp23017",
           "count": 2
         },
         {
@@ -455,13 +423,21 @@
           "count": 2
         },
         {
-          "reason": "not_allowed:remote_node",
+          "reason": "not_allowed:tft",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:tp4056",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:twai",
           "count": 2
         }
       ]
     },
     "renesas_ra": {
-      "unsupported_or_gap_rows": 36,
+      "unsupported_or_gap_rows": 27,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -476,14 +452,6 @@
           "count": 3
         },
         {
-          "module_id": "hp4067",
-          "count": 3
-        },
-        {
-          "module_id": "mcp23017",
-          "count": 3
-        },
-        {
           "module_id": "mcp2544fd",
           "count": 3
         },
@@ -492,15 +460,19 @@
           "count": 3
         },
         {
-          "module_id": "remote_node",
-          "count": 3
-        },
-        {
           "module_id": "tft",
           "count": 3
         },
         {
           "module_id": "tp4056",
+          "count": 3
+        },
+        {
+          "module_id": "twai",
+          "count": 3
+        },
+        {
+          "module_id": "wifi",
           "count": 3
         }
       ],
@@ -514,14 +486,6 @@
           "count": 3
         },
         {
-          "reason": "not_allowed:hp4067",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:mcp23017",
-          "count": 3
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 3
         },
@@ -530,17 +494,25 @@
           "count": 3
         },
         {
-          "reason": "not_allowed:remote_node",
+          "reason": "not_allowed:tft",
           "count": 3
         },
         {
-          "reason": "not_allowed:tft",
+          "reason": "not_allowed:tp4056",
           "count": 3
+        },
+        {
+          "reason": "not_allowed:twai",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:bluetooth",
+          "count": 2
         }
       ]
     },
     "renesas_rx": {
-      "unsupported_or_gap_rows": 24,
+      "unsupported_or_gap_rows": 18,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -555,14 +527,6 @@
           "count": 2
         },
         {
-          "module_id": "hp4067",
-          "count": 2
-        },
-        {
-          "module_id": "mcp23017",
-          "count": 2
-        },
-        {
           "module_id": "mcp2544fd",
           "count": 2
         },
@@ -571,15 +535,19 @@
           "count": 2
         },
         {
-          "module_id": "remote_node",
-          "count": 2
-        },
-        {
           "module_id": "tft",
           "count": 2
         },
         {
           "module_id": "tp4056",
+          "count": 2
+        },
+        {
+          "module_id": "twai",
+          "count": 2
+        },
+        {
+          "module_id": "wifi",
           "count": 2
         }
       ],
@@ -597,14 +565,6 @@
           "count": 2
         },
         {
-          "reason": "not_allowed:hp4067",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:mcp23017",
-          "count": 2
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 2
         },
@@ -613,13 +573,21 @@
           "count": 2
         },
         {
-          "reason": "not_allowed:remote_node",
+          "reason": "not_allowed:tft",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:tp4056",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:twai",
           "count": 2
         }
       ]
     },
     "rp2040": {
-      "unsupported_or_gap_rows": 51,
+      "unsupported_or_gap_rows": 45,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -656,10 +624,6 @@
         {
           "module_id": "wifi",
           "count": 5
-        },
-        {
-          "module_id": "hp4067",
-          "count": 2
         }
       ],
       "top_reasons": [
@@ -698,7 +662,7 @@
       ]
     },
     "stm32": {
-      "unsupported_or_gap_rows": 36,
+      "unsupported_or_gap_rows": 27,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -713,14 +677,6 @@
           "count": 3
         },
         {
-          "module_id": "hp4067",
-          "count": 3
-        },
-        {
-          "module_id": "mcp23017",
-          "count": 3
-        },
-        {
           "module_id": "mcp2544fd",
           "count": 3
         },
@@ -729,15 +685,19 @@
           "count": 3
         },
         {
-          "module_id": "remote_node",
-          "count": 3
-        },
-        {
           "module_id": "tft",
           "count": 3
         },
         {
           "module_id": "tp4056",
+          "count": 3
+        },
+        {
+          "module_id": "twai",
+          "count": 3
+        },
+        {
+          "module_id": "wifi",
           "count": 3
         }
       ],
@@ -755,14 +715,6 @@
           "count": 3
         },
         {
-          "reason": "not_allowed:hp4067",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:mcp23017",
-          "count": 3
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 3
         },
@@ -771,7 +723,15 @@
           "count": 3
         },
         {
-          "reason": "not_allowed:remote_node",
+          "reason": "not_allowed:tft",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:tp4056",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:twai",
           "count": 3
         }
       ]
@@ -789,24 +749,24 @@
     "actionable_top_modules_by_platform": {}
   },
   "advanced_policy_summary": {
-    "not_allowed_row_count": 327,
+    "not_allowed_row_count": 267,
     "bucket_counts": {
-      "intentional": 327
+      "intentional": 267
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
-      "intentional_advanced_peripheral_opt_in": 286
+      "intentional_advanced_peripheral_opt_in": 226
     },
     "actionable_top_modules_by_platform": {}
   },
   "foundation_focus_summary": {
-    "gap_row_count": 338,
+    "gap_row_count": 278,
     "bucket_counts": {
-      "intentional": 338
+      "intentional": 278
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
-      "intentional_advanced_peripheral_opt_in": 286,
+      "intentional_advanced_peripheral_opt_in": 226,
       "intentional_8bit_mic_scope": 6,
       "intentional_wireless_scope": 5
     },

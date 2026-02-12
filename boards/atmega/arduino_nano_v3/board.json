@@ -14,7 +14,10 @@
     "i2c",
     "gpio",
     "adc",
-    "pwm"
+    "pwm",
+    "remote_node",
+    "mcp23017",
+    "hp4067"
   ],
   "pins": {
     "uart_tx": "D1",

@@ -6,9 +6,13 @@
     "esp32",
     "stm32",
     "rp2040",
+    "linux-sbc",
     "avr",
     "pic",
-    "pic16"
+    "pic16",
+    "atsam",
+    "renesas_ra",
+    "renesas_rx"
   ],
   "provides": [
     "remote_node"

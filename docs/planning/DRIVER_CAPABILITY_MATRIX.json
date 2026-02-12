@@ -4,28 +4,28 @@
   "row_count": 1155,
   "summary": {
     "status_counts": {
-      "SUPPORTED": 817,
-      "UNSUPPORTED": 327,
+      "SUPPORTED": 877,
+      "UNSUPPORTED": 267,
       "CAPABILITY_ONLY": 11
     },
     "platform_summary": {
       "atmega": {
         "boards": 2,
-        "SUPPORTED": 40,
+        "SUPPORTED": 46,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 24
+        "UNSUPPORTED": 18
       },
       "atsam": {
         "boards": 3,
-        "SUPPORTED": 63,
+        "SUPPORTED": 72,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 36
+        "UNSUPPORTED": 27
       },
       "avr": {
         "boards": 2,
-        "SUPPORTED": 42,
+        "SUPPORTED": 48,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 22
+        "UNSUPPORTED": 16
       },
       "esp32": {
         "boards": 12,
@@ -35,39 +35,39 @@
       },
       "linux-sbc": {
         "boards": 1,
-        "SUPPORTED": 22,
+        "SUPPORTED": 25,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 9
+        "UNSUPPORTED": 6
       },
       "pic16": {
         "boards": 2,
-        "SUPPORTED": 42,
+        "SUPPORTED": 48,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 22
+        "UNSUPPORTED": 16
       },
       "renesas_ra": {
         "boards": 3,
-        "SUPPORTED": 63,
+        "SUPPORTED": 72,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 34
+        "UNSUPPORTED": 25
       },
       "renesas_rx": {
         "boards": 2,
-        "SUPPORTED": 42,
+        "SUPPORTED": 48,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 24
+        "UNSUPPORTED": 18
       },
       "rp2040": {
         "boards": 5,
-        "SUPPORTED": 114,
+        "SUPPORTED": 120,
         "CAPABILITY_ONLY": 1,
-        "UNSUPPORTED": 50
+        "UNSUPPORTED": 44
       },
       "stm32": {
         "boards": 3,
-        "SUPPORTED": 63,
+        "SUPPORTED": 72,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 36
+        "UNSUPPORTED": 27
       }
     },
     "module_coverage": [
@@ -100,6 +100,10 @@
         "supported_boards": 35
       },
       {
+        "module_id": "hp4067",
+        "supported_boards": 35
+      },
+      {
         "module_id": "i2c",
         "supported_boards": 35
       },
@@ -112,11 +116,19 @@
         "supported_boards": 35
       },
       {
+        "module_id": "mcp23017",
+        "supported_boards": 35
+      },
+      {
         "module_id": "mcp2515",
         "supported_boards": 35
       },
       {
         "module_id": "pwm",
+        "supported_boards": 35
+      },
+      {
+        "module_id": "remote_node",
         "supported_boards": 35
       },
       {
@@ -156,18 +168,6 @@
         "supported_boards": 29
       },
       {
-        "module_id": "hp4067",
-        "supported_boards": 15
-      },
-      {
-        "module_id": "mcp23017",
-        "supported_boards": 15
-      },
-      {
-        "module_id": "remote_node",
-        "supported_boards": 15
-      },
-      {
         "module_id": "bluetooth",
         "supported_boards": 12
       },
@@ -202,7 +202,7 @@
     "platform_count": 10,
     "platforms": {
       "atmega": {
-        "unsupported_or_gap_rows": 26,
+        "unsupported_or_gap_rows": 20,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -214,14 +214,6 @@
           },
           {
             "module_id": "fs_sd",
-            "count": 2
-          },
-          {
-            "module_id": "hp4067",
-            "count": 2
-          },
-          {
-            "module_id": "mcp23017",
             "count": 2
           },
           {
@@ -237,11 +229,19 @@
             "count": 2
           },
           {
-            "module_id": "remote_node",
+            "module_id": "tft",
             "count": 2
           },
           {
-            "module_id": "tft",
+            "module_id": "tp4056",
+            "count": 2
+          },
+          {
+            "module_id": "twai",
+            "count": 2
+          },
+          {
+            "module_id": "wifi",
             "count": 2
           }
         ],
@@ -259,14 +259,6 @@
             "count": 2
           },
           {
-            "reason": "not_allowed:hp4067",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:mcp23017",
-            "count": 2
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 2
           },
@@ -276,12 +268,20 @@
           },
           {
             "reason": "not_allowed:psram",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:tft",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:tp4056",
             "count": 2
           }
         ]
       },
       "atsam": {
-        "unsupported_or_gap_rows": 36,
+        "unsupported_or_gap_rows": 27,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -296,14 +296,6 @@
             "count": 3
           },
           {
-            "module_id": "hp4067",
-            "count": 3
-          },
-          {
-            "module_id": "mcp23017",
-            "count": 3
-          },
-          {
             "module_id": "mcp2544fd",
             "count": 3
           },
@@ -312,15 +304,19 @@
             "count": 3
           },
           {
-            "module_id": "remote_node",
-            "count": 3
-          },
-          {
             "module_id": "tft",
             "count": 3
           },
           {
             "module_id": "tp4056",
+            "count": 3
+          },
+          {
+            "module_id": "twai",
+            "count": 3
+          },
+          {
+            "module_id": "wifi",
             "count": 3
           }
         ],
@@ -338,14 +334,6 @@
             "count": 3
           },
           {
-            "reason": "not_allowed:hp4067",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:mcp23017",
-            "count": 3
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 3
           },
@@ -354,13 +342,21 @@
             "count": 3
           },
           {
-            "reason": "not_allowed:remote_node",
+            "reason": "not_allowed:tft",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:tp4056",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:twai",
             "count": 3
           }
         ]
       },
       "avr": {
-        "unsupported_or_gap_rows": 24,
+        "unsupported_or_gap_rows": 18,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -368,14 +364,6 @@
           },
           {
             "module_id": "fs_sd",
-            "count": 2
-          },
-          {
-            "module_id": "hp4067",
-            "count": 2
-          },
-          {
-            "module_id": "mcp23017",
             "count": 2
           },
           {
@@ -391,15 +379,19 @@
             "count": 2
           },
           {
-            "module_id": "remote_node",
-            "count": 2
-          },
-          {
             "module_id": "tft",
             "count": 2
           },
           {
             "module_id": "tp4056",
+            "count": 2
+          },
+          {
+            "module_id": "twai",
+            "count": 2
+          },
+          {
+            "module_id": "wifi",
             "count": 2
           }
         ],
@@ -410,14 +402,6 @@
           },
           {
             "reason": "not_allowed:fs_sd",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:hp4067",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:mcp23017",
             "count": 2
           },
           {
@@ -433,7 +417,15 @@
             "count": 2
           },
           {
-            "reason": "not_allowed:remote_node",
+            "reason": "not_allowed:tft",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:tp4056",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:twai",
             "count": 2
           }
         ]
@@ -502,7 +494,7 @@
         ]
       },
       "linux-sbc": {
-        "unsupported_or_gap_rows": 11,
+        "unsupported_or_gap_rows": 8,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -513,23 +505,11 @@
             "count": 1
           },
           {
-            "module_id": "hp4067",
-            "count": 1
-          },
-          {
-            "module_id": "mcp23017",
-            "count": 1
-          },
-          {
             "module_id": "mcp2544fd",
             "count": 1
           },
           {
             "module_id": "psram",
-            "count": 1
-          },
-          {
-            "module_id": "remote_node",
             "count": 1
           },
           {
@@ -543,6 +523,10 @@
           {
             "module_id": "twai",
             "count": 1
+          },
+          {
+            "module_id": "wifi",
+            "count": 1
           }
         ],
         "top_reasons": [
@@ -555,14 +539,6 @@
             "count": 1
           },
           {
-            "reason": "not_allowed:hp4067",
-            "count": 1
-          },
-          {
-            "reason": "not_allowed:mcp23017",
-            "count": 1
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 1
           },
@@ -571,17 +547,21 @@
             "count": 1
           },
           {
-            "reason": "not_allowed:remote_node",
+            "reason": "not_allowed:tft",
             "count": 1
           },
           {
-            "reason": "not_allowed:tft",
+            "reason": "not_allowed:tp4056",
+            "count": 1
+          },
+          {
+            "reason": "not_allowed:twai",
             "count": 1
           }
         ]
       },
       "pic16": {
-        "unsupported_or_gap_rows": 24,
+        "unsupported_or_gap_rows": 18,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -589,14 +569,6 @@
           },
           {
             "module_id": "fs_sd",
-            "count": 2
-          },
-          {
-            "module_id": "hp4067",
-            "count": 2
-          },
-          {
-            "module_id": "mcp23017",
             "count": 2
           },
           {
@@ -612,15 +584,19 @@
             "count": 2
           },
           {
-            "module_id": "remote_node",
-            "count": 2
-          },
-          {
             "module_id": "tft",
             "count": 2
           },
           {
             "module_id": "tp4056",
+            "count": 2
+          },
+          {
+            "module_id": "twai",
+            "count": 2
+          },
+          {
+            "module_id": "wifi",
             "count": 2
           }
         ],
@@ -631,14 +607,6 @@
           },
           {
             "reason": "not_allowed:fs_sd",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:hp4067",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:mcp23017",
             "count": 2
           },
           {
@@ -654,13 +622,21 @@
             "count": 2
           },
           {
-            "reason": "not_allowed:remote_node",
+            "reason": "not_allowed:tft",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:tp4056",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:twai",
             "count": 2
           }
         ]
       },
       "renesas_ra": {
-        "unsupported_or_gap_rows": 36,
+        "unsupported_or_gap_rows": 27,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -675,14 +651,6 @@
             "count": 3
           },
           {
-            "module_id": "hp4067",
-            "count": 3
-          },
-          {
-            "module_id": "mcp23017",
-            "count": 3
-          },
-          {
             "module_id": "mcp2544fd",
             "count": 3
           },
@@ -691,15 +659,19 @@
             "count": 3
           },
           {
-            "module_id": "remote_node",
-            "count": 3
-          },
-          {
             "module_id": "tft",
             "count": 3
           },
           {
             "module_id": "tp4056",
+            "count": 3
+          },
+          {
+            "module_id": "twai",
+            "count": 3
+          },
+          {
+            "module_id": "wifi",
             "count": 3
           }
         ],
@@ -713,14 +685,6 @@
             "count": 3
           },
           {
-            "reason": "not_allowed:hp4067",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:mcp23017",
-            "count": 3
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 3
           },
@@ -729,17 +693,25 @@
             "count": 3
           },
           {
-            "reason": "not_allowed:remote_node",
+            "reason": "not_allowed:tft",
             "count": 3
           },
           {
-            "reason": "not_allowed:tft",
+            "reason": "not_allowed:tp4056",
             "count": 3
+          },
+          {
+            "reason": "not_allowed:twai",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 2
           }
         ]
       },
       "renesas_rx": {
-        "unsupported_or_gap_rows": 24,
+        "unsupported_or_gap_rows": 18,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -754,14 +726,6 @@
             "count": 2
           },
           {
-            "module_id": "hp4067",
-            "count": 2
-          },
-          {
-            "module_id": "mcp23017",
-            "count": 2
-          },
-          {
             "module_id": "mcp2544fd",
             "count": 2
           },
@@ -770,15 +734,19 @@
             "count": 2
           },
           {
-            "module_id": "remote_node",
-            "count": 2
-          },
-          {
             "module_id": "tft",
             "count": 2
           },
           {
             "module_id": "tp4056",
+            "count": 2
+          },
+          {
+            "module_id": "twai",
+            "count": 2
+          },
+          {
+            "module_id": "wifi",
             "count": 2
           }
         ],
@@ -796,14 +764,6 @@
             "count": 2
           },
           {
-            "reason": "not_allowed:hp4067",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:mcp23017",
-            "count": 2
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 2
           },
@@ -812,13 +772,21 @@
             "count": 2
           },
           {
-            "reason": "not_allowed:remote_node",
+            "reason": "not_allowed:tft",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:tp4056",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:twai",
             "count": 2
           }
         ]
       },
       "rp2040": {
-        "unsupported_or_gap_rows": 51,
+        "unsupported_or_gap_rows": 45,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -855,10 +823,6 @@
           {
             "module_id": "wifi",
             "count": 5
-          },
-          {
-            "module_id": "hp4067",
-            "count": 2
           }
         ],
         "top_reasons": [
@@ -897,7 +861,7 @@
         ]
       },
       "stm32": {
-        "unsupported_or_gap_rows": 36,
+        "unsupported_or_gap_rows": 27,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -912,14 +876,6 @@
             "count": 3
           },
           {
-            "module_id": "hp4067",
-            "count": 3
-          },
-          {
-            "module_id": "mcp23017",
-            "count": 3
-          },
-          {
             "module_id": "mcp2544fd",
             "count": 3
           },
@@ -928,15 +884,19 @@
             "count": 3
           },
           {
-            "module_id": "remote_node",
-            "count": 3
-          },
-          {
             "module_id": "tft",
             "count": 3
           },
           {
             "module_id": "tp4056",
+            "count": 3
+          },
+          {
+            "module_id": "twai",
+            "count": 3
+          },
+          {
+            "module_id": "wifi",
             "count": 3
           }
         ],
@@ -954,14 +914,6 @@
             "count": 3
           },
           {
-            "reason": "not_allowed:hp4067",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:mcp23017",
-            "count": 3
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 3
           },
@@ -970,7 +922,15 @@
             "count": 3
           },
           {
-            "reason": "not_allowed:remote_node",
+            "reason": "not_allowed:tft",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:tp4056",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:twai",
             "count": 3
           }
         ]
@@ -988,24 +948,24 @@
       "actionable_top_modules_by_platform": {}
     },
     "advanced_policy_summary": {
-      "not_allowed_row_count": 327,
+      "not_allowed_row_count": 267,
       "bucket_counts": {
-        "intentional": 327
+        "intentional": 267
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 286
+        "intentional_advanced_peripheral_opt_in": 226
       },
       "actionable_top_modules_by_platform": {}
     },
     "foundation_focus_summary": {
-      "gap_row_count": 338,
+      "gap_row_count": 278,
       "bucket_counts": {
-        "intentional": 338
+        "intentional": 278
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 286,
+        "intentional_advanced_peripheral_opt_in": 226,
         "intentional_8bit_mic_scope": 6,
         "intentional_wireless_scope": 5
       },
@@ -1160,12 +1120,12 @@
       "board_name": "Arduino Nano V3 (ATmega328P)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -1216,12 +1176,12 @@
       "board_name": "Arduino Nano V3 (ATmega328P)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -1300,12 +1260,12 @@
       "board_name": "Arduino Nano V3 (ATmega328P)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -1622,12 +1582,12 @@
       "board_name": "Arduino Uno R3",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -1678,12 +1638,12 @@
       "board_name": "Arduino Uno R3",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -1762,12 +1722,12 @@
       "board_name": "Arduino Uno R3",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -2084,12 +2044,12 @@
       "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2140,12 +2100,12 @@
       "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2224,12 +2184,12 @@
       "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2546,12 +2506,12 @@
       "board_name": "Arduino Zero (SAMD21G18)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2602,12 +2562,12 @@
       "board_name": "Arduino Zero (SAMD21G18)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2686,12 +2646,12 @@
       "board_name": "Arduino Zero (SAMD21G18)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -3008,12 +2968,12 @@
       "board_name": "Seeeduino XIAO (SAMD21)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -3064,12 +3024,12 @@
       "board_name": "Seeeduino XIAO (SAMD21)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -3148,12 +3108,12 @@
       "board_name": "Seeeduino XIAO (SAMD21)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -3470,12 +3430,12 @@
       "board_name": "Arduino Pro Micro 5V (USB-C)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "avr",
@@ -3526,12 +3486,12 @@
       "board_name": "Arduino Pro Micro 5V (USB-C)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "avr",
@@ -3610,12 +3570,12 @@
       "board_name": "Arduino Pro Micro 5V (USB-C)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "avr",
@@ -3932,12 +3892,12 @@
       "board_name": "Arduino Mega 2560 (Generic)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "avr",
@@ -3988,12 +3948,12 @@
       "board_name": "Arduino Mega 2560 (Generic)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "avr",
@@ -4072,12 +4032,12 @@
       "board_name": "Arduino Mega 2560 (Generic)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "avr",
@@ -4394,7 +4354,7 @@
       "board_name": "CYD ESP32-3248S035R",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -4450,7 +4410,7 @@
       "board_name": "CYD ESP32-3248S035R",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -4534,7 +4494,7 @@
       "board_name": "CYD ESP32-3248S035R",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -4856,7 +4816,7 @@
       "board_name": "DFRobot Beetle ESP32-C3",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -4912,7 +4872,7 @@
       "board_name": "DFRobot Beetle ESP32-C3",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -4996,7 +4956,7 @@
       "board_name": "DFRobot Beetle ESP32-C3",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -5318,7 +5278,7 @@
       "board_name": "DFRobot FireBeetle ESP32",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -5374,7 +5334,7 @@
       "board_name": "DFRobot FireBeetle ESP32",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -5458,7 +5418,7 @@
       "board_name": "DFRobot FireBeetle ESP32",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -5780,7 +5740,7 @@
       "board_name": "Elecrow CrowPanel ESP32",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -5836,7 +5796,7 @@
       "board_name": "Elecrow CrowPanel ESP32",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -5920,7 +5880,7 @@
       "board_name": "Elecrow CrowPanel ESP32",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -6242,7 +6202,7 @@
       "board_name": "Elecrow CrowPanel ESP32-S3",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -6298,7 +6258,7 @@
       "board_name": "Elecrow CrowPanel ESP32-S3",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -6382,7 +6342,7 @@
       "board_name": "Elecrow CrowPanel ESP32-S3",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -6704,7 +6664,7 @@
       "board_name": "ESP32-C3 SuperMini (Generic)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -6760,7 +6720,7 @@
       "board_name": "ESP32-C3 SuperMini (Generic)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -6844,7 +6804,7 @@
       "board_name": "ESP32-C3 SuperMini (Generic)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -7166,7 +7126,7 @@
       "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -7222,7 +7182,7 @@
       "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -7306,7 +7266,7 @@
       "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -7628,7 +7588,7 @@
       "board_name": "ESP32-CAM (AI-Thinker baseline)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -7684,7 +7644,7 @@
       "board_name": "ESP32-CAM (AI-Thinker baseline)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -7768,7 +7728,7 @@
       "board_name": "ESP32-CAM (AI-Thinker baseline)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -8090,7 +8050,7 @@
       "board_name": "ESP32-DevKitC V4 (Generic)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -8146,7 +8106,7 @@
       "board_name": "ESP32-DevKitC V4 (Generic)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -8230,7 +8190,7 @@
       "board_name": "ESP32-DevKitC V4 (Generic)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -8552,7 +8512,7 @@
       "board_name": "ESP32-S3-DevKitC-1 (Template)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -8608,7 +8568,7 @@
       "board_name": "ESP32-S3-DevKitC-1 (Template)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -8692,7 +8652,7 @@
       "board_name": "ESP32-S3-DevKitC-1 (Template)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -9014,7 +8974,7 @@
       "board_name": "M5Stack Core2 (Baseline)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -9070,7 +9030,7 @@
       "board_name": "M5Stack Core2 (Baseline)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -9154,7 +9114,7 @@
       "board_name": "M5Stack Core2 (Baseline)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -9476,7 +9436,7 @@
       "board_name": "M5StickC Plus2 (ESP32-PICO-V3-02)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -9532,7 +9492,7 @@
       "board_name": "M5StickC Plus2 (ESP32-PICO-V3-02)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -9616,7 +9576,7 @@
       "board_name": "M5StickC Plus2 (ESP32-PICO-V3-02)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -9938,12 +9898,12 @@
       "board_name": "Raspberry Pi 4 Model B",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "linux-sbc",
@@ -9994,12 +9954,12 @@
       "board_name": "Raspberry Pi 4 Model B",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "linux-sbc",
@@ -10078,12 +10038,12 @@
       "board_name": "Raspberry Pi 4 Model B",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "linux-sbc",
@@ -10400,12 +10360,12 @@
       "board_name": "Curiosity Nano PIC16F13145",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "pic16",
@@ -10456,12 +10416,12 @@
       "board_name": "Curiosity Nano PIC16F13145",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "pic16",
@@ -10540,12 +10500,12 @@
       "board_name": "Curiosity Nano PIC16F13145",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "pic16",
@@ -10862,12 +10822,12 @@
       "board_name": "PIC16F873 Minimal (Generic)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "pic16",
@@ -10918,12 +10878,12 @@
       "board_name": "PIC16F873 Minimal (Generic)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "pic16",
@@ -11002,12 +10962,12 @@
       "board_name": "PIC16F873 Minimal (Generic)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "pic16",
@@ -11324,12 +11284,12 @@
       "board_name": "Arduino Uno R4 Minima (RA4M1)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -11380,12 +11340,12 @@
       "board_name": "Arduino Uno R4 Minima (RA4M1)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -11464,12 +11424,12 @@
       "board_name": "Arduino Uno R4 Minima (RA4M1)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -11786,12 +11746,12 @@
       "board_name": "Arduino Uno R4 WiFi (RA4M1)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -11842,12 +11802,12 @@
       "board_name": "Arduino Uno R4 WiFi (RA4M1)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -11926,12 +11886,12 @@
       "board_name": "Arduino Uno R4 WiFi (RA4M1)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -12248,12 +12208,12 @@
       "board_name": "Renesas EK-RA4M1",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -12304,12 +12264,12 @@
       "board_name": "Renesas EK-RA4M1",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -12388,12 +12348,12 @@
       "board_name": "Renesas EK-RA4M1",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -12710,12 +12670,12 @@
       "board_name": "Renesas RX65N Envision Kit",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -12766,12 +12726,12 @@
       "board_name": "Renesas RX65N Envision Kit",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -12850,12 +12810,12 @@
       "board_name": "Renesas RX65N Envision Kit",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -13172,12 +13132,12 @@
       "board_name": "Renesas RX72N Envision Kit",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -13228,12 +13188,12 @@
       "board_name": "Renesas RX72N Envision Kit",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -13312,12 +13272,12 @@
       "board_name": "Renesas RX72N Envision Kit",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -13634,7 +13594,7 @@
       "board_name": "Adafruit Feather RP2040",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -13690,7 +13650,7 @@
       "board_name": "Adafruit Feather RP2040",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -13774,7 +13734,7 @@
       "board_name": "Adafruit Feather RP2040",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -14096,12 +14056,12 @@
       "board_name": "Raspberry Pi Pico (RP2040)",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14152,12 +14112,12 @@
       "board_name": "Raspberry Pi Pico (RP2040)",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14236,12 +14196,12 @@
       "board_name": "Raspberry Pi Pico (RP2040)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14558,12 +14518,12 @@
       "board_name": "Raspberry Pi Pico W",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14614,12 +14574,12 @@
       "board_name": "Raspberry Pi Pico W",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14698,12 +14658,12 @@
       "board_name": "Raspberry Pi Pico W",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -15020,7 +14980,7 @@
       "board_name": "Seeed Studio XIAO RP2040",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -15076,7 +15036,7 @@
       "board_name": "Seeed Studio XIAO RP2040",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -15160,7 +15120,7 @@
       "board_name": "Seeed Studio XIAO RP2040",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -15482,7 +15442,7 @@
       "board_name": "SparkFun Thing Plus RP2040",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -15538,7 +15498,7 @@
       "board_name": "SparkFun Thing Plus RP2040",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -15622,7 +15582,7 @@
       "board_name": "SparkFun Thing Plus RP2040",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -15944,12 +15904,12 @@
       "board_name": "STM32 Black Pill F411CE",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16000,12 +15960,12 @@
       "board_name": "STM32 Black Pill F411CE",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16084,12 +16044,12 @@
       "board_name": "STM32 Black Pill F411CE",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16406,12 +16366,12 @@
       "board_name": "ST Nucleo-F401RE",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16462,12 +16422,12 @@
       "board_name": "ST Nucleo-F401RE",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16546,12 +16506,12 @@
       "board_name": "ST Nucleo-F401RE",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16868,12 +16828,12 @@
       "board_name": "ST Nucleo-F446RE",
       "module_id": "hp4067",
       "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16924,12 +16884,12 @@
       "board_name": "ST Nucleo-F446RE",
       "module_id": "mcp23017",
       "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -17008,12 +16968,12 @@
       "board_name": "ST Nucleo-F446RE",
       "module_id": "remote_node",
       "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",

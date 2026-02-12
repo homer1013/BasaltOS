@@ -16,7 +16,10 @@
     "adc",
     "pwm",
     "usb_device",
-    "wifi"
+    "wifi",
+    "remote_node",
+    "mcp23017",
+    "hp4067"
   ],
   "pins": {
     "uart_tx": 0,
