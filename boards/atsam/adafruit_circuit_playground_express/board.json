@@ -3,6 +3,7 @@
   "name": "Adafruit Circuit Playground Express (ATSAMD21)",
   "description": "All-in-one ATSAMD21 board with onboard LEDs/sensors, USB, and battery-friendly operation (approx 3-6V DC input).",
   "platform": "atsam",
+  "manufacturer": "Adafruit",
   "target_profile": "samd21g18",
   "mcu": "ATSAMD21G18",
   "flash": "256KB",

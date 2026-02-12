@@ -3,6 +3,7 @@
   "kind": "board",
   "name": "PIC16F873 Minimal (Generic)",
   "platform": "pic16",
+  "manufacturer": "Microchip",
   "target_profile": "pic16f873",
   "mcu": "PIC16F873",
   "flash": "14KB (approx)",

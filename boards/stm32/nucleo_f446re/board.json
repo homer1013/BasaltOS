@@ -3,6 +3,7 @@
   "name": "ST Nucleo-F446RE",
   "description": "STM32 Nucleo board with STM32F446RE (Cortex-M4F). Good general-purpose STM32 bring-up target.",
   "platform": "stm32",
+  "manufacturer": "STMicroelectronics",
   "target_profile": "stm32f4_generic",
   "mcu": "STM32F446RE",
   "flash": "512KB",

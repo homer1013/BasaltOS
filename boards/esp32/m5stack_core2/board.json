@@ -3,6 +3,7 @@
   "name": "M5Stack Core2 (Baseline)",
   "description": "Baseline profile for M5Stack Core2 bring-up. Verify display/touch/audio pins against your unit revision.",
   "platform": "esp32",
+  "manufacturer": "M5Stack",
   "target": "esp32",
   "mcu": "ESP32-D0WDQ6-V3",
   "flash": "16MB (typical)",

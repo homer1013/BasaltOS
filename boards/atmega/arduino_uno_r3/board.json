@@ -3,6 +3,7 @@
   "name": "Arduino Uno R3",
   "description": "Classic Arduino Uno R3 (ATmega328P). Pin labels follow Arduino numbering.",
   "platform": "atmega",
+  "manufacturer": "Arduino",
   "target_profile": "atmega328p",
   "mcu": "ATmega328P",
   "flash": "32KB",

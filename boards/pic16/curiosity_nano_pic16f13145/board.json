@@ -3,6 +3,7 @@
   "name": "Curiosity Nano PIC16F13145",
   "description": "Microchip Curiosity Nano board for PIC16F13145. Pin names follow PIC port labels; adjust as needed for your project.",
   "platform": "pic16",
+  "manufacturer": "Microchip",
   "target_profile": "pic16f13145",
   "mcu": "PIC16F13145",
   "flash": "14KB (approx)",

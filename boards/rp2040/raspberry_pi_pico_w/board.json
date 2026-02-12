@@ -3,6 +3,7 @@
   "name": "Raspberry Pi Pico W",
   "description": "RP2040 Pico W board with onboard CYW43 wireless chip (wireless integration can be enabled later).",
   "platform": "rp2040",
+  "manufacturer": "Raspberry Pi",
   "target_profile": "rp2040_generic",
   "mcu": "RP2040",
   "flash": "2MB (onboard)",

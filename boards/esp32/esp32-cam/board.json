@@ -3,6 +3,7 @@
   "name": "ESP32-CAM (AI-Thinker baseline)",
   "description": "Baseline profile for ESP32-CAM modules using external USB-UART for flashing/console. Verify exact pinout for your variant.",
   "platform": "esp32",
+  "manufacturer": "AI-Thinker",
   "target": "esp32",
   "mcu": "ESP32-D0WDQ6",
   "flash": "4MB (typical)",

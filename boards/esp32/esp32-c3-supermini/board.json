@@ -3,6 +3,7 @@
   "name": "ESP32-C3 SuperMini (Generic)",
   "description": "Small ESP32-C3 board (RISC-V). Pinout varies by vendor; this template provides common-safe assignments.",
   "platform": "esp32",
+  "manufacturer": "Generic",
   "mcu": "ESP32-C3",
   "flash": "4MB (typical)",
   "ram": "400KB (typical)",

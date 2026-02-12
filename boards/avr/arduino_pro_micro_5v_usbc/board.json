@@ -3,6 +3,7 @@
   "name": "Arduino Pro Micro 5V (USB-C)",
   "description": "ATmega32U4 Pro Micro-compatible board (5V/16MHz, native USB, USB-C connector variant).",
   "platform": "avr",
+  "manufacturer": "SparkFun",
   "target": "atmega32u4",
   "target_profile": "atmega32u4",
   "mcu": "ATmega32U4",

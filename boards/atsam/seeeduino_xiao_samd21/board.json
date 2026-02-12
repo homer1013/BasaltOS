@@ -3,6 +3,7 @@
   "name": "Seeeduino XIAO (SAMD21)",
   "description": "Tiny ATSAMD21G18 board with USB and compact pinout, ideal for small builds.",
   "platform": "atsam",
+  "manufacturer": "Seeed Studio",
   "target_profile": "samd21g18",
   "mcu": "ATSAMD21G18A",
   "flash": "256KB",

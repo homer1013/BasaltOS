@@ -3,6 +3,7 @@
   "name": "Raspberry Pi 4 Model B",
   "description": "Linux SBC reference board profile for BasaltOS planning and userspace-oriented configurations.",
   "platform": "linux-sbc",
+  "manufacturer": "Raspberry Pi",
   "target_profile": "linux_sbc_generic",
   "mcu": "Broadcom BCM2711",
   "flash": "microSD/USB storage",

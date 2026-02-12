@@ -2,6 +2,7 @@
   "id": "m5stickc_plus2",
   "name": "M5StickC Plus2 (ESP32-PICO-V3-02)",
   "platform": "esp32",
+  "manufacturer": "M5Stack",
   "target": "esp32",
   "defaults": {
     "sdkconfig": "sdkconfig.defaults",

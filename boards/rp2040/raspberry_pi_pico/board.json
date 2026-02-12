@@ -3,6 +3,7 @@
   "name": "Raspberry Pi Pico (RP2040)",
   "description": "Official Raspberry Pi Pico dev board (RP2040). GPIO numbers follow Pico SDK conventions.",
   "platform": "rp2040",
+  "manufacturer": "Raspberry Pi",
   "target_profile": "rp2040_generic",
   "mcu": "RP2040",
   "flash": "2MB (onboard)",

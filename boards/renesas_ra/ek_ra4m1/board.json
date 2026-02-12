@@ -3,6 +3,7 @@
   "name": "Renesas EK-RA4M1",
   "description": "Renesas RA4M1 evaluation kit reference mapping for UART/I2C/SPI bring-up.",
   "platform": "renesas_ra",
+  "manufacturer": "Renesas",
   "target_profile": "ra4m1",
   "mcu": "R7FA4M1AB3CFM",
   "flash": "256KB",

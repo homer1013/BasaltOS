@@ -3,6 +3,7 @@
   "name": "Arduino Nano V3 (ATmega328P)",
   "description": "Compact ATmega328P Nano profile using classic Arduino pin labels.",
   "platform": "atmega",
+  "manufacturer": "Arduino",
   "target_profile": "atmega328p",
   "mcu": "ATmega328P",
   "flash": "32KB",

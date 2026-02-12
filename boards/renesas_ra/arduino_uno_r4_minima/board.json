@@ -3,6 +3,7 @@
   "name": "Arduino Uno R4 Minima (RA4M1)",
   "description": "Arduino Uno R4 Minima uses Renesas RA4M1 (Cortex-M4). Pin labels follow Arduino numbering.",
   "platform": "renesas_ra",
+  "manufacturer": "Arduino",
   "target_profile": "ra4m1",
   "mcu": "Renesas RA4M1",
   "flash": "256KB (typical for RA4M1 variants)",

@@ -3,6 +3,7 @@
   "kind": "board",
   "name": "Arduino Mega 2560 (Generic)",
   "platform": "avr",
+  "manufacturer": "Arduino",
   "target_profile": "mega2560",
   "mcu": "ATmega2560",
   "flash": "256KB",

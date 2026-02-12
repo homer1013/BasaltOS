@@ -3,6 +3,7 @@
   "name": "ESP32-C6 DevKit (Baseline)",
   "description": "Baseline ESP32-C6 profile for configurator and bring-up. Verify pinout against your exact devkit revision.",
   "platform": "esp32",
+  "manufacturer": "Espressif",
   "target": "esp32c6",
   "mcu": "ESP32-C6",
   "flash": "4MB (typical)",

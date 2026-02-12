@@ -3,6 +3,7 @@
   "name": "Renesas RX72N Envision Kit",
   "description": "RX72N Envision kit starter mapping for serial, I2C, SPI, and baseline GPIO drivers.",
   "platform": "renesas_rx",
+  "manufacturer": "Renesas",
   "target_profile": "rx65n",
   "mcu": "R5F572NN",
   "flash": "4MB",

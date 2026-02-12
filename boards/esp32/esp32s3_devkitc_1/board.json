@@ -2,6 +2,7 @@
   "name": "ESP32-S3-DevKitC-1 (Template)",
   "description": "ESP32-S3 DevKitC-style template. Assign pins based on your specific module/board; S3 has flexible IO routing.",
   "platform": "esp32",
+  "manufacturer": "Espressif",
   "mcu": "ESP32-S3",
   "flash": "8MB (typical)",
   "ram": "512KB + optional PSRAM (varies)",

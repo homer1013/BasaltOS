@@ -3,6 +3,7 @@
   "name": "ESP32-DevKitC V4 (Generic)",
   "description": "Generic ESP32-WROOM-32 DevKitC-style board (common pin defaults). Verify against your specific module revision.",
   "platform": "esp32",
+  "manufacturer": "Espressif",
   "mcu": "ESP32-WROOM-32",
   "flash": "4MB (typical)",
   "ram": "520KB",

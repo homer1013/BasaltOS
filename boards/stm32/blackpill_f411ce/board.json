@@ -3,6 +3,7 @@
   "name": "STM32 Black Pill F411CE",
   "description": "Compact STM32F411CE Black Pill board with rich GPIO and common hobbyist pinouts.",
   "platform": "stm32",
+  "manufacturer": "WeAct",
   "target_profile": "stm32f4_generic",
   "mcu": "STM32F411CEU6",
   "flash": "512KB",

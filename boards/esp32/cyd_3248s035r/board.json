@@ -3,6 +3,7 @@
   "name": "CYD ESP32-3248S035R",
   "description": "Cheap Yellow Display - 3.5 inch TFT with resistive touch, ESP32 powered",
   "platform": "esp32",
+  "manufacturer": "Sunton",
   "target": "esp32",
   "mcu": "ESP32-WROOM-32",
   "flash": "4MB",

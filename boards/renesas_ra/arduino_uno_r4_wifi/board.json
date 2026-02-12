@@ -3,6 +3,7 @@
   "name": "Arduino Uno R4 WiFi (RA4M1)",
   "description": "Arduino Uno R4 WiFi uses Renesas RA4M1 (Cortex-M4) with ESP32-S3 networking co-processor. Pin labels follow Arduino numbering.",
   "platform": "renesas_ra",
+  "manufacturer": "Arduino",
   "target_profile": "ra4m1",
   "mcu": "Renesas RA4M1",
   "flash": "256KB (typical for RA4M1 variants)",

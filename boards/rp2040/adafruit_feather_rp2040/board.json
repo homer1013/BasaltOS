@@ -3,6 +3,7 @@
   "name": "Adafruit Feather RP2040",
   "description": "Feather form-factor RP2040 board with battery-friendly layout and STEMMA QT I2C.",
   "platform": "rp2040",
+  "manufacturer": "Adafruit",
   "target_profile": "rp2040_generic",
   "mcu": "RP2040",
   "flash": "8MB (variant-dependent)",
