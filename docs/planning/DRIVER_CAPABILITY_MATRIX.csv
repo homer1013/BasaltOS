@@ -900,17 +900,17 @@ rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,e
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
-rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:hp4067
+rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,avr,pic16",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
-rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
+rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
-rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
+rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -999,17 +999,17 @@ rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,eeprom,EEPRO
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
-rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:hp4067
+rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,avr,pic16",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
-rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
+rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
-rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
+rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1032,17 +1032,17 @@ rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
-rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:hp4067
+rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,avr,pic16",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
-rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
+rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
-rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
+rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-

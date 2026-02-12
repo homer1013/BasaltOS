@@ -377,7 +377,7 @@
       "architecture": "ARM Cortex-M0+",
       "family": "RP2040",
       "mcu": "RP2040",
-      "caps_count": 7
+      "caps_count": 10
     },
     {
       "platform": "rp2040",
@@ -410,7 +410,7 @@
       "architecture": "ARM Cortex-M0+",
       "family": "RP2040",
       "mcu": "RP2040",
-      "caps_count": 7
+      "caps_count": 10
     },
     {
       "platform": "rp2040",
@@ -421,7 +421,7 @@
       "architecture": "ARM Cortex-M0+",
       "family": "RP2040",
       "mcu": "RP2040",
-      "caps_count": 7
+      "caps_count": 10
     },
     {
       "platform": "stm32",

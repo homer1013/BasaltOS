@@ -101,11 +101,11 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 | renesas_ra | ek_ra4m1 | ek_ra4m1 | Renesas EK-RA4M1 | Renesas | ARM Cortex-M | Renesas RA | R7FA4M1AB3CFM | 7 |
 | renesas_rx | rx65n_envision_kit | rx65n_envision_kit | Renesas RX65N Envision Kit | Renesas | Renesas RX 32-bit | RX65 | Renesas RX65N | 8 |
 | renesas_rx | rx72n_envision_kit | rx72n_envision_kit | Renesas RX72N Envision Kit | Renesas | Renesas RX 32-bit | Renesas RX | R5F572NN | 7 |
-| rp2040 | adafruit_feather_rp2040 | adafruit_feather_rp2040 | Adafruit Feather RP2040 | Adafruit | ARM Cortex-M0+ | RP2040 | RP2040 | 7 |
+| rp2040 | adafruit_feather_rp2040 | adafruit_feather_rp2040 | Adafruit Feather RP2040 | Adafruit | ARM Cortex-M0+ | RP2040 | RP2040 | 10 |
 | rp2040 | raspberry_pi_pico | raspberry_pi_pico | Raspberry Pi Pico (RP2040) | Raspberry Pi | ARM Cortex-M0+ | RP2040 | RP2040 | 8 |
 | rp2040 | raspberry_pi_pico_w | raspberry_pi_pico_w | Raspberry Pi Pico W | Raspberry Pi | ARM Cortex-M0+ | RP2040 | RP2040 | 8 |
-| rp2040 | seeed_xiao_rp2040 | seeed_xiao_rp2040 | Seeed Studio XIAO RP2040 | Seeed Studio | ARM Cortex-M0+ | RP2040 | RP2040 | 7 |
-| rp2040 | sparkfun_thing_plus_rp2040 | sparkfun_thing_plus_rp2040 | SparkFun Thing Plus RP2040 | SparkFun | ARM Cortex-M0+ | RP2040 | RP2040 | 7 |
+| rp2040 | seeed_xiao_rp2040 | seeed_xiao_rp2040 | Seeed Studio XIAO RP2040 | Seeed Studio | ARM Cortex-M0+ | RP2040 | RP2040 | 10 |
+| rp2040 | sparkfun_thing_plus_rp2040 | sparkfun_thing_plus_rp2040 | SparkFun Thing Plus RP2040 | SparkFun | ARM Cortex-M0+ | RP2040 | RP2040 | 10 |
 | stm32 | blackpill_f411ce | blackpill_f411ce | STM32 Black Pill F411CE | WeAct | ARM Cortex-M | STM32F4 | STM32F411CEU6 | 8 |
 | stm32 | nucleo_f401re | nucleo_f401re | ST Nucleo-F401RE | STMicroelectronics | ARM Cortex-M | STM32F4 | STM32F401RE | 8 |
 | stm32 | nucleo_f446re | nucleo_f446re | ST Nucleo-F446RE | STMicroelectronics | ARM Cortex-M | STM32F4 | STM32F446RE | 7 |
