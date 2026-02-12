@@ -979,6 +979,54 @@
           }
         ]
       }
+    },
+    "policy_summary": {
+      "mismatch_row_count": 26,
+      "bucket_counts": {
+        "intentional": 11,
+        "actionable": 15
+      },
+      "label_counts": {
+        "intentional_8bit_mic_scope": 6,
+        "actionable_linux_sbc_platform_alignment": 15,
+        "intentional_wireless_scope": 5
+      },
+      "actionable_top_modules_by_platform": {
+        "linux-sbc": [
+          {
+            "module_id": "adc",
+            "count": 1
+          },
+          {
+            "module_id": "ads1115",
+            "count": 1
+          },
+          {
+            "module_id": "bme280",
+            "count": 1
+          },
+          {
+            "module_id": "display_ssd1306",
+            "count": 1
+          },
+          {
+            "module_id": "gpio",
+            "count": 1
+          },
+          {
+            "module_id": "imu",
+            "count": 1
+          },
+          {
+            "module_id": "l298n",
+            "count": 1
+          },
+          {
+            "module_id": "mcp2515",
+            "count": 1
+          }
+        ]
+      }
     }
   },
   "rows": [

@@ -234,6 +234,56 @@ def build_gap_report(rows: List[Dict[str, str]]) -> Dict[str, Any]:
     }
 
 
+def classify_mismatch_policy(row: Dict[str, str]) -> Dict[str, str]:
+    platform = str(row.get("platform") or "")
+    module_id = str(row.get("module_id") or "")
+    reason = str(row.get("reason") or "")
+
+    if reason != "module_platform_mismatch":
+        return {"bucket": "non_mismatch", "label": "non_mismatch"}
+
+    if platform in {"atmega", "avr", "pic16"} and module_id == "mic":
+        return {"bucket": "intentional", "label": "intentional_8bit_mic_scope"}
+
+    if module_id in {"wifi", "bluetooth"} and platform != "esp32":
+        return {"bucket": "intentional", "label": "intentional_wireless_scope"}
+
+    if platform == "linux-sbc":
+        return {"bucket": "actionable", "label": "actionable_linux_sbc_platform_alignment"}
+
+    return {"bucket": "actionable", "label": "actionable_platform_scope_review"}
+
+
+def build_policy_summary(rows: List[Dict[str, str]]) -> Dict[str, Any]:
+    mismatch_rows = [r for r in rows if str(r.get("reason") or "") == "module_platform_mismatch"]
+    bucket_counts = Counter()
+    label_counts = Counter()
+    actionable_by_platform: Dict[str, Counter] = defaultdict(Counter)
+
+    for r in mismatch_rows:
+        c = classify_mismatch_policy(r)
+        bucket = c["bucket"]
+        label = c["label"]
+        bucket_counts[bucket] += 1
+        label_counts[label] += 1
+        if bucket == "actionable":
+            actionable_by_platform[str(r.get("platform") or "")][str(r.get("module_id") or "")] += 1
+
+    actionable_top: Dict[str, List[Dict[str, Any]]] = {}
+    for platform in sorted(actionable_by_platform.keys()):
+        actionable_top[platform] = [
+            {"module_id": mid, "count": int(cnt)}
+            for mid, cnt in actionable_by_platform[platform].most_common(8)
+        ]
+
+    return {
+        "mismatch_row_count": len(mismatch_rows),
+        "bucket_counts": dict(bucket_counts),
+        "label_counts": dict(label_counts),
+        "actionable_top_modules_by_platform": actionable_top,
+    }
+
+
 def write_csv(rows: List[Dict[str, str]], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fields = [
@@ -320,6 +370,30 @@ def write_gap_report_md(gap_report: Dict[str, Any], out_path: Path) -> None:
     lines.append(f"- Platforms with gap rows: {int(gap_report.get('platform_count', 0))}")
     lines.append("")
 
+    policy = gap_report.get("policy_summary") or {}
+    lines.append("## Policy View")
+    lines.append("")
+    lines.append(f"- Mismatch rows considered: {int(policy.get('mismatch_row_count', 0))}")
+    b = policy.get("bucket_counts") or {}
+    lines.append(f"- Intentional mismatch rows: {int(b.get('intentional', 0))}")
+    lines.append(f"- Actionable mismatch rows: {int(b.get('actionable', 0))}")
+    lines.append("")
+    lines.append("| Policy Label | Count |")
+    lines.append("|---|---|")
+    for label, count in sorted((policy.get("label_counts") or {}).items(), key=lambda kv: (-int(kv[1]), kv[0])):
+        lines.append(f"| {label} | {int(count)} |")
+    lines.append("")
+
+    actionable = policy.get("actionable_top_modules_by_platform") or {}
+    if actionable:
+        lines.append("### Actionable Top Modules By Platform")
+        lines.append("")
+        for platform in sorted(actionable.keys()):
+            lines.append(f"- {platform}: " + ", ".join(
+                f"{item.get('module_id')} ({int(item.get('count', 0))})" for item in actionable.get(platform, [])
+            ))
+        lines.append("")
+
     platforms = gap_report.get("platforms") or {}
     for platform in sorted(platforms.keys()):
         pdata = platforms[platform] or {}
@@ -361,6 +435,7 @@ def main() -> int:
     rows = build_rows(modules, boards)
     summary = build_summary(rows)
     gap_report = build_gap_report(rows)
+    gap_report["policy_summary"] = build_policy_summary(rows)
 
     write_csv(rows, csv_out)
     write_json(rows, summary, gap_report, json_out)
