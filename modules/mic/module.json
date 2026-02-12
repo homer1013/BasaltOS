@@ -6,6 +6,7 @@
     "esp32",
     "stm32",
     "rp2040",
+    "linux-sbc",
     "atsam",
     "renesas_ra",
     "renesas_rx"

@@ -319,12 +319,8 @@
       ]
     },
     "linux-sbc": {
-      "unsupported_or_gap_rows": 16,
+      "unsupported_or_gap_rows": 14,
       "top_module_gaps": [
-        {
-          "module_id": "adc",
-          "count": 1
-        },
         {
           "module_id": "bluetooth",
           "count": 1
@@ -350,22 +346,26 @@
           "count": 1
         },
         {
-          "module_id": "mic",
-          "count": 1
-        },
-        {
           "module_id": "psram",
           "count": 1
         },
         {
           "module_id": "pwm",
           "count": 1
+        },
+        {
+          "module_id": "remote_node",
+          "count": 1
+        },
+        {
+          "module_id": "tft",
+          "count": 1
         }
       ],
       "top_reasons": [
         {
           "reason": "module_platform_mismatch",
-          "count": 4
+          "count": 2
         },
         {
           "reason": "dependency_not_allowed:timer",
@@ -794,27 +794,14 @@
     }
   },
   "policy_summary": {
-    "mismatch_row_count": 13,
+    "mismatch_row_count": 11,
     "bucket_counts": {
-      "intentional": 11,
-      "actionable": 2
+      "intentional": 11
     },
     "label_counts": {
       "intentional_8bit_mic_scope": 6,
-      "actionable_linux_sbc_platform_alignment": 2,
       "intentional_wireless_scope": 5
     },
-    "actionable_top_modules_by_platform": {
-      "linux-sbc": [
-        {
-          "module_id": "adc",
-          "count": 1
-        },
-        {
-          "module_id": "mic",
-          "count": 1
-        }
-      ]
-    }
+    "actionable_top_modules_by_platform": {}
   }
 }

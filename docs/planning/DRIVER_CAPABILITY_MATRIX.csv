@@ -1,5 +1,5 @@
 platform,board_dir,board_id,board_name,module_id,module_name,module_platforms,module_platform_match,allow_contains_module,resolve_with_allow,status,reason
-atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -16,7 +16,7 @@ atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),l298n,L298N 
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
+atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -32,7 +32,7 @@ atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),twai,TWAI / 
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -49,7 +49,7 @@ atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,l298n,L298N H-Bridge Driver,
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
+atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -65,7 +65,7 @@ atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,twai,TWAI / CAN,esp32,no,no,
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -82,7 +82,7 @@ atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Ad
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",no,no,no,UNSUPPORTED,not_allowed:mcp23017
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -98,7 +98,7 @@ atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Ad
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -115,7 +115,7 @@ atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),l298n,L298N H-Bridge Dr
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",no,no,no,UNSUPPORTED,not_allowed:mcp23017
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -131,7 +131,7 @@ atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),twai,TWAI / CAN,esp32,n
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -148,7 +148,7 @@ atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),l298n,
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",no,no,no,UNSUPPORTED,not_allowed:mcp23017
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -164,7 +164,7 @@ atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),twai,T
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -181,7 +181,7 @@ avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (US
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
+avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -197,7 +197,7 @@ avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (US
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-avr,mega2560,mega2560,Arduino Mega 2560 (Generic),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+avr,mega2560,mega2560,Arduino Mega 2560 (Generic),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -214,7 +214,7 @@ avr,mega2560,mega2560,Arduino Mega 2560 (Generic),l298n,L298N H-Bridge Driver,"e
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-avr,mega2560,mega2560,Arduino Mega 2560 (Generic),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
+avr,mega2560,mega2560,Arduino Mega 2560 (Generic),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -230,7 +230,7 @@ avr,mega2560,mega2560,Arduino Mega 2560 (Generic),twai,TWAI / CAN,esp32,no,no,no
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:adc
+esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:adc
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -247,7 +247,7 @@ esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,l298n,L298N H-Bridge Driver,"esp32,s
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:mic
+esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:mic
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:pwm
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -263,7 +263,7 @@ esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,twai,TWAI / CAN,esp32,yes,yes,yes,SU
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -280,7 +280,7 @@ esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,l2
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -296,7 +296,7 @@ esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,tw
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -313,7 +313,7 @@ esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -329,7 +329,7 @@ esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:adc
+esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:adc
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -346,7 +346,7 @@ esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,l2
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:mic
+esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:mic
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:pwm
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -362,7 +362,7 @@ esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,tw
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -379,7 +379,7 @@ esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ES
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,psram,PSRAM,esp32,yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -395,7 +395,7 @@ esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ES
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),bluetooth,Bluetooth Core,esp32,yes,no,no,UNSUPPORTED,not_allowed:bluetooth
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -412,7 +412,7 @@ esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),l298n,L
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -428,7 +428,7 @@ esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),twai,TW
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -445,7 +445,7 @@ esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),l298n,L298N H-Bridge Driver,"
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -461,7 +461,7 @@ esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),twai,TWAI / CAN,esp32,yes,no,
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -478,7 +478,7 @@ esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),l298n,L298N H-Bridge D
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -494,7 +494,7 @@ esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),twai,TWAI / CAN,esp32,
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -511,7 +511,7 @@ esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),l298n,L298N H
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -527,7 +527,7 @@ esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),twai,TWAI / C
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -544,7 +544,7 @@ esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),l298n,L2
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -560,7 +560,7 @@ esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),twai,TWA
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:adc
+esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:adc
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -577,7 +577,7 @@ esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),l298n,L298N H-Bridge 
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:mic
+esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:mic
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),psram,PSRAM,esp32,yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:pwm
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -593,7 +593,7 @@ esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),twai,TWAI / CAN,esp32
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:adc
+esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:adc
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),bluetooth,Bluetooth Core,esp32,yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -610,7 +610,7 @@ esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),l298n,L298
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:mic
+esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:mic
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),psram,PSRAM,esp32,yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:pwm
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -626,7 +626,7 @@ esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),twai,TWAI 
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,no,no,UNSUPPORTED,not_allowed:uln2003
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-
-linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
+linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,bluetooth,Bluetooth Core,esp32,no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -643,7 +643,7 @@ linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,l298n,L298N H-B
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",no,no,no,UNSUPPORTED,not_allowed:mcp23017
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
+linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",no,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -659,7 +659,7 @@ linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,twai,TWAI / CAN
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,wifi,Wi-Fi (Station),esp32,no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
-pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -676,7 +676,7 @@ pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
+pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -692,7 +692,7 @@ pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -709,7 +709,7 @@ pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),l298n,L298
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
+pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,no,no,UNSUPPORTED,not_allowed:pwm
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -725,7 +725,7 @@ pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),twai,TWAI 
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -742,7 +742,7 @@ renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",no,no,no,UNSUPPORTED,not_allowed:mcp23017
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -758,7 +758,7 @@ renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),bluetooth,Bluetooth Core,esp32,no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -775,7 +775,7 @@ renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),l
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",no,no,no,UNSUPPORTED,not_allowed:mcp23017
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -791,7 +791,7 @@ renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),t
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),wifi,Wi-Fi (Station),esp32,no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
-renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -808,7 +808,7 @@ renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,l298n,L298N H-Bridge Driver,"esp32
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",no,no,no,UNSUPPORTED,not_allowed:mcp23017
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -824,7 +824,7 @@ renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,twai,TWAI / CAN,esp32,no,no,no,UNS
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -841,7 +841,7 @@ renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,l298
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",no,no,no,UNSUPPORTED,not_allowed:mcp23017
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -857,7 +857,7 @@ renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,twai
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -874,7 +874,7 @@ renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,l298
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",no,no,no,UNSUPPORTED,not_allowed:mcp23017
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -890,7 +890,7 @@ renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,twai
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -907,7 +907,7 @@ rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,l
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -923,7 +923,7 @@ rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,t
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -940,7 +940,7 @@ rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),l298n,L298
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -956,7 +956,7 @@ rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),twai,TWAI 
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -973,7 +973,7 @@ rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,l298n,L298N H
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -989,7 +989,7 @@ rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,twai,TWAI / C
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,wifi,Wi-Fi (Station),esp32,no,yes,yes,CAPABILITY_ONLY,module_platform_mismatch
-rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1006,7 +1006,7 @@ rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,l298n,L298N 
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -1022,7 +1022,7 @@ rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,twai,TWAI / 
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1039,7 +1039,7 @@ rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -1055,7 +1055,7 @@ rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1072,7 +1072,7 @@ stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,l298n,L298N H-Br
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -1088,7 +1088,7 @@ stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,twai,TWAI / CAN,
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1105,7 +1105,7 @@ stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,l298n,L298N H-Bridge Driver,"
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node
@@ -1121,7 +1121,7 @@ stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,twai,TWAI / CAN,esp32,no,no,n
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,wifi,Wi-Fi (Station),esp32,no,no,no,UNSUPPORTED,not_allowed:wifi
-stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,adc,ADC,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,adc,ADC,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,ads1115,ADS1115 16-bit ADC + PGA,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,bluetooth,Bluetooth Core,esp32,no,no,no,UNSUPPORTED,not_allowed:bluetooth
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1138,7 +1138,7 @@ stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,l298n,L298N H-Bridge Driver,"
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,avr,pic16",yes,no,no,UNSUPPORTED,not_allowed:mcp23017
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,mcp2544fd,MCP2544FD CAN PHY,esp32,no,no,no,UNSUPPORTED,not_allowed:mcp2544fd
-stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,mic,Microphone Input,"esp32,stm32,rp2040,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,pwm,PWM,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,no,UNSUPPORTED,dependency_not_allowed:timer
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,remote_node,Remote Node,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:remote_node

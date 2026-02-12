@@ -6,6 +6,7 @@
     "esp32",
     "stm32",
     "rp2040",
+    "linux-sbc",
     "avr",
     "pic",
     "pic16",
