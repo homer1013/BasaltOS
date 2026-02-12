@@ -98,6 +98,23 @@ async function run() {
     await expect(listText.includes('Active filters:'), 'missing filter hint');
   });
 
+  await test('url query restores picker state and selected board', async () => {
+    const u = new URL(BASE);
+    u.searchParams.set('platform', 'esp32');
+    u.searchParams.set('manufacturer', 'Espressif');
+    u.searchParams.set('architecture', 'RISC-V');
+    u.searchParams.set('family', 'ESP32-C3');
+    u.searchParams.set('board', 'esp32-c3-supermini');
+    u.searchParams.set('q', 'supermini');
+    await page.goto(u.toString(), { waitUntil: 'domcontentloaded' });
+    await openConfigurator(page);
+    await expect((await page.inputValue('#platform-select')) === 'esp32', 'platform not restored');
+    await expect((await page.inputValue('#manufacturer-select')) === 'Espressif', 'manufacturer not restored');
+    await expect((await page.inputValue('#board-search')).toLowerCase().includes('supermini'), 'search not restored');
+    const bn = (await textContent(page, '#board-name')).toLowerCase();
+    await expect(bn.includes('super') || bn.includes('c3'), 'board selection/details not restored');
+  });
+
   await test('market add-to-build controls gated without board selection', async () => {
     const marketButton = page.locator('#btn-market');
     if (!(await marketButton.isVisible())) {
