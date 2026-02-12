@@ -48,10 +48,8 @@ jobs:
       - name: Configure CLI smoke tests
         run: |
           set -euo pipefail
+          bash tools/tests/run_s2_cli_matrix.sh
           bash tools/tests/configure_invalid_board_regression.sh
-          bash tools/tests/configure_negative_paths.sh
-          bash tools/tests/configure_smoke_multi_board.sh
-          bash tools/tests/configure_deterministic_outputs.sh
           bash tools/tests/platformio_phase1_contract.sh
           bash tools/tests/configure_bme280_smoke.sh
           bash tools/tests/configure_mcp2515_smoke.sh
@@ -59,6 +57,14 @@ jobs:
           bash tools/tests/configure_esp32s3_reference_smoke.sh
           bash tools/tests/release_sync_check_smoke.sh
           bash tools/tests/release_sync_update_smoke.sh
+
+      - name: Upload S2 CLI acceptance artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2-cli-acceptance
+          path: tmp/acceptance/s2-cli/
+          if-no-files-found: warn
 
       - name: Validate board.sh selectors
         run: |

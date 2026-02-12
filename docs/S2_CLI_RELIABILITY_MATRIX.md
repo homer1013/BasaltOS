@@ -20,6 +20,12 @@ mkdir -p "$OUT/artifacts"
 exec > >(tee -a "$OUT/commands.log") 2>&1
 ```
 
+Shortcut runner:
+
+```bash
+bash tools/tests/run_s2_cli_matrix.sh
+```
+
 ## Matrix
 
 | ID | Area | Command / Flow | Expected Result | Evidence | Gate |
