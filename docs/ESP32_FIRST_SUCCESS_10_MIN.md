@@ -124,3 +124,4 @@ You are successful when all are true:
 - Try local configurator: `python tools/basaltos_config_server.py`
 - Read API docs: `docs/api-basalt.md`
 - Build a starter app: `docs/third-party-app-dev.md`
+- Try copy/paste hardware demos: `docs/EXAMPLES_PACK_RECIPES.md`

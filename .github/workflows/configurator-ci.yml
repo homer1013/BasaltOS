@@ -64,6 +64,7 @@ jobs:
           bash tools/tests/release_sync_update_smoke.sh
           bash tools/tests/shell_ux_polish_smoke.sh
           bash tools/tests/esp32_first_success_quickstart_smoke.sh
+          bash tools/tests/examples_pack_recipes_smoke.sh
 
       - name: Upload S2 CLI acceptance artifacts
         if: always()
