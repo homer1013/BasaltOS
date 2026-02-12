@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from collections import Counter
 from pathlib import Path
@@ -149,10 +150,36 @@ def build_taxonomy_index(root: Path) -> dict:
     }
 
 
+def write_taxonomy_csv(index_obj: dict, out_path: Path) -> None:
+    boards = index_obj.get("boards") or []
+    if not isinstance(boards, list):
+        boards = []
+    fields = [
+        "platform",
+        "board_dir",
+        "id",
+        "name",
+        "manufacturer",
+        "architecture",
+        "family",
+        "mcu",
+        "caps_count",
+    ]
+    with out_path.open("w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=fields)
+        w.writeheader()
+        for b in boards:
+            if not isinstance(b, dict):
+                continue
+            row = {k: b.get(k, "") for k in fields}
+            w.writerow(row)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Generate deterministic board catalog markdown.")
     ap.add_argument("--out", default="docs/BOARD_CATALOG.md", help="Output markdown path")
     ap.add_argument("--json-out", default="docs/BOARD_TAXONOMY_INDEX.json", help="Output taxonomy index JSON path")
+    ap.add_argument("--csv-out", default="docs/BOARD_TAXONOMY_INDEX.csv", help="Output taxonomy index CSV path")
     args = ap.parse_args()
 
     root = repo_root()
@@ -167,6 +194,11 @@ def main() -> int:
     index_obj = build_taxonomy_index(root)
     json_out_path.write_text(json.dumps(index_obj, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Wrote: {json_out_path}")
+
+    csv_out_path = (root / args.csv_out).resolve()
+    csv_out_path.parent.mkdir(parents=True, exist_ok=True)
+    write_taxonomy_csv(index_obj, csv_out_path)
+    print(f"Wrote: {csv_out_path}")
     return 0
 
 

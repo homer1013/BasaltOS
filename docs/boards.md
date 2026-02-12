@@ -9,6 +9,7 @@ Board onboarding references:
 - `docs/planning/BOARD_INTAKE_TEMPLATE.md`
 - `docs/BOARD_CATALOG.md` (auto-generated inventory)
 - `docs/BOARD_TAXONOMY_INDEX.json` (auto-generated machine-readable taxonomy index)
+- `docs/BOARD_TAXONOMY_INDEX.csv` (auto-generated spreadsheet-friendly taxonomy export)
 
 Regenerate catalog after adding/changing board metadata:
 ```bash
