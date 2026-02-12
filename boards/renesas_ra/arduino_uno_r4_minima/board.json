@@ -71,5 +71,7 @@
       "freq_hz": 48000000
     }
   },
-  "notes": "Pin mapping depends on Arduino core/FSP config. Use this as a starting point; later we can map RA port pins (Pxxx) if you want baremetal."
+  "notes": "Pin mapping depends on Arduino core/FSP config. Use this as a starting point; later we can map RA port pins (Pxxx) if you want baremetal.",
+  "architecture": "ARM Cortex-M",
+  "family": "RA4"
 }

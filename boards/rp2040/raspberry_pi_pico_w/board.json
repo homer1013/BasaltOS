@@ -31,15 +31,68 @@
     "button": -1
   },
   "pin_definitions": {
-    "uart_tx": { "description": "UART0 TX", "alternatives": [0, 12, 16], "type": "output" },
-    "uart_rx": { "description": "UART0 RX", "alternatives": [1, 13, 17], "type": "input" },
-    "i2c_sda": { "description": "I2C0 SDA", "alternatives": [4, 8, 12, 16, 20], "type": "bidirectional" },
-    "i2c_scl": { "description": "I2C0 SCL", "alternatives": [5, 9, 13, 17, 21], "type": "output" },
-    "led": { "description": "Wireless-chip routed LED", "alternatives": ["WL_GPIO0"], "type": "output" }
+    "uart_tx": {
+      "description": "UART0 TX",
+      "alternatives": [
+        0,
+        12,
+        16
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "UART0 RX",
+      "alternatives": [
+        1,
+        13,
+        17
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C0 SDA",
+      "alternatives": [
+        4,
+        8,
+        12,
+        16,
+        20
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C0 SCL",
+      "alternatives": [
+        5,
+        9,
+        13,
+        17,
+        21
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "Wireless-chip routed LED",
+      "alternatives": [
+        "WL_GPIO0"
+      ],
+      "type": "output"
+    }
   },
   "defaults": {
-    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"],
-    "clock": { "freq_hz": 133000000 }
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "timer",
+      "shell_min"
+    ],
+    "clock": {
+      "freq_hz": 133000000
+    }
   },
-  "notes": "Wireless capability is board-level only; driver/runtime integration depends on your selected stack."
+  "notes": "Wireless capability is board-level only; driver/runtime integration depends on your selected stack.",
+  "architecture": "ARM Cortex-M0+",
+  "family": "RP2040"
 }

@@ -34,14 +34,49 @@
     "button": -1
   },
   "pin_definitions": {
-    "uart_tx": { "description": "PL011 TX", "alternatives": ["GPIO14"], "type": "output" },
-    "uart_rx": { "description": "PL011 RX", "alternatives": ["GPIO15"], "type": "input" },
-    "i2c_sda": { "description": "I2C1 SDA", "alternatives": ["GPIO2"], "type": "bidirectional" },
-    "i2c_scl": { "description": "I2C1 SCL", "alternatives": ["GPIO3"], "type": "output" }
+    "uart_tx": {
+      "description": "PL011 TX",
+      "alternatives": [
+        "GPIO14"
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "PL011 RX",
+      "alternatives": [
+        "GPIO15"
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C1 SDA",
+      "alternatives": [
+        "GPIO2"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C1 SCL",
+      "alternatives": [
+        "GPIO3"
+      ],
+      "type": "output"
+    }
   },
   "defaults": {
-    "modules": ["gpio", "uart", "i2c", "spi", "shell_full", "fs_sd"],
-    "clock": { "freq_hz": 1500000000 }
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "shell_full",
+      "fs_sd"
+    ],
+    "clock": {
+      "freq_hz": 1500000000
+    }
   },
-  "notes": "Linux-SBC profiles model capabilities and pin plans; firmware generation/backends remain platform-specific."
+  "notes": "Linux-SBC profiles model capabilities and pin plans; firmware generation/backends remain platform-specific.",
+  "architecture": "ARM Cortex-A",
+  "family": "BCM2711"
 }

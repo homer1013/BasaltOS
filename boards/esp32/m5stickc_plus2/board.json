@@ -62,5 +62,7 @@
     "fs_spiffs",
     "psram"
   ],
-  "mcu": "ESP32-PICO-V3-02"
+  "mcu": "ESP32-PICO-V3-02",
+  "architecture": "Xtensa",
+  "family": "ESP32"
 }

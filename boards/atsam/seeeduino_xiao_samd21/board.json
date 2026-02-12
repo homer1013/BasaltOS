@@ -30,15 +30,55 @@
     "button": -1
   },
   "pin_definitions": {
-    "uart_tx": { "description": "SERCOM UART TX", "alternatives": ["D6"], "type": "output" },
-    "uart_rx": { "description": "SERCOM UART RX", "alternatives": ["D7"], "type": "input" },
-    "i2c_sda": { "description": "I2C SDA", "alternatives": ["D4"], "type": "bidirectional" },
-    "i2c_scl": { "description": "I2C SCL", "alternatives": ["D5"], "type": "output" },
-    "led": { "description": "Onboard LED", "alternatives": ["D13"], "type": "output" }
+    "uart_tx": {
+      "description": "SERCOM UART TX",
+      "alternatives": [
+        "D6"
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "SERCOM UART RX",
+      "alternatives": [
+        "D7"
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C SDA",
+      "alternatives": [
+        "D4"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL",
+      "alternatives": [
+        "D5"
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED",
+      "alternatives": [
+        "D13"
+      ],
+      "type": "output"
+    }
   },
   "defaults": {
-    "modules": ["gpio", "uart", "i2c", "timer", "shell_min"],
-    "clock": { "freq_hz": 48000000 }
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "timer",
+      "shell_min"
+    ],
+    "clock": {
+      "freq_hz": 48000000
+    }
   },
-  "notes": "Keep modules lean for tiny boards; Shell (Tiny) or Shell (Lite) are usually best choices."
+  "notes": "Keep modules lean for tiny boards; Shell (Tiny) or Shell (Lite) are usually best choices.",
+  "architecture": "ARM Cortex-M",
+  "family": "SAMD21"
 }

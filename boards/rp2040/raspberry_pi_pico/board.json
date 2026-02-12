@@ -98,5 +98,7 @@
       "freq_hz": 133000000
     }
   },
-  "notes": "SPI pin set shown corresponds to the Pico SDK SPI0 default signals (SCK=2, TX=3, RX=0, CSn=1). Adjust if you prefer SPI1 or different pin mappings."
+  "notes": "SPI pin set shown corresponds to the Pico SDK SPI0 default signals (SCK=2, TX=3, RX=0, CSn=1). Adjust if you prefer SPI1 or different pin mappings.",
+  "architecture": "ARM Cortex-M0+",
+  "family": "RP2040"
 }

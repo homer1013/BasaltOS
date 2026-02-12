@@ -167,6 +167,12 @@ Board catalog drift smoke (docs inventory stays in sync):
 bash tools/tests/board_catalog_drift_smoke.sh
 ```
 
+Board taxonomy explicit-fields smoke (manufacturer/architecture/family):
+
+```bash
+bash tools/tests/board_taxonomy_fields_smoke.sh
+```
+
 
 ## PlatformIO Phase-1 Bootstrap
 

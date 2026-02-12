@@ -30,13 +30,46 @@
     "button": -1
   },
   "pin_definitions": {
-    "uart_tx": { "description": "SCI TX (example)", "alternatives": ["P20"], "type": "output" },
-    "uart_rx": { "description": "SCI RX (example)", "alternatives": ["P21"], "type": "input" },
-    "i2c_sda": { "description": "RIIC SDA (example)", "alternatives": ["P16"], "type": "bidirectional" },
-    "i2c_scl": { "description": "RIIC SCL (example)", "alternatives": ["P17"], "type": "output" }
+    "uart_tx": {
+      "description": "SCI TX (example)",
+      "alternatives": [
+        "P20"
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "SCI RX (example)",
+      "alternatives": [
+        "P21"
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "RIIC SDA (example)",
+      "alternatives": [
+        "P16"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "RIIC SCL (example)",
+      "alternatives": [
+        "P17"
+      ],
+      "type": "output"
+    }
   },
   "defaults": {
-    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"]
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "timer",
+      "shell_min"
+    ]
   },
-  "notes": "Template-level RX mapping varies by FIT configuration; this profile prioritizes quick experimentation."
+  "notes": "Template-level RX mapping varies by FIT configuration; this profile prioritizes quick experimentation.",
+  "architecture": "Renesas RX 32-bit",
+  "family": "Renesas RX"
 }

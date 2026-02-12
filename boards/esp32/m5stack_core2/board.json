@@ -57,5 +57,7 @@
       "freq_hz": 240000000
     }
   },
-  "notes": "Core2 hardware variants exist. Use this as an initial software baseline and validate each peripheral pin mapping on hardware."
+  "notes": "Core2 hardware variants exist. Use this as an initial software baseline and validate each peripheral pin mapping on hardware.",
+  "architecture": "Xtensa",
+  "family": "ESP32"
 }

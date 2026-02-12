@@ -26,6 +26,8 @@ def build_catalog(root: Path) -> str:
     boards: list[dict] = []
     platform_counts: Counter[str] = Counter()
     manufacturer_counts: Counter[str] = Counter()
+    architecture_counts: Counter[str] = Counter()
+    family_counts: Counter[str] = Counter()
 
     for bf in board_files:
         data = load_board(bf)
@@ -35,6 +37,8 @@ def build_catalog(root: Path) -> str:
         name = safe_str(data.get("name"), board_dir)
         mcu = safe_str(data.get("mcu") or data.get("soc") or data.get("target_profile"), "unknown")
         manufacturer = safe_str(data.get("manufacturer"), "Unknown")
+        architecture = safe_str(data.get("architecture"), "Unknown")
+        family = safe_str(data.get("family"), "Unknown")
         capabilities = data.get("capabilities", [])
         if not isinstance(capabilities, list):
             capabilities = []
@@ -46,12 +50,16 @@ def build_catalog(root: Path) -> str:
                 "id": board_id,
                 "name": name,
                 "manufacturer": manufacturer,
+                "architecture": architecture,
+                "family": family,
                 "mcu": mcu,
                 "caps_count": len(capabilities),
             }
         )
         platform_counts[platform] += 1
         manufacturer_counts[manufacturer] += 1
+        architecture_counts[architecture] += 1
+        family_counts[family] += 1
 
     boards.sort(key=lambda b: (b["platform"], b["board_dir"], b["id"]))
 
@@ -76,14 +84,24 @@ def build_catalog(root: Path) -> str:
     for mfr, n in sorted(manufacturer_counts.items(), key=lambda kv: (-kv[1], kv[0].lower())):
         lines.append(f"- {mfr}: {n}")
     lines.append("")
+    lines.append("### Boards per Architecture")
+    lines.append("")
+    for arch, n in sorted(architecture_counts.items(), key=lambda kv: (-kv[1], kv[0].lower())):
+        lines.append(f"- {arch}: {n}")
+    lines.append("")
+    lines.append("### Boards per Family")
+    lines.append("")
+    for family, n in sorted(family_counts.items(), key=lambda kv: (-kv[1], kv[0].lower())):
+        lines.append(f"- {family}: {n}")
+    lines.append("")
     lines.append("## Boards")
     lines.append("")
-    lines.append("| Platform | Board Dir | ID | Name | Manufacturer | MCU/SOC | Caps |")
-    lines.append("|---|---|---|---|---|---|---|")
+    lines.append("| Platform | Board Dir | ID | Name | Manufacturer | Architecture | Family | MCU/SOC | Caps |")
+    lines.append("|---|---|---|---|---|---|---|---|---|")
     for b in boards:
         lines.append(
             f"| {b['platform']} | {b['board_dir']} | {b['id']} | {b['name']} | "
-            f"{b['manufacturer']} | {b['mcu']} | {b['caps_count']} |"
+            f"{b['manufacturer']} | {b['architecture']} | {b['family']} | {b['mcu']} | {b['caps_count']} |"
         )
     lines.append("")
     return "\n".join(lines)

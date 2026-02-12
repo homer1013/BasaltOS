@@ -92,5 +92,7 @@
       "cpd": false
     }
   },
-  "notes": "PIC peripheral pin select (PPS) means UART/I2C/SPI can be remapped. Treat these pin assignments as a template."
+  "notes": "PIC peripheral pin select (PPS) means UART/I2C/SPI can be remapped. Treat these pin assignments as a template.",
+  "architecture": "PIC 8-bit",
+  "family": "PIC16"
 }

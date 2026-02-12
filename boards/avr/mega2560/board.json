@@ -39,25 +39,122 @@
     "led": 13
   },
   "pin_definitions": {
-    "uart0_tx": { "description": "Serial0 TX", "alternatives": [1], "type": "output" },
-    "uart0_rx": { "description": "Serial0 RX", "alternatives": [0], "type": "input" },
-    "uart1_tx": { "description": "Serial1 TX", "alternatives": [18], "type": "output" },
-    "uart1_rx": { "description": "Serial1 RX", "alternatives": [19], "type": "input" },
-    "uart2_tx": { "description": "Serial2 TX", "alternatives": [16], "type": "output" },
-    "uart2_rx": { "description": "Serial2 RX", "alternatives": [17], "type": "input" },
-    "uart3_tx": { "description": "Serial3 TX", "alternatives": [14], "type": "output" },
-    "uart3_rx": { "description": "Serial3 RX", "alternatives": [15], "type": "input" },
-    "i2c_scl": { "description": "I2C SCL", "alternatives": [21], "type": "output" },
-    "i2c_sda": { "description": "I2C SDA", "alternatives": [20], "type": "bidirectional" },
-    "spi_sclk": { "description": "SPI SCK", "alternatives": [52], "type": "output" },
-    "spi_mosi": { "description": "SPI MOSI", "alternatives": [51], "type": "output" },
-    "spi_miso": { "description": "SPI MISO", "alternatives": [50], "type": "input" },
-    "spi_cs": { "description": "SPI CS", "alternatives": [53], "type": "output" },
-    "led": { "description": "Onboard LED", "alternatives": [13], "type": "output" }
+    "uart0_tx": {
+      "description": "Serial0 TX",
+      "alternatives": [
+        1
+      ],
+      "type": "output"
+    },
+    "uart0_rx": {
+      "description": "Serial0 RX",
+      "alternatives": [
+        0
+      ],
+      "type": "input"
+    },
+    "uart1_tx": {
+      "description": "Serial1 TX",
+      "alternatives": [
+        18
+      ],
+      "type": "output"
+    },
+    "uart1_rx": {
+      "description": "Serial1 RX",
+      "alternatives": [
+        19
+      ],
+      "type": "input"
+    },
+    "uart2_tx": {
+      "description": "Serial2 TX",
+      "alternatives": [
+        16
+      ],
+      "type": "output"
+    },
+    "uart2_rx": {
+      "description": "Serial2 RX",
+      "alternatives": [
+        17
+      ],
+      "type": "input"
+    },
+    "uart3_tx": {
+      "description": "Serial3 TX",
+      "alternatives": [
+        14
+      ],
+      "type": "output"
+    },
+    "uart3_rx": {
+      "description": "Serial3 RX",
+      "alternatives": [
+        15
+      ],
+      "type": "input"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL",
+      "alternatives": [
+        21
+      ],
+      "type": "output"
+    },
+    "i2c_sda": {
+      "description": "I2C SDA",
+      "alternatives": [
+        20
+      ],
+      "type": "bidirectional"
+    },
+    "spi_sclk": {
+      "description": "SPI SCK",
+      "alternatives": [
+        52
+      ],
+      "type": "output"
+    },
+    "spi_mosi": {
+      "description": "SPI MOSI",
+      "alternatives": [
+        51
+      ],
+      "type": "output"
+    },
+    "spi_miso": {
+      "description": "SPI MISO",
+      "alternatives": [
+        50
+      ],
+      "type": "input"
+    },
+    "spi_cs": {
+      "description": "SPI CS",
+      "alternatives": [
+        53
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED",
+      "alternatives": [
+        13
+      ],
+      "type": "output"
+    }
   },
   "defaults": {
-    "clock": { "freq_hz": 16000000 },
-    "fuses": { "lfuse": "0xFF", "hfuse": "0xD8", "efuse": "0xFD", "lock": "0x0F" },
+    "clock": {
+      "freq_hz": 16000000
+    },
+    "fuses": {
+      "lfuse": "0xFF",
+      "hfuse": "0xD8",
+      "efuse": "0xFD",
+      "lock": "0x0F"
+    },
     "upload": {
       "method": "bootloader",
       "fqbn": "arduino:avr:mega",
@@ -65,8 +162,16 @@
       "programmer": "wiring",
       "baud": 115200
     },
-    "modules": ["gpio", "uart", "timer"],
-    "applets": ["blink"]
+    "modules": [
+      "gpio",
+      "uart",
+      "timer"
+    ],
+    "applets": [
+      "blink"
+    ]
   },
-  "notes": "Arduino Mega 2560 board definition with 4 UARTs exposed."
+  "notes": "Arduino Mega 2560 board definition with 4 UARTs exposed.",
+  "architecture": "AVR 8-bit",
+  "family": "ATmega2560"
 }

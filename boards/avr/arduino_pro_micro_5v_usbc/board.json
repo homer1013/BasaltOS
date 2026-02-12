@@ -35,15 +35,69 @@
     "button": -1
   },
   "pin_definitions": {
-    "uart_tx": { "description": "UART TX (TXO)", "alternatives": [1], "type": "output" },
-    "uart_rx": { "description": "UART RX (RXI)", "alternatives": [0], "type": "input" },
-    "i2c_sda": { "description": "I2C SDA", "alternatives": [2], "type": "bidirectional" },
-    "i2c_scl": { "description": "I2C SCL", "alternatives": [3], "type": "output" },
-    "spi_mosi": { "description": "SPI MOSI", "alternatives": [16], "type": "output" },
-    "spi_miso": { "description": "SPI MISO", "alternatives": [14], "type": "input" },
-    "spi_sclk": { "description": "SPI SCK", "alternatives": [15], "type": "output" },
-    "spi_cs": { "description": "SPI CS/SS", "alternatives": [10], "type": "output" },
-    "led": { "description": "Onboard LED", "alternatives": [17], "type": "output" }
+    "uart_tx": {
+      "description": "UART TX (TXO)",
+      "alternatives": [
+        1
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "UART RX (RXI)",
+      "alternatives": [
+        0
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C SDA",
+      "alternatives": [
+        2
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C SCL",
+      "alternatives": [
+        3
+      ],
+      "type": "output"
+    },
+    "spi_mosi": {
+      "description": "SPI MOSI",
+      "alternatives": [
+        16
+      ],
+      "type": "output"
+    },
+    "spi_miso": {
+      "description": "SPI MISO",
+      "alternatives": [
+        14
+      ],
+      "type": "input"
+    },
+    "spi_sclk": {
+      "description": "SPI SCK",
+      "alternatives": [
+        15
+      ],
+      "type": "output"
+    },
+    "spi_cs": {
+      "description": "SPI CS/SS",
+      "alternatives": [
+        10
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED",
+      "alternatives": [
+        17
+      ],
+      "type": "output"
+    }
   },
   "defaults": {
     "modules": [
@@ -75,5 +129,7 @@
       "uart_echo"
     ]
   },
-  "notes": "USB-C connector variant does not change MCU pinout. Board package/FQBN may vary by vendor core."
+  "notes": "USB-C connector variant does not change MCU pinout. Board package/FQBN may vary by vendor core.",
+  "architecture": "AVR 8-bit",
+  "family": "ATmega32U4"
 }

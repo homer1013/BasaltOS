@@ -30,16 +30,63 @@
     "button": "P104"
   },
   "pin_definitions": {
-    "uart_tx": { "description": "SCI UART TX", "alternatives": ["P411"], "type": "output" },
-    "uart_rx": { "description": "SCI UART RX", "alternatives": ["P410"], "type": "input" },
-    "i2c_sda": { "description": "IIC SDA", "alternatives": ["P205"], "type": "bidirectional" },
-    "i2c_scl": { "description": "IIC SCL", "alternatives": ["P204"], "type": "output" },
-    "led": { "description": "User LED", "alternatives": ["P105"], "type": "output" },
-    "button": { "description": "User button", "alternatives": ["P104"], "type": "input" }
+    "uart_tx": {
+      "description": "SCI UART TX",
+      "alternatives": [
+        "P411"
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "SCI UART RX",
+      "alternatives": [
+        "P410"
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "IIC SDA",
+      "alternatives": [
+        "P205"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "IIC SCL",
+      "alternatives": [
+        "P204"
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "User LED",
+      "alternatives": [
+        "P105"
+      ],
+      "type": "output"
+    },
+    "button": {
+      "description": "User button",
+      "alternatives": [
+        "P104"
+      ],
+      "type": "input"
+    }
   },
   "defaults": {
-    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"],
-    "clock": { "freq_hz": 48000000 }
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "timer",
+      "shell_min"
+    ],
+    "clock": {
+      "freq_hz": 48000000
+    }
   },
-  "notes": "Pin mapping is an FSP-friendly starting point; adjust exact port function mapping in your RA project."
+  "notes": "Pin mapping is an FSP-friendly starting point; adjust exact port function mapping in your RA project.",
+  "architecture": "ARM Cortex-M",
+  "family": "Renesas RA"
 }

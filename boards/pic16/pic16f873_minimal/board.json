@@ -34,50 +34,84 @@
   "pin_definitions": {
     "uart_tx": {
       "description": "USART TX",
-      "alternatives": ["RC6"],
+      "alternatives": [
+        "RC6"
+      ],
       "type": "output"
     },
     "uart_rx": {
       "description": "USART RX",
-      "alternatives": ["RC7"],
+      "alternatives": [
+        "RC7"
+      ],
       "type": "input"
     },
     "i2c_scl": {
       "description": "MSSP SCL",
-      "alternatives": ["RC3"],
+      "alternatives": [
+        "RC3"
+      ],
       "type": "output"
     },
     "i2c_sda": {
       "description": "MSSP SDA",
-      "alternatives": ["RC4"],
+      "alternatives": [
+        "RC4"
+      ],
       "type": "bidirectional"
     },
     "spi_sclk": {
       "description": "SPI SCK",
-      "alternatives": ["RC3"],
+      "alternatives": [
+        "RC3"
+      ],
       "type": "output"
     },
     "spi_mosi": {
       "description": "SPI SDO",
-      "alternatives": ["RC5"],
+      "alternatives": [
+        "RC5"
+      ],
       "type": "output"
     },
     "spi_miso": {
       "description": "SPI SDI",
-      "alternatives": ["RC4"],
+      "alternatives": [
+        "RC4"
+      ],
       "type": "input"
     },
     "led": {
       "description": "Status LED",
-      "alternatives": ["RB0", "RA0"],
+      "alternatives": [
+        "RB0",
+        "RA0"
+      ],
       "type": "output"
     }
   },
   "defaults": {
-    "clock": { "source": "HS", "freq_hz": 20000000 },
-    "fuses": { "wdt": false, "bor": true, "lvp": false, "mclr": true, "cp": false, "cpd": false },
-    "modules": ["gpio", "timer"],
-    "applets": ["blink"]
+    "clock": {
+      "source": "HS",
+      "freq_hz": 20000000
+    },
+    "fuses": {
+      "wdt": false,
+      "bor": true,
+      "lvp": false,
+      "mclr": true,
+      "cp": false,
+      "cpd": false
+    },
+    "modules": [
+      "gpio",
+      "timer"
+    ],
+    "applets": [
+      "blink"
+    ]
   },
-  "notes": "Generic PIC16F873 template. Pins use PORT labels; adjust for your PCB."
+  "notes": "Generic PIC16F873 template. Pins use PORT labels; adjust for your PCB.",
+  "architecture": "PIC 8-bit",
+  "family": "PIC16"
 }

@@ -31,16 +31,61 @@
     "button": -1
   },
   "pin_definitions": {
-    "uart_tx": { "description": "USART1 TX", "alternatives": ["PA9", "PB6"], "type": "output" },
-    "uart_rx": { "description": "USART1 RX", "alternatives": ["PA10", "PB7"], "type": "input" },
-    "i2c_sda": { "description": "I2C1 SDA", "alternatives": ["PB7", "PB9"], "type": "bidirectional" },
-    "i2c_scl": { "description": "I2C1 SCL", "alternatives": ["PB6", "PB8"], "type": "output" },
-    "led": { "description": "Onboard LED (often active-low)", "alternatives": ["PC13"], "type": "output" }
+    "uart_tx": {
+      "description": "USART1 TX",
+      "alternatives": [
+        "PA9",
+        "PB6"
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "USART1 RX",
+      "alternatives": [
+        "PA10",
+        "PB7"
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C1 SDA",
+      "alternatives": [
+        "PB7",
+        "PB9"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C1 SCL",
+      "alternatives": [
+        "PB6",
+        "PB8"
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "Onboard LED (often active-low)",
+      "alternatives": [
+        "PC13"
+      ],
+      "type": "output"
+    }
   },
   "defaults": {
-    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"],
-    "clock": { "freq_hz": 100000000 }
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "timer",
+      "shell_min"
+    ],
+    "clock": {
+      "freq_hz": 100000000
+    }
   },
   "led_active_low": true,
-  "notes": "Pin breakout and LED polarity can vary by clone; verify on first bring-up."
+  "notes": "Pin breakout and LED polarity can vary by clone; verify on first bring-up.",
+  "architecture": "ARM Cortex-M",
+  "family": "STM32F4"
 }

@@ -73,6 +73,9 @@ bash tools/tests/staged_artifact_guard.sh
 # Optional docs drift guard: board catalog stays in sync
 bash tools/tests/board_catalog_drift_smoke.sh
 
+# Optional taxonomy guard: explicit manufacturer/architecture/family fields
+bash tools/tests/board_taxonomy_fields_smoke.sh
+
 # CLI metadata baseline
 python3 tools/validate_metadata.py
 

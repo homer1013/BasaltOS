@@ -131,7 +131,7 @@
     "CONFIG_ESP_CONSOLE_UART_DEFAULT=y",
     "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
   ],
-  "notes": "S3 pin numbers here are a starting point. Confirm your exact board\u2019s UART pins (USB-serial vs native USB) and any onboard LED GPIO. Includes software-first MCP2515/BME280 defaults; run hardware verification when modules are available.",
+  "notes": "S3 pin numbers here are a starting point. Confirm your exact board’s UART pins (USB-serial vs native USB) and any onboard LED GPIO. Includes software-first MCP2515/BME280 defaults; run hardware verification when modules are available.",
   "id": "esp32s3_devkitc_1",
   "defaults": {
     "modules": [
@@ -153,5 +153,7 @@
         "sample_rate_hz": 1
       }
     }
-  }
+  },
+  "architecture": "Xtensa",
+  "family": "ESP32-S3"
 }

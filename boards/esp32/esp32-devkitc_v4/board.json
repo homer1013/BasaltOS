@@ -115,12 +115,32 @@
     },
     "can_stby": {
       "description": "CAN transceiver standby control (optional)",
-      "alternatives": [-1, 4, 16, 17, 25, 26, 27, 32, 33],
+      "alternatives": [
+        -1,
+        4,
+        16,
+        17,
+        25,
+        26,
+        27,
+        32,
+        33
+      ],
       "type": "output"
     },
     "can_en": {
       "description": "CAN transceiver enable control (optional)",
-      "alternatives": [-1, 4, 16, 17, 25, 26, 27, 32, 33],
+      "alternatives": [
+        -1,
+        4,
+        16,
+        17,
+        25,
+        26,
+        27,
+        32,
+        33
+      ],
       "type": "output"
     },
     "led": {
@@ -152,8 +172,19 @@
     "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
   ],
   "defaults": {
-    "modules": ["gpio", "uart", "spi", "i2c", "fs_spiffs", "shell_full"],
-    "clock": { "freq_hz": 240000000 }
+    "modules": [
+      "gpio",
+      "uart",
+      "spi",
+      "i2c",
+      "fs_spiffs",
+      "shell_full"
+    ],
+    "clock": {
+      "freq_hz": 240000000
+    }
   },
-  "notes": "This is a safe 'generic' baseline for many ESP32 DevKitC/NodeMCU-style boards. Confirm LED and SPI CS pins for your exact board."
+  "notes": "This is a safe 'generic' baseline for many ESP32 DevKitC/NodeMCU-style boards. Confirm LED and SPI CS pins for your exact board.",
+  "architecture": "Xtensa",
+  "family": "ESP32"
 }

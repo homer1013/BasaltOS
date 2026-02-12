@@ -30,16 +30,67 @@
     "button": "PC13"
   },
   "pin_definitions": {
-    "uart_tx": { "description": "USART2 TX (VCP)", "alternatives": ["PA2", "PA9"], "type": "output" },
-    "uart_rx": { "description": "USART2 RX (VCP)", "alternatives": ["PA3", "PA10"], "type": "input" },
-    "i2c_sda": { "description": "I2C1 SDA", "alternatives": ["PB9", "PB7"], "type": "bidirectional" },
-    "i2c_scl": { "description": "I2C1 SCL", "alternatives": ["PB8", "PB6"], "type": "output" },
-    "led": { "description": "User LED", "alternatives": ["PA5"], "type": "output" },
-    "button": { "description": "User button", "alternatives": ["PC13"], "type": "input" }
+    "uart_tx": {
+      "description": "USART2 TX (VCP)",
+      "alternatives": [
+        "PA2",
+        "PA9"
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "USART2 RX (VCP)",
+      "alternatives": [
+        "PA3",
+        "PA10"
+      ],
+      "type": "input"
+    },
+    "i2c_sda": {
+      "description": "I2C1 SDA",
+      "alternatives": [
+        "PB9",
+        "PB7"
+      ],
+      "type": "bidirectional"
+    },
+    "i2c_scl": {
+      "description": "I2C1 SCL",
+      "alternatives": [
+        "PB8",
+        "PB6"
+      ],
+      "type": "output"
+    },
+    "led": {
+      "description": "User LED",
+      "alternatives": [
+        "PA5"
+      ],
+      "type": "output"
+    },
+    "button": {
+      "description": "User button",
+      "alternatives": [
+        "PC13"
+      ],
+      "type": "input"
+    }
   },
   "defaults": {
-    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"],
-    "clock": { "freq_hz": 180000000 }
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "timer",
+      "shell_min"
+    ],
+    "clock": {
+      "freq_hz": 180000000
+    }
   },
-  "notes": "USART2 defaults are aligned with ST-Link virtual COM port for quick serial shell bring-up."
+  "notes": "USART2 defaults are aligned with ST-Link virtual COM port for quick serial shell bring-up.",
+  "architecture": "ARM Cortex-M",
+  "family": "STM32F4"
 }

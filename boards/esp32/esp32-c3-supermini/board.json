@@ -259,5 +259,7 @@
       "freq_hz": 160000000
     }
   },
-  "notes": "ESP32-C3 boards are wildly inconsistent across sellers. Confirm UART/LED/button pins with your board\u2019s silkscreen or schematic. MCP2515/BME280 pin/config values are software bring-up defaults and require hardware verification per board variant."
+  "notes": "ESP32-C3 boards are wildly inconsistent across sellers. Confirm UART/LED/button pins with your board’s silkscreen or schematic. MCP2515/BME280 pin/config values are software bring-up defaults and require hardware verification per board variant.",
+  "architecture": "RISC-V",
+  "family": "ESP32-C3"
 }

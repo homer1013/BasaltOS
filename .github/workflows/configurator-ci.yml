@@ -67,6 +67,7 @@ jobs:
           bash tools/tests/examples_pack_recipes_smoke.sh
           bash tools/tests/staged_artifact_guard_smoke.sh
           bash tools/tests/board_catalog_drift_smoke.sh
+          bash tools/tests/board_taxonomy_fields_smoke.sh
 
       - name: Upload S2 CLI acceptance artifacts
         if: always()

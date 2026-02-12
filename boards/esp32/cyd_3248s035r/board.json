@@ -51,112 +51,209 @@
   "pin_definitions": {
     "tft_mosi": {
       "description": "TFT SPI Master Out Slave In",
-      "alternatives": [13, 23],
+      "alternatives": [
+        13,
+        23
+      ],
       "type": "output"
     },
     "tft_miso": {
       "description": "TFT SPI Master In Slave Out",
-      "alternatives": [12, 19],
+      "alternatives": [
+        12,
+        19
+      ],
       "type": "input"
     },
     "tft_sclk": {
       "description": "TFT SPI Clock",
-      "alternatives": [14, 18],
+      "alternatives": [
+        14,
+        18
+      ],
       "type": "output"
     },
     "tft_cs": {
       "description": "TFT Chip Select",
-      "alternatives": [15, 5, 4],
+      "alternatives": [
+        15,
+        5,
+        4
+      ],
       "type": "output"
     },
     "tft_dc": {
       "description": "TFT Data/Command",
-      "alternatives": [2, 4, 16],
+      "alternatives": [
+        2,
+        4,
+        16
+      ],
       "type": "output"
     },
     "tft_bl": {
       "description": "TFT Backlight",
-      "alternatives": [21, 27],
+      "alternatives": [
+        21,
+        27
+      ],
       "type": "output"
     },
     "touch_cs": {
       "description": "Touch Controller Chip Select",
-      "alternatives": [33, 5, 15],
+      "alternatives": [
+        33,
+        5,
+        15
+      ],
       "type": "output"
     },
     "touch_irq": {
       "description": "Touch Controller Interrupt",
-      "alternatives": [-1, 36, 39],
+      "alternatives": [
+        -1,
+        36,
+        39
+      ],
       "type": "input"
     },
     "sd_mosi": {
       "description": "SD SPI MOSI",
-      "alternatives": [23, 13],
+      "alternatives": [
+        23,
+        13
+      ],
       "type": "output"
     },
     "sd_miso": {
       "description": "SD SPI MISO",
-      "alternatives": [19, 12],
+      "alternatives": [
+        19,
+        12
+      ],
       "type": "input"
     },
     "sd_sclk": {
       "description": "SD SPI Clock",
-      "alternatives": [18, 14],
+      "alternatives": [
+        18,
+        14
+      ],
       "type": "output"
     },
     "sd_cs": {
       "description": "SD Card Chip Select",
-      "alternatives": [5, 4, 15, 33],
+      "alternatives": [
+        5,
+        4,
+        15,
+        33
+      ],
       "type": "output"
     },
     "i2c_sda": {
       "description": "I2C SDA",
-      "alternatives": [21, 33, 25],
+      "alternatives": [
+        21,
+        33,
+        25
+      ],
       "type": "bidirectional"
     },
     "i2c_scl": {
       "description": "I2C SCL",
-      "alternatives": [22, 32, 26],
+      "alternatives": [
+        22,
+        32,
+        26
+      ],
       "type": "output"
     },
     "uart_tx": {
       "description": "UART TX",
-      "alternatives": [1, 17, 25],
+      "alternatives": [
+        1,
+        17,
+        25
+      ],
       "type": "output"
     },
     "uart_rx": {
       "description": "UART RX",
-      "alternatives": [3, 16, 26],
+      "alternatives": [
+        3,
+        16,
+        26
+      ],
       "type": "input"
     },
     "can_tx": {
       "description": "TWAI/CAN TX (external transceiver TXD)",
-      "alternatives": [26, 25, 4, 17],
+      "alternatives": [
+        26,
+        25,
+        4,
+        17
+      ],
       "type": "output"
     },
     "can_rx": {
       "description": "TWAI/CAN RX (external transceiver RXD)",
-      "alternatives": [25, 26, 34, 35, 39],
+      "alternatives": [
+        25,
+        26,
+        34,
+        35,
+        39
+      ],
       "type": "input"
     },
     "can_stby": {
       "description": "CAN transceiver standby control (optional)",
-      "alternatives": [-1, 4, 16, 17, 25, 26, 27, 32, 33],
+      "alternatives": [
+        -1,
+        4,
+        16,
+        17,
+        25,
+        26,
+        27,
+        32,
+        33
+      ],
       "type": "output"
     },
     "can_en": {
       "description": "CAN transceiver enable control (optional)",
-      "alternatives": [-1, 4, 16, 17, 25, 26, 27, 32, 33],
+      "alternatives": [
+        -1,
+        4,
+        16,
+        17,
+        25,
+        26,
+        27,
+        32,
+        33
+      ],
       "type": "output"
     },
     "led": {
       "description": "Onboard LED",
-      "alternatives": [17, 4, 2],
+      "alternatives": [
+        17,
+        4,
+        2
+      ],
       "type": "output"
     },
     "button": {
       "description": "Boot/User Button",
-      "alternatives": [0, 35, 39],
+      "alternatives": [
+        0,
+        35,
+        39
+      ],
       "type": "input"
     }
   },
@@ -196,5 +293,7 @@
       "freq_hz": 240000000
     }
   },
-  "notes": "Popular development board with integrated TFT display. Commonly known as 'Cheap Yellow Display' or CYD."
+  "notes": "Popular development board with integrated TFT display. Commonly known as 'Cheap Yellow Display' or CYD.",
+  "architecture": "Xtensa",
+  "family": "ESP32"
 }

@@ -73,5 +73,7 @@
       "freq_hz": 48000000
     }
   },
-  "notes": "Arduino-style labels (SDA/SCL/MOSI/MISO/SCK) map to SERCOM pads; for baremetal, use Atmel START/ASF pinmux outputs."
+  "notes": "Arduino-style labels (SDA/SCL/MOSI/MISO/SCK) map to SERCOM pads; for baremetal, use Atmel START/ASF pinmux outputs.",
+  "architecture": "ARM Cortex-M",
+  "family": "SAMD21"
 }

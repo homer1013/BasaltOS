@@ -33,52 +33,107 @@
   "pin_definitions": {
     "uart_tx": {
       "description": "UART TX baseline pin (verify per board revision)",
-      "alternatives": [16, 17, 4, 5],
+      "alternatives": [
+        16,
+        17,
+        4,
+        5
+      ],
       "type": "output"
     },
     "uart_rx": {
       "description": "UART RX baseline pin (verify per board revision)",
-      "alternatives": [17, 16, 4, 5],
+      "alternatives": [
+        17,
+        16,
+        4,
+        5
+      ],
       "type": "input"
     },
     "i2c_sda": {
       "description": "I2C SDA baseline pin",
-      "alternatives": [6, 4, 5, 8, 10],
+      "alternatives": [
+        6,
+        4,
+        5,
+        8,
+        10
+      ],
       "type": "bidirectional"
     },
     "i2c_scl": {
       "description": "I2C SCL baseline pin",
-      "alternatives": [7, 5, 4, 9, 11],
+      "alternatives": [
+        7,
+        5,
+        4,
+        9,
+        11
+      ],
       "type": "output"
     },
     "spi_mosi": {
       "description": "SPI MOSI baseline pin",
-      "alternatives": [7, 6, 10, 4, 5],
+      "alternatives": [
+        7,
+        6,
+        10,
+        4,
+        5
+      ],
       "type": "output"
     },
     "spi_miso": {
       "description": "SPI MISO baseline pin",
-      "alternatives": [2, 6, 7, 4, 5],
+      "alternatives": [
+        2,
+        6,
+        7,
+        4,
+        5
+      ],
       "type": "input"
     },
     "spi_sclk": {
       "description": "SPI SCLK baseline pin",
-      "alternatives": [6, 7, 10, 4, 5],
+      "alternatives": [
+        6,
+        7,
+        10,
+        4,
+        5
+      ],
       "type": "output"
     },
     "spi_cs": {
       "description": "SPI CS baseline pin",
-      "alternatives": [10, 8, 9, 4, 5],
+      "alternatives": [
+        10,
+        8,
+        9,
+        4,
+        5
+      ],
       "type": "output"
     },
     "led": {
       "description": "Onboard LED (board-dependent)",
-      "alternatives": [8, 15, 2, 3],
+      "alternatives": [
+        8,
+        15,
+        2,
+        3
+      ],
       "type": "output"
     },
     "button": {
       "description": "User/boot button (board-dependent)",
-      "alternatives": [9, 0, 1],
+      "alternatives": [
+        9,
+        0,
+        1
+      ],
       "type": "input"
     }
   },
@@ -90,8 +145,19 @@
     "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
   ],
   "defaults": {
-    "modules": ["gpio", "uart", "i2c", "spi", "fs_spiffs", "shell_full"],
-    "clock": { "freq_hz": 160000000 }
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "fs_spiffs",
+      "shell_full"
+    ],
+    "clock": {
+      "freq_hz": 160000000
+    }
   },
-  "notes": "This profile is a conservative baseline intended to unblock C6 configuration and early bring-up. Confirm all pins, especially SPI/I2C/LED, against your board documentation."
+  "notes": "This profile is a conservative baseline intended to unblock C6 configuration and early bring-up. Confirm all pins, especially SPI/I2C/LED, against your board documentation.",
+  "architecture": "RISC-V",
+  "family": "ESP32-C6"
 }

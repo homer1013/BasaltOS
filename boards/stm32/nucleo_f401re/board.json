@@ -97,5 +97,7 @@
       "freq_hz": 84000000
     }
   },
-  "notes": "Nucleo pin mapping depends on CubeMX project configuration; treat as a good default for quick bring-up."
+  "notes": "Nucleo pin mapping depends on CubeMX project configuration; treat as a good default for quick bring-up.",
+  "architecture": "ARM Cortex-M",
+  "family": "STM32F4"
 }

@@ -98,5 +98,7 @@
       "baud": 115200
     }
   },
-  "notes": "Nominal SAMD21 core clock is 48MHz. This board is often powered by USB or LiPo; external battery input is commonly in the ~3-6V range depending on setup."
+  "notes": "Nominal SAMD21 core clock is 48MHz. This board is often powered by USB or LiPo; external battery input is commonly in the ~3-6V range depending on setup.",
+  "architecture": "ARM Cortex-M",
+  "family": "SAMD21"
 }

@@ -34,17 +34,23 @@
   "pin_definitions": {
     "i2c_sda": {
       "description": "I2C SDA (Arduino header)",
-      "alternatives": ["SDA"],
+      "alternatives": [
+        "SDA"
+      ],
       "type": "bidirectional"
     },
     "i2c_scl": {
       "description": "I2C SCL (Arduino header)",
-      "alternatives": ["SCL"],
+      "alternatives": [
+        "SCL"
+      ],
       "type": "output"
     },
     "led": {
       "description": "Onboard LED",
-      "alternatives": ["D13"],
+      "alternatives": [
+        "D13"
+      ],
       "type": "output"
     }
   },
@@ -54,10 +60,20 @@
     "MCU=ra4m1"
   ],
   "defaults": {
-    "modules": ["gpio", "uart", "i2c", "spi", "adc", "pwm", "timer"],
+    "modules": [
+      "gpio",
+      "uart",
+      "i2c",
+      "spi",
+      "adc",
+      "pwm",
+      "timer"
+    ],
     "clock": {
       "freq_hz": 48000000
     }
   },
-  "notes": "WiFi/BLE are provided by the onboard ESP32-S3 co-processor via Arduino core/network stack. Basalt direct driver support is out of scope for this baseline profile."
+  "notes": "WiFi/BLE are provided by the onboard ESP32-S3 co-processor via Arduino core/network stack. Basalt direct driver support is out of scope for this baseline profile.",
+  "architecture": "ARM Cortex-M",
+  "family": "RA4"
 }

@@ -75,5 +75,7 @@
       "timer"
     ]
   },
-  "notes": "This is intentionally a starter template. RX pin/peripheral mapping depends on the FIT project configuration (and exact kit revision)."
+  "notes": "This is intentionally a starter template. RX pin/peripheral mapping depends on the FIT project configuration (and exact kit revision).",
+  "architecture": "Renesas RX 32-bit",
+  "family": "RX65"
 }

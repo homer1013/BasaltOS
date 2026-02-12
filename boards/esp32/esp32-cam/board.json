@@ -55,8 +55,19 @@
     "CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200"
   ],
   "defaults": {
-    "modules": ["gpio", "uart", "spi", "i2c", "fs_spiffs", "shell_full"],
-    "clock": { "freq_hz": 240000000 }
+    "modules": [
+      "gpio",
+      "uart",
+      "spi",
+      "i2c",
+      "fs_spiffs",
+      "shell_full"
+    ],
+    "clock": {
+      "freq_hz": 240000000
+    }
   },
-  "notes": "ESP32-CAM typically requires IO0-to-GND for flashing and release/reset for normal boot. LED is unset to avoid board-variant assumptions during smoke tests."
+  "notes": "ESP32-CAM typically requires IO0-to-GND for flashing and release/reset for normal boot. LED is unset to avoid board-variant assumptions during smoke tests.",
+  "architecture": "Xtensa",
+  "family": "ESP32"
 }
