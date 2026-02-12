@@ -39,6 +39,7 @@ BUILD_DIR = BASALTOS_ROOT / "build"
 SPIFFS_DIR = BASALTOS_ROOT / "spiffs"
 SPIFFS_APPS_DIR = SPIFFS_DIR / "apps"
 MARKET_APPS_CATALOG = BASALTOS_ROOT / "config" / "market_apps.json"
+BOARD_TAXONOMY_INDEX_FILE = BASALTOS_ROOT / "docs" / "BOARD_TAXONOMY_INDEX.json"
 
 MANAGED_APPLETS_STATE_FILE = CONFIG_OUTPUT_DIR / ".spiffs_state" / "applets.json"
 MANAGED_MARKET_APPS_STATE_FILE = CONFIG_OUTPUT_DIR / ".spiffs_state" / "market_apps.json"
@@ -1446,6 +1447,75 @@ def _serial_ports_status() -> dict:
         "any_busy": any(item["busy"] for item in out),
     }
 
+
+def _taxonomy_filtered_response(
+    index_obj: Dict[str, Any],
+    platform: str = "",
+    manufacturer: str = "",
+    architecture: str = "",
+    family: str = "",
+) -> Dict[str, Any]:
+    boards = index_obj.get("boards") or []
+    if not isinstance(boards, list):
+        boards = []
+
+    def _match(value: Any, needle: str) -> bool:
+        if not needle:
+            return True
+        return str(value or "").strip().lower() == needle
+
+    platform = str(platform or "").strip().lower()
+    manufacturer = str(manufacturer or "").strip().lower()
+    architecture = str(architecture or "").strip().lower()
+    family = str(family or "").strip().lower()
+
+    filtered = [
+        b for b in boards
+        if isinstance(b, dict)
+        and _match(b.get("platform"), platform)
+        and _match(b.get("manufacturer"), manufacturer)
+        and _match(b.get("architecture"), architecture)
+        and _match(b.get("family"), family)
+    ]
+
+    platform_counts: Dict[str, int] = {}
+    manufacturer_counts: Dict[str, int] = {}
+    architecture_counts: Dict[str, int] = {}
+    family_counts: Dict[str, int] = {}
+    for b in filtered:
+        for key, counter in (
+            ("platform", platform_counts),
+            ("manufacturer", manufacturer_counts),
+            ("architecture", architecture_counts),
+            ("family", family_counts),
+        ):
+            val = str(b.get(key) or "Unknown")
+            counter[val] = counter.get(val, 0) + 1
+
+    return {
+        "success": True,
+        "filters": {
+            "platform": platform or "",
+            "manufacturer": manufacturer or "",
+            "architecture": architecture or "",
+            "family": family or "",
+        },
+        "summary": {
+            "total_boards": len(filtered),
+            "platform_count": len(platform_counts),
+            "manufacturer_count": len(manufacturer_counts),
+            "architecture_count": len(architecture_counts),
+            "family_count": len(family_counts),
+        },
+        "counts": {
+            "platform": dict(sorted(platform_counts.items(), key=lambda kv: kv[0])),
+            "manufacturer": dict(sorted(manufacturer_counts.items(), key=lambda kv: (-kv[1], kv[0].lower()))),
+            "architecture": dict(sorted(architecture_counts.items(), key=lambda kv: (-kv[1], kv[0].lower()))),
+            "family": dict(sorted(family_counts.items(), key=lambda kv: (-kv[1], kv[0].lower()))),
+        },
+        "boards": filtered,
+    }
+
 @app.route('/api/platforms', methods=['GET'])
 def get_platforms():
     """Get list of available platforms"""
@@ -1462,6 +1532,26 @@ def get_platforms():
             'toolchain': platform_data.get('toolchain', '')
         })
     return jsonify(platforms)
+
+
+@app.route('/api/board-taxonomy', methods=['GET'])
+def get_board_taxonomy():
+    """Return machine-readable board taxonomy index with optional filters."""
+    try:
+        index_obj = config_gen._read_json(BOARD_TAXONOMY_INDEX_FILE, {})
+        if not isinstance(index_obj, dict) or not isinstance(index_obj.get("boards"), list):
+            return jsonify({"success": False, "error": "Board taxonomy index is missing or invalid."}), 500
+        return jsonify(
+            _taxonomy_filtered_response(
+                index_obj,
+                platform=request.args.get("platform", ""),
+                manufacturer=request.args.get("manufacturer", ""),
+                architecture=request.args.get("architecture", ""),
+                family=request.args.get("family", ""),
+            )
+        )
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Failed to load board taxonomy: {e}"}), 500
 
 
 @app.route('/api/boards/<platform>', methods=['GET'])

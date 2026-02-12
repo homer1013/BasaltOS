@@ -46,6 +46,7 @@ python tools/basaltos_config_server.py
 ## Local API Endpoints
 
 - `GET /api/platforms`
+- `GET /api/board-taxonomy`
 - `GET /api/boards/<platform>`
 - `GET /api/drivers?platform=<platform>`
 - `GET /api/board/<board_id>`

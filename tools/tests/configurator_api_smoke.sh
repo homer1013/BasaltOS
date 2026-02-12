@@ -40,6 +40,8 @@ curl --fail-with-body -sS http://127.0.0.1:5000/api/boards/esp32 > "$OUT/boards_
 curl --fail-with-body -sS "http://127.0.0.1:5000/api/drivers?platform=esp32" > "$OUT/drivers_esp32.json"
 curl --fail-with-body -sS http://127.0.0.1:5000/api/board/esp32-c3-supermini > "$OUT/board_esp32c3.json"
 curl --fail-with-body -sS http://127.0.0.1:5000/api/sync/export-preview > "$OUT/sync_export_preview.json"
+curl --fail-with-body -sS http://127.0.0.1:5000/api/board-taxonomy > "$OUT/board_taxonomy.json"
+curl --fail-with-body -sS "http://127.0.0.1:5000/api/board-taxonomy?platform=esp32&architecture=risc-v" > "$OUT/board_taxonomy_filtered.json"
 
 cat > "$OUT/generate_payload.json" <<'JSON'
 {
@@ -83,7 +85,7 @@ import json
 from pathlib import Path
 out=Path('tmp/test_configurator_api_smoke')
 
-for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','generate_response.json','preview_response.json']:
+for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','generate_response.json','preview_response.json']:
     p=out/fn
     d=json.load(open(p,'r',encoding='utf-8'))
     if not d:
@@ -104,6 +106,22 @@ if sync.get('schema_version') != '1.0.0':
     raise SystemExit('sync export preview schema mismatch')
 if 'envelope' not in sync:
     raise SystemExit('sync export preview missing envelope')
+
+tax=json.load(open(out/'board_taxonomy.json','r',encoding='utf-8'))
+if not tax.get('success'):
+    raise SystemExit('board taxonomy API did not return success=true')
+if int((tax.get('summary') or {}).get('total_boards', 0)) <= 0:
+    raise SystemExit('board taxonomy summary total_boards must be > 0')
+if not isinstance(tax.get('boards'), list) or len(tax.get('boards')) == 0:
+    raise SystemExit('board taxonomy boards list is empty')
+
+tax_f=json.load(open(out/'board_taxonomy_filtered.json','r',encoding='utf-8'))
+if not tax_f.get('success'):
+    raise SystemExit('filtered board taxonomy API did not return success=true')
+if tax_f.get('filters', {}).get('platform') != 'esp32':
+    raise SystemExit('filtered taxonomy did not echo platform filter')
+if tax_f.get('filters', {}).get('architecture') != 'risc-v':
+    raise SystemExit('filtered taxonomy did not echo architecture filter')
 
 conf=(out/'conflict_response.txt').read_text(encoding='utf-8')
 if 'HTTP_CODE:400' not in conf:
