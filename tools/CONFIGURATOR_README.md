@@ -11,12 +11,13 @@ future hosted platform.
 - Driver discovery and selection from local `modules/**/module.json`
 - Pin assignment validation and conflict detection
 - Configuration preview and file generation
+- Local helper flows for development (templates, flash/monitor helpers, DIY board metadata save)
 
 ## Out of scope (not in this local tool)
 
 - User accounts/profiles
 - Cloud project storage
-- Hosted marketplace/community features
+- App marketplace/catalog management UI
 - Payment or social features
 
 ## Architecture
@@ -76,30 +77,14 @@ curl --fail-with-body -sS "http://127.0.0.1:5000/api/drivers?platform=esp32"
 If you are looking for hosted marketplace/account/community capabilities, those
 belong in the future `basaltos.io` platform codebase, not this local repo tool.
 
-
-## Market Endpoint Toggle
-
-Local market endpoints are disabled by default in local configurator mode.
-
-To re-enable for explicit local testing:
-
-```bash
-BASALTOS_LOCAL_MARKET_ENABLED=1 python tools/basaltos_config_server.py
-```
-
 ## Local Mode Guard Checks
 
 Verify local-mode scope enforcement:
 
 ```bash
-# API should return 404 when market endpoints are disabled by default
-curl -sS -w "\nHTTP_CODE:%{http_code}\n" "http://127.0.0.1:5000/api/market/catalog?platform=esp32"
-
 # UI guard test (requires playwright installed)
 node tools/e2e/local_mode_nav_guard.js
 ```
 
 Expected:
-- market catalog request returns HTTP 404 with disabled-in-local-mode message
 - guard test exits 0
-
