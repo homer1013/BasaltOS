@@ -49,6 +49,7 @@ python tools/basaltos_config_server.py
 - `GET /api/boards/<platform>`
 - `GET /api/drivers?platform=<platform>`
 - `GET /api/board/<board_id>`
+- `GET /api/sync/export-preview`
 - `POST /api/generate`
 - `POST /api/preview/<config_type>`
 

@@ -56,6 +56,7 @@ jobs:
           bash tools/tests/configure_mcp2515_config_validation.sh
           bash tools/tests/configure_esp32s3_reference_smoke.sh
           bash tools/tests/export_local_sync_payload_smoke.sh
+          bash tools/tests/sync_payload_tooling_smoke.sh
           bash tools/tests/release_sync_check_smoke.sh
           bash tools/tests/release_sync_update_smoke.sh
 

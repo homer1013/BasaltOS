@@ -50,6 +50,7 @@ MARKET_FEATURES_ENABLED = os.getenv("BASALTOS_LOCAL_MARKET_ENABLED", "0") == "1"
 # Reuse core configurator logic for correctness
 sys.path.append(str(BASALTOS_ROOT / "tools"))
 import configure as cfg
+import export_local_sync_payload as sync_export
 from pic_codegen import generate_pic16_project, render_basalt_config_preview as render_pic16_preview
 from avr_codegen import generate_avr_project, render_basalt_config_preview as render_avr_preview
 from app_validation import validate_app_dir
@@ -1611,6 +1612,41 @@ def get_templates():
         with open(templates_file, "r", encoding="utf-8") as f:
             return jsonify(json.load(f))
     return jsonify({"templates": []})
+
+
+@app.route('/api/sync/export-preview', methods=['GET'])
+def sync_export_preview():
+    """Return sync export preview envelope summary for local workflow validation."""
+    try:
+        local_root = sync_export.resolve_local_data_root(BASALTOS_ROOT, None)
+        envelope = sync_export.build_envelope(BASALTOS_ROOT, local_root, "v0.1.0")
+        include_content = str(request.args.get("include_content", "")).strip().lower() in ("1", "true", "yes")
+
+        type_counts: Dict[str, int] = {}
+        for item in envelope.get("items", []):
+            t = str(item.get("item_type", ""))
+            type_counts[t] = type_counts.get(t, 0) + 1
+
+        if not include_content:
+            preview_items = []
+            for item in envelope.get("items", []):
+                preview_items.append({
+                    "item_type": item.get("item_type"),
+                    "item_id": item.get("item_id"),
+                    "updated_utc": item.get("updated_utc"),
+                    "content_hash": item.get("content_hash"),
+                })
+            envelope = {**envelope, "items": preview_items}
+
+        return jsonify({
+            "success": True,
+            "schema_version": envelope.get("schema_version"),
+            "item_count": len(envelope.get("items", [])),
+            "type_counts": type_counts,
+            "envelope": envelope,
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
 @app.route('/api/flash/esp32/status', methods=['GET'])

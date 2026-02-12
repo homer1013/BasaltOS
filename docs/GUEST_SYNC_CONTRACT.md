@@ -7,6 +7,8 @@ Status:
 - Local guest-first storage contract exists in `docs/LOCAL_DATA_WORKSPACE.md`.
 - This document defines the payload + behavior handoff for Platform integration.
 - Export tool: `python3 tools/export_local_sync_payload.py`
+- Diff tool: `python3 tools/diff_local_sync_payload.py --local <local.json> --remote <remote.json>`
+- Import tool: `python3 tools/import_local_sync_payload.py --payload <remote.json> --policy manual_per_item --dry-run`
 
 ## Principles
 

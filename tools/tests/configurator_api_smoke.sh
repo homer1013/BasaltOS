@@ -39,6 +39,7 @@ curl --fail-with-body -sS http://127.0.0.1:5000/api/platforms > "$OUT/platforms.
 curl --fail-with-body -sS http://127.0.0.1:5000/api/boards/esp32 > "$OUT/boards_esp32.json"
 curl --fail-with-body -sS "http://127.0.0.1:5000/api/drivers?platform=esp32" > "$OUT/drivers_esp32.json"
 curl --fail-with-body -sS http://127.0.0.1:5000/api/board/esp32-c3-supermini > "$OUT/board_esp32c3.json"
+curl --fail-with-body -sS http://127.0.0.1:5000/api/sync/export-preview > "$OUT/sync_export_preview.json"
 
 cat > "$OUT/generate_payload.json" <<'JSON'
 {
@@ -82,7 +83,7 @@ import json
 from pathlib import Path
 out=Path('tmp/test_configurator_api_smoke')
 
-for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','generate_response.json','preview_response.json']:
+for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','generate_response.json','preview_response.json']:
     p=out/fn
     d=json.load(open(p,'r',encoding='utf-8'))
     if not d:
@@ -95,6 +96,14 @@ if not gen.get('success'):
 prev=json.load(open(out/'preview_response.json','r',encoding='utf-8'))
 if not prev.get('success'):
     raise SystemExit('preview API did not return success=true')
+
+sync=json.load(open(out/'sync_export_preview.json','r',encoding='utf-8'))
+if not sync.get('success'):
+    raise SystemExit('sync export preview API did not return success=true')
+if sync.get('schema_version') != '1.0.0':
+    raise SystemExit('sync export preview schema mismatch')
+if 'envelope' not in sync:
+    raise SystemExit('sync export preview missing envelope')
 
 conf=(out/'conflict_response.txt').read_text(encoding='utf-8')
 if 'HTTP_CODE:400' not in conf:

@@ -16,6 +16,8 @@
 - `basaltos_config_server.py` – local configurator backend + App Market API
 - `platformio/bootstrap_from_features.py` – generate a PlatformIO phase-1 starter config from `config/generated/basalt.features.json`
 - `export_local_sync_payload.py` – export local guest data to schema-versioned sync payload (`docs/GUEST_SYNC_CONTRACT.md`)
+- `diff_local_sync_payload.py` – compare local vs remote payloads by item id/hash
+- `import_local_sync_payload.py` – import remote payloads into local workspace with conflict policy
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -125,6 +127,12 @@ Local sync payload export smoke:
 
 ```bash
 bash tools/tests/export_local_sync_payload_smoke.sh
+```
+
+Sync payload tooling smoke (export + diff + import):
+
+```bash
+bash tools/tests/sync_payload_tooling_smoke.sh
 ```
 
 

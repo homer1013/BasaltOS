@@ -118,6 +118,24 @@ def collect_local_folder_items(base: Path, item_type: str, id_prefix: str, items
         )
 
 
+def build_envelope(repo_root: Path, local_root: Path, app_version: str) -> dict[str, Any]:
+    items: list[dict[str, Any]] = []
+    collect_generated_snapshot(repo_root, items)
+    collect_local_folder_items(local_root / "user" / "configs", "config_snapshot", "config_local", items)
+    collect_local_folder_items(local_root / "user" / "boards", "board_inventory", "board_local", items)
+    collect_local_folder_items(local_root / "user" / "presets", "user_preset", "preset_local", items)
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "source": {
+            "kind": "basaltos_main_local",
+            "app_version": str(app_version),
+            "device_id": deterministic_device_id(),
+        },
+        "exported_utc": now_utc_iso(),
+        "items": items,
+    }
+
+
 def resolve_local_data_root(repo_root: Path, arg_path: str | None) -> Path:
     raw = arg_path or os.environ.get("BASALTOS_LOCAL_DATA_DIR", ".basaltos-local")
     p = Path(raw)
@@ -140,30 +158,15 @@ def main() -> int:
     out_path = Path(args.out).resolve() if args.out else (local_root / "user" / "exports" / f"sync_export_{ts_compact()}.json")
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    items: list[dict[str, Any]] = []
-    collect_generated_snapshot(repo_root, items)
-    collect_local_folder_items(local_root / "user" / "configs", "config_snapshot", "config_local", items)
-    collect_local_folder_items(local_root / "user" / "boards", "board_inventory", "board_local", items)
-    collect_local_folder_items(local_root / "user" / "presets", "user_preset", "preset_local", items)
-
-    envelope = {
-        "schema_version": SCHEMA_VERSION,
-        "source": {
-            "kind": "basaltos_main_local",
-            "app_version": str(args.app_version),
-            "device_id": deterministic_device_id(),
-        },
-        "exported_utc": now_utc_iso(),
-        "items": items,
-    }
+    envelope = build_envelope(repo_root, local_root, args.app_version)
     out_path.write_text(json.dumps(envelope, indent=2) + "\n", encoding="utf-8")
 
     counts: dict[str, int] = {}
-    for i in items:
+    for i in envelope["items"]:
         t = str(i.get("item_type"))
         counts[t] = counts.get(t, 0) + 1
     print(f"[sync-export] wrote: {out_path}")
-    print(f"[sync-export] items: {len(items)}")
+    print(f"[sync-export] items: {len(envelope['items'])}")
     for k in sorted(counts):
         print(f"[sync-export]   {k}: {counts[k]}")
     return 0
