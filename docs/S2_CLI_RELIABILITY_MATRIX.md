@@ -43,7 +43,7 @@ bash tools/tests/run_s2_cli_matrix.sh
 | CLI-09 | Selector script syntax | `bash -n tools/board.sh` | Exit `0` | `commands.log` | Must Pass |
 | CLI-10 | Selector list | `bash tools/board.sh --list` | Exit `0`; list output present | `commands.log` | Must Pass |
 | CLI-11 | Determinism | `bash tools/tests/configure_deterministic_outputs.sh` | Exit `0`; normalized outputs match across runs | `commands.log` | Must Pass |
-| CLI-12 | Broad smoke | `bash tools/tests/configure_smoke_multi_board.sh` | Exit `0`; full board sweep passes | `commands.log` | Must Pass |
+| CLI-12 | Broad smoke | `bash tools/tests/configure_smoke_multi_board.sh` | Exit `0`; full board sweep passes and required platform coverage is present (summary emitted) | `commands.log`, `tmp/test_configure_smoke_multi_board/summary.md` | Must Pass |
 
 ## Artifact Minimum
 
