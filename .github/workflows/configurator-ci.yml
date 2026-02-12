@@ -58,6 +58,7 @@ jobs:
           bash tools/tests/export_local_sync_payload_smoke.sh
           bash tools/tests/sync_payload_tooling_smoke.sh
           bash tools/tests/metadata_completeness_report_smoke.sh
+          python3 tools/metadata_completeness_report.py --fail-under 95 --out tmp/metadata/board_completeness_report.md
           bash tools/tests/release_sync_check_smoke.sh
           bash tools/tests/release_sync_update_smoke.sh
 

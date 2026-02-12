@@ -45,6 +45,12 @@ def main() -> int:
         default="tmp/metadata/board_completeness_report.md",
         help="Output markdown file",
     )
+    ap.add_argument(
+        "--fail-under",
+        type=float,
+        default=None,
+        help="Fail (exit 2) when completeness percentage is below this threshold",
+    )
     args = ap.parse_args()
 
     boards_root = Path(args.boards_root)
@@ -99,6 +105,13 @@ def main() -> int:
     print(f"[metadata] wrote: {out.resolve()}")
     print(f"[metadata] boards: {total}")
     print(f"[metadata] completeness_pct: {pct:.2f}")
+
+    if args.fail_under is not None:
+        threshold = float(args.fail_under)
+        if pct < threshold:
+            print(f"[metadata] gate: FAIL (completeness {pct:.2f}% < threshold {threshold:.2f}%)")
+            return 2
+        print(f"[metadata] gate: PASS (completeness {pct:.2f}% >= threshold {threshold:.2f}%)")
     return 0
 
 

@@ -142,6 +142,12 @@ Metadata completeness report smoke:
 bash tools/tests/metadata_completeness_report_smoke.sh
 ```
 
+Metadata completeness gate (example threshold):
+
+```bash
+python3 tools/metadata_completeness_report.py --fail-under 95 --out tmp/metadata/board_completeness_report.md
+```
+
 
 ## PlatformIO Phase-1 Bootstrap
 
