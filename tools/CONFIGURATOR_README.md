@@ -51,7 +51,9 @@ python tools/basaltos_config_server.py
 - `GET /api/board-taxonomy/meta`
 - `GET /api/board-taxonomy/lookup/<board_ref>`
 - `GET /api/boards/<platform>`
-  - Optional exact-match query filters: `id`, `board_dir`, `manufacturer`, `architecture`, `family`
+  - Optional query filters: `id`, `board_dir`, `manufacturer`, `architecture`, `family`, `silicon`, `q`
+- `GET /api/boards/<platform>/options`
+  - Returns normalized cascading picker options + counts for `manufacturer` → `architecture` → `family` → `silicon` (supports `q`)
 - `GET /api/drivers?platform=<platform>`
 - `GET /api/board/<board_id>`
 - `GET /api/sync/export-preview`

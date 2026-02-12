@@ -3665,7 +3665,9 @@
             const filters = {
                 manufacturer: selectedManufacturer,
                 architecture: selectedArchitecture,
-                family: selectedFamily
+                family: selectedFamily,
+                silicon: selectedSilicon,
+                q: String(document.getElementById('board-search')?.value || '').trim()
             };
             const key = `${selectedPlatform}|${JSON.stringify(filters)}`;
             if (!force && Array.isArray(boardApiFilterCache[key])) {
@@ -3775,54 +3777,54 @@
             return qs ? `/api/board-taxonomy/options?${qs}` : '/api/board-taxonomy/options';
         }
 
+        function boardOptionsUrl(platform, params = {}) {
+            const q = new URLSearchParams();
+            Object.entries(params).forEach(([k, v]) => {
+                const raw = String(v || '').trim();
+                if (raw) q.set(k, raw);
+            });
+            const qs = q.toString();
+            return qs ? `/api/boards/${platform}/options?${qs}` : `/api/boards/${platform}/options`;
+        }
+
         async function refreshTaxonomyOptionsFromApi() {
-            const base = {};
-            if (selectedPlatform) base.platform = selectedPlatform;
-
-            const root = await apiFetchJson(taxonomyOptionsUrl(base));
-            const manu = Array.from(new Set([...(root?.options?.manufacturer || []), ...PREFERRED_MANUFACTURERS])).sort((a, b) => a.localeCompare(b));
-            if (selectedManufacturer && !manu.includes(selectedManufacturer)) {
-                selectedManufacturer = '';
-                selectedArchitecture = '';
-                selectedFamily = '';
-                selectedSilicon = '';
+            const search = String(document.getElementById('board-search')?.value || '').trim();
+            if (selectedPlatform) {
+                const resp = await apiFetchJson(boardOptionsUrl(selectedPlatform, {
+                    manufacturer: selectedManufacturer,
+                    architecture: selectedArchitecture,
+                    family: selectedFamily,
+                    silicon: selectedSilicon,
+                    q: search
+                }));
+                const options = resp?.options || {};
+                const filters = resp?.filters || {};
+                taxonomyOptions = {
+                    manufacturer: Array.from(new Set([...(options.manufacturer || []), ...PREFERRED_MANUFACTURERS])).sort((a, b) => a.localeCompare(b)),
+                    architecture: Array.from(new Set(options.architecture || [])).sort((a, b) => a.localeCompare(b)),
+                    family: Array.from(new Set(options.family || [])).sort((a, b) => a.localeCompare(b)),
+                    silicon: Array.from(new Set(options.silicon || [])).sort((a, b) => a.localeCompare(b)),
+                    counts: resp?.counts || {}
+                };
+                selectedManufacturer = String(filters.manufacturer || '').trim();
+                selectedArchitecture = String(filters.architecture || '').trim();
+                selectedFamily = String(filters.family || '').trim();
+                selectedSilicon = String(filters.silicon || '').trim();
+                return;
             }
 
-            const archResp = await apiFetchJson(taxonomyOptionsUrl({ ...base, manufacturer: selectedManufacturer }));
-            const arch = Array.from(new Set(archResp?.options?.architecture || [])).sort((a, b) => a.localeCompare(b));
-            if (selectedArchitecture && !arch.includes(selectedArchitecture)) {
-                selectedArchitecture = '';
-                selectedFamily = '';
-                selectedSilicon = '';
-            }
-
-            const famResp = await apiFetchJson(taxonomyOptionsUrl({
-                ...base,
-                manufacturer: selectedManufacturer,
-                architecture: selectedArchitecture
-            }));
-            const fam = Array.from(new Set(famResp?.options?.family || [])).sort((a, b) => a.localeCompare(b));
-            if (selectedFamily && !fam.includes(selectedFamily)) {
-                selectedFamily = '';
-                selectedSilicon = '';
-            }
-
-            const silResp = await apiFetchJson(taxonomyOptionsUrl({
-                ...base,
-                manufacturer: selectedManufacturer,
-                architecture: selectedArchitecture,
-                family: selectedFamily
-            }));
-            const silRows = Array.isArray(silResp?.boards) ? silResp.boards : [];
-            const sil = Array.from(new Set(silRows.map(b => String(b?.mcu || '').trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b));
-            if (selectedSilicon && !sil.includes(selectedSilicon)) selectedSilicon = '';
-
+            // Fallback for "all platforms" mode.
+            const root = await apiFetchJson(taxonomyOptionsUrl({}));
             taxonomyOptions = {
-                manufacturer: manu,
-                architecture: arch,
-                family: fam,
-                silicon: sil
+                manufacturer: Array.from(new Set([...(root?.options?.manufacturer || []), ...PREFERRED_MANUFACTURERS])).sort((a, b) => a.localeCompare(b)),
+                architecture: Array.from(new Set(root?.options?.architecture || [])).sort((a, b) => a.localeCompare(b)),
+                family: Array.from(new Set(root?.options?.family || [])).sort((a, b) => a.localeCompare(b)),
+                silicon: []
             };
+            if (selectedManufacturer && !taxonomyOptions.manufacturer.includes(selectedManufacturer)) selectedManufacturer = '';
+            if (selectedArchitecture && !taxonomyOptions.architecture.includes(selectedArchitecture)) selectedArchitecture = '';
+            if (selectedFamily && !taxonomyOptions.family.includes(selectedFamily)) selectedFamily = '';
+            selectedSilicon = '';
         }
 
         function applyHierarchyFilters() {
@@ -6443,11 +6445,16 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
             const siliconSel = document.getElementById('silicon-select');
             if (siliconSel) {
-                siliconSel.addEventListener('change', () => {
+                siliconSel.addEventListener('change', async () => {
                     selectedSilicon = String(siliconSel.value || '');
                     selectedBoard = null;
                     const boardDetails = document.getElementById('board-details');
                     if (boardDetails) boardDetails.style.display = 'none';
+                    await refreshTaxonomyOptionsFromApi().catch(err => {
+                        console.warn('Failed to refresh taxonomy options:', err);
+                        taxonomyOptions = null;
+                    });
+                    await refreshBoardsForCurrentFilters({ force: true });
                     populateBoardList();
                     renderTemplateFilters();
                     renderTemplates();
@@ -6456,7 +6463,12 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 });
             }
 
-            document.getElementById('board-search').oninput = () => {
+            document.getElementById('board-search').oninput = async () => {
+                await refreshTaxonomyOptionsFromApi().catch(err => {
+                    console.warn('Failed to refresh taxonomy options:', err);
+                    taxonomyOptions = null;
+                });
+                await refreshBoardsForCurrentFilters({ force: true });
                 populateBoardList();
                 persistFilterStateToUrl();
             };

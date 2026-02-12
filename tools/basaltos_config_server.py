@@ -1613,12 +1613,16 @@ def _filter_boards_with_taxonomy(
     manufacturer: str = "",
     architecture: str = "",
     family: str = "",
+    silicon: str = "",
+    q: str = "",
 ) -> List[Dict[str, Any]]:
     board_id = str(board_id or "").strip().lower()
     board_dir = str(board_dir or "").strip().lower()
     manufacturer = str(manufacturer or "").strip().lower()
     architecture = str(architecture or "").strip().lower()
     family = str(family or "").strip().lower()
+    silicon = str(silicon or "").strip().lower()
+    q = str(q or "").strip().lower()
 
     if not any((board_id, board_dir, manufacturer, architecture, family)):
         return boards
@@ -1649,6 +1653,15 @@ def _filter_boards_with_taxonomy(
             continue
         if not _match(row.get("family"), family):
             continue
+        if not _match(row.get("mcu"), silicon):
+            continue
+        if q:
+            hay = " ".join(
+                str(row.get(k) or "")
+                for k in ("id", "board_dir", "name", "manufacturer", "architecture", "family", "mcu")
+            ).lower()
+            if q not in hay:
+                continue
         rid = str(row.get("id") or "").strip().lower()
         if rid:
             allow_ids.add(rid)
@@ -1662,6 +1675,108 @@ def _filter_boards_with_taxonomy(
         if bid in allow_ids:
             out.append(b)
     return out
+
+
+def _board_options_response(platform: str, manufacturer: str = "", architecture: str = "", family: str = "", silicon: str = "", q: str = "") -> Dict[str, Any]:
+    def _norm(value: Any) -> str:
+        return str(value or "").strip()
+
+    def _norm_l(value: Any) -> str:
+        return _norm(value).lower()
+
+    def _match(value: Any, needle: str) -> bool:
+        if not needle:
+            return True
+        return _norm_l(value) == needle
+
+    index_obj = config_gen._read_json(BOARD_TAXONOMY_INDEX_FILE, {})
+    rows = index_obj.get("boards") if isinstance(index_obj, dict) else []
+    if not isinstance(rows, list):
+        rows = []
+
+    plat = _norm_l(platform)
+    rows = [r for r in rows if isinstance(r, dict) and _match(r.get("platform"), plat)]
+
+    query = _norm_l(q)
+    if query:
+        def _row_has_query(row: Dict[str, Any]) -> bool:
+            hay = " ".join(
+                _norm(row.get(k))
+                for k in ("id", "board_dir", "name", "manufacturer", "architecture", "family", "mcu")
+            ).lower()
+            return query in hay
+        rows = [r for r in rows if _row_has_query(r)]
+
+    def _counts(rows_in: List[Dict[str, Any]], key: str) -> Dict[str, int]:
+        out: Dict[str, int] = {}
+        for r in rows_in:
+            v = _norm(r.get(key))
+            if not v:
+                continue
+            out[v] = out.get(v, 0) + 1
+        return dict(sorted(out.items(), key=lambda kv: (-kv[1], kv[0].lower())))
+
+    manufacturer = _norm(manufacturer)
+    architecture = _norm(architecture)
+    family = _norm(family)
+    silicon = _norm(silicon)
+
+    manufacturer_counts = _counts(rows, "manufacturer")
+    manufacturers = list(manufacturer_counts.keys())
+    if manufacturer and manufacturer not in manufacturers:
+        manufacturer = ""
+    by_manu = [r for r in rows if not manufacturer or _match(r.get("manufacturer"), manufacturer.lower())]
+
+    architecture_counts = _counts(by_manu, "architecture")
+    architectures = list(architecture_counts.keys())
+    if architecture and architecture not in architectures:
+        architecture = ""
+    by_arch = [r for r in by_manu if not architecture or _match(r.get("architecture"), architecture.lower())]
+
+    family_counts = _counts(by_arch, "family")
+    families = list(family_counts.keys())
+    if family and family not in families:
+        family = ""
+    by_family = [r for r in by_arch if not family or _match(r.get("family"), family.lower())]
+
+    silicon_counts = _counts(by_family, "mcu")
+    silicons = list(silicon_counts.keys())
+    if silicon and silicon not in silicons:
+        silicon = ""
+    final_rows = [r for r in by_family if not silicon or _match(r.get("mcu"), silicon.lower())]
+
+    return {
+        "success": True,
+        "filters": {
+            "platform": plat,
+            "manufacturer": manufacturer,
+            "architecture": architecture,
+            "family": family,
+            "silicon": silicon,
+            "q": _norm(q),
+        },
+        "summary": {
+            "total_boards": len(final_rows),
+            "options_count": {
+                "manufacturer": len(manufacturers),
+                "architecture": len(architectures),
+                "family": len(families),
+                "silicon": len(silicons),
+            },
+        },
+        "counts": {
+            "manufacturer": manufacturer_counts,
+            "architecture": architecture_counts,
+            "family": family_counts,
+            "silicon": silicon_counts,
+        },
+        "options": {
+            "manufacturer": manufacturers,
+            "architecture": architectures,
+            "family": families,
+            "silicon": silicons,
+        },
+    }
 
 
 @app.route('/api/platforms', methods=['GET'])
@@ -1759,8 +1874,27 @@ def get_boards(platform):
         manufacturer=request.args.get('manufacturer', ''),
         architecture=request.args.get('architecture', ''),
         family=request.args.get('family', ''),
+        silicon=request.args.get('silicon', ''),
+        q=request.args.get('q', ''),
     )
     return jsonify(boards)
+
+
+@app.route('/api/boards/<platform>/options', methods=['GET'])
+def get_board_options(platform):
+    """Get cascading board picker options and counts for a platform."""
+    try:
+        payload = _board_options_response(
+            platform=platform,
+            manufacturer=request.args.get('manufacturer', ''),
+            architecture=request.args.get('architecture', ''),
+            family=request.args.get('family', ''),
+            silicon=request.args.get('silicon', ''),
+            q=request.args.get('q', ''),
+        )
+        return jsonify(payload)
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Failed to load board options: {e}"}), 500
 
 
 @app.route('/api/targets', methods=['GET'])

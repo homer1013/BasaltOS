@@ -55,6 +55,8 @@ PY
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/platforms" > "$OUT/platforms.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/boards/esp32" > "$OUT/boards_esp32.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/boards/esp32?id=esp32-c3-supermini" > "$OUT/boards_esp32_filtered.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/boards/esp32?silicon=ESP32-C3&q=supermini" > "$OUT/boards_esp32_filtered_search.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/boards/esp32/options" > "$OUT/boards_esp32_options.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/drivers?platform=esp32" > "$OUT/drivers_esp32.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board/esp32-c3-supermini" > "$OUT/board_esp32c3.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/sync/export-preview" > "$OUT/sync_export_preview.json"
@@ -108,7 +110,7 @@ import json
 from pathlib import Path
 out=Path('tmp/test_configurator_api_smoke')
 
-for fn in ['platforms.json','boards_esp32.json','boards_esp32_filtered.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','board_taxonomy_options.json','board_taxonomy_options_filtered.json','board_taxonomy_meta.json','board_taxonomy_lookup.json','generate_response.json','preview_response.json']:
+for fn in ['platforms.json','boards_esp32.json','boards_esp32_filtered.json','boards_esp32_filtered_search.json','boards_esp32_options.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','board_taxonomy_options.json','board_taxonomy_options_filtered.json','board_taxonomy_meta.json','board_taxonomy_lookup.json','generate_response.json','preview_response.json']:
     p=out/fn
     d=json.load(open(p,'r',encoding='utf-8'))
     if not d:
@@ -145,6 +147,22 @@ if len(boards_f) != 1:
     raise SystemExit('filtered /api/boards by id should return exactly one board')
 if str((boards_f[0] or {}).get('id')) != 'esp32-c3-supermini':
     raise SystemExit('filtered /api/boards returned unexpected board id')
+
+boards_fq=json.load(open(out/'boards_esp32_filtered_search.json','r',encoding='utf-8'))
+if not isinstance(boards_fq, list):
+    raise SystemExit('search-filtered /api/boards must return a list')
+if not any(str((b or {}).get('id')) == 'esp32-c3-supermini' for b in boards_fq):
+    raise SystemExit('search/silicon filtered /api/boards missing expected board')
+
+bopt=json.load(open(out/'boards_esp32_options.json','r',encoding='utf-8'))
+if not bopt.get('success'):
+    raise SystemExit('board options API did not return success=true')
+if bopt.get('filters', {}).get('platform') != 'esp32':
+    raise SystemExit('board options API did not echo platform filter')
+if not isinstance((bopt.get('options') or {}).get('manufacturer'), list) or len((bopt.get('options') or {}).get('manufacturer') or []) == 0:
+    raise SystemExit('board options API missing manufacturer options')
+if 'silicon' not in (bopt.get('counts') or {}):
+    raise SystemExit('board options API missing silicon counts')
 
 tax_f=json.load(open(out/'board_taxonomy_filtered.json','r',encoding='utf-8'))
 if not tax_f.get('success'):
