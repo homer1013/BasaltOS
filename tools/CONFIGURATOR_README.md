@@ -58,6 +58,10 @@ python tools/basaltos_config_server.py
 - `POST /api/generate`
 - `POST /api/preview/<config_type>`
 
+Board picker behavior:
+- When a platform is selected, the UI calls filtered `/api/boards/<platform>` requests using taxonomy fields (`manufacturer`, `architecture`, `family`).
+- Filter/search state is persisted to URL query params for quick reload/share during local dev.
+
 ## Expected Outputs
 
 Generation writes config artifacts such as:

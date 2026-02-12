@@ -3062,7 +3062,9 @@
                 if (!data?.success) throw new Error(data?.error || 'Failed to save board');
 
                 const platform = payload.platform || selectedPlatform;
-                boards[platform] = await apiFetchJson(`/api/boards/${platform}`);
+                boardsAll[platform] = cloneBoardRows(await apiFetchJson(`/api/boards/${platform}`));
+                boardApiFilterCache = {};
+                boards[platform] = cloneBoardRows(boardsAll[platform]);
                 if (selectedPlatform !== platform) {
                     selectedPlatform = platform;
                     const platformSelect = document.getElementById('platform-select');
@@ -3070,6 +3072,11 @@
                     await refreshModulesForPlatform(selectedPlatform);
                     await refreshMarketCatalogForPlatform(selectedPlatform);
                 }
+                await refreshTaxonomyOptionsFromApi().catch(err => {
+                    console.warn('Failed to refresh taxonomy options:', err);
+                    taxonomyOptions = null;
+                });
+                await refreshBoardsForCurrentFilters({ force: true });
                 populateBoardList();
                 const created = (boards[platform] || []).find(b => String(b.id) === String(payload.id));
                 if (created) await selectBoard(created);
@@ -3092,6 +3099,9 @@
         // Data structures
         let platforms = [];
         let boards = {};
+        let boardsAll = {};
+        let boardApiFilterCache = {};
+        let boardApiRequestSeq = 0;
         let modules = [];
         let applets = [];
         let appletStates = {};
@@ -3625,6 +3635,58 @@
             return out;
         }
 
+        function cloneBoardRows(rows) {
+            return (Array.isArray(rows) ? rows : []).map(row => ({ ...row }));
+        }
+
+        function resetBoardsFromAll() {
+            boards = {};
+            Object.entries(boardsAll || {}).forEach(([platformId, rows]) => {
+                boards[platformId] = cloneBoardRows(rows);
+            });
+        }
+
+        function boardsApiUrl(platform, filters = {}) {
+            const params = new URLSearchParams();
+            Object.entries(filters || {}).forEach(([k, v]) => {
+                const raw = String(v || '').trim();
+                if (raw) params.set(k, raw);
+            });
+            const qs = params.toString();
+            return qs ? `/api/boards/${platform}?${qs}` : `/api/boards/${platform}`;
+        }
+
+        async function refreshBoardsForCurrentFilters({ force = false } = {}) {
+            if (!selectedPlatform) {
+                resetBoardsFromAll();
+                return;
+            }
+
+            const filters = {
+                manufacturer: selectedManufacturer,
+                architecture: selectedArchitecture,
+                family: selectedFamily
+            };
+            const key = `${selectedPlatform}|${JSON.stringify(filters)}`;
+            if (!force && Array.isArray(boardApiFilterCache[key])) {
+                boards[selectedPlatform] = cloneBoardRows(boardApiFilterCache[key]);
+                return;
+            }
+
+            const reqId = ++boardApiRequestSeq;
+            try {
+                const rows = await apiFetchJson(boardsApiUrl(selectedPlatform, filters));
+                if (reqId !== boardApiRequestSeq) return;
+                const safeRows = cloneBoardRows(rows);
+                boardApiFilterCache[key] = safeRows;
+                boards[selectedPlatform] = cloneBoardRows(safeRows);
+            } catch (err) {
+                if (reqId !== boardApiRequestSeq) return;
+                console.warn('Failed to refresh filtered boards from API:', err);
+                boards[selectedPlatform] = cloneBoardRows(boardsAll[selectedPlatform]);
+            }
+        }
+
         function setSelectOptions(selectEl, values, placeholder) {
             if (!selectEl) return;
             const prev = selectEl.value;
@@ -3767,6 +3829,7 @@
             const search = String(document.getElementById('board-search')?.value || '').trim().toLowerCase();
             return allBoardsFlat().filter(board => {
                 const tx = boardTaxonomy(board);
+                if (selectedPlatform && String(board?.platform || '').toLowerCase() !== String(selectedPlatform || '').toLowerCase()) return false;
                 if (selectedManufacturer && tx.manufacturer !== selectedManufacturer) return false;
                 if (selectedArchitecture && tx.architecture !== selectedArchitecture) return false;
                 if (selectedFamily && tx.family !== selectedFamily) return false;
@@ -3859,8 +3922,11 @@
                 platforms = await apiFetchJson('/api/platforms');
 
                 boards = {};
+                boardsAll = {};
+                boardApiFilterCache = {};
                 for (const p of platforms) {
-                    boards[p.id] = await apiFetchJson(`/api/boards/${p.id}`);
+                    boardsAll[p.id] = cloneBoardRows(await apiFetchJson(`/api/boards/${p.id}`));
+                    boards[p.id] = cloneBoardRows(boardsAll[p.id]);
                 }
 
                 if (selectedPlatform) {
@@ -4847,6 +4913,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             } catch (err) {
                 console.warn('Failed to load taxonomy options:', err);
             }
+            await refreshBoardsForCurrentFilters({ force: true });
             if (!ok || !platforms || platforms.length === 0) {
                 showPlatformError('No platforms loaded. Check http://localhost:5000/api/platforms');
             }
@@ -5020,6 +5087,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             } catch (err) {
                 console.warn('Failed to refresh taxonomy options after board select:', err);
             }
+            await refreshBoardsForCurrentFilters({ force: true });
             
             // Update UI
             document.querySelectorAll('.board-item').forEach(item => {
@@ -6224,6 +6292,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                         console.warn('Failed to refresh taxonomy options:', err);
                         taxonomyOptions = null;
                     });
+                    await refreshBoardsForCurrentFilters({ force: true });
                     populateBoardList();
                     populateModuleGrid();
                     renderSelectedAppsVisibility();
@@ -6283,6 +6352,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     console.warn('Failed to refresh taxonomy options:', err);
                     taxonomyOptions = null;
                 });
+                await refreshBoardsForCurrentFilters({ force: true });
                 populateBoardList();
                 if (selectedPlatform) {
                     await refreshModulesForPlatform(selectedPlatform);
@@ -6319,6 +6389,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                         console.warn('Failed to refresh taxonomy options:', err);
                         taxonomyOptions = null;
                     });
+                    await refreshBoardsForCurrentFilters({ force: true });
                     populateBoardList();
                     renderTemplateFilters();
                     renderTemplates();
@@ -6340,6 +6411,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                         console.warn('Failed to refresh taxonomy options:', err);
                         taxonomyOptions = null;
                     });
+                    await refreshBoardsForCurrentFilters({ force: true });
                     populateBoardList();
                     renderTemplateFilters();
                     renderTemplates();
@@ -6360,6 +6432,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                         console.warn('Failed to refresh taxonomy options:', err);
                         taxonomyOptions = null;
                     });
+                    await refreshBoardsForCurrentFilters({ force: true });
                     populateBoardList();
                     renderTemplateFilters();
                     renderTemplates();
