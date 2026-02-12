@@ -1001,6 +1001,19 @@
         "intentional_advanced_peripheral_opt_in": 331
       },
       "actionable_top_modules_by_platform": {}
+    },
+    "foundation_focus_summary": {
+      "gap_row_count": 383,
+      "bucket_counts": {
+        "intentional": 383
+      },
+      "label_counts": {
+        "intentional_wireless_capability_gate": 41,
+        "intentional_advanced_peripheral_opt_in": 331,
+        "intentional_8bit_mic_scope": 6,
+        "intentional_wireless_scope": 5
+      },
+      "actionable_top_modules_by_platform": {}
     }
   },
   "rows": [

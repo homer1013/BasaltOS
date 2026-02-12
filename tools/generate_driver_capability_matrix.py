@@ -369,6 +369,47 @@ def build_advanced_policy_summary(rows: List[Dict[str, str]]) -> Dict[str, Any]:
     }
 
 
+def classify_row_policy(row: Dict[str, str]) -> Dict[str, str]:
+    reason = str(row.get("reason") or "")
+    if reason == "module_platform_mismatch":
+        c = classify_mismatch_policy(row)
+        return {"bucket": c["bucket"], "label": c["label"], "module": str(row.get("module_id") or "")}
+    if reason.startswith("not_allowed:"):
+        return classify_not_allowed_policy(row)
+    return {"bucket": "unclassified", "label": "unclassified_reason", "module": str(row.get("module_id") or "")}
+
+
+def build_foundation_focus_summary(rows: List[Dict[str, str]]) -> Dict[str, Any]:
+    gap_rows = [r for r in rows if str(r.get("status") or "") != "SUPPORTED"]
+    bucket_counts = Counter()
+    label_counts = Counter()
+    actionable_by_platform: Dict[str, Counter] = defaultdict(Counter)
+
+    for r in gap_rows:
+        c = classify_row_policy(r)
+        bucket = c["bucket"]
+        label = c["label"]
+        module_id = c["module"] or str(r.get("module_id") or "")
+        bucket_counts[bucket] += 1
+        label_counts[label] += 1
+        if bucket == "actionable" and module_id:
+            actionable_by_platform[str(r.get("platform") or "")][module_id] += 1
+
+    actionable_top: Dict[str, List[Dict[str, Any]]] = {}
+    for platform in sorted(actionable_by_platform.keys()):
+        actionable_top[platform] = [
+            {"module_id": mid, "count": int(cnt)}
+            for mid, cnt in actionable_by_platform[platform].most_common(8)
+        ]
+
+    return {
+        "gap_row_count": len(gap_rows),
+        "bucket_counts": dict(bucket_counts),
+        "label_counts": dict(label_counts),
+        "actionable_top_modules_by_platform": actionable_top,
+    }
+
+
 def write_csv(rows: List[Dict[str, str]], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fields = [
@@ -497,6 +538,30 @@ def write_gap_report_md(gap_report: Dict[str, Any], out_path: Path) -> None:
                 f"{item.get('module_id')} ({int(item.get('count', 0))})" for item in actionable_adv.get(platform, [])
             ))
         lines.append("")
+
+    focus = gap_report.get("foundation_focus_summary") or {}
+    lines.append("## Foundation Focus View")
+    lines.append("")
+    lines.append(f"- Total gap rows considered: {int(focus.get('gap_row_count', 0))}")
+    fb = focus.get("bucket_counts") or {}
+    lines.append(f"- Actionable rows: {int(fb.get('actionable', 0))}")
+    lines.append(f"- Intentional rows: {int(fb.get('intentional', 0))}")
+    lines.append("")
+    lines.append("| Foundation Focus Label | Count |")
+    lines.append("|---|---|")
+    for label, count in sorted((focus.get("label_counts") or {}).items(), key=lambda kv: (-int(kv[1]), kv[0])):
+        lines.append(f"| {label} | {int(count)} |")
+    lines.append("")
+
+    actionable_focus = focus.get("actionable_top_modules_by_platform") or {}
+    if actionable_focus:
+        lines.append("### Foundation Actionable Top Modules By Platform")
+        lines.append("")
+        for platform in sorted(actionable_focus.keys()):
+            lines.append(f"- {platform}: " + ", ".join(
+                f"{item.get('module_id')} ({int(item.get('count', 0))})" for item in actionable_focus.get(platform, [])
+            ))
+        lines.append("")
         for platform in sorted(actionable.keys()):
             lines.append(f"- {platform}: " + ", ".join(
                 f"{item.get('module_id')} ({int(item.get('count', 0))})" for item in actionable.get(platform, [])
@@ -546,6 +611,7 @@ def main() -> int:
     gap_report = build_gap_report(rows)
     gap_report["policy_summary"] = build_policy_summary(rows)
     gap_report["advanced_policy_summary"] = build_advanced_policy_summary(rows)
+    gap_report["foundation_focus_summary"] = build_foundation_focus_summary(rows)
 
     write_csv(rows, csv_out)
     write_json(rows, summary, gap_report, json_out)
