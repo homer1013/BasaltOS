@@ -91,7 +91,7 @@
       "architecture": "AVR 8-bit",
       "family": "ATmega328",
       "mcu": "ATmega328P",
-      "caps_count": 6
+      "caps_count": 7
     },
     {
       "platform": "atsam",
@@ -102,7 +102,7 @@
       "architecture": "ARM Cortex-M",
       "family": "SAMD21",
       "mcu": "ATSAMD21G18",
-      "caps_count": 7
+      "caps_count": 8
     },
     {
       "platform": "atsam",
@@ -300,7 +300,7 @@
       "architecture": "PIC 8-bit",
       "family": "PIC16",
       "mcu": "PIC16F13145",
-      "caps_count": 7
+      "caps_count": 9
     },
     {
       "platform": "pic16",
@@ -355,7 +355,7 @@
       "architecture": "Renesas RX 32-bit",
       "family": "RX65",
       "mcu": "Renesas RX65N",
-      "caps_count": 7
+      "caps_count": 8
     },
     {
       "platform": "renesas_rx",
@@ -388,7 +388,7 @@
       "architecture": "ARM Cortex-M0+",
       "family": "RP2040",
       "mcu": "RP2040",
-      "caps_count": 7
+      "caps_count": 8
     },
     {
       "platform": "rp2040",
@@ -443,7 +443,7 @@
       "architecture": "ARM Cortex-M",
       "family": "STM32F4",
       "mcu": "STM32F401RE",
-      "caps_count": 7
+      "caps_count": 8
     },
     {
       "platform": "stm32",

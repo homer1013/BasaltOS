@@ -22,6 +22,8 @@
     "eeprom"
   ],
   "pins": {
+    "uart_tx": 1,
+    "uart_rx": 0,
     "uart0_tx": 1,
     "uart0_rx": 0,
     "uart1_tx": 18,
@@ -39,6 +41,20 @@
     "led": 13
   },
   "pin_definitions": {
+    "uart_tx": {
+      "description": "Primary UART TX alias (Serial0)",
+      "alternatives": [
+        1
+      ],
+      "type": "output"
+    },
+    "uart_rx": {
+      "description": "Primary UART RX alias (Serial0)",
+      "alternatives": [
+        0
+      ],
+      "type": "input"
+    },
     "uart0_tx": {
       "description": "Serial0 TX",
       "alternatives": [

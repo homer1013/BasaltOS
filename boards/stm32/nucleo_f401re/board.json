@@ -15,6 +15,7 @@
     "gpio",
     "adc",
     "pwm",
+    "timer",
     "debug_swd"
   ],
   "pins": {
