@@ -1,0 +1,40 @@
+{
+  "version": "1.0.0",
+  "source_seed": "docs/planning/MANUFACTURER_STARTER_CANDIDATES.json",
+  "source_taxonomy": "docs/BOARD_TAXONOMY_INDEX.json",
+  "items": [
+    {
+      "manufacturer": "DF Robot",
+      "priority": "P2",
+      "platform": "esp32",
+      "family": "",
+      "board_dir": "dfrobot_beetle_esp32_c3",
+      "board_name": "DFRobot Beetle ESP32-C3",
+      "lane": "planned",
+      "rationale": "Future C3 coverage candidate.",
+      "scaffold_command": "python3 tools/board_intake_scaffold.py --manufacturer \"DF Robot\" --family \"TBD\" --platform esp32 --board-id dfrobot_beetle_esp32_c3 --board-name \"DFRobot Beetle ESP32-C3\""
+    },
+    {
+      "manufacturer": "Elecrow",
+      "priority": "P2",
+      "platform": "esp32",
+      "family": "",
+      "board_dir": "elecrow_crowpanel_esp32_s3",
+      "board_name": "Elecrow CrowPanel ESP32-S3",
+      "lane": "planned",
+      "rationale": "Future S3 display-focused candidate.",
+      "scaffold_command": "python3 tools/board_intake_scaffold.py --manufacturer \"Elecrow\" --family \"TBD\" --platform esp32 --board-id elecrow_crowpanel_esp32_s3 --board-name \"Elecrow CrowPanel ESP32-S3\""
+    },
+    {
+      "manufacturer": "Seeed Studio",
+      "priority": "P2",
+      "platform": "rp2040",
+      "family": "",
+      "board_dir": "seeed_xiao_rp2040",
+      "board_name": "Seeed XIAO RP2040",
+      "lane": "planned",
+      "rationale": "High-value next profile for RP2040 lane.",
+      "scaffold_command": "python3 tools/board_intake_scaffold.py --manufacturer \"Seeed Studio\" --family \"TBD\" --platform rp2040 --board-id seeed_xiao_rp2040 --board-name \"Seeed XIAO RP2040\""
+    }
+  ]
+}

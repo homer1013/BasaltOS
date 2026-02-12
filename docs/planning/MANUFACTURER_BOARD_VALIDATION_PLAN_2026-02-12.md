@@ -6,6 +6,8 @@ Primary matrix artifacts (generated):
 
 - `docs/planning/MANUFACTURER_BOARD_MATRIX.csv`
 - `docs/planning/MANUFACTURER_BOARD_MATRIX.md`
+- `docs/planning/MANUFACTURER_PROFILE_CREATION_QUEUE.json`
+- `docs/planning/MANUFACTURER_PROFILE_CREATION_QUEUE.md`
 
 Generate/update:
 

@@ -30,6 +30,7 @@
       "manufacturer": "Seeed Studio",
       "platform": "rp2040",
       "board_dir": "seeed_xiao_rp2040",
+      "board_name": "Seeed XIAO RP2040",
       "priority": "P2",
       "lane": "planned",
       "rationale": "High-value next profile for RP2040 lane."
@@ -62,6 +63,7 @@
       "manufacturer": "DF Robot",
       "platform": "esp32",
       "board_dir": "dfrobot_beetle_esp32_c3",
+      "board_name": "DFRobot Beetle ESP32-C3",
       "priority": "P2",
       "lane": "planned",
       "rationale": "Future C3 coverage candidate."
@@ -78,6 +80,7 @@
       "manufacturer": "Elecrow",
       "platform": "esp32",
       "board_dir": "elecrow_crowpanel_esp32_s3",
+      "board_name": "Elecrow CrowPanel ESP32-S3",
       "priority": "P2",
       "lane": "planned",
       "rationale": "Future S3 display-focused candidate."
