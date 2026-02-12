@@ -124,16 +124,6 @@
             background: #f1f5f9;
         }
 
-        .profile-chip {
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: #ecfeff;
-            color: #155e75;
-            font-weight: 700;
-            font-size: 12px;
-            border: 1px solid #a5f3fc;
-        }
-
         .btn-nav {
             border: 1px solid #cbd5e1;
             background: #ffffff;
@@ -210,7 +200,7 @@
 
         .landing-stat {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-top: 10px;
         }
@@ -230,93 +220,8 @@
             color: #1d4ed8;
         }
 
-        #configurator-shell, #market-shell, #profile-shell {
+        #configurator-shell {
             display: none;
-        }
-
-        .market-shell {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 22px;
-            border: 1px solid #dbeafe;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-        }
-
-        .profile-shell {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 22px;
-            border: 1px solid #dbeafe;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-        }
-
-        .market-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-        .market-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
-        }
-
-        .market-card {
-            border: 1px solid #dbeafe;
-            border-radius: 10px;
-            background: #f8fbff;
-            padding: 12px;
-        }
-
-        .market-card h4 {
-            margin-bottom: 6px;
-            color: #0f172a;
-        }
-
-        .market-card p {
-            font-size: 13px;
-            color: #475569;
-            min-height: 36px;
-        }
-
-        .market-meta {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 8px;
-        }
-
-        .market-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .market-upload {
-            margin-top: 20px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 14px;
-        }
-
-        .market-upload-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .market-upload-grid input,
-        .market-upload-grid textarea {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 13px;
         }
 
         .wizard-steps {
@@ -471,72 +376,6 @@
             margin: 10px 0 6px;
             padding-bottom: 4px;
             border-bottom: 1px solid #e2e8f0;
-        }
-
-        .profile-card {
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 8px;
-            background: #f8fbff;
-            border: 1px solid #d9e7ff;
-        }
-
-        .profile-card label {
-            display: block;
-            font-size: 12px;
-            color: #4a5568;
-            margin-bottom: 6px;
-        }
-
-        .profile-card input[type="text"] {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            margin-bottom: 8px;
-        }
-
-        .profile-stats {
-            font-size: 12px;
-            color: #2d3748;
-            margin-bottom: 8px;
-        }
-
-        .inventory-panel {
-            margin-top: 8px;
-            border-top: 1px solid #d9e7ff;
-            padding-top: 8px;
-        }
-
-        .inventory-list {
-            max-height: 170px;
-            overflow: auto;
-            margin-top: 8px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 8px;
-            background: #fff;
-        }
-
-        .inventory-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-            font-size: 12px;
-            color: #2d3748;
-        }
-
-        .profile-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin: 10px 0;
-        }
-
-        .profile-actions .btn {
-            font-size: 12px;
-            padding: 8px 10px;
         }
 
         .board-empty {
@@ -1832,16 +1671,12 @@
             <div class="topbar-actions">
                 <button id="btn-home" class="btn-nav" type="button">Home</button>
                 <button id="btn-open-config" class="btn-nav" type="button">Open Configurator</button>
-                <button id="btn-market" class="btn-nav" type="button">Local App Catalog</button>
                 <div class="topbar-menu">
                     <button id="btn-overflow-menu" class="btn-overflow" type="button" aria-label="More options">⋯</button>
                     <div id="overflow-menu" class="overflow-menu">
-                        <button id="menu-profile" type="button">Profile & Inventory</button>
-                        <button id="menu-switch-user" type="button">Edit Local Builder Name</button>
                         <button id="menu-diy-board" type="button">DIY Board Creator</button>
                     </div>
                 </div>
-                <div id="top-profile-chip" class="profile-chip">Guest</div>
             </div>
         </div>
 
@@ -1860,7 +1695,6 @@
                     <div class="landing-stat">
                         <div class="landing-stat-box"><strong id="stat-platforms">0</strong>Platforms</div>
                         <div class="landing-stat-box"><strong id="stat-boards">0</strong>Boards</div>
-                        <div class="landing-stat-box"><strong id="stat-market">0</strong>Catalog Apps</div>
                     </div>
                 </div>
                 <div class="landing-card">
@@ -1878,76 +1712,6 @@
                         <li>Watch memory bars in every step and keep usage below ~85% when possible.</li>
                         <li>Web flasher supports Windows COM and Linux/macOS tty devices.</li>
                     </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="market-shell" class="market-shell">
-            <div class="market-header">
-                <div>
-                    <h2>Local App Catalog</h2>
-                    <div style="font-size:13px; color:#475569; margin-top:4px;">
-                        Browse local catalog apps, download packages, upload your own, and add compatible apps to the current build.
-                    </div>
-                </div>
-                <div class="market-actions">
-                    <input type="text" id="market-page-search" class="search-box" placeholder="Search catalog apps..." style="margin:0; min-width: 260px;">
-                    <button id="btn-market-refresh" class="btn btn-secondary" type="button">Refresh</button>
-                    <button id="btn-market-to-config" class="btn btn-primary" type="button">Back to Configurator</button>
-                </div>
-            </div>
-            <div id="market-page-grid" class="market-grid"></div>
-            <div class="market-upload">
-                <h3>Upload App Package</h3>
-                <div style="font-size:13px; color:#475569;">Upload a zip with <code>main.py</code> at package root (or one top-level folder).</div>
-                <div class="market-upload-grid">
-                    <input id="market-upload-id" type="text" placeholder="App ID (e.g. paint_plus)">
-                    <input id="market-upload-name" type="text" placeholder="Display name">
-                    <input id="market-upload-version" type="text" placeholder="Version (e.g. 0.1.0)">
-                    <input id="market-upload-author" type="text" placeholder="Author">
-                    <input id="market-upload-platforms" type="text" value="esp32" placeholder="Platforms (comma-separated)">
-                    <textarea id="market-upload-description" rows="2" placeholder="Description"></textarea>
-                    <input id="market-upload-package" type="file" accept=".zip,application/zip">
-                </div>
-                <div class="market-actions">
-                    <button id="btn-market-upload" class="btn btn-success" type="button">Add to Local Catalog</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="profile-shell" class="profile-shell">
-            <div class="market-header">
-                <div>
-                    <h2>Profile & Inventory</h2>
-                    <div style="font-size:13px; color:#475569; margin-top:4px;">
-                        Manage your builder name and board ownership list.
-                    </div>
-                </div>
-                <div class="market-actions">
-                    <button id="btn-profile-to-config" class="btn btn-primary" type="button">Open Configurator</button>
-                    <button id="btn-profile-to-home" class="btn btn-secondary" type="button">Home</button>
-                </div>
-            </div>
-            <div class="profile-card" id="profile-card" style="margin:0; box-shadow:none; border:1px solid #e2e8f0; max-width:560px;">
-                <label for="profile-name">Builder Name</label>
-                <input type="text" id="profile-name" placeholder="Your handle">
-                <div class="profile-stats" id="profile-stats">Owned boards: 0 • Points: 0</div>
-                <label for="profile-platform-select">Inventory Platform</label>
-                <select id="profile-platform-select" class="search-box" style="margin-top:6px;"></select>
-                <label style="margin: 0;">
-                    <input type="checkbox" id="owned-only-toggle">
-                    Show only boards in my inventory
-                </label>
-                <div class="profile-actions">
-                    <button id="btn-profile-select-visible" class="btn btn-secondary" type="button">Add All Visible</button>
-                    <button id="btn-profile-clear-inventory" class="btn btn-secondary" type="button">Clear Inventory</button>
-                    <button id="btn-profile-open-diy" class="btn btn-secondary" type="button">Open DIY Board Creator</button>
-                </div>
-                <div class="inventory-panel">
-                    <details open>
-                        <summary style="cursor:pointer; font-size:12px; color:#2d3748;">Manage board inventory</summary>
-                        <div class="inventory-list" id="inventory-list"></div>
-                    </details>
                 </div>
             </div>
         </section>
@@ -2115,12 +1879,9 @@
 
                     <h3 style="margin-top: 30px;">Selected Apps</h3>
                     <div class="alert alert-info">
-                        App selection is managed in the Local App Catalog page. This panel is read-only visibility for current build selection.
+                        App selection is managed by templates/board defaults in local mode. This panel shows what will be included in the current build.
                     </div>
                     <div id="selected-apps-visibility" class="validation-panel"></div>
-                    <div style="margin-top:10px;">
-                        <button id="btn-open-market-from-config" class="btn btn-secondary" type="button">Manage Apps in Local Catalog</button>
-                    </div>
                 </div>
 
                 <!-- Step 3: Pin Configuration -->
@@ -3699,69 +3460,30 @@
         }
 
         function updateTopProfileChip() {
-            const chip = document.getElementById('top-profile-chip');
-            if (!chip) return;
-            if (!ENABLE_LOCAL_PROFILE_UI) {
-                chip.style.display = 'none';
-                return;
-            }
-            const name = String(userProfile?.name || '').trim();
-            if (name) {
-                chip.textContent = name;
-            } else {
-                chip.textContent = 'Guest';
-            }
+            // Profile chip UI was removed for local-scope mode.
         }
 
         function updateLandingStats() {
             const platformCount = document.getElementById('stat-platforms');
             const boardCount = document.getElementById('stat-boards');
-            const marketCount = document.getElementById('stat-market');
             const platformTotal = Array.isArray(platforms) ? platforms.length : 0;
             const boardTotal = Object.values(boards || {}).reduce((sum, list) => {
                 return sum + (Array.isArray(list) ? list.length : 0);
             }, 0);
-            const marketTotal = ENABLE_LOCAL_MARKET_UI && Array.isArray(marketCatalog) ? marketCatalog.length : 0;
             if (platformCount) platformCount.textContent = String(platformTotal);
             if (boardCount) boardCount.textContent = String(boardTotal);
-            if (marketCount) marketCount.textContent = String(marketTotal);
         }
 
         function applyLocalScopeMode() {
-            if (!ENABLE_LOCAL_MARKET_UI) {
-                const marketBtn = document.getElementById('btn-market');
-                if (marketBtn) marketBtn.style.display = 'none';
-                const marketShell = document.getElementById('market-shell');
-                if (marketShell) marketShell.style.display = 'none';
-                const openMarketFromConfig = document.getElementById('btn-open-market-from-config');
-                if (openMarketFromConfig) openMarketFromConfig.style.display = 'none';
-            }
-            if (!ENABLE_LOCAL_PROFILE_UI) {
-                const profileShell = document.getElementById('profile-shell');
-                if (profileShell) profileShell.style.display = 'none';
-                const menuProfile = document.getElementById('menu-profile');
-                if (menuProfile) menuProfile.style.display = 'none';
-                const menuSwitch = document.getElementById('menu-switch-user');
-                if (menuSwitch) menuSwitch.style.display = 'none';
-                const chip = document.getElementById('top-profile-chip');
-                if (chip) chip.style.display = 'none';
-            }
-            if (!ENABLE_LOCAL_MARKET_UI) {
-                const marketStat = document.getElementById('stat-market');
-                if (marketStat && marketStat.parentElement) marketStat.parentElement.style.display = 'none';
-            }
+            // Intentionally empty: platform-scope UI is removed from local configurator markup.
         }
 
         function showLanding() {
             configuratorVisible = false;
             const landing = document.getElementById('landing-home');
             const shell = document.getElementById('configurator-shell');
-            const marketShell = document.getElementById('market-shell');
-            const profileShell = document.getElementById('profile-shell');
             if (landing) landing.style.display = 'block';
             if (shell) shell.style.display = 'none';
-            if (marketShell) marketShell.style.display = 'none';
-            if (profileShell) profileShell.style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -3769,12 +3491,8 @@
             configuratorVisible = true;
             const landing = document.getElementById('landing-home');
             const shell = document.getElementById('configurator-shell');
-            const marketShell = document.getElementById('market-shell');
-            const profileShell = document.getElementById('profile-shell');
             if (landing) landing.style.display = 'none';
             if (shell) shell.style.display = 'block';
-            if (marketShell) marketShell.style.display = 'none';
-            if (profileShell) profileShell.style.display = 'none';
             if (typeof step === 'number' && step >= 1 && step <= 4) {
                 currentStep = step;
             }
@@ -4048,6 +3766,14 @@
             'linux-sbc': 'Linux SBC'
         };
 
+        const PREFERRED_MANUFACTURERS = [
+            'Adafruit',
+            'DF Robot',
+            'Elecrow',
+            'Seeed Studio',
+            'SparkFun'
+        ];
+
         const PLATFORM_ARCHITECTURE = {
             avr: 'AVR 8-bit',
             atmega: 'AVR 8-bit',
@@ -4205,7 +3931,10 @@
             const silSel = document.getElementById('silicon-select');
 
             const all = allBoardsFlat();
-            const manufacturers = Array.from(new Set(all.map(b => boardTaxonomy(b).manufacturer))).sort((a, b) => a.localeCompare(b));
+            const manufacturers = Array.from(new Set([
+                ...PREFERRED_MANUFACTURERS,
+                ...all.map(b => boardTaxonomy(b).manufacturer)
+            ])).sort((a, b) => a.localeCompare(b));
             if (selectedManufacturer && !manufacturers.includes(selectedManufacturer)) selectedManufacturer = '';
             setSelectOptions(manuSel, manufacturers, 'All manufacturers');
             if (!selectedManufacturer && manufacturers.length === 1) selectedManufacturer = manufacturers[0];
