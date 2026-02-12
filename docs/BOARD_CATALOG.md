@@ -76,14 +76,14 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 |---|---|---|---|---|---|---|---|---|
 | atmega | arduino_nano_v3 | arduino_nano_v3 | Arduino Nano V3 (ATmega328P) | Arduino | AVR 8-bit | ATmega328 | ATmega328P | 10 |
 | atmega | arduino_uno_r3 | arduino_uno_r3 | Arduino Uno R3 | Arduino | AVR 8-bit | ATmega328 | ATmega328P | 11 |
-| atsam | adafruit_circuit_playground_express | adafruit_circuit_playground_express | Adafruit Circuit Playground Express (ATSAMD21) | Adafruit | ARM Cortex-M | SAMD21 | ATSAMD21G18 | 12 |
+| atsam | adafruit_circuit_playground_express | adafruit_circuit_playground_express | Adafruit Circuit Playground Express (ATSAMD21) | Adafruit | ARM Cortex-M | SAMD21 | ATSAMD21G18 | 13 |
 | atsam | arduino_zero | arduino_zero | Arduino Zero (SAMD21G18) | Arduino | ARM Cortex-M | SAMD21 | ATSAMD21G18 | 11 |
 | atsam | seeeduino_xiao_samd21 | seeeduino_xiao_samd21 | Seeeduino XIAO (SAMD21) | Seeed Studio | ARM Cortex-M | SAMD21 | ATSAMD21G18A | 11 |
 | avr | arduino_pro_micro_5v_usbc | arduino_pro_micro_5v_usbc | Arduino Pro Micro 5V (USB-C) | SparkFun | AVR 8-bit | ATmega32U4 | ATmega32U4 | 12 |
 | avr | mega2560 | mega2560 | Arduino Mega 2560 (Generic) | Arduino | AVR 8-bit | ATmega2560 | ATmega2560 | 12 |
 | esp32 | cyd_3248s035r | cyd | CYD ESP32-3248S035R | Sunton | Xtensa | ESP32 | ESP32-WROOM-32 | 17 |
 | esp32 | dfrobot_beetle_esp32_c3 | dfrobot_beetle_esp32_c3 | DFRobot Beetle ESP32-C3 | DF Robot | RISC-V | ESP32-C3 | ESP32-C3 | 13 |
-| esp32 | dfrobot_firebeetle_esp32 | dfrobot_firebeetle_esp32 | DFRobot FireBeetle ESP32 | DF Robot | Xtensa | ESP32 | ESP32-WROOM-32E | 12 |
+| esp32 | dfrobot_firebeetle_esp32 | dfrobot_firebeetle_esp32 | DFRobot FireBeetle ESP32 | DF Robot | Xtensa | ESP32 | ESP32-WROOM-32E | 13 |
 | esp32 | elecrow_crowpanel_esp32 | elecrow_crowpanel_esp32 | Elecrow CrowPanel ESP32 | Elecrow | Xtensa | ESP32 | ESP32-WROOM-32 | 14 |
 | esp32 | elecrow_crowpanel_esp32_s3 | elecrow_crowpanel_esp32_s3 | Elecrow CrowPanel ESP32-S3 | Elecrow | Xtensa | ESP32-S3 | ESP32-S3 | 15 |
 | esp32 | esp32-c3-supermini | esp32-c3-supermini | ESP32-C3 SuperMini (Generic) | Generic | RISC-V | ESP32-C3 | ESP32-C3 | 14 |
@@ -92,7 +92,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 | esp32 | esp32-devkitc_v4 | esp32-devkitc_v4 | ESP32-DevKitC V4 (Generic) | Espressif | Xtensa | ESP32 | ESP32-WROOM-32 | 14 |
 | esp32 | esp32s3_devkitc_1 | esp32s3_devkitc_1 | ESP32-S3-DevKitC-1 (Template) | Espressif | Xtensa | ESP32-S3 | ESP32-S3 | 13 |
 | esp32 | m5stack_core2 | m5stack_core2 | M5Stack Core2 (Baseline) | M5Stack | Xtensa | ESP32 | ESP32-D0WDQ6-V3 | 15 |
-| esp32 | m5stickc_plus2 | m5stickc_plus2 | M5StickC Plus2 (ESP32-PICO-V3-02) | M5Stack | Xtensa | ESP32 | ESP32-PICO-V3-02 | 17 |
+| esp32 | m5stickc_plus2 | m5stickc_plus2 | M5StickC Plus2 (ESP32-PICO-V3-02) | M5Stack | Xtensa | ESP32 | ESP32-PICO-V3-02 | 18 |
 | linux-sbc | raspberry_pi_4b | raspberry_pi_4b | Raspberry Pi 4 Model B | Raspberry Pi | ARM Cortex-A | BCM2711 | Broadcom BCM2711 | 14 |
 | pic16 | curiosity_nano_pic16f13145 | curiosity_nano_pic16f13145 | Curiosity Nano PIC16F13145 | Microchip | PIC 8-bit | PIC16 | PIC16F13145 | 13 |
 | pic16 | pic16f873_minimal | pic16f873-minimal | PIC16F873 Minimal (Generic) | Microchip | PIC 8-bit | PIC16 | PIC16F873 | 12 |
@@ -101,7 +101,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 | renesas_ra | ek_ra4m1 | ek_ra4m1 | Renesas EK-RA4M1 | Renesas | ARM Cortex-M | Renesas RA | R7FA4M1AB3CFM | 11 |
 | renesas_rx | rx65n_envision_kit | rx65n_envision_kit | Renesas RX65N Envision Kit | Renesas | Renesas RX 32-bit | RX65 | Renesas RX65N | 12 |
 | renesas_rx | rx72n_envision_kit | rx72n_envision_kit | Renesas RX72N Envision Kit | Renesas | Renesas RX 32-bit | Renesas RX | R5F572NN | 11 |
-| rp2040 | adafruit_feather_rp2040 | adafruit_feather_rp2040 | Adafruit Feather RP2040 | Adafruit | ARM Cortex-M0+ | RP2040 | RP2040 | 11 |
+| rp2040 | adafruit_feather_rp2040 | adafruit_feather_rp2040 | Adafruit Feather RP2040 | Adafruit | ARM Cortex-M0+ | RP2040 | RP2040 | 12 |
 | rp2040 | raspberry_pi_pico | raspberry_pi_pico | Raspberry Pi Pico (RP2040) | Raspberry Pi | ARM Cortex-M0+ | RP2040 | RP2040 | 12 |
 | rp2040 | raspberry_pi_pico_w | raspberry_pi_pico_w | Raspberry Pi Pico W | Raspberry Pi | ARM Cortex-M0+ | RP2040 | RP2040 | 12 |
 | rp2040 | seeed_xiao_rp2040 | seeed_xiao_rp2040 | Seeed Studio XIAO RP2040 | Seeed Studio | ARM Cortex-M0+ | RP2040 | RP2040 | 11 |

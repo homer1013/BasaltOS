@@ -62,6 +62,7 @@
     "remote_node",
     "mcp23017",
     "hp4067",
+    "tp4056",
     "i2c",
     "spi",
     "uart",

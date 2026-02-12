@@ -78,7 +78,7 @@
       ]
     },
     "atsam": {
-      "unsupported_or_gap_rows": 24,
+      "unsupported_or_gap_rows": 23,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -101,16 +101,16 @@
           "count": 3
         },
         {
-          "module_id": "tp4056",
-          "count": 3
-        },
-        {
           "module_id": "twai",
           "count": 3
         },
         {
           "module_id": "wifi",
           "count": 3
+        },
+        {
+          "module_id": "tp4056",
+          "count": 2
         }
       ],
       "top_reasons": [
@@ -135,16 +135,16 @@
           "count": 3
         },
         {
-          "reason": "not_allowed:tp4056",
-          "count": 3
-        },
-        {
           "reason": "not_allowed:twai",
           "count": 3
         },
         {
           "reason": "not_allowed:wifi",
           "count": 3
+        },
+        {
+          "reason": "not_allowed:tp4056",
+          "count": 2
         }
       ]
     },
@@ -220,7 +220,7 @@
       ]
     },
     "esp32": {
-      "unsupported_or_gap_rows": 55,
+      "unsupported_or_gap_rows": 53,
       "top_module_gaps": [
         {
           "module_id": "eeprom",
@@ -228,7 +228,7 @@
         },
         {
           "module_id": "tp4056",
-          "count": 12
+          "count": 10
         },
         {
           "module_id": "psram",
@@ -254,7 +254,7 @@
         },
         {
           "reason": "not_allowed:tp4056",
-          "count": 12
+          "count": 10
         },
         {
           "reason": "not_allowed:psram",
@@ -555,7 +555,7 @@
       ]
     },
     "rp2040": {
-      "unsupported_or_gap_rows": 40,
+      "unsupported_or_gap_rows": 39,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -578,16 +578,16 @@
           "count": 5
         },
         {
-          "module_id": "tp4056",
-          "count": 5
-        },
-        {
           "module_id": "twai",
           "count": 5
         },
         {
           "module_id": "wifi",
           "count": 5
+        },
+        {
+          "module_id": "tp4056",
+          "count": 4
         }
       ],
       "top_reasons": [
@@ -612,15 +612,15 @@
           "count": 5
         },
         {
-          "reason": "not_allowed:tp4056",
-          "count": 5
-        },
-        {
           "reason": "not_allowed:twai",
           "count": 5
         },
         {
           "reason": "not_allowed:wifi",
+          "count": 4
+        },
+        {
+          "reason": "not_allowed:tp4056",
           "count": 4
         }
       ]
@@ -709,24 +709,24 @@
     "actionable_top_modules_by_platform": {}
   },
   "advanced_policy_summary": {
-    "not_allowed_row_count": 230,
+    "not_allowed_row_count": 226,
     "bucket_counts": {
-      "intentional": 230
+      "intentional": 226
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
-      "intentional_advanced_peripheral_opt_in": 189
+      "intentional_advanced_peripheral_opt_in": 185
     },
     "actionable_top_modules_by_platform": {}
   },
   "foundation_focus_summary": {
-    "gap_row_count": 241,
+    "gap_row_count": 237,
     "bucket_counts": {
-      "intentional": 241
+      "intentional": 237
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
-      "intentional_advanced_peripheral_opt_in": 189,
+      "intentional_advanced_peripheral_opt_in": 185,
       "intentional_8bit_mic_scope": 6,
       "intentional_wireless_scope": 5
     },

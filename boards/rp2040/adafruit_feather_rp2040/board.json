@@ -18,6 +18,7 @@
     "remote_node",
     "mcp23017",
     "hp4067",
+    "tp4056",
     "usb_device",
     "fs_sd"
   ],

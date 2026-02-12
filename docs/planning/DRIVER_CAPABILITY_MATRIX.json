@@ -4,8 +4,8 @@
   "row_count": 1155,
   "summary": {
     "status_counts": {
-      "SUPPORTED": 914,
-      "UNSUPPORTED": 230,
+      "SUPPORTED": 918,
+      "UNSUPPORTED": 226,
       "CAPABILITY_ONLY": 11
     },
     "platform_summary": {
@@ -17,9 +17,9 @@
       },
       "atsam": {
         "boards": 3,
-        "SUPPORTED": 75,
+        "SUPPORTED": 76,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 24
+        "UNSUPPORTED": 23
       },
       "avr": {
         "boards": 2,
@@ -29,9 +29,9 @@
       },
       "esp32": {
         "boards": 12,
-        "SUPPORTED": 341,
+        "SUPPORTED": 343,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 55
+        "UNSUPPORTED": 53
       },
       "linux-sbc": {
         "boards": 1,
@@ -59,9 +59,9 @@
       },
       "rp2040": {
         "boards": 5,
-        "SUPPORTED": 125,
+        "SUPPORTED": 126,
         "CAPABILITY_ONLY": 1,
-        "UNSUPPORTED": 39
+        "UNSUPPORTED": 38
       },
       "stm32": {
         "boards": 3,
@@ -196,6 +196,10 @@
         "supported_boards": 4
       },
       {
+        "module_id": "tp4056",
+        "supported_boards": 4
+      },
+      {
         "module_id": "psram",
         "supported_boards": 3
       }
@@ -281,7 +285,7 @@
         ]
       },
       "atsam": {
-        "unsupported_or_gap_rows": 24,
+        "unsupported_or_gap_rows": 23,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -304,16 +308,16 @@
             "count": 3
           },
           {
-            "module_id": "tp4056",
-            "count": 3
-          },
-          {
             "module_id": "twai",
             "count": 3
           },
           {
             "module_id": "wifi",
             "count": 3
+          },
+          {
+            "module_id": "tp4056",
+            "count": 2
           }
         ],
         "top_reasons": [
@@ -338,16 +342,16 @@
             "count": 3
           },
           {
-            "reason": "not_allowed:tp4056",
-            "count": 3
-          },
-          {
             "reason": "not_allowed:twai",
             "count": 3
           },
           {
             "reason": "not_allowed:wifi",
             "count": 3
+          },
+          {
+            "reason": "not_allowed:tp4056",
+            "count": 2
           }
         ]
       },
@@ -423,7 +427,7 @@
         ]
       },
       "esp32": {
-        "unsupported_or_gap_rows": 55,
+        "unsupported_or_gap_rows": 53,
         "top_module_gaps": [
           {
             "module_id": "eeprom",
@@ -431,7 +435,7 @@
           },
           {
             "module_id": "tp4056",
-            "count": 12
+            "count": 10
           },
           {
             "module_id": "psram",
@@ -457,7 +461,7 @@
           },
           {
             "reason": "not_allowed:tp4056",
-            "count": 12
+            "count": 10
           },
           {
             "reason": "not_allowed:psram",
@@ -758,7 +762,7 @@
         ]
       },
       "rp2040": {
-        "unsupported_or_gap_rows": 40,
+        "unsupported_or_gap_rows": 39,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -781,16 +785,16 @@
             "count": 5
           },
           {
-            "module_id": "tp4056",
-            "count": 5
-          },
-          {
             "module_id": "twai",
             "count": 5
           },
           {
             "module_id": "wifi",
             "count": 5
+          },
+          {
+            "module_id": "tp4056",
+            "count": 4
           }
         ],
         "top_reasons": [
@@ -815,15 +819,15 @@
             "count": 5
           },
           {
-            "reason": "not_allowed:tp4056",
-            "count": 5
-          },
-          {
             "reason": "not_allowed:twai",
             "count": 5
           },
           {
             "reason": "not_allowed:wifi",
+            "count": 4
+          },
+          {
+            "reason": "not_allowed:tp4056",
             "count": 4
           }
         ]
@@ -912,24 +916,24 @@
       "actionable_top_modules_by_platform": {}
     },
     "advanced_policy_summary": {
-      "not_allowed_row_count": 230,
+      "not_allowed_row_count": 226,
       "bucket_counts": {
-        "intentional": 230
+        "intentional": 226
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 189
+        "intentional_advanced_peripheral_opt_in": 185
       },
       "actionable_top_modules_by_platform": {}
     },
     "foundation_focus_summary": {
-      "gap_row_count": 241,
+      "gap_row_count": 237,
       "bucket_counts": {
-        "intentional": 241
+        "intentional": 237
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 189,
+        "intentional_advanced_peripheral_opt_in": 185,
         "intentional_8bit_mic_scope": 6,
         "intentional_wireless_scope": 5
       },
@@ -2262,10 +2266,10 @@
       "module_name": "TP4056 Li-Ion Charger",
       "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:tp4056"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2289,20 +2293,6 @@
       "module_id": "uart",
       "module_name": "UART",
       "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "atsam",
-      "board_dir": "adafruit_circuit_playground_express",
-      "board_id": "adafruit_circuit_playground_express",
-      "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
-      "module_id": "uln2003",
-      "module_name": "ULN2003 Stepper Driver",
-      "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -2314,6 +2304,20 @@
       "board_dir": "adafruit_circuit_playground_express",
       "board_id": "adafruit_circuit_playground_express",
       "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
+      "module_id": "uln2003",
+      "module_name": "ULN2003 Stepper Driver",
+      "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "atsam",
+      "board_dir": "adafruit_circuit_playground_express",
+      "board_id": "adafruit_circuit_playground_express",
+      "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
       "module_id": "wifi",
       "module_name": "Wi-Fi (Station)",
       "module_platforms": "esp32",
@@ -5496,10 +5500,10 @@
       "module_name": "TP4056 Li-Ion Charger",
       "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:tp4056"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5523,20 +5527,6 @@
       "module_id": "uart",
       "module_name": "UART",
       "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "dfrobot_firebeetle_esp32",
-      "board_id": "dfrobot_firebeetle_esp32",
-      "board_name": "DFRobot FireBeetle ESP32",
-      "module_id": "uln2003",
-      "module_name": "ULN2003 Stepper Driver",
-      "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -5548,6 +5538,20 @@
       "board_dir": "dfrobot_firebeetle_esp32",
       "board_id": "dfrobot_firebeetle_esp32",
       "board_name": "DFRobot FireBeetle ESP32",
+      "module_id": "uln2003",
+      "module_name": "ULN2003 Stepper Driver",
+      "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "dfrobot_firebeetle_esp32",
+      "board_id": "dfrobot_firebeetle_esp32",
+      "board_name": "DFRobot FireBeetle ESP32",
       "module_id": "wifi",
       "module_name": "Wi-Fi (Station)",
       "module_platforms": "esp32",
@@ -9654,10 +9658,10 @@
       "module_name": "TP4056 Li-Ion Charger",
       "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:tp4056"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -13812,10 +13816,10 @@
       "module_name": "TP4056 Li-Ion Charger",
       "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:tp4056"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",

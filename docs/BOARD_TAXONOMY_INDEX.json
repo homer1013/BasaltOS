@@ -102,7 +102,7 @@
       "architecture": "ARM Cortex-M",
       "family": "SAMD21",
       "mcu": "ATSAMD21G18",
-      "caps_count": 12
+      "caps_count": 13
     },
     {
       "platform": "atsam",
@@ -179,7 +179,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-WROOM-32E",
-      "caps_count": 12
+      "caps_count": 13
     },
     {
       "platform": "esp32",
@@ -278,7 +278,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-PICO-V3-02",
-      "caps_count": 17
+      "caps_count": 18
     },
     {
       "platform": "linux-sbc",
@@ -377,7 +377,7 @@
       "architecture": "ARM Cortex-M0+",
       "family": "RP2040",
       "mcu": "RP2040",
-      "caps_count": 11
+      "caps_count": 12
     },
     {
       "platform": "rp2040",

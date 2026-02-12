@@ -29,6 +29,7 @@
 - `generate_eeprom_posture_report.py` – generate EEPROM capability posture policy report (`docs/planning/EEPROM_CAPABILITY_POSTURE.json`, `docs/planning/EEPROM_CAPABILITY_POSTURE.md`)
 - `generate_mcp2544fd_posture_report.py` – generate MCP2544FD capability posture policy report (`docs/planning/MCP2544FD_CAPABILITY_POSTURE.json`, `docs/planning/MCP2544FD_CAPABILITY_POSTURE.md`)
 - `generate_psram_posture_report.py` – generate PSRAM capability posture policy report (`docs/planning/PSRAM_CAPABILITY_POSTURE.json`, `docs/planning/PSRAM_CAPABILITY_POSTURE.md`)
+- `generate_tp4056_posture_report.py` – generate TP4056 capability posture policy report (`docs/planning/TP4056_CAPABILITY_POSTURE.json`, `docs/planning/TP4056_CAPABILITY_POSTURE.md`)
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -246,6 +247,12 @@ PSRAM posture report drift smoke:
 
 ```bash
 bash tools/tests/psram_posture_report_drift_smoke.sh
+```
+
+TP4056 posture report drift smoke:
+
+```bash
+bash tools/tests/tp4056_posture_report_drift_smoke.sh
 ```
 
 

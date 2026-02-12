@@ -93,7 +93,7 @@ atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Ad
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),spi,SPI Bus,,yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),tft,TFT Display,"esp32,stm32,rp2040",no,no,no,UNSUPPORTED,not_allowed:tft
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),timer,Timer,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
-atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),tp4056,TP4056 Li-Ion Charger,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",yes,no,no,UNSUPPORTED,not_allowed:tp4056
+atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),tp4056,TP4056 Li-Ion Charger,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),twai,TWAI / CAN,esp32,no,no,no,UNSUPPORTED,not_allowed:twai
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -324,7 +324,7 @@ esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,spi,SPI Bus,,yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,tft,TFT Display,"esp32,stm32,rp2040",yes,no,no,UNSUPPORTED,not_allowed:tft
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,timer,Timer,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
-esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,tp4056,TP4056 Li-Ion Charger,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",yes,no,no,UNSUPPORTED,not_allowed:tp4056
+esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,tp4056,TP4056 Li-Ion Charger,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,twai,TWAI / CAN,esp32,yes,no,no,UNSUPPORTED,not_allowed:twai
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -621,7 +621,7 @@ esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),shell_tiny
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),spi,SPI Bus,,yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),tft,TFT Display,"esp32,stm32,rp2040",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),timer,Timer,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
-esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),tp4056,TP4056 Li-Ion Charger,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",yes,no,no,UNSUPPORTED,not_allowed:tp4056
+esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),tp4056,TP4056 Li-Ion Charger,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),twai,TWAI / CAN,esp32,yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -918,7 +918,7 @@ rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,s
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,spi,SPI Bus,,yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,tft,TFT Display,"esp32,stm32,rp2040",yes,no,no,UNSUPPORTED,not_allowed:tft
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,timer,Timer,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
-rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,tp4056,TP4056 Li-Ion Charger,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",yes,no,no,UNSUPPORTED,not_allowed:tp4056
+rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,tp4056,TP4056 Li-Ion Charger,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,twai,TWAI / CAN,esp32,no,no,no,UNSUPPORTED,not_allowed:twai
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-

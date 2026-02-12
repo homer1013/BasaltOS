@@ -22,6 +22,7 @@
     "remote_node",
     "mcp23017",
     "hp4067",
+    "tp4056",
     "fs_sd"
   ],
   "pins": {
