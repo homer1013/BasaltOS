@@ -7,13 +7,21 @@ cd "$ROOT"
 TMP="tmp/board_catalog"
 mkdir -p "$TMP"
 GEN="$TMP/BOARD_CATALOG.generated.md"
+GEN_JSON="$TMP/BOARD_TAXONOMY_INDEX.generated.json"
 
-python3 tools/generate_board_catalog.py --out "$GEN" >/dev/null
+python3 tools/generate_board_catalog.py --out "$GEN" --json-out "$GEN_JSON" >/dev/null
 
 if ! diff -u docs/BOARD_CATALOG.md "$GEN" >/dev/null; then
   echo "FAIL: docs/BOARD_CATALOG.md is out of date"
   echo "Run: python3 tools/generate_board_catalog.py"
   diff -u docs/BOARD_CATALOG.md "$GEN" || true
+  exit 1
+fi
+
+if ! diff -u docs/BOARD_TAXONOMY_INDEX.json "$GEN_JSON" >/dev/null; then
+  echo "FAIL: docs/BOARD_TAXONOMY_INDEX.json is out of date"
+  echo "Run: python3 tools/generate_board_catalog.py"
+  diff -u docs/BOARD_TAXONOMY_INDEX.json "$GEN_JSON" || true
   exit 1
 fi
 

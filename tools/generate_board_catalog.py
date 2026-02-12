@@ -21,7 +21,7 @@ def safe_str(value: object, default: str = "") -> str:
     return text
 
 
-def build_catalog(root: Path) -> str:
+def collect_board_data(root: Path) -> tuple[list[dict], Counter[str], Counter[str], Counter[str], Counter[str]]:
     board_files = sorted(root.glob("boards/*/*/board.json"))
     boards: list[dict] = []
     platform_counts: Counter[str] = Counter()
@@ -62,6 +62,17 @@ def build_catalog(root: Path) -> str:
         family_counts[family] += 1
 
     boards.sort(key=lambda b: (b["platform"], b["board_dir"], b["id"]))
+    return boards, platform_counts, manufacturer_counts, architecture_counts, family_counts
+
+
+def build_catalog(root: Path) -> str:
+    (
+        boards,
+        platform_counts,
+        manufacturer_counts,
+        architecture_counts,
+        family_counts,
+    ) = collect_board_data(root)
 
     lines: list[str] = []
     lines.append("# Board Catalog")
@@ -107,9 +118,41 @@ def build_catalog(root: Path) -> str:
     return "\n".join(lines)
 
 
+def build_taxonomy_index(root: Path) -> dict:
+    (
+        boards,
+        platform_counts,
+        manufacturer_counts,
+        architecture_counts,
+        family_counts,
+    ) = collect_board_data(root)
+
+    return {
+        "meta": {
+            "source_glob": "boards/*/*/board.json",
+            "generator": "tools/generate_board_catalog.py",
+        },
+        "summary": {
+            "total_boards": len(boards),
+            "platform_count": len(platform_counts),
+            "manufacturer_count": len(manufacturer_counts),
+            "architecture_count": len(architecture_counts),
+            "family_count": len(family_counts),
+        },
+        "counts": {
+            "platform": dict(sorted(platform_counts.items(), key=lambda kv: kv[0])),
+            "manufacturer": dict(sorted(manufacturer_counts.items(), key=lambda kv: (-kv[1], kv[0].lower()))),
+            "architecture": dict(sorted(architecture_counts.items(), key=lambda kv: (-kv[1], kv[0].lower()))),
+            "family": dict(sorted(family_counts.items(), key=lambda kv: (-kv[1], kv[0].lower()))),
+        },
+        "boards": boards,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Generate deterministic board catalog markdown.")
     ap.add_argument("--out", default="docs/BOARD_CATALOG.md", help="Output markdown path")
+    ap.add_argument("--json-out", default="docs/BOARD_TAXONOMY_INDEX.json", help="Output taxonomy index JSON path")
     args = ap.parse_args()
 
     root = repo_root()
@@ -118,6 +161,12 @@ def main() -> int:
     text = build_catalog(root)
     out_path.write_text(text, encoding="utf-8")
     print(f"Wrote: {out_path}")
+
+    json_out_path = (root / args.json_out).resolve()
+    json_out_path.parent.mkdir(parents=True, exist_ok=True)
+    index_obj = build_taxonomy_index(root)
+    json_out_path.write_text(json.dumps(index_obj, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"Wrote: {json_out_path}")
     return 0
 
 
