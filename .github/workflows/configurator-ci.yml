@@ -62,6 +62,7 @@ jobs:
           python3 tools/metadata_completeness_report.py --fail-under 95 --out tmp/metadata/board_completeness_report.md
           bash tools/tests/release_sync_check_smoke.sh
           bash tools/tests/release_sync_update_smoke.sh
+          bash tools/tests/shell_ux_polish_smoke.sh
 
       - name: Upload S2 CLI acceptance artifacts
         if: always()

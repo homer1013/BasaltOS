@@ -430,6 +430,25 @@ static const bsh_cmd_help_t *bsh_find_help(const char *name) {
     return NULL;
 }
 
+static void bsh_print_usage(const char *cmd) {
+    const bsh_cmd_help_t *h = bsh_find_help(cmd);
+    if (h && h->usage) {
+        basalt_printf("usage: %s\n", h->usage);
+        return;
+    }
+    basalt_printf("usage: help -commands\n");
+}
+
+static void bsh_print_unknown_subcommand(const char *cmd, const char *sub) {
+    basalt_printf("%s: unknown subcommand '%s'\n", cmd ? cmd : "command", sub ? sub : "");
+    bsh_print_usage(cmd);
+}
+
+static void bsh_print_unknown_command(const char *cmd) {
+    basalt_printf("unknown command: %s\n", cmd ? cmd : "");
+    basalt_printf("hint: use 'help -commands'\n");
+}
+
 #if BASALT_SHELL_LEVEL == 1
 static bool bsh_help_cmd_hidden_tiny(const char *name) {
     static const char *k_hidden[] = {
@@ -5000,7 +5019,8 @@ static void bsh_handle_line(char *line) {
         if (h) {
             basalt_printf("%s\n  %s\n  %s\n", h->name, h->usage, h->desc);
         } else {
-            basalt_printf("help: unknown command: %s\n", arg);
+            basalt_printf("help: unknown command '%s'\n", arg);
+            basalt_printf("hint: use 'help -commands'\n");
         }
         return;
     }
@@ -5088,7 +5108,8 @@ static void bsh_handle_line(char *line) {
     } else if (strcmp(cmd, "run") == 0) {
         char *arg = strtok(NULL, " \t\r\n");
         if (!arg) {
-            basalt_printf("run: missing script path\n");
+            basalt_printf("run: missing required argument <app|script>\n");
+            bsh_print_usage("run");
         } else {
             const bool is_name = !path_is_absolute(arg) && !strchr(arg, '/') && !strstr(arg, ".py");
             if (is_name) {
@@ -5134,7 +5155,8 @@ static void bsh_handle_line(char *line) {
     } else if (strcmp(cmd, "run_dev") == 0) {
         char *arg = strtok(NULL, " \t\r\n");
         if (!arg) {
-            basalt_printf("run_dev: missing script path\n");
+            basalt_printf("run_dev: missing required argument <app|script>\n");
+            bsh_print_usage("run_dev");
         } else {
             const bool is_name = !path_is_absolute(arg) && !strchr(arg, '/') && !strstr(arg, ".py");
             char vpath[128];
@@ -5232,9 +5254,7 @@ static void bsh_handle_line(char *line) {
             char *name = strtok(NULL, " \t\r\n");
             bsh_cmd_applet_run(name);
         } else {
-            basalt_printf("applet: unknown subcommand '%s'\n", sub);
-            basalt_printf("usage: applet list\n");
-            basalt_printf("       applet run <name>\n");
+            bsh_print_unknown_subcommand("applet", sub);
         }
     } else if (strcmp(cmd, "install") == 0) {
 #if BASALT_SHELL_LEVEL >= 3
@@ -5276,8 +5296,7 @@ static void bsh_handle_line(char *line) {
         } else if (strcmp(sub, "read") == 0) {
             bsh_cmd_bme280_read();
         } else {
-            basalt_printf("bme280: unknown subcommand '%s'\n", sub);
-            basalt_printf("usage: bme280 [status|probe|read]\n");
+            bsh_print_unknown_subcommand("bme280", sub);
         }
 #else
         basalt_printf("bme280: disabled in this shell level\n");
@@ -5292,8 +5311,7 @@ static void bsh_handle_line(char *line) {
         } else if (strcmp(sub, "read") == 0) {
             bsh_cmd_dht22_read(arg1, arg2);
         } else {
-            basalt_printf("dht22: unknown subcommand '%s'\n", sub);
-            basalt_printf("usage: dht22 [status|read [pin] [auto|dht22|dht11]]\n");
+            bsh_print_unknown_subcommand("dht22", sub);
         }
 #else
         basalt_printf("dht22: disabled in this shell level\n");
@@ -5307,8 +5325,7 @@ static void bsh_handle_line(char *line) {
         } else if (strcmp(sub, "read") == 0) {
             bsh_cmd_ads1115_read(arg1);
         } else {
-            basalt_printf("ads1115: unknown subcommand '%s'\n", sub);
-            basalt_printf("usage: ads1115 [status|probe|read [0-3]]\n");
+            bsh_print_unknown_subcommand("ads1115", sub);
         }
 #else
         basalt_printf("ads1115: disabled in this shell level\n");
@@ -5336,8 +5353,7 @@ static void bsh_handle_line(char *line) {
             char *samples = strtok(NULL, " \t\r\n");
             bsh_cmd_imu_stream(hz, samples);
         } else {
-            basalt_printf("imu: unknown subcommand '%s'\n", sub);
-            basalt_printf("usage: imu [status|read|whoami|stream [hz] [samples]]\n");
+            bsh_print_unknown_subcommand("imu", sub);
         }
 #else
         basalt_printf("imu: disabled in this shell level\n");
@@ -5399,8 +5415,7 @@ static void bsh_handle_line(char *line) {
         } else if (strcmp(sub, "disconnect") == 0) {
             bsh_cmd_wifi_disconnect();
         } else {
-            basalt_printf("wifi: unknown subcommand '%s'\n", sub);
-            basalt_printf("usage: wifi [status|scan|connect|reconnect|disconnect]\n");
+            bsh_print_unknown_subcommand("wifi", sub);
         }
 #else
         basalt_printf("wifi: disabled in this shell level\n");
@@ -5418,8 +5433,7 @@ static void bsh_handle_line(char *line) {
             char *seconds = strtok(NULL, " \t\r\n");
             bsh_cmd_bluetooth_scan(seconds);
         } else {
-            basalt_printf("bluetooth: unknown subcommand '%s'\n", sub);
-            basalt_printf("usage: bluetooth [status|on|off|scan [seconds]]\n");
+            bsh_print_unknown_subcommand("bluetooth", sub);
         }
 #else
         basalt_printf("bluetooth: disabled in this shell level\n");
@@ -5441,8 +5455,7 @@ static void bsh_handle_line(char *line) {
             char *timeout = strtok(NULL, " \t\r\n");
             bsh_cmd_can_recv(timeout);
         } else {
-            basalt_printf("can: unknown subcommand '%s'\n", sub);
-            basalt_printf("usage: can [status|up|down|send <id> <hex>|recv [timeout_ms]]\n");
+            bsh_print_unknown_subcommand("can", sub);
         }
 #else
         basalt_printf("can: disabled in this shell level\n");
@@ -5452,7 +5465,7 @@ static void bsh_handle_line(char *line) {
         fflush(stdout);
         esp_restart();
     } else {
-        basalt_printf("unknown command: %s\n", cmd);
+        bsh_print_unknown_command(cmd);
     }
 }
 
