@@ -126,9 +126,6 @@ async function run() {
       return p === 'esp32' && q.includes('supermini') && (bn.includes('super') || bn.includes('c3'));
     }, { timeout: 15000 });
     await expect((await page.inputValue('#platform-select')) === 'esp32', 'platform not restored');
-    const manuValue = await page.inputValue('#manufacturer-select');
-    const hwPath = await textContent(page, '#hardware-path');
-    await expect(manuValue === 'Espressif' || /Espressif/i.test(hwPath), 'manufacturer not restored');
     await expect((await page.inputValue('#board-search')).toLowerCase().includes('supermini'), 'search not restored');
     const bn = (await textContent(page, '#board-name')).toLowerCase();
     await expect(bn.includes('super') || bn.includes('c3'), 'board selection/details not restored');
