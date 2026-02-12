@@ -23,6 +23,7 @@
 - `generate_board_catalog.py` – generate deterministic board inventory docs (`docs/BOARD_CATALOG.md`, `docs/BOARD_TAXONOMY_INDEX.json`, `docs/BOARD_TAXONOMY_INDEX.csv`)
 - `generate_manufacturer_matrix.py` – generate manufacturer starter matrix + profile queue docs (`docs/planning/MANUFACTURER_BOARD_MATRIX.csv`, `docs/planning/MANUFACTURER_BOARD_MATRIX.md`, `docs/planning/MANUFACTURER_PROFILE_CREATION_QUEUE.json`, `docs/planning/MANUFACTURER_PROFILE_CREATION_QUEUE.md`)
 - `generate_generation_parity_baseline.py` – generate representative cross-platform configure parity docs in two modes (`empty`, `with_defaults`), including module/default-module comparisons and parity gap summary (`docs/planning/GENERATION_PARITY_BASELINE.json`, `docs/planning/GENERATION_PARITY_BASELINE.md`)
+- `generate_driver_capability_matrix.py` – generate board-by-driver capability matrix artifacts (`docs/planning/DRIVER_CAPABILITY_MATRIX.csv`, `docs/planning/DRIVER_CAPABILITY_MATRIX.json`, `docs/planning/DRIVER_CAPABILITY_MATRIX.md`)
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -204,6 +205,12 @@ Cross-platform generation parity defaults gate smoke:
 
 ```bash
 bash tools/tests/generation_parity_defaults_gate_smoke.sh
+```
+
+Driver capability matrix drift smoke:
+
+```bash
+bash tools/tests/driver_capability_matrix_drift_smoke.sh
 ```
 
 

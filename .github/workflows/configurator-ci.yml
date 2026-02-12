@@ -68,6 +68,7 @@ jobs:
           bash tools/tests/staged_artifact_guard_smoke.sh
           bash tools/tests/generation_parity_baseline_drift_smoke.sh
           bash tools/tests/generation_parity_defaults_gate_smoke.sh
+          bash tools/tests/driver_capability_matrix_drift_smoke.sh
           bash tools/tests/board_catalog_drift_smoke.sh
           bash tools/tests/board_taxonomy_fields_smoke.sh
 

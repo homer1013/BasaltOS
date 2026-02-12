@@ -37,6 +37,15 @@ Goal: maximize user adoption and trust before adding more drivers.
 - Refresh command:
   - `python3 tools/generate_generation_parity_baseline.py`
 
+## Driver Capability Matrix v1
+
+- Matrix artifacts:
+  - `docs/planning/DRIVER_CAPABILITY_MATRIX.csv`
+  - `docs/planning/DRIVER_CAPABILITY_MATRIX.json`
+  - `docs/planning/DRIVER_CAPABILITY_MATRIX.md`
+- Refresh command:
+  - `python3 tools/generate_driver_capability_matrix.py`
+
 ## Working Style
 - Pull next task when current one is done; do not timebox artificially.
 - Re-prioritize anytime based on blocker removal or user feedback.
