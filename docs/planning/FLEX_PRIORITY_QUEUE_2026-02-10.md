@@ -43,6 +43,8 @@ Goal: maximize user adoption and trust before adding more drivers.
   - `docs/planning/DRIVER_CAPABILITY_MATRIX.csv`
   - `docs/planning/DRIVER_CAPABILITY_MATRIX.json`
   - `docs/planning/DRIVER_CAPABILITY_MATRIX.md`
+  - `docs/planning/DRIVER_CAPABILITY_GAPS.json`
+  - `docs/planning/DRIVER_CAPABILITY_GAPS.md`
 - Refresh command:
   - `python3 tools/generate_driver_capability_matrix.py`
 

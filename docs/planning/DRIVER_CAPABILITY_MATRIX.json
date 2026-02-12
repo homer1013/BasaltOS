@@ -185,6 +185,802 @@
       }
     ]
   },
+  "gap_report": {
+    "version": "1.0.0",
+    "platform_count": 10,
+    "platforms": {
+      "atmega": {
+        "unsupported_or_gap_rows": 29,
+        "top_module_gaps": [
+          {
+            "module_id": "bluetooth",
+            "count": 2
+          },
+          {
+            "module_id": "eeprom",
+            "count": 2
+          },
+          {
+            "module_id": "fs_sd",
+            "count": 2
+          },
+          {
+            "module_id": "hp4067",
+            "count": 2
+          },
+          {
+            "module_id": "mcp23017",
+            "count": 2
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 2
+          },
+          {
+            "module_id": "mic",
+            "count": 2
+          },
+          {
+            "module_id": "psram",
+            "count": 2
+          },
+          {
+            "module_id": "remote_node",
+            "count": 2
+          },
+          {
+            "module_id": "tft",
+            "count": 2
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 2
+          },
+          {
+            "reason": "dependency_not_allowed:timer",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:fs_sd",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:hp4067",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:mcp23017",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 2
+          },
+          {
+            "reason": "module_platform_mismatch",
+            "count": 2
+          }
+        ]
+      },
+      "atsam": {
+        "unsupported_or_gap_rows": 84,
+        "top_module_gaps": [
+          {
+            "module_id": "adc",
+            "count": 3
+          },
+          {
+            "module_id": "ads1115",
+            "count": 3
+          },
+          {
+            "module_id": "bluetooth",
+            "count": 3
+          },
+          {
+            "module_id": "bme280",
+            "count": 3
+          },
+          {
+            "module_id": "dht22",
+            "count": 3
+          },
+          {
+            "module_id": "display_ssd1306",
+            "count": 3
+          },
+          {
+            "module_id": "eeprom",
+            "count": 3
+          },
+          {
+            "module_id": "fs_sd",
+            "count": 3
+          },
+          {
+            "module_id": "gpio",
+            "count": 3
+          },
+          {
+            "module_id": "hp4067",
+            "count": 3
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "module_platform_mismatch",
+            "count": 42
+          },
+          {
+            "reason": "dependency_not_allowed:timer",
+            "count": 4
+          },
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:fs_sd",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:hp4067",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:mcp23017",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 3
+          }
+        ]
+      },
+      "avr": {
+        "unsupported_or_gap_rows": 24,
+        "top_module_gaps": [
+          {
+            "module_id": "bluetooth",
+            "count": 2
+          },
+          {
+            "module_id": "fs_sd",
+            "count": 2
+          },
+          {
+            "module_id": "hp4067",
+            "count": 2
+          },
+          {
+            "module_id": "mcp23017",
+            "count": 2
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 2
+          },
+          {
+            "module_id": "mic",
+            "count": 2
+          },
+          {
+            "module_id": "psram",
+            "count": 2
+          },
+          {
+            "module_id": "remote_node",
+            "count": 2
+          },
+          {
+            "module_id": "tft",
+            "count": 2
+          },
+          {
+            "module_id": "tp4056",
+            "count": 2
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:fs_sd",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:hp4067",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:mcp23017",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 2
+          },
+          {
+            "reason": "module_platform_mismatch",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:remote_node",
+            "count": 2
+          }
+        ]
+      },
+      "esp32": {
+        "unsupported_or_gap_rows": 154,
+        "top_module_gaps": [
+          {
+            "module_id": "dht22",
+            "count": 12
+          },
+          {
+            "module_id": "eeprom",
+            "count": 12
+          },
+          {
+            "module_id": "hp4067",
+            "count": 12
+          },
+          {
+            "module_id": "mcp23017",
+            "count": 12
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 12
+          },
+          {
+            "module_id": "pwm",
+            "count": 12
+          },
+          {
+            "module_id": "remote_node",
+            "count": 12
+          },
+          {
+            "module_id": "timer",
+            "count": 12
+          },
+          {
+            "module_id": "tp4056",
+            "count": 12
+          },
+          {
+            "module_id": "fs_sd",
+            "count": 11
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "dependency_not_allowed:timer",
+            "count": 19
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 12
+          },
+          {
+            "reason": "not_allowed:hp4067",
+            "count": 12
+          },
+          {
+            "reason": "not_allowed:mcp23017",
+            "count": 12
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 12
+          },
+          {
+            "reason": "not_allowed:remote_node",
+            "count": 12
+          },
+          {
+            "reason": "not_allowed:timer",
+            "count": 12
+          },
+          {
+            "reason": "not_allowed:tp4056",
+            "count": 12
+          }
+        ]
+      },
+      "linux-sbc": {
+        "unsupported_or_gap_rows": 29,
+        "top_module_gaps": [
+          {
+            "module_id": "adc",
+            "count": 1
+          },
+          {
+            "module_id": "ads1115",
+            "count": 1
+          },
+          {
+            "module_id": "bluetooth",
+            "count": 1
+          },
+          {
+            "module_id": "bme280",
+            "count": 1
+          },
+          {
+            "module_id": "dht22",
+            "count": 1
+          },
+          {
+            "module_id": "display_ssd1306",
+            "count": 1
+          },
+          {
+            "module_id": "eeprom",
+            "count": 1
+          },
+          {
+            "module_id": "gpio",
+            "count": 1
+          },
+          {
+            "module_id": "hp4067",
+            "count": 1
+          },
+          {
+            "module_id": "imu",
+            "count": 1
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "module_platform_mismatch",
+            "count": 17
+          },
+          {
+            "reason": "dependency_not_allowed:timer",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 1
+          },
+          {
+            "reason": "not_allowed:hp4067",
+            "count": 1
+          },
+          {
+            "reason": "not_allowed:mcp23017",
+            "count": 1
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 1
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 1
+          },
+          {
+            "reason": "not_allowed:remote_node",
+            "count": 1
+          }
+        ]
+      },
+      "pic16": {
+        "unsupported_or_gap_rows": 25,
+        "top_module_gaps": [
+          {
+            "module_id": "bluetooth",
+            "count": 2
+          },
+          {
+            "module_id": "fs_sd",
+            "count": 2
+          },
+          {
+            "module_id": "hp4067",
+            "count": 2
+          },
+          {
+            "module_id": "mcp23017",
+            "count": 2
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 2
+          },
+          {
+            "module_id": "mic",
+            "count": 2
+          },
+          {
+            "module_id": "psram",
+            "count": 2
+          },
+          {
+            "module_id": "remote_node",
+            "count": 2
+          },
+          {
+            "module_id": "tft",
+            "count": 2
+          },
+          {
+            "module_id": "tp4056",
+            "count": 2
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:fs_sd",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:hp4067",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:mcp23017",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 2
+          },
+          {
+            "reason": "module_platform_mismatch",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:remote_node",
+            "count": 2
+          }
+        ]
+      },
+      "renesas_ra": {
+        "unsupported_or_gap_rows": 84,
+        "top_module_gaps": [
+          {
+            "module_id": "adc",
+            "count": 3
+          },
+          {
+            "module_id": "ads1115",
+            "count": 3
+          },
+          {
+            "module_id": "bluetooth",
+            "count": 3
+          },
+          {
+            "module_id": "bme280",
+            "count": 3
+          },
+          {
+            "module_id": "dht22",
+            "count": 3
+          },
+          {
+            "module_id": "display_ssd1306",
+            "count": 3
+          },
+          {
+            "module_id": "eeprom",
+            "count": 3
+          },
+          {
+            "module_id": "fs_sd",
+            "count": 3
+          },
+          {
+            "module_id": "gpio",
+            "count": 3
+          },
+          {
+            "module_id": "hp4067",
+            "count": 3
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "module_platform_mismatch",
+            "count": 47
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:fs_sd",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:hp4067",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:mcp23017",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:remote_node",
+            "count": 3
+          }
+        ]
+      },
+      "renesas_rx": {
+        "unsupported_or_gap_rows": 56,
+        "top_module_gaps": [
+          {
+            "module_id": "adc",
+            "count": 2
+          },
+          {
+            "module_id": "ads1115",
+            "count": 2
+          },
+          {
+            "module_id": "bluetooth",
+            "count": 2
+          },
+          {
+            "module_id": "bme280",
+            "count": 2
+          },
+          {
+            "module_id": "dht22",
+            "count": 2
+          },
+          {
+            "module_id": "display_ssd1306",
+            "count": 2
+          },
+          {
+            "module_id": "eeprom",
+            "count": 2
+          },
+          {
+            "module_id": "fs_sd",
+            "count": 2
+          },
+          {
+            "module_id": "gpio",
+            "count": 2
+          },
+          {
+            "module_id": "hp4067",
+            "count": 2
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "module_platform_mismatch",
+            "count": 29
+          },
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:fs_sd",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:hp4067",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:mcp23017",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 2
+          }
+        ]
+      },
+      "rp2040": {
+        "unsupported_or_gap_rows": 72,
+        "top_module_gaps": [
+          {
+            "module_id": "bluetooth",
+            "count": 5
+          },
+          {
+            "module_id": "eeprom",
+            "count": 5
+          },
+          {
+            "module_id": "fs_sd",
+            "count": 5
+          },
+          {
+            "module_id": "hp4067",
+            "count": 5
+          },
+          {
+            "module_id": "mcp23017",
+            "count": 5
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 5
+          },
+          {
+            "module_id": "psram",
+            "count": 5
+          },
+          {
+            "module_id": "remote_node",
+            "count": 5
+          },
+          {
+            "module_id": "tft",
+            "count": 5
+          },
+          {
+            "module_id": "tp4056",
+            "count": 5
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "dependency_not_allowed:timer",
+            "count": 8
+          },
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 5
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 5
+          },
+          {
+            "reason": "not_allowed:fs_sd",
+            "count": 5
+          },
+          {
+            "reason": "not_allowed:hp4067",
+            "count": 5
+          },
+          {
+            "reason": "not_allowed:mcp23017",
+            "count": 5
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 5
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 5
+          }
+        ]
+      },
+      "stm32": {
+        "unsupported_or_gap_rows": 42,
+        "top_module_gaps": [
+          {
+            "module_id": "bluetooth",
+            "count": 3
+          },
+          {
+            "module_id": "eeprom",
+            "count": 3
+          },
+          {
+            "module_id": "fs_sd",
+            "count": 3
+          },
+          {
+            "module_id": "hp4067",
+            "count": 3
+          },
+          {
+            "module_id": "mcp23017",
+            "count": 3
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 3
+          },
+          {
+            "module_id": "psram",
+            "count": 3
+          },
+          {
+            "module_id": "remote_node",
+            "count": 3
+          },
+          {
+            "module_id": "tft",
+            "count": 3
+          },
+          {
+            "module_id": "tp4056",
+            "count": 3
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "dependency_not_allowed:timer",
+            "count": 4
+          },
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:fs_sd",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:hp4067",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:mcp23017",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 3
+          }
+        ]
+      }
+    }
+  },
   "rows": [
     {
       "platform": "atmega",
