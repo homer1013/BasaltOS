@@ -1,0 +1,257 @@
+{
+  "version": "1.0.0",
+  "policy": {
+    "intentional_boundary": "Boards with SPI but no TFT pin contract remain intentional external-display opt-in.",
+    "actionable_boundary": "Boards with display/TFT pin posture or invalid TFT pin contracts are actionable."
+  },
+  "tft_module_contract": {
+    "platforms": [
+      "esp32",
+      "rp2040",
+      "stm32"
+    ],
+    "required_pins": [
+      "tft_cs",
+      "tft_dc",
+      "tft_mosi",
+      "tft_sclk"
+    ]
+  },
+  "summary": {
+    "board_count": 35,
+    "boards_with_tft_capability": 5,
+    "boards_with_spi_but_no_tft": 30,
+    "actionable_total": 0,
+    "actionable_breakdown": {
+      "display_without_tft": 0,
+      "tft_pins_without_tft": 0,
+      "tft_capability_missing_required_pins": 0,
+      "tft_capability_out_of_platform_scope": 0
+    },
+    "boards_with_tft_by_platform": {
+      "esp32": 5
+    },
+    "boards_with_spi_no_tft_by_platform": {
+      "atmega": 2,
+      "atsam": 3,
+      "avr": 2,
+      "esp32": 7,
+      "linux-sbc": 1,
+      "pic16": 2,
+      "renesas_ra": 3,
+      "renesas_rx": 2,
+      "rp2040": 5,
+      "stm32": 3
+    },
+    "boards_with_spi_no_tft_by_manufacturer": {
+      "Arduino": 6,
+      "Espressif": 3,
+      "Raspberry Pi": 3,
+      "Renesas": 3,
+      "Adafruit": 2,
+      "DF Robot": 2,
+      "Microchip": 2,
+      "STMicroelectronics": 2,
+      "Seeed Studio": 2,
+      "SparkFun": 2,
+      "AI-Thinker": 1,
+      "Generic": 1,
+      "WeAct": 1
+    }
+  },
+  "lists": {
+    "boards_with_tft_capability": [
+      {
+        "board_id": "cyd",
+        "platform": "esp32",
+        "manufacturer": "Sunton",
+        "missing_required_pins": [],
+        "required_pin_contract_ok": true
+      },
+      {
+        "board_id": "elecrow_crowpanel_esp32",
+        "platform": "esp32",
+        "manufacturer": "Elecrow",
+        "missing_required_pins": [],
+        "required_pin_contract_ok": true
+      },
+      {
+        "board_id": "elecrow_crowpanel_esp32_s3",
+        "platform": "esp32",
+        "manufacturer": "Elecrow",
+        "missing_required_pins": [],
+        "required_pin_contract_ok": true
+      },
+      {
+        "board_id": "m5stack_core2",
+        "platform": "esp32",
+        "manufacturer": "M5Stack",
+        "missing_required_pins": [],
+        "required_pin_contract_ok": true
+      },
+      {
+        "board_id": "m5stickc_plus2",
+        "platform": "esp32",
+        "manufacturer": "M5Stack",
+        "missing_required_pins": [],
+        "required_pin_contract_ok": true
+      }
+    ],
+    "spi_without_tft_intentional_candidates": [
+      {
+        "board_id": "arduino_nano_v3",
+        "platform": "atmega",
+        "manufacturer": "Arduino"
+      },
+      {
+        "board_id": "arduino_uno_r3",
+        "platform": "atmega",
+        "manufacturer": "Arduino"
+      },
+      {
+        "board_id": "adafruit_circuit_playground_express",
+        "platform": "atsam",
+        "manufacturer": "Adafruit"
+      },
+      {
+        "board_id": "arduino_zero",
+        "platform": "atsam",
+        "manufacturer": "Arduino"
+      },
+      {
+        "board_id": "seeeduino_xiao_samd21",
+        "platform": "atsam",
+        "manufacturer": "Seeed Studio"
+      },
+      {
+        "board_id": "arduino_pro_micro_5v_usbc",
+        "platform": "avr",
+        "manufacturer": "SparkFun"
+      },
+      {
+        "board_id": "mega2560",
+        "platform": "avr",
+        "manufacturer": "Arduino"
+      },
+      {
+        "board_id": "dfrobot_beetle_esp32_c3",
+        "platform": "esp32",
+        "manufacturer": "DF Robot"
+      },
+      {
+        "board_id": "dfrobot_firebeetle_esp32",
+        "platform": "esp32",
+        "manufacturer": "DF Robot"
+      },
+      {
+        "board_id": "esp32-c3-supermini",
+        "platform": "esp32",
+        "manufacturer": "Generic"
+      },
+      {
+        "board_id": "esp32-c6",
+        "platform": "esp32",
+        "manufacturer": "Espressif"
+      },
+      {
+        "board_id": "esp32-cam",
+        "platform": "esp32",
+        "manufacturer": "AI-Thinker"
+      },
+      {
+        "board_id": "esp32-devkitc_v4",
+        "platform": "esp32",
+        "manufacturer": "Espressif"
+      },
+      {
+        "board_id": "esp32s3_devkitc_1",
+        "platform": "esp32",
+        "manufacturer": "Espressif"
+      },
+      {
+        "board_id": "raspberry_pi_4b",
+        "platform": "linux-sbc",
+        "manufacturer": "Raspberry Pi"
+      },
+      {
+        "board_id": "curiosity_nano_pic16f13145",
+        "platform": "pic16",
+        "manufacturer": "Microchip"
+      },
+      {
+        "board_id": "pic16f873-minimal",
+        "platform": "pic16",
+        "manufacturer": "Microchip"
+      },
+      {
+        "board_id": "arduino_uno_r4_minima",
+        "platform": "renesas_ra",
+        "manufacturer": "Arduino"
+      },
+      {
+        "board_id": "arduino_uno_r4_wifi",
+        "platform": "renesas_ra",
+        "manufacturer": "Arduino"
+      },
+      {
+        "board_id": "ek_ra4m1",
+        "platform": "renesas_ra",
+        "manufacturer": "Renesas"
+      },
+      {
+        "board_id": "rx65n_envision_kit",
+        "platform": "renesas_rx",
+        "manufacturer": "Renesas"
+      },
+      {
+        "board_id": "rx72n_envision_kit",
+        "platform": "renesas_rx",
+        "manufacturer": "Renesas"
+      },
+      {
+        "board_id": "adafruit_feather_rp2040",
+        "platform": "rp2040",
+        "manufacturer": "Adafruit"
+      },
+      {
+        "board_id": "raspberry_pi_pico",
+        "platform": "rp2040",
+        "manufacturer": "Raspberry Pi"
+      },
+      {
+        "board_id": "raspberry_pi_pico_w",
+        "platform": "rp2040",
+        "manufacturer": "Raspberry Pi"
+      },
+      {
+        "board_id": "seeed_xiao_rp2040",
+        "platform": "rp2040",
+        "manufacturer": "Seeed Studio"
+      },
+      {
+        "board_id": "sparkfun_thing_plus_rp2040",
+        "platform": "rp2040",
+        "manufacturer": "SparkFun"
+      },
+      {
+        "board_id": "blackpill_f411ce",
+        "platform": "stm32",
+        "manufacturer": "WeAct"
+      },
+      {
+        "board_id": "nucleo_f401re",
+        "platform": "stm32",
+        "manufacturer": "STMicroelectronics"
+      },
+      {
+        "board_id": "nucleo_f446re",
+        "platform": "stm32",
+        "manufacturer": "STMicroelectronics"
+      }
+    ],
+    "display_without_tft_actionable": [],
+    "tft_pins_without_tft_actionable": [],
+    "tft_missing_required_pins_actionable": [],
+    "tft_out_of_platform_actionable": []
+  }
+}
