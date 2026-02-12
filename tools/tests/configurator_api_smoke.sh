@@ -42,6 +42,8 @@ curl --fail-with-body -sS http://127.0.0.1:5000/api/board/esp32-c3-supermini > "
 curl --fail-with-body -sS http://127.0.0.1:5000/api/sync/export-preview > "$OUT/sync_export_preview.json"
 curl --fail-with-body -sS http://127.0.0.1:5000/api/board-taxonomy > "$OUT/board_taxonomy.json"
 curl --fail-with-body -sS "http://127.0.0.1:5000/api/board-taxonomy?platform=esp32&architecture=risc-v" > "$OUT/board_taxonomy_filtered.json"
+curl --fail-with-body -sS http://127.0.0.1:5000/api/board-taxonomy/options > "$OUT/board_taxonomy_options.json"
+curl --fail-with-body -sS "http://127.0.0.1:5000/api/board-taxonomy/options?platform=esp32" > "$OUT/board_taxonomy_options_filtered.json"
 
 cat > "$OUT/generate_payload.json" <<'JSON'
 {
@@ -85,7 +87,7 @@ import json
 from pathlib import Path
 out=Path('tmp/test_configurator_api_smoke')
 
-for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','generate_response.json','preview_response.json']:
+for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','board_taxonomy_options.json','board_taxonomy_options_filtered.json','generate_response.json','preview_response.json']:
     p=out/fn
     d=json.load(open(p,'r',encoding='utf-8'))
     if not d:
@@ -122,6 +124,22 @@ if tax_f.get('filters', {}).get('platform') != 'esp32':
     raise SystemExit('filtered taxonomy did not echo platform filter')
 if tax_f.get('filters', {}).get('architecture') != 'risc-v':
     raise SystemExit('filtered taxonomy did not echo architecture filter')
+
+opt=json.load(open(out/'board_taxonomy_options.json','r',encoding='utf-8'))
+if not opt.get('success'):
+    raise SystemExit('board taxonomy options API did not return success=true')
+if not isinstance((opt.get('options') or {}).get('platform'), list):
+    raise SystemExit('taxonomy options missing platform list')
+if len((opt.get('options') or {}).get('platform') or []) == 0:
+    raise SystemExit('taxonomy options platform list should not be empty')
+
+opt_f=json.load(open(out/'board_taxonomy_options_filtered.json','r',encoding='utf-8'))
+if not opt_f.get('success'):
+    raise SystemExit('filtered board taxonomy options API did not return success=true')
+if opt_f.get('filters', {}).get('platform') != 'esp32':
+    raise SystemExit('filtered taxonomy options did not echo platform filter')
+if len((opt_f.get('options') or {}).get('platform') or []) > 1:
+    raise SystemExit('platform-filtered taxonomy options should include at most one platform')
 
 conf=(out/'conflict_response.txt').read_text(encoding='utf-8')
 if 'HTTP_CODE:400' not in conf:

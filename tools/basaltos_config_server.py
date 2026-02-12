@@ -1516,6 +1516,36 @@ def _taxonomy_filtered_response(
         "boards": filtered,
     }
 
+
+def _taxonomy_options_response(filtered_payload: Dict[str, Any]) -> Dict[str, Any]:
+    boards = filtered_payload.get("boards") or []
+    if not isinstance(boards, list):
+        boards = []
+
+    def values_for(key: str) -> List[str]:
+        vals = sorted({str(b.get(key) or "").strip() for b in boards if str(b.get(key) or "").strip()})
+        return vals
+
+    return {
+        "success": True,
+        "filters": dict(filtered_payload.get("filters") or {}),
+        "summary": {
+            "total_boards": int((filtered_payload.get("summary") or {}).get("total_boards", len(boards))),
+            "options_count": {
+                "platform": len(values_for("platform")),
+                "manufacturer": len(values_for("manufacturer")),
+                "architecture": len(values_for("architecture")),
+                "family": len(values_for("family")),
+            },
+        },
+        "options": {
+            "platform": values_for("platform"),
+            "manufacturer": values_for("manufacturer"),
+            "architecture": values_for("architecture"),
+            "family": values_for("family"),
+        },
+    }
+
 @app.route('/api/platforms', methods=['GET'])
 def get_platforms():
     """Get list of available platforms"""
@@ -1552,6 +1582,25 @@ def get_board_taxonomy():
         )
     except Exception as e:
         return jsonify({"success": False, "error": f"Failed to load board taxonomy: {e}"}), 500
+
+
+@app.route('/api/board-taxonomy/options', methods=['GET'])
+def get_board_taxonomy_options():
+    """Return taxonomy filter option lists from the machine-readable board index."""
+    try:
+        index_obj = config_gen._read_json(BOARD_TAXONOMY_INDEX_FILE, {})
+        if not isinstance(index_obj, dict) or not isinstance(index_obj.get("boards"), list):
+            return jsonify({"success": False, "error": "Board taxonomy index is missing or invalid."}), 500
+        filtered = _taxonomy_filtered_response(
+            index_obj,
+            platform=request.args.get("platform", ""),
+            manufacturer=request.args.get("manufacturer", ""),
+            architecture=request.args.get("architecture", ""),
+            family=request.args.get("family", ""),
+        )
+        return jsonify(_taxonomy_options_response(filtered))
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Failed to load board taxonomy options: {e}"}), 500
 
 
 @app.route('/api/boards/<platform>', methods=['GET'])
