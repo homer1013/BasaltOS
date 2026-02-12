@@ -148,6 +148,12 @@ Metadata completeness gate (example threshold):
 python3 tools/metadata_completeness_report.py --fail-under 95 --out tmp/metadata/board_completeness_report.md
 ```
 
+Metadata taxonomy drift smoke (board filter dimensions):
+
+```bash
+bash tools/tests/metadata_taxonomy_drift_smoke.sh
+```
+
 
 ## PlatformIO Phase-1 Bootstrap
 
