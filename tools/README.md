@@ -18,6 +18,7 @@
 - `export_local_sync_payload.py` – export local guest data to schema-versioned sync payload (`docs/GUEST_SYNC_CONTRACT.md`)
 - `diff_local_sync_payload.py` – compare local vs remote payloads by item id/hash
 - `import_local_sync_payload.py` – import remote payloads into local workspace with conflict policy
+- `metadata_completeness_report.py` – generate board metadata completeness markdown report
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -133,6 +134,12 @@ Sync payload tooling smoke (export + diff + import):
 
 ```bash
 bash tools/tests/sync_payload_tooling_smoke.sh
+```
+
+Metadata completeness report smoke:
+
+```bash
+bash tools/tests/metadata_completeness_report_smoke.sh
 ```
 
 
