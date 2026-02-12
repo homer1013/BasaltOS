@@ -10,6 +10,12 @@ Use this checklist when adding a new board and/or onboarding a new manufacturer.
 - List 3-5 initial target boards for BasaltOS intake.
 - Record expected chip/platform families (ESP32, RP2040, STM32, AVR, etc.).
 
+Scaffold a deterministic intake workspace first:
+
+- `python3 tools/board_intake_scaffold.py --manufacturer "<manufacturer>" --family "<family>" --platform <platform> --board-id <board_id> --board-name "<board name>"`
+- Output path pattern:
+  - `tmp/board_intake_pipeline/<vendor_slug>/<family_slug>/<board_id>/`
+
 ## 2) Board Candidate Selection
 
 - Pick one board as the first intake candidate.
@@ -19,7 +25,8 @@ Use this checklist when adding a new board and/or onboarding a new manufacturer.
 
 ## 3) Metadata Authoring
 
-- Create `boards/<platform>/<board_dir>/board.json`.
+- Start from scaffolded `board.json`, then finalize values.
+- Create `boards/<platform>/<board_dir>/board.json` (or use `--apply` with scaffold tool).
 - Required fields populated:
   - `id`, `name`, `platform`, `description`, `mcu`, `flash`, `ram`, `capabilities`
 - Add board taxonomy-friendly values:

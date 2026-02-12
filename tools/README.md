@@ -4,6 +4,7 @@
 
 - `env.sh` – set up ESP-IDF environment
 - `board.sh` – list/select board profiles; applies profile-ready boards (sdkconfig + partitions)
+- `board_intake_scaffold.py` – scaffold deterministic board intake workspace (`vendor/family/board`) with starter `board.json`
 - `validate_metadata.py` – validate board/module JSON schema and cross-references
 - `build.sh` – wrapper for idf.py build
 - `flash.sh` – wrapper for idf.py flash
@@ -177,6 +178,12 @@ Board taxonomy schema smoke (id/value/index consistency):
 
 ```bash
 bash tools/tests/board_taxonomy_schema_smoke.sh
+```
+
+Board intake scaffold smoke:
+
+```bash
+bash tools/tests/board_intake_scaffold_smoke.sh
 ```
 
 

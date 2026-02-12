@@ -20,6 +20,20 @@ python3 tools/generate_board_catalog.py
 
 Use this flow when adding a new board profile.
 
+### 0) Scaffold Intake Workspace (Recommended)
+
+```bash
+python3 tools/board_intake_scaffold.py \
+  --manufacturer "<manufacturer>" \
+  --family "<family>" \
+  --platform <platform> \
+  --board-id <board_id> \
+  --board-name "<board name>"
+```
+
+Scaffold output path:
+- `tmp/board_intake_pipeline/<vendor_slug>/<family_slug>/<board_id>/board.json`
+
 ### 1) Pick Platform + Board ID
 
 - Choose platform folder under `boards/` (example: `esp32`, `rp2040`, `atsam`).
