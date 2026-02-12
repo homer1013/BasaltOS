@@ -8,9 +8,24 @@ OUT="tmp/test_configurator_api_smoke"
 rm -rf "$OUT"
 mkdir -p "$OUT"
 
+PORT="${BASALT_TEST_PORT:-}"
+if [[ -z "$PORT" ]]; then
+  PORT="$(python3 - <<'PY'
+import socket
+s = socket.socket()
+s.bind(("127.0.0.1", 0))
+print(s.getsockname()[1])
+s.close()
+PY
+)"
+fi
+export BASALT_TEST_PORT="$PORT"
+
 python3 - <<'PY' >"$OUT/server.log" 2>&1 &
 from tools import basaltos_config_server as srv
-srv.app.run(debug=False, use_reloader=False, host="127.0.0.1", port=5000)
+import os
+port = int(os.environ["BASALT_TEST_PORT"])
+srv.app.run(debug=False, use_reloader=False, host="127.0.0.1", port=port)
 PY
 SERVER_PID=$!
 
@@ -22,7 +37,9 @@ trap cleanup EXIT
 # Wait for server readiness
 python3 - <<'PY'
 import time, urllib.request, sys
-url='http://127.0.0.1:5000/'
+import os
+port = os.environ["BASALT_TEST_PORT"]
+url=f'http://127.0.0.1:{port}/'
 for _ in range(60):
     try:
         with urllib.request.urlopen(url, timeout=1) as r:
@@ -35,15 +52,16 @@ print('server failed to start')
 sys.exit(1)
 PY
 
-curl --fail-with-body -sS http://127.0.0.1:5000/api/platforms > "$OUT/platforms.json"
-curl --fail-with-body -sS http://127.0.0.1:5000/api/boards/esp32 > "$OUT/boards_esp32.json"
-curl --fail-with-body -sS "http://127.0.0.1:5000/api/drivers?platform=esp32" > "$OUT/drivers_esp32.json"
-curl --fail-with-body -sS http://127.0.0.1:5000/api/board/esp32-c3-supermini > "$OUT/board_esp32c3.json"
-curl --fail-with-body -sS http://127.0.0.1:5000/api/sync/export-preview > "$OUT/sync_export_preview.json"
-curl --fail-with-body -sS http://127.0.0.1:5000/api/board-taxonomy > "$OUT/board_taxonomy.json"
-curl --fail-with-body -sS "http://127.0.0.1:5000/api/board-taxonomy?platform=esp32&architecture=risc-v" > "$OUT/board_taxonomy_filtered.json"
-curl --fail-with-body -sS http://127.0.0.1:5000/api/board-taxonomy/options > "$OUT/board_taxonomy_options.json"
-curl --fail-with-body -sS "http://127.0.0.1:5000/api/board-taxonomy/options?platform=esp32" > "$OUT/board_taxonomy_options_filtered.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/platforms" > "$OUT/platforms.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/boards/esp32" > "$OUT/boards_esp32.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/drivers?platform=esp32" > "$OUT/drivers_esp32.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board/esp32-c3-supermini" > "$OUT/board_esp32c3.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/sync/export-preview" > "$OUT/sync_export_preview.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board-taxonomy" > "$OUT/board_taxonomy.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board-taxonomy?platform=esp32&architecture=risc-v" > "$OUT/board_taxonomy_filtered.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board-taxonomy/options" > "$OUT/board_taxonomy_options.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board-taxonomy/options?platform=esp32" > "$OUT/board_taxonomy_options_filtered.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board-taxonomy/meta" > "$OUT/board_taxonomy_meta.json"
 
 cat > "$OUT/generate_payload.json" <<'JSON'
 {
@@ -56,11 +74,11 @@ cat > "$OUT/generate_payload.json" <<'JSON'
 }
 JSON
 
-curl --fail-with-body -sS -X POST http://127.0.0.1:5000/api/generate \
+curl --fail-with-body -sS -X POST "http://127.0.0.1:${PORT}/api/generate" \
   -H 'Content-Type: application/json' \
   -d @"$OUT/generate_payload.json" > "$OUT/generate_response.json"
 
-curl --fail-with-body -sS -X POST http://127.0.0.1:5000/api/preview/basalt_config_h \
+curl --fail-with-body -sS -X POST "http://127.0.0.1:${PORT}/api/preview/basalt_config_h" \
   -H 'Content-Type: application/json' \
   -d @"$OUT/generate_payload.json" > "$OUT/preview_response.json"
 
@@ -78,7 +96,7 @@ cat > "$OUT/conflict_payload.json" <<'JSON'
 }
 JSON
 
-curl -sS -w "\nHTTP_CODE:%{http_code}\n" -X POST http://127.0.0.1:5000/api/generate \
+curl -sS -w "\nHTTP_CODE:%{http_code}\n" -X POST "http://127.0.0.1:${PORT}/api/generate" \
   -H 'Content-Type: application/json' \
   -d @"$OUT/conflict_payload.json" > "$OUT/conflict_response.txt"
 
@@ -87,7 +105,7 @@ import json
 from pathlib import Path
 out=Path('tmp/test_configurator_api_smoke')
 
-for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','board_taxonomy_options.json','board_taxonomy_options_filtered.json','generate_response.json','preview_response.json']:
+for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','board_taxonomy_options.json','board_taxonomy_options_filtered.json','board_taxonomy_meta.json','generate_response.json','preview_response.json']:
     p=out/fn
     d=json.load(open(p,'r',encoding='utf-8'))
     if not d:
@@ -140,6 +158,15 @@ if opt_f.get('filters', {}).get('platform') != 'esp32':
     raise SystemExit('filtered taxonomy options did not echo platform filter')
 if len((opt_f.get('options') or {}).get('platform') or []) > 1:
     raise SystemExit('platform-filtered taxonomy options should include at most one platform')
+
+meta=json.load(open(out/'board_taxonomy_meta.json','r',encoding='utf-8'))
+if not meta.get('success'):
+    raise SystemExit('board taxonomy meta API did not return success=true')
+sha=(meta.get('meta') or {}).get('sha256','')
+if len(sha) != 64:
+    raise SystemExit('taxonomy meta sha256 should be 64 chars')
+if int((meta.get('summary') or {}).get('total_boards', 0)) != int((tax.get('summary') or {}).get('total_boards', -1)):
+    raise SystemExit('taxonomy meta and taxonomy data total_boards mismatch')
 
 conf=(out/'conflict_response.txt').read_text(encoding='utf-8')
 if 'HTTP_CODE:400' not in conf:

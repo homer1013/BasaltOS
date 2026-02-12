@@ -14,6 +14,7 @@ import zipfile
 import os
 import re
 import glob
+import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
@@ -1517,6 +1518,43 @@ def _taxonomy_filtered_response(
     }
 
 
+def _taxonomy_meta_response(index_obj: Dict[str, Any], taxonomy_path: Path) -> Dict[str, Any]:
+    boards = index_obj.get("boards") or []
+    if not isinstance(boards, list):
+        boards = []
+    summary = index_obj.get("summary") or {}
+    if not isinstance(summary, dict):
+        summary = {}
+
+    digest = ""
+    mtime_ns = 0
+    size_bytes = 0
+    if taxonomy_path.exists() and taxonomy_path.is_file():
+        raw = taxonomy_path.read_bytes()
+        digest = hashlib.sha256(raw).hexdigest()
+        st = taxonomy_path.stat()
+        mtime_ns = int(st.st_mtime_ns)
+        size_bytes = int(st.st_size)
+
+    return {
+        "success": True,
+        "meta": {
+            "path": str(taxonomy_path),
+            "sha256": digest,
+            "mtime_ns": mtime_ns,
+            "size_bytes": size_bytes,
+            "schema_version": "1.0.0",
+        },
+        "summary": {
+            "total_boards": int(summary.get("total_boards", len(boards))),
+            "platform_count": int(summary.get("platform_count", 0)),
+            "manufacturer_count": int(summary.get("manufacturer_count", 0)),
+            "architecture_count": int(summary.get("architecture_count", 0)),
+            "family_count": int(summary.get("family_count", 0)),
+        },
+    }
+
+
 def _taxonomy_options_response(filtered_payload: Dict[str, Any]) -> Dict[str, Any]:
     boards = filtered_payload.get("boards") or []
     if not isinstance(boards, list):
@@ -1601,6 +1639,18 @@ def get_board_taxonomy_options():
         return jsonify(_taxonomy_options_response(filtered))
     except Exception as e:
         return jsonify({"success": False, "error": f"Failed to load board taxonomy options: {e}"}), 500
+
+
+@app.route('/api/board-taxonomy/meta', methods=['GET'])
+def get_board_taxonomy_meta():
+    """Return taxonomy index metadata for client-side cache/version checks."""
+    try:
+        index_obj = config_gen._read_json(BOARD_TAXONOMY_INDEX_FILE, {})
+        if not isinstance(index_obj, dict) or not isinstance(index_obj.get("boards"), list):
+            return jsonify({"success": False, "error": "Board taxonomy index is missing or invalid."}), 500
+        return jsonify(_taxonomy_meta_response(index_obj, BOARD_TAXONOMY_INDEX_FILE))
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Failed to load board taxonomy meta: {e}"}), 500
 
 
 @app.route('/api/boards/<platform>', methods=['GET'])
