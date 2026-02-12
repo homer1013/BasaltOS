@@ -1555,6 +1555,26 @@ def _taxonomy_meta_response(index_obj: Dict[str, Any], taxonomy_path: Path) -> D
     }
 
 
+def _taxonomy_lookup_response(index_obj: Dict[str, Any], board_ref: str) -> Tuple[Dict[str, Any], int]:
+    ref = str(board_ref or "").strip().lower()
+    if not ref:
+        return {"success": False, "error": "board_ref is required"}, 400
+
+    boards = index_obj.get("boards") or []
+    if not isinstance(boards, list):
+        boards = []
+
+    for b in boards:
+        if not isinstance(b, dict):
+            continue
+        board_id = str(b.get("id") or "").strip().lower()
+        board_dir = str(b.get("board_dir") or "").strip().lower()
+        if ref == board_id or ref == board_dir:
+            return {"success": True, "board": b}, 200
+
+    return {"success": False, "error": f"Board not found in taxonomy index: {board_ref}"}, 404
+
+
 def _taxonomy_options_response(filtered_payload: Dict[str, Any]) -> Dict[str, Any]:
     boards = filtered_payload.get("boards") or []
     if not isinstance(boards, list):
@@ -1651,6 +1671,19 @@ def get_board_taxonomy_meta():
         return jsonify(_taxonomy_meta_response(index_obj, BOARD_TAXONOMY_INDEX_FILE))
     except Exception as e:
         return jsonify({"success": False, "error": f"Failed to load board taxonomy meta: {e}"}), 500
+
+
+@app.route('/api/board-taxonomy/lookup/<board_ref>', methods=['GET'])
+def get_board_taxonomy_lookup(board_ref):
+    """Lookup a single board taxonomy row by board id or board_dir."""
+    try:
+        index_obj = config_gen._read_json(BOARD_TAXONOMY_INDEX_FILE, {})
+        if not isinstance(index_obj, dict) or not isinstance(index_obj.get("boards"), list):
+            return jsonify({"success": False, "error": "Board taxonomy index is missing or invalid."}), 500
+        payload, code = _taxonomy_lookup_response(index_obj, board_ref)
+        return jsonify(payload), code
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Failed to lookup board taxonomy row: {e}"}), 500
 
 
 @app.route('/api/boards/<platform>', methods=['GET'])

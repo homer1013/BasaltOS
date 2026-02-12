@@ -62,6 +62,8 @@ curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board-taxonomy?platform=
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board-taxonomy/options" > "$OUT/board_taxonomy_options.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board-taxonomy/options?platform=esp32" > "$OUT/board_taxonomy_options_filtered.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board-taxonomy/meta" > "$OUT/board_taxonomy_meta.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board-taxonomy/lookup/esp32-c3-supermini" > "$OUT/board_taxonomy_lookup.json"
+curl -sS -w "\nHTTP_CODE:%{http_code}\n" "http://127.0.0.1:${PORT}/api/board-taxonomy/lookup/not-a-real-board" > "$OUT/board_taxonomy_lookup_missing.txt"
 
 cat > "$OUT/generate_payload.json" <<'JSON'
 {
@@ -105,7 +107,7 @@ import json
 from pathlib import Path
 out=Path('tmp/test_configurator_api_smoke')
 
-for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','board_taxonomy_options.json','board_taxonomy_options_filtered.json','board_taxonomy_meta.json','generate_response.json','preview_response.json']:
+for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','board_taxonomy_options.json','board_taxonomy_options_filtered.json','board_taxonomy_meta.json','board_taxonomy_lookup.json','generate_response.json','preview_response.json']:
     p=out/fn
     d=json.load(open(p,'r',encoding='utf-8'))
     if not d:
@@ -167,6 +169,16 @@ if len(sha) != 64:
     raise SystemExit('taxonomy meta sha256 should be 64 chars')
 if int((meta.get('summary') or {}).get('total_boards', 0)) != int((tax.get('summary') or {}).get('total_boards', -1)):
     raise SystemExit('taxonomy meta and taxonomy data total_boards mismatch')
+
+lookup=json.load(open(out/'board_taxonomy_lookup.json','r',encoding='utf-8'))
+if not lookup.get('success'):
+    raise SystemExit('taxonomy lookup API did not return success=true')
+if (lookup.get('board') or {}).get('id') != 'esp32-c3-supermini':
+    raise SystemExit('taxonomy lookup returned unexpected board id')
+
+lookup_missing=(out/'board_taxonomy_lookup_missing.txt').read_text(encoding='utf-8')
+if 'HTTP_CODE:404' not in lookup_missing:
+    raise SystemExit('taxonomy lookup missing-board should return HTTP 404')
 
 conf=(out/'conflict_response.txt').read_text(encoding='utf-8')
 if 'HTTP_CODE:400' not in conf:

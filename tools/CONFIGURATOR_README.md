@@ -49,6 +49,7 @@ python tools/basaltos_config_server.py
 - `GET /api/board-taxonomy`
 - `GET /api/board-taxonomy/options`
 - `GET /api/board-taxonomy/meta`
+- `GET /api/board-taxonomy/lookup/<board_ref>`
 - `GET /api/boards/<platform>`
 - `GET /api/drivers?platform=<platform>`
 - `GET /api/board/<board_id>`
