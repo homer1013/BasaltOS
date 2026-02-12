@@ -200,6 +200,12 @@ Cross-platform generation parity baseline drift smoke:
 bash tools/tests/generation_parity_baseline_drift_smoke.sh
 ```
 
+Cross-platform generation parity defaults gate smoke:
+
+```bash
+bash tools/tests/generation_parity_defaults_gate_smoke.sh
+```
+
 
 ## PlatformIO Phase-1 Bootstrap
 

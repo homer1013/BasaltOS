@@ -66,6 +66,8 @@ jobs:
           bash tools/tests/esp32_first_success_quickstart_smoke.sh
           bash tools/tests/examples_pack_recipes_smoke.sh
           bash tools/tests/staged_artifact_guard_smoke.sh
+          bash tools/tests/generation_parity_baseline_drift_smoke.sh
+          bash tools/tests/generation_parity_defaults_gate_smoke.sh
           bash tools/tests/board_catalog_drift_smoke.sh
           bash tools/tests/board_taxonomy_fields_smoke.sh
 

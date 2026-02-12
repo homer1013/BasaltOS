@@ -91,7 +91,7 @@ run_expect_zero_with_msg() {
       failures=$((failures + 1))
     fi
   else
-    if grep -Eiq "$pattern" "$case_log"; then
+    if grep -Eiq -- "$pattern" "$case_log"; then
       mark_result "$id" "PASS" "exit=0 and message matched /$pattern/"
     else
       mark_result "$id" "FAIL" "exit=0 but missing message /$pattern/"
@@ -133,7 +133,7 @@ run_expect_nonzero_with_msg() {
       failures=$((failures + 1))
     fi
   else
-    if grep -Eiq "$pattern" "$case_log"; then
+    if grep -Eiq -- "$pattern" "$case_log"; then
       mark_result "$id" "PASS" "exit=$rc and message matched /$pattern/"
     else
       mark_result "$id" "FAIL" "exit=$rc but missing message /$pattern/"
