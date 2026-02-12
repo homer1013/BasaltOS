@@ -20,6 +20,7 @@
     "mcp23017",
     "hp4067",
     "twai",
+    "mcp2544fd",
     "fs_sd"
   ],
   "pins": {

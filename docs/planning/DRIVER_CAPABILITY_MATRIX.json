@@ -4,8 +4,8 @@
   "row_count": 1155,
   "summary": {
     "status_counts": {
-      "SUPPORTED": 910,
-      "UNSUPPORTED": 234,
+      "SUPPORTED": 914,
+      "UNSUPPORTED": 230,
       "CAPABILITY_ONLY": 11
     },
     "platform_summary": {
@@ -29,9 +29,9 @@
       },
       "esp32": {
         "boards": 12,
-        "SUPPORTED": 337,
+        "SUPPORTED": 341,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 59
+        "UNSUPPORTED": 55
       },
       "linux-sbc": {
         "boards": 1,
@@ -189,6 +189,10 @@
       },
       {
         "module_id": "eeprom",
+        "supported_boards": 4
+      },
+      {
+        "module_id": "mcp2544fd",
         "supported_boards": 4
       },
       {
@@ -419,14 +423,10 @@
         ]
       },
       "esp32": {
-        "unsupported_or_gap_rows": 59,
+        "unsupported_or_gap_rows": 55,
         "top_module_gaps": [
           {
             "module_id": "eeprom",
-            "count": 12
-          },
-          {
-            "module_id": "mcp2544fd",
             "count": 12
           },
           {
@@ -436,6 +436,10 @@
           {
             "module_id": "psram",
             "count": 9
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 8
           },
           {
             "module_id": "tft",
@@ -452,16 +456,16 @@
             "count": 12
           },
           {
-            "reason": "not_allowed:mcp2544fd",
-            "count": 12
-          },
-          {
             "reason": "not_allowed:tp4056",
             "count": 12
           },
           {
             "reason": "not_allowed:psram",
             "count": 9
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 8
           },
           {
             "reason": "not_allowed:tft",
@@ -908,24 +912,24 @@
       "actionable_top_modules_by_platform": {}
     },
     "advanced_policy_summary": {
-      "not_allowed_row_count": 234,
+      "not_allowed_row_count": 230,
       "bucket_counts": {
-        "intentional": 234
+        "intentional": 230
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 193
+        "intentional_advanced_peripheral_opt_in": 189
       },
       "actionable_top_modules_by_platform": {}
     },
     "foundation_focus_summary": {
-      "gap_row_count": 245,
+      "gap_row_count": 241,
       "bucket_counts": {
-        "intentional": 245
+        "intentional": 241
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 193,
+        "intentional_advanced_peripheral_opt_in": 189,
         "intentional_8bit_mic_scope": 6,
         "intentional_wireless_scope": 5
       },
@@ -4400,10 +4404,10 @@
       "module_name": "MCP2544FD CAN PHY",
       "module_platforms": "esp32",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp2544fd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -6710,10 +6714,10 @@
       "module_name": "MCP2544FD CAN PHY",
       "module_platforms": "esp32",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp2544fd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8096,10 +8100,10 @@
       "module_name": "MCP2544FD CAN PHY",
       "module_platforms": "esp32",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp2544fd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9482,10 +9486,10 @@
       "module_name": "MCP2544FD CAN PHY",
       "module_platforms": "esp32",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp2544fd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",

@@ -246,7 +246,7 @@ esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,imu,IMU Sensor,"esp32,stm32,rp2040,a
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
-esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
+esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mcp2544fd,MCP2544FD CAN PHY,esp32,yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -411,7 +411,7 @@ esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),imu,IMU
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
-esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
+esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -510,7 +510,7 @@ esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),imu,IMU Senso
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
-esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
+esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -609,7 +609,7 @@ esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),imu,IMU Se
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mcp2515,MCP2515 SPI CAN Controller,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
-esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,no,no,UNSUPPORTED,not_allowed:mcp2544fd
+esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mcp2544fd,MCP2544FD CAN PHY,esp32,yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mic,Microphone Input,"esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),psram,PSRAM,esp32,yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-

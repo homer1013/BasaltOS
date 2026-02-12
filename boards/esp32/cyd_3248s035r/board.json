@@ -15,6 +15,7 @@
     "wifi",
     "bluetooth",
     "twai",
+    "mcp2544fd",
     "gpio",
     "adc",
     "pwm",

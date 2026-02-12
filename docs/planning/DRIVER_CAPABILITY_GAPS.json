@@ -220,14 +220,10 @@
       ]
     },
     "esp32": {
-      "unsupported_or_gap_rows": 59,
+      "unsupported_or_gap_rows": 55,
       "top_module_gaps": [
         {
           "module_id": "eeprom",
-          "count": 12
-        },
-        {
-          "module_id": "mcp2544fd",
           "count": 12
         },
         {
@@ -237,6 +233,10 @@
         {
           "module_id": "psram",
           "count": 9
+        },
+        {
+          "module_id": "mcp2544fd",
+          "count": 8
         },
         {
           "module_id": "tft",
@@ -253,16 +253,16 @@
           "count": 12
         },
         {
-          "reason": "not_allowed:mcp2544fd",
-          "count": 12
-        },
-        {
           "reason": "not_allowed:tp4056",
           "count": 12
         },
         {
           "reason": "not_allowed:psram",
           "count": 9
+        },
+        {
+          "reason": "not_allowed:mcp2544fd",
+          "count": 8
         },
         {
           "reason": "not_allowed:tft",
@@ -709,24 +709,24 @@
     "actionable_top_modules_by_platform": {}
   },
   "advanced_policy_summary": {
-    "not_allowed_row_count": 234,
+    "not_allowed_row_count": 230,
     "bucket_counts": {
-      "intentional": 234
+      "intentional": 230
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
-      "intentional_advanced_peripheral_opt_in": 193
+      "intentional_advanced_peripheral_opt_in": 189
     },
     "actionable_top_modules_by_platform": {}
   },
   "foundation_focus_summary": {
-    "gap_row_count": 245,
+    "gap_row_count": 241,
     "bucket_counts": {
-      "intentional": 245
+      "intentional": 241
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
-      "intentional_advanced_peripheral_opt_in": 193,
+      "intentional_advanced_peripheral_opt_in": 189,
       "intentional_8bit_mic_scope": 6,
       "intentional_wireless_scope": 5
     },

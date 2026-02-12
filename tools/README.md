@@ -27,6 +27,7 @@
 - `generate_tft_posture_report.py` – generate TFT capability posture policy report (`docs/planning/TFT_CAPABILITY_POSTURE.json`, `docs/planning/TFT_CAPABILITY_POSTURE.md`)
 - `generate_twai_posture_report.py` – generate TWAI capability posture policy report (`docs/planning/TWAI_CAPABILITY_POSTURE.json`, `docs/planning/TWAI_CAPABILITY_POSTURE.md`)
 - `generate_eeprom_posture_report.py` – generate EEPROM capability posture policy report (`docs/planning/EEPROM_CAPABILITY_POSTURE.json`, `docs/planning/EEPROM_CAPABILITY_POSTURE.md`)
+- `generate_mcp2544fd_posture_report.py` – generate MCP2544FD capability posture policy report (`docs/planning/MCP2544FD_CAPABILITY_POSTURE.json`, `docs/planning/MCP2544FD_CAPABILITY_POSTURE.md`)
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -232,6 +233,12 @@ EEPROM posture report drift smoke:
 
 ```bash
 bash tools/tests/eeprom_posture_report_drift_smoke.sh
+```
+
+MCP2544FD posture report drift smoke:
+
+```bash
+bash tools/tests/mcp2544fd_posture_report_drift_smoke.sh
 ```
 
 

@@ -11,6 +11,7 @@
     "wifi",
     "bluetooth",
     "twai",
+    "mcp2544fd",
     "uart",
     "spi",
     "i2c",

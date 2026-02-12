@@ -1,0 +1,187 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+from collections import Counter
+from pathlib import Path
+from typing import Any, Dict, List, Set
+
+
+def read_json(path: Path) -> Dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_boards(root: Path) -> List[Dict[str, Any]]:
+    out: List[Dict[str, Any]] = []
+    for board_json in sorted((root / "boards").rglob("board.json")):
+        data = read_json(board_json)
+        caps = {str(x).strip() for x in (data.get("capabilities") or []) if str(x).strip()}
+        pins = data.get("pins") or {}
+        out.append(
+            {
+                "board_id": str(data.get("id") or board_json.parent.name),
+                "platform": str(data.get("platform") or ""),
+                "manufacturer": str(data.get("manufacturer") or "Unknown"),
+                "capabilities": caps,
+                "has_twai_capability": "twai" in caps,
+                "has_can_control_pins": ("can_stby" in pins and "can_en" in pins),
+                "path": str(board_json.relative_to(root)),
+            }
+        )
+    return out
+
+
+def load_contract(root: Path) -> Dict[str, Any]:
+    mod = read_json(root / "modules" / "mcp2544fd" / "module.json")
+    return {
+        "platforms": sorted([str(x).strip() for x in (mod.get("platforms") or []) if str(x).strip()]),
+        "depends": [str(x).strip() for x in (mod.get("depends") or []) if str(x).strip()],
+        "pins": [str(x).strip() for x in (mod.get("pins") or []) if str(x).strip()],
+    }
+
+
+def build_report(boards: List[Dict[str, Any]], contract: Dict[str, Any]) -> Dict[str, Any]:
+    supported_platforms: Set[str] = set(contract["platforms"])
+    module_id = "mcp2544fd"
+
+    enabled: List[Dict[str, Any]] = []
+    esp32_twai_pinready_missing_actionable: List[Dict[str, Any]] = []
+    enabled_without_prereq_actionable: List[Dict[str, Any]] = []
+    enabled_out_of_scope_actionable: List[Dict[str, Any]] = []
+    intentional_missing: List[Dict[str, Any]] = []
+
+    for b in boards:
+        has_mod = module_id in b["capabilities"]
+        base = {
+            "board_id": b["board_id"],
+            "platform": b["platform"],
+            "manufacturer": b["manufacturer"],
+        }
+        if has_mod:
+            enabled.append(base)
+            if b["platform"] not in supported_platforms:
+                enabled_out_of_scope_actionable.append(base)
+            if not b["has_twai_capability"] or not b["has_can_control_pins"]:
+                enabled_without_prereq_actionable.append(base)
+            continue
+
+        # Actionable only where ESP32 board is already TWAI + control-pin ready.
+        if b["platform"] == "esp32" and b["has_twai_capability"] and b["has_can_control_pins"]:
+            esp32_twai_pinready_missing_actionable.append(base)
+        else:
+            intentional_missing.append(base)
+
+    actionable_total = (
+        len(esp32_twai_pinready_missing_actionable)
+        + len(enabled_without_prereq_actionable)
+        + len(enabled_out_of_scope_actionable)
+    )
+
+    return {
+        "version": "1.0.0",
+        "policy": {
+            "intentional_boundary": "Missing `mcp2544fd` remains intentional unless board is ESP32 TWAI + CAN-control-pin ready.",
+            "actionable_boundary": "Actionable when ESP32 board is TWAI + CAN-control-pin ready but missing `mcp2544fd`, or when module is enabled with invalid prereq/scope posture.",
+        },
+        "mcp2544fd_module_contract": contract,
+        "summary": {
+            "board_count": len(boards),
+            "mcp2544fd_enabled_count": len(enabled),
+            "intentional_missing_count": len(intentional_missing),
+            "actionable_total": actionable_total,
+            "mcp2544fd_enabled_by_platform": dict(sorted(Counter(x["platform"] for x in enabled).items())),
+            "intentional_missing_by_platform": dict(sorted(Counter(x["platform"] for x in intentional_missing).items())),
+        },
+        "lists": {
+            "mcp2544fd_enabled": sorted(enabled, key=lambda x: (x["platform"], x["board_id"])),
+            "missing_actionable_esp32_twai_pinready": sorted(
+                esp32_twai_pinready_missing_actionable, key=lambda x: (x["platform"], x["board_id"])
+            ),
+            "enabled_without_prereq_actionable": sorted(
+                enabled_without_prereq_actionable, key=lambda x: (x["platform"], x["board_id"])
+            ),
+            "enabled_out_of_scope_actionable": sorted(
+                enabled_out_of_scope_actionable, key=lambda x: (x["platform"], x["board_id"])
+            ),
+            "intentional_missing": sorted(intentional_missing, key=lambda x: (x["platform"], x["board_id"])),
+        },
+    }
+
+
+def write_md(report: Dict[str, Any], out_path: Path) -> None:
+    s = report["summary"]
+    lines: List[str] = []
+    lines.append("# MCP2544FD Capability Posture Report v1")
+    lines.append("")
+    lines.append("Auto-generated by `tools/generate_mcp2544fd_posture_report.py`.")
+    lines.append("")
+    lines.append("## Policy Boundaries")
+    lines.append("")
+    lines.append(f"- Intentional: {report['policy']['intentional_boundary']}")
+    lines.append(f"- Actionable: {report['policy']['actionable_boundary']}")
+    lines.append("")
+    lines.append("## Summary")
+    lines.append("")
+    lines.append(f"- Boards analyzed: {int(s['board_count'])}")
+    lines.append(f"- Boards with `mcp2544fd` capability: {int(s['mcp2544fd_enabled_count'])}")
+    lines.append(f"- Intentional missing rows: {int(s['intentional_missing_count'])}")
+    lines.append(f"- Actionable total: {int(s['actionable_total'])}")
+    lines.append("")
+
+    lists = report["lists"]
+    if lists["missing_actionable_esp32_twai_pinready"]:
+        lines.append("## Actionable: ESP32 TWAI+Pin-Ready Missing `mcp2544fd`")
+        lines.append("")
+        for row in lists["missing_actionable_esp32_twai_pinready"]:
+            lines.append(f"- {row['platform']}/{row['board_id']} ({row['manufacturer']})")
+        lines.append("")
+
+    if lists["enabled_without_prereq_actionable"]:
+        lines.append("## Actionable: `mcp2544fd` Enabled Without Prereq Posture")
+        lines.append("")
+        for row in lists["enabled_without_prereq_actionable"]:
+            lines.append(f"- {row['platform']}/{row['board_id']} ({row['manufacturer']})")
+        lines.append("")
+
+    if lists["enabled_out_of_scope_actionable"]:
+        lines.append("## Actionable: `mcp2544fd` Enabled Outside Module Platform Scope")
+        lines.append("")
+        for row in lists["enabled_out_of_scope_actionable"]:
+            lines.append(f"- {row['platform']}/{row['board_id']} ({row['manufacturer']})")
+        lines.append("")
+
+    lines.append("## Intentional Queue Snapshot (Top 30)")
+    lines.append("")
+    for row in lists["intentional_missing"][:30]:
+        lines.append(f"- {row['platform']}/{row['board_id']} ({row['manufacturer']})")
+    lines.append("")
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Generate MCP2544FD capability posture report artifacts.")
+    ap.add_argument("--json-out", default="docs/planning/MCP2544FD_CAPABILITY_POSTURE.json")
+    ap.add_argument("--md-out", default="docs/planning/MCP2544FD_CAPABILITY_POSTURE.md")
+    args = ap.parse_args()
+
+    root = Path(__file__).resolve().parent.parent
+    report = build_report(load_boards(root), load_contract(root))
+    json_out = (root / args.json_out).resolve()
+    md_out = (root / args.md_out).resolve()
+    json_out.parent.mkdir(parents=True, exist_ok=True)
+    json_out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    write_md(report, md_out)
+
+    print(f"[mcp2544fd-posture] boards: {report['summary']['board_count']}")
+    print(f"[mcp2544fd-posture] enabled: {report['summary']['mcp2544fd_enabled_count']}")
+    print(f"[mcp2544fd-posture] actionable: {report['summary']['actionable_total']}")
+    print(f"[mcp2544fd-posture] wrote: {json_out}")
+    print(f"[mcp2544fd-posture] wrote: {md_out}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
