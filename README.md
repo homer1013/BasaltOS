@@ -218,6 +218,7 @@ BasaltOS keeps local-only user data and machine-specific cache outside git under
 canonical local workspace root.
 
 - Contract: `docs/LOCAL_DATA_WORKSPACE.md`
+- Guest->account sync handoff: `docs/GUEST_SYNC_CONTRACT.md`
 - Migration helper:
   - `python3 tools/local_data_migrate.py --dry-run`
   - `python3 tools/local_data_migrate.py --apply`

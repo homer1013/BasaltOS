@@ -51,6 +51,10 @@ When users later choose to connect an account on BasaltOS Platform:
 3. Sync uses export/import payloads with schema versioning.
 4. Conflict behavior is explicit (prompt/merge strategy), not silent overwrite.
 
+Detailed contract:
+
+- `docs/GUEST_SYNC_CONTRACT.md`
+
 ## Migration Helper
 
 Use:
