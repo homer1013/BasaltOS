@@ -54,6 +54,9 @@ Minimum required metadata:
 - `capabilities` (non-empty list)
 - `pins` (non-empty object)
 
+Capability policy note:
+- `timer` is treated as a baseline runtime capability in capability-matrix policy checks, even if not explicitly listed in `board.json`.
+
 Strongly recommended taxonomy fields:
 - `manufacturer`
 - `architecture`

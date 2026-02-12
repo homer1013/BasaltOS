@@ -58,6 +58,10 @@ def board_capabilities(board_data: Dict[str, Any]) -> Optional[Set[str]]:
     if not isinstance(caps, list):
         return None
     out = {str(c).strip() for c in caps if str(c).strip()}
+    # Policy: timer is treated as a baseline runtime capability for all boards.
+    # Many modules (for example pwm/dht22) depend on timer services even when
+    # board metadata omitted an explicit "timer" capability entry.
+    out.add("timer")
     out.add("fs_spiffs")
     if "sd_card" in out:
         out.add("fs_sd")

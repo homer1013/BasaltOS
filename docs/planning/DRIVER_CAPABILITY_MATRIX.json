@@ -4,22 +4,22 @@
   "row_count": 1155,
   "summary": {
     "status_counts": {
-      "SUPPORTED": 687,
-      "UNSUPPORTED": 457,
+      "SUPPORTED": 754,
+      "UNSUPPORTED": 390,
       "CAPABILITY_ONLY": 11
     },
     "platform_summary": {
       "atmega": {
         "boards": 2,
-        "SUPPORTED": 37,
+        "SUPPORTED": 40,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 27
+        "UNSUPPORTED": 24
       },
       "atsam": {
         "boards": 3,
-        "SUPPORTED": 57,
+        "SUPPORTED": 63,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 42
+        "UNSUPPORTED": 36
       },
       "avr": {
         "boards": 2,
@@ -29,15 +29,15 @@
       },
       "esp32": {
         "boards": 12,
-        "SUPPORTED": 242,
+        "SUPPORTED": 273,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 154
+        "UNSUPPORTED": 123
       },
       "linux-sbc": {
         "boards": 1,
-        "SUPPORTED": 19,
+        "SUPPORTED": 22,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 12
+        "UNSUPPORTED": 9
       },
       "pic16": {
         "boards": 2,
@@ -47,27 +47,27 @@
       },
       "renesas_ra": {
         "boards": 3,
-        "SUPPORTED": 60,
+        "SUPPORTED": 63,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 37
+        "UNSUPPORTED": 34
       },
       "renesas_rx": {
         "boards": 2,
-        "SUPPORTED": 39,
+        "SUPPORTED": 42,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 27
+        "UNSUPPORTED": 24
       },
       "rp2040": {
         "boards": 5,
-        "SUPPORTED": 93,
+        "SUPPORTED": 105,
         "CAPABILITY_ONLY": 1,
-        "UNSUPPORTED": 71
+        "UNSUPPORTED": 59
       },
       "stm32": {
         "boards": 3,
-        "SUPPORTED": 57,
+        "SUPPORTED": 63,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 42
+        "UNSUPPORTED": 36
       }
     },
     "module_coverage": [
@@ -120,8 +120,16 @@
         "supported_boards": 35
       },
       {
+        "module_id": "timer",
+        "supported_boards": 35
+      },
+      {
         "module_id": "uart",
         "supported_boards": 35
+      },
+      {
+        "module_id": "dht22",
+        "supported_boards": 34
       },
       {
         "module_id": "gpio",
@@ -140,6 +148,10 @@
         "supported_boards": 31
       },
       {
+        "module_id": "pwm",
+        "supported_boards": 30
+      },
+      {
         "module_id": "mic",
         "supported_boards": 25
       },
@@ -150,18 +162,6 @@
       {
         "module_id": "bluetooth",
         "supported_boards": 11
-      },
-      {
-        "module_id": "dht22",
-        "supported_boards": 11
-      },
-      {
-        "module_id": "timer",
-        "supported_boards": 11
-      },
-      {
-        "module_id": "pwm",
-        "supported_boards": 10
       },
       {
         "module_id": "tft",
@@ -190,7 +190,7 @@
     "platform_count": 10,
     "platforms": {
       "atmega": {
-        "unsupported_or_gap_rows": 29,
+        "unsupported_or_gap_rows": 26,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -239,10 +239,6 @@
             "count": 2
           },
           {
-            "reason": "dependency_not_allowed:timer",
-            "count": 2
-          },
-          {
             "reason": "not_allowed:eeprom",
             "count": 2
           },
@@ -265,11 +261,15 @@
           {
             "reason": "module_platform_mismatch",
             "count": 2
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 2
           }
         ]
       },
       "atsam": {
-        "unsupported_or_gap_rows": 42,
+        "unsupported_or_gap_rows": 36,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -314,10 +314,6 @@
         ],
         "top_reasons": [
           {
-            "reason": "dependency_not_allowed:timer",
-            "count": 4
-          },
-          {
             "reason": "not_allowed:bluetooth",
             "count": 3
           },
@@ -343,6 +339,10 @@
           },
           {
             "reason": "not_allowed:psram",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:remote_node",
             "count": 3
           }
         ]
@@ -427,12 +427,8 @@
         ]
       },
       "esp32": {
-        "unsupported_or_gap_rows": 154,
+        "unsupported_or_gap_rows": 123,
         "top_module_gaps": [
-          {
-            "module_id": "dht22",
-            "count": 12
-          },
           {
             "module_id": "eeprom",
             "count": 12
@@ -450,15 +446,7 @@
             "count": 12
           },
           {
-            "module_id": "pwm",
-            "count": 12
-          },
-          {
             "module_id": "remote_node",
-            "count": 12
-          },
-          {
-            "module_id": "timer",
             "count": 12
           },
           {
@@ -468,13 +456,21 @@
           {
             "module_id": "fs_sd",
             "count": 11
+          },
+          {
+            "module_id": "psram",
+            "count": 9
+          },
+          {
+            "module_id": "tft",
+            "count": 7
+          },
+          {
+            "module_id": "twai",
+            "count": 7
           }
         ],
         "top_reasons": [
-          {
-            "reason": "dependency_not_allowed:timer",
-            "count": 19
-          },
           {
             "reason": "not_allowed:eeprom",
             "count": 12
@@ -496,24 +492,24 @@
             "count": 12
           },
           {
-            "reason": "not_allowed:timer",
+            "reason": "not_allowed:tp4056",
             "count": 12
           },
           {
-            "reason": "not_allowed:tp4056",
-            "count": 12
+            "reason": "not_allowed:fs_sd",
+            "count": 11
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 9
           }
         ]
       },
       "linux-sbc": {
-        "unsupported_or_gap_rows": 14,
+        "unsupported_or_gap_rows": 11,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
-            "count": 1
-          },
-          {
-            "module_id": "dht22",
             "count": 1
           },
           {
@@ -537,25 +533,25 @@
             "count": 1
           },
           {
-            "module_id": "pwm",
-            "count": 1
-          },
-          {
             "module_id": "remote_node",
             "count": 1
           },
           {
             "module_id": "tft",
             "count": 1
+          },
+          {
+            "module_id": "tp4056",
+            "count": 1
+          },
+          {
+            "module_id": "twai",
+            "count": 1
           }
         ],
         "top_reasons": [
           {
             "reason": "module_platform_mismatch",
-            "count": 2
-          },
-          {
-            "reason": "dependency_not_allowed:timer",
             "count": 2
           },
           {
@@ -580,6 +576,10 @@
           },
           {
             "reason": "not_allowed:remote_node",
+            "count": 1
+          },
+          {
+            "reason": "not_allowed:tft",
             "count": 1
           }
         ]
@@ -664,7 +664,7 @@
         ]
       },
       "renesas_ra": {
-        "unsupported_or_gap_rows": 39,
+        "unsupported_or_gap_rows": 36,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -743,7 +743,7 @@
         ]
       },
       "renesas_rx": {
-        "unsupported_or_gap_rows": 27,
+        "unsupported_or_gap_rows": 24,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -822,7 +822,7 @@
         ]
       },
       "rp2040": {
-        "unsupported_or_gap_rows": 72,
+        "unsupported_or_gap_rows": 60,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -867,10 +867,6 @@
         ],
         "top_reasons": [
           {
-            "reason": "dependency_not_allowed:timer",
-            "count": 8
-          },
-          {
             "reason": "not_allowed:bluetooth",
             "count": 5
           },
@@ -896,12 +892,16 @@
           },
           {
             "reason": "not_allowed:psram",
+            "count": 5
+          },
+          {
+            "reason": "not_allowed:remote_node",
             "count": 5
           }
         ]
       },
       "stm32": {
-        "unsupported_or_gap_rows": 42,
+        "unsupported_or_gap_rows": 36,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -946,10 +946,6 @@
         ],
         "top_reasons": [
           {
-            "reason": "dependency_not_allowed:timer",
-            "count": 4
-          },
-          {
             "reason": "not_allowed:bluetooth",
             "count": 3
           },
@@ -975,6 +971,10 @@
           },
           {
             "reason": "not_allowed:psram",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:remote_node",
             "count": 3
           }
         ]
@@ -1056,12 +1056,12 @@
       "board_name": "Arduino Nano V3 (ATmega328P)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -1266,12 +1266,12 @@
       "board_name": "Arduino Nano V3 (ATmega328P)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -1378,12 +1378,12 @@
       "board_name": "Arduino Nano V3 (ATmega328P)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -1518,7 +1518,7 @@
       "board_name": "Arduino Uno R3",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -1728,7 +1728,7 @@
       "board_name": "Arduino Uno R3",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -1840,7 +1840,7 @@
       "board_name": "Arduino Uno R3",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -1980,7 +1980,7 @@
       "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -2190,7 +2190,7 @@
       "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -2302,7 +2302,7 @@
       "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -2442,12 +2442,12 @@
       "board_name": "Arduino Zero (SAMD21G18)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2652,12 +2652,12 @@
       "board_name": "Arduino Zero (SAMD21G18)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2764,12 +2764,12 @@
       "board_name": "Arduino Zero (SAMD21G18)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2904,12 +2904,12 @@
       "board_name": "Seeeduino XIAO (SAMD21)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -3114,12 +3114,12 @@
       "board_name": "Seeeduino XIAO (SAMD21)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -3226,12 +3226,12 @@
       "board_name": "Seeeduino XIAO (SAMD21)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -3366,7 +3366,7 @@
       "board_name": "Arduino Pro Micro 5V (USB-C)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -3576,7 +3576,7 @@
       "board_name": "Arduino Pro Micro 5V (USB-C)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -3688,7 +3688,7 @@
       "board_name": "Arduino Pro Micro 5V (USB-C)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -3828,7 +3828,7 @@
       "board_name": "Arduino Mega 2560 (Generic)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -4038,7 +4038,7 @@
       "board_name": "Arduino Mega 2560 (Generic)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -4150,7 +4150,7 @@
       "board_name": "Arduino Mega 2560 (Generic)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -4290,12 +4290,12 @@
       "board_name": "CYD ESP32-3248S035R",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -4500,7 +4500,7 @@
       "board_name": "CYD ESP32-3248S035R",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "no",
       "resolve_with_allow": "no",
@@ -4612,12 +4612,12 @@
       "board_name": "CYD ESP32-3248S035R",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -4752,12 +4752,12 @@
       "board_name": "DFRobot Beetle ESP32-C3",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -4962,12 +4962,12 @@
       "board_name": "DFRobot Beetle ESP32-C3",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5074,12 +5074,12 @@
       "board_name": "DFRobot Beetle ESP32-C3",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5214,12 +5214,12 @@
       "board_name": "DFRobot FireBeetle ESP32",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5424,12 +5424,12 @@
       "board_name": "DFRobot FireBeetle ESP32",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5536,12 +5536,12 @@
       "board_name": "DFRobot FireBeetle ESP32",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5676,12 +5676,12 @@
       "board_name": "Elecrow CrowPanel ESP32",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5886,7 +5886,7 @@
       "board_name": "Elecrow CrowPanel ESP32",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "no",
       "resolve_with_allow": "no",
@@ -5998,12 +5998,12 @@
       "board_name": "Elecrow CrowPanel ESP32",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -6138,12 +6138,12 @@
       "board_name": "Elecrow CrowPanel ESP32-S3",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -6348,12 +6348,12 @@
       "board_name": "Elecrow CrowPanel ESP32-S3",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -6460,12 +6460,12 @@
       "board_name": "Elecrow CrowPanel ESP32-S3",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -6600,12 +6600,12 @@
       "board_name": "ESP32-C3 SuperMini (Generic)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -6810,12 +6810,12 @@
       "board_name": "ESP32-C3 SuperMini (Generic)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -6922,12 +6922,12 @@
       "board_name": "ESP32-C3 SuperMini (Generic)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -7062,12 +7062,12 @@
       "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -7272,202 +7272,6 @@
       "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "remote_node",
-      "module_name": "Remote Node",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:remote_node"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "rtc",
-      "module_name": "RTC (DS3231/PCF8523)",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "shell_full",
-      "module_name": "Shell (Full)",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "shell_min",
-      "module_name": "Shell (Lite)",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "shell_tiny",
-      "module_name": "Shell (Tiny)",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "spi",
-      "module_name": "SPI Bus",
-      "module_platforms": "",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "tft",
-      "module_name": "TFT Display",
-      "module_platforms": "esp32,stm32,rp2040",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:tft"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "timer",
-      "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "tp4056",
-      "module_name": "TP4056 Li-Ion Charger",
-      "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:tp4056"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "twai",
-      "module_name": "TWAI / CAN",
-      "module_platforms": "esp32",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:twai"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "uart",
-      "module_name": "UART",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "uln2003",
-      "module_name": "ULN2003 Stepper Driver",
-      "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-c6",
-      "board_id": "esp32-c6",
-      "board_name": "ESP32-C6 DevKit (Baseline)",
-      "module_id": "wifi",
-      "module_name": "Wi-Fi (Station)",
-      "module_platforms": "esp32",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "adc",
-      "module_name": "ADC",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
@@ -7477,275 +7281,9 @@
     },
     {
       "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "ads1115",
-      "module_name": "ADS1115 16-bit ADC + PGA",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "bluetooth",
-      "module_name": "Bluetooth Core",
-      "module_platforms": "esp32",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "bme280",
-      "module_name": "BME280 Environmental Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "dht22",
-      "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "display_ssd1306",
-      "module_name": "SSD1306 Display",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "eeprom",
-      "module_name": "EEPROM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:eeprom"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "fs_sd",
-      "module_name": "SD Card Filesystem",
-      "module_platforms": "",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "fs_spiffs",
-      "module_name": "SPIFFS Filesystem",
-      "module_platforms": "",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "gpio",
-      "module_name": "GPIO",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "hp4067",
-      "module_name": "HP4067 / 74HC4067 Mux",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:hp4067"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "i2c",
-      "module_name": "I2C Core",
-      "module_platforms": "",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "imu",
-      "module_name": "IMU Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "l298n",
-      "module_name": "L298N H-Bridge Driver",
-      "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "mcp23017",
-      "module_name": "MCP23017 I/O Expander",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp23017"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "mcp2515",
-      "module_name": "MCP2515 SPI CAN Controller",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "mcp2544fd",
-      "module_name": "MCP2544FD CAN PHY",
-      "module_platforms": "esp32",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mcp2544fd"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "mic",
-      "module_name": "Microphone Input",
-      "module_platforms": "esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "yes",
-      "status": "SUPPORTED",
-      "reason": "-"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "psram",
-      "module_name": "PSRAM",
-      "module_platforms": "esp32",
-      "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:psram"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
-      "module_id": "pwm",
-      "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
-      "module_platform_match": "yes",
-      "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
-    },
-    {
-      "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "remote_node",
       "module_name": "Remote Node",
       "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
@@ -7757,9 +7295,9 @@
     },
     {
       "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "rtc",
       "module_name": "RTC (DS3231/PCF8523)",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -7771,9 +7309,9 @@
     },
     {
       "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "shell_full",
       "module_name": "Shell (Full)",
       "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -7785,9 +7323,9 @@
     },
     {
       "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "shell_min",
       "module_name": "Shell (Lite)",
       "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -7799,9 +7337,9 @@
     },
     {
       "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "shell_tiny",
       "module_name": "Shell (Tiny)",
       "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -7813,9 +7351,9 @@
     },
     {
       "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "spi",
       "module_name": "SPI Bus",
       "module_platforms": "",
@@ -7827,9 +7365,9 @@
     },
     {
       "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "tft",
       "module_name": "TFT Display",
       "module_platforms": "esp32,stm32,rp2040",
@@ -7841,23 +7379,23 @@
     },
     {
       "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "tp4056",
       "module_name": "TP4056 Li-Ion Charger",
       "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",
@@ -7869,9 +7407,9 @@
     },
     {
       "platform": "esp32",
-      "board_dir": "esp32-cam",
-      "board_id": "esp32-cam",
-      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "twai",
       "module_name": "TWAI / CAN",
       "module_platforms": "esp32",
@@ -7883,6 +7421,468 @@
     },
     {
       "platform": "esp32",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
+      "module_id": "uart",
+      "module_name": "UART",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
+      "module_id": "uln2003",
+      "module_name": "ULN2003 Stepper Driver",
+      "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
+      "module_id": "wifi",
+      "module_name": "Wi-Fi (Station)",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "adc",
+      "module_name": "ADC",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "ads1115",
+      "module_name": "ADS1115 16-bit ADC + PGA",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "bluetooth",
+      "module_name": "Bluetooth Core",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "bme280",
+      "module_name": "BME280 Environmental Sensor",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "dht22",
+      "module_name": "DHT22 Sensor",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "display_ssd1306",
+      "module_name": "SSD1306 Display",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "eeprom",
+      "module_name": "EEPROM",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:eeprom"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "fs_sd",
+      "module_name": "SD Card Filesystem",
+      "module_platforms": "",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:fs_sd"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "fs_spiffs",
+      "module_name": "SPIFFS Filesystem",
+      "module_platforms": "",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "gpio",
+      "module_name": "GPIO",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "hp4067",
+      "module_name": "HP4067 / 74HC4067 Mux",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:hp4067"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "i2c",
+      "module_name": "I2C Core",
+      "module_platforms": "",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "imu",
+      "module_name": "IMU Sensor",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "l298n",
+      "module_name": "L298N H-Bridge Driver",
+      "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "mcp23017",
+      "module_name": "MCP23017 I/O Expander",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic16",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:mcp23017"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "mcp2515",
+      "module_name": "MCP2515 SPI CAN Controller",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "mcp2544fd",
+      "module_name": "MCP2544FD CAN PHY",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:mcp2544fd"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "mic",
+      "module_name": "Microphone Input",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "psram",
+      "module_name": "PSRAM",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:psram"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "pwm",
+      "module_name": "PWM",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "remote_node",
+      "module_name": "Remote Node",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:remote_node"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "rtc",
+      "module_name": "RTC (DS3231/PCF8523)",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "shell_full",
+      "module_name": "Shell (Full)",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "shell_min",
+      "module_name": "Shell (Lite)",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "shell_tiny",
+      "module_name": "Shell (Tiny)",
+      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "spi",
+      "module_name": "SPI Bus",
+      "module_platforms": "",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "tft",
+      "module_name": "TFT Display",
+      "module_platforms": "esp32,stm32,rp2040",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:tft"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "timer",
+      "module_name": "Timer",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "tp4056",
+      "module_name": "TP4056 Li-Ion Charger",
+      "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:tp4056"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "twai",
+      "module_name": "TWAI / CAN",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:twai"
+    },
+    {
+      "platform": "esp32",
       "board_dir": "esp32-cam",
       "board_id": "esp32-cam",
       "board_name": "ESP32-CAM (AI-Thinker baseline)",
@@ -7986,12 +7986,12 @@
       "board_name": "ESP32-DevKitC V4 (Generic)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8196,12 +8196,12 @@
       "board_name": "ESP32-DevKitC V4 (Generic)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8308,12 +8308,12 @@
       "board_name": "ESP32-DevKitC V4 (Generic)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8448,12 +8448,12 @@
       "board_name": "ESP32-S3-DevKitC-1 (Template)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8658,12 +8658,12 @@
       "board_name": "ESP32-S3-DevKitC-1 (Template)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8770,12 +8770,12 @@
       "board_name": "ESP32-S3-DevKitC-1 (Template)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8910,12 +8910,12 @@
       "board_name": "M5Stack Core2 (Baseline)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9120,7 +9120,7 @@
       "board_name": "M5Stack Core2 (Baseline)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "no",
       "resolve_with_allow": "no",
@@ -9232,12 +9232,12 @@
       "board_name": "M5Stack Core2 (Baseline)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9372,7 +9372,7 @@
       "board_name": "M5StickC Plus2 (ESP32-PICO-V3-02)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "no",
       "resolve_with_allow": "no",
@@ -9582,7 +9582,7 @@
       "board_name": "M5StickC Plus2 (ESP32-PICO-V3-02)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "no",
       "resolve_with_allow": "no",
@@ -9694,12 +9694,12 @@
       "board_name": "M5StickC Plus2 (ESP32-PICO-V3-02)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9834,12 +9834,12 @@
       "board_name": "Raspberry Pi 4 Model B",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
-      "module_platform_match": "no",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "linux-sbc",
@@ -10044,12 +10044,12 @@
       "board_name": "Raspberry Pi 4 Model B",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
-      "module_platform_match": "no",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "linux-sbc",
@@ -10156,12 +10156,12 @@
       "board_name": "Raspberry Pi 4 Model B",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
-      "module_platform_match": "no",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "linux-sbc",
@@ -10296,7 +10296,7 @@
       "board_name": "Curiosity Nano PIC16F13145",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -10506,7 +10506,7 @@
       "board_name": "Curiosity Nano PIC16F13145",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -10618,7 +10618,7 @@
       "board_name": "Curiosity Nano PIC16F13145",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -10758,7 +10758,7 @@
       "board_name": "PIC16F873 Minimal (Generic)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -10968,7 +10968,7 @@
       "board_name": "PIC16F873 Minimal (Generic)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "no",
       "resolve_with_allow": "no",
@@ -11080,7 +11080,7 @@
       "board_name": "PIC16F873 Minimal (Generic)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -11220,7 +11220,7 @@
       "board_name": "Arduino Uno R4 Minima (RA4M1)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -11430,7 +11430,7 @@
       "board_name": "Arduino Uno R4 Minima (RA4M1)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -11542,7 +11542,7 @@
       "board_name": "Arduino Uno R4 Minima (RA4M1)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -11682,7 +11682,7 @@
       "board_name": "Arduino Uno R4 WiFi (RA4M1)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -11892,7 +11892,7 @@
       "board_name": "Arduino Uno R4 WiFi (RA4M1)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -12004,7 +12004,7 @@
       "board_name": "Arduino Uno R4 WiFi (RA4M1)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -12144,12 +12144,12 @@
       "board_name": "Renesas EK-RA4M1",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -12354,12 +12354,12 @@
       "board_name": "Renesas EK-RA4M1",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -12466,12 +12466,12 @@
       "board_name": "Renesas EK-RA4M1",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -12606,7 +12606,7 @@
       "board_name": "Renesas RX65N Envision Kit",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -12816,7 +12816,7 @@
       "board_name": "Renesas RX65N Envision Kit",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -12928,7 +12928,7 @@
       "board_name": "Renesas RX65N Envision Kit",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -13068,12 +13068,12 @@
       "board_name": "Renesas RX72N Envision Kit",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -13278,12 +13278,12 @@
       "board_name": "Renesas RX72N Envision Kit",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -13390,12 +13390,12 @@
       "board_name": "Renesas RX72N Envision Kit",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -13530,12 +13530,12 @@
       "board_name": "Adafruit Feather RP2040",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -13740,12 +13740,12 @@
       "board_name": "Adafruit Feather RP2040",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -13852,12 +13852,12 @@
       "board_name": "Adafruit Feather RP2040",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -13992,7 +13992,7 @@
       "board_name": "Raspberry Pi Pico (RP2040)",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -14202,7 +14202,7 @@
       "board_name": "Raspberry Pi Pico (RP2040)",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -14314,7 +14314,7 @@
       "board_name": "Raspberry Pi Pico (RP2040)",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -14454,12 +14454,12 @@
       "board_name": "Raspberry Pi Pico W",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14664,12 +14664,12 @@
       "board_name": "Raspberry Pi Pico W",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14776,12 +14776,12 @@
       "board_name": "Raspberry Pi Pico W",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14916,12 +14916,12 @@
       "board_name": "Seeed Studio XIAO RP2040",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -15126,12 +15126,12 @@
       "board_name": "Seeed Studio XIAO RP2040",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -15238,12 +15238,12 @@
       "board_name": "Seeed Studio XIAO RP2040",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -15378,12 +15378,12 @@
       "board_name": "SparkFun Thing Plus RP2040",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -15588,12 +15588,12 @@
       "board_name": "SparkFun Thing Plus RP2040",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -15700,12 +15700,12 @@
       "board_name": "SparkFun Thing Plus RP2040",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -15840,12 +15840,12 @@
       "board_name": "STM32 Black Pill F411CE",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16050,12 +16050,12 @@
       "board_name": "STM32 Black Pill F411CE",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16162,12 +16162,12 @@
       "board_name": "STM32 Black Pill F411CE",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16302,7 +16302,7 @@
       "board_name": "ST Nucleo-F401RE",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -16512,7 +16512,7 @@
       "board_name": "ST Nucleo-F401RE",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -16624,7 +16624,7 @@
       "board_name": "ST Nucleo-F401RE",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
       "resolve_with_allow": "yes",
@@ -16764,12 +16764,12 @@
       "board_name": "ST Nucleo-F446RE",
       "module_id": "dht22",
       "module_name": "DHT22 Sensor",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16974,12 +16974,12 @@
       "board_name": "ST Nucleo-F446RE",
       "module_id": "pwm",
       "module_name": "PWM",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
       "allow_contains_module": "yes",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "dependency_not_allowed:timer"
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -17086,12 +17086,12 @@
       "board_name": "ST Nucleo-F446RE",
       "module_id": "timer",
       "module_name": "Timer",
-      "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
+      "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:timer"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",

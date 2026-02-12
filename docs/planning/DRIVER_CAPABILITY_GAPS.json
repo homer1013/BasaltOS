@@ -3,7 +3,7 @@
   "platform_count": 10,
   "platforms": {
     "atmega": {
-      "unsupported_or_gap_rows": 29,
+      "unsupported_or_gap_rows": 26,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -52,10 +52,6 @@
           "count": 2
         },
         {
-          "reason": "dependency_not_allowed:timer",
-          "count": 2
-        },
-        {
           "reason": "not_allowed:eeprom",
           "count": 2
         },
@@ -78,11 +74,15 @@
         {
           "reason": "module_platform_mismatch",
           "count": 2
+        },
+        {
+          "reason": "not_allowed:psram",
+          "count": 2
         }
       ]
     },
     "atsam": {
-      "unsupported_or_gap_rows": 42,
+      "unsupported_or_gap_rows": 36,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -127,10 +127,6 @@
       ],
       "top_reasons": [
         {
-          "reason": "dependency_not_allowed:timer",
-          "count": 4
-        },
-        {
           "reason": "not_allowed:bluetooth",
           "count": 3
         },
@@ -156,6 +152,10 @@
         },
         {
           "reason": "not_allowed:psram",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:remote_node",
           "count": 3
         }
       ]
@@ -240,12 +240,8 @@
       ]
     },
     "esp32": {
-      "unsupported_or_gap_rows": 154,
+      "unsupported_or_gap_rows": 123,
       "top_module_gaps": [
-        {
-          "module_id": "dht22",
-          "count": 12
-        },
         {
           "module_id": "eeprom",
           "count": 12
@@ -263,15 +259,7 @@
           "count": 12
         },
         {
-          "module_id": "pwm",
-          "count": 12
-        },
-        {
           "module_id": "remote_node",
-          "count": 12
-        },
-        {
-          "module_id": "timer",
           "count": 12
         },
         {
@@ -281,13 +269,21 @@
         {
           "module_id": "fs_sd",
           "count": 11
+        },
+        {
+          "module_id": "psram",
+          "count": 9
+        },
+        {
+          "module_id": "tft",
+          "count": 7
+        },
+        {
+          "module_id": "twai",
+          "count": 7
         }
       ],
       "top_reasons": [
-        {
-          "reason": "dependency_not_allowed:timer",
-          "count": 19
-        },
         {
           "reason": "not_allowed:eeprom",
           "count": 12
@@ -309,24 +305,24 @@
           "count": 12
         },
         {
-          "reason": "not_allowed:timer",
+          "reason": "not_allowed:tp4056",
           "count": 12
         },
         {
-          "reason": "not_allowed:tp4056",
-          "count": 12
+          "reason": "not_allowed:fs_sd",
+          "count": 11
+        },
+        {
+          "reason": "not_allowed:psram",
+          "count": 9
         }
       ]
     },
     "linux-sbc": {
-      "unsupported_or_gap_rows": 14,
+      "unsupported_or_gap_rows": 11,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
-          "count": 1
-        },
-        {
-          "module_id": "dht22",
           "count": 1
         },
         {
@@ -350,25 +346,25 @@
           "count": 1
         },
         {
-          "module_id": "pwm",
-          "count": 1
-        },
-        {
           "module_id": "remote_node",
           "count": 1
         },
         {
           "module_id": "tft",
           "count": 1
+        },
+        {
+          "module_id": "tp4056",
+          "count": 1
+        },
+        {
+          "module_id": "twai",
+          "count": 1
         }
       ],
       "top_reasons": [
         {
           "reason": "module_platform_mismatch",
-          "count": 2
-        },
-        {
-          "reason": "dependency_not_allowed:timer",
           "count": 2
         },
         {
@@ -393,6 +389,10 @@
         },
         {
           "reason": "not_allowed:remote_node",
+          "count": 1
+        },
+        {
+          "reason": "not_allowed:tft",
           "count": 1
         }
       ]
@@ -477,7 +477,7 @@
       ]
     },
     "renesas_ra": {
-      "unsupported_or_gap_rows": 39,
+      "unsupported_or_gap_rows": 36,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -556,7 +556,7 @@
       ]
     },
     "renesas_rx": {
-      "unsupported_or_gap_rows": 27,
+      "unsupported_or_gap_rows": 24,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -635,7 +635,7 @@
       ]
     },
     "rp2040": {
-      "unsupported_or_gap_rows": 72,
+      "unsupported_or_gap_rows": 60,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -680,10 +680,6 @@
       ],
       "top_reasons": [
         {
-          "reason": "dependency_not_allowed:timer",
-          "count": 8
-        },
-        {
           "reason": "not_allowed:bluetooth",
           "count": 5
         },
@@ -709,12 +705,16 @@
         },
         {
           "reason": "not_allowed:psram",
+          "count": 5
+        },
+        {
+          "reason": "not_allowed:remote_node",
           "count": 5
         }
       ]
     },
     "stm32": {
-      "unsupported_or_gap_rows": 42,
+      "unsupported_or_gap_rows": 36,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -759,10 +759,6 @@
       ],
       "top_reasons": [
         {
-          "reason": "dependency_not_allowed:timer",
-          "count": 4
-        },
-        {
           "reason": "not_allowed:bluetooth",
           "count": 3
         },
@@ -788,6 +784,10 @@
         },
         {
           "reason": "not_allowed:psram",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:remote_node",
           "count": 3
         }
       ]
