@@ -154,6 +154,12 @@ Metadata taxonomy drift smoke (board filter dimensions):
 bash tools/tests/metadata_taxonomy_drift_smoke.sh
 ```
 
+Manufacturer candidate validation smoke (existing profiles + planned gaps):
+
+```bash
+bash tools/tests/manufacturer_candidate_validation_smoke.sh
+```
+
 
 ## PlatformIO Phase-1 Bootstrap
 
