@@ -9,7 +9,12 @@ F="docs/ESP32_FIRST_SUCCESS_10_MIN.md"
 require() {
   local pattern="$1"
   local msg="$2"
-  if ! rg -q -- "$pattern" "$F"; then
+  if command -v rg >/dev/null 2>&1; then
+    rg -q -- "$pattern" "$F" || {
+      echo "FAIL: $msg"
+      exit 1
+    }
+  elif ! grep -Eq -- "$pattern" "$F"; then
     echo "FAIL: $msg"
     exit 1
   fi
