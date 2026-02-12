@@ -10,7 +10,8 @@
     "pic16",
     "atsam",
     "renesas_ra",
-    "renesas_rx"
+    "renesas_rx",
+    "linux-sbc"
   ],
   "provides": [
     "adc_ext",

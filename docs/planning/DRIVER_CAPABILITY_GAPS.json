@@ -319,14 +319,10 @@
       ]
     },
     "linux-sbc": {
-      "unsupported_or_gap_rows": 29,
+      "unsupported_or_gap_rows": 16,
       "top_module_gaps": [
         {
           "module_id": "adc",
-          "count": 1
-        },
-        {
-          "module_id": "ads1115",
           "count": 1
         },
         {
@@ -334,15 +330,7 @@
           "count": 1
         },
         {
-          "module_id": "bme280",
-          "count": 1
-        },
-        {
           "module_id": "dht22",
-          "count": 1
-        },
-        {
-          "module_id": "display_ssd1306",
           "count": 1
         },
         {
@@ -350,22 +338,34 @@
           "count": 1
         },
         {
-          "module_id": "gpio",
-          "count": 1
-        },
-        {
           "module_id": "hp4067",
           "count": 1
         },
         {
-          "module_id": "imu",
+          "module_id": "mcp23017",
+          "count": 1
+        },
+        {
+          "module_id": "mcp2544fd",
+          "count": 1
+        },
+        {
+          "module_id": "mic",
+          "count": 1
+        },
+        {
+          "module_id": "psram",
+          "count": 1
+        },
+        {
+          "module_id": "pwm",
           "count": 1
         }
       ],
       "top_reasons": [
         {
           "reason": "module_platform_mismatch",
-          "count": 17
+          "count": 4
         },
         {
           "reason": "dependency_not_allowed:timer",
@@ -794,14 +794,14 @@
     }
   },
   "policy_summary": {
-    "mismatch_row_count": 26,
+    "mismatch_row_count": 13,
     "bucket_counts": {
       "intentional": 11,
-      "actionable": 15
+      "actionable": 2
     },
     "label_counts": {
       "intentional_8bit_mic_scope": 6,
-      "actionable_linux_sbc_platform_alignment": 15,
+      "actionable_linux_sbc_platform_alignment": 2,
       "intentional_wireless_scope": 5
     },
     "actionable_top_modules_by_platform": {
@@ -811,31 +811,7 @@
           "count": 1
         },
         {
-          "module_id": "ads1115",
-          "count": 1
-        },
-        {
-          "module_id": "bme280",
-          "count": 1
-        },
-        {
-          "module_id": "display_ssd1306",
-          "count": 1
-        },
-        {
-          "module_id": "gpio",
-          "count": 1
-        },
-        {
-          "module_id": "imu",
-          "count": 1
-        },
-        {
-          "module_id": "l298n",
-          "count": 1
-        },
-        {
-          "module_id": "mcp2515",
+          "module_id": "mic",
           "count": 1
         }
       ]
