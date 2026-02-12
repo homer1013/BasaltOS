@@ -56,6 +56,7 @@ Minimum required metadata:
 
 Capability policy note:
 - `timer` is treated as a baseline runtime capability in capability-matrix policy checks, even if not explicitly listed in `board.json`.
+- Advanced peripherals are explicit opt-in (`capabilities`-gated) by policy: `eeprom`, `fs_sd`, `hp4067`, `mcp23017`, `mcp2544fd`, `psram`, `remote_node`, `tft`, `tp4056`, `twai`.
 
 Strongly recommended taxonomy fields:
 - `manufacturer`

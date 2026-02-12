@@ -288,6 +288,87 @@ def build_policy_summary(rows: List[Dict[str, str]]) -> Dict[str, Any]:
     }
 
 
+ADVANCED_PERIPHERAL_MODULES = {
+    "eeprom",
+    "fs_sd",
+    "hp4067",
+    "mcp23017",
+    "mcp2544fd",
+    "psram",
+    "remote_node",
+    "tft",
+    "tp4056",
+    "twai",
+}
+
+
+def classify_not_allowed_policy(row: Dict[str, str]) -> Dict[str, str]:
+    platform = str(row.get("platform") or "")
+    reason = str(row.get("reason") or "")
+    if not reason.startswith("not_allowed:"):
+        return {"bucket": "non_not_allowed", "label": "non_not_allowed", "module": ""}
+
+    blocked_module = reason.split(":", 1)[1].strip()
+
+    if blocked_module in ADVANCED_PERIPHERAL_MODULES:
+        return {
+            "bucket": "intentional",
+            "label": "intentional_advanced_peripheral_opt_in",
+            "module": blocked_module,
+        }
+
+    if blocked_module in {"wifi", "bluetooth"} and platform != "esp32":
+        return {
+            "bucket": "intentional",
+            "label": "intentional_wireless_capability_gate",
+            "module": blocked_module,
+        }
+
+    if blocked_module in {"adc", "gpio", "dht22", "pwm", "mic", "l298n", "uln2003"}:
+        return {
+            "bucket": "actionable",
+            "label": "actionable_foundation_capability_gap",
+            "module": blocked_module,
+        }
+
+    return {
+        "bucket": "actionable",
+        "label": "actionable_capability_scope_review",
+        "module": blocked_module,
+    }
+
+
+def build_advanced_policy_summary(rows: List[Dict[str, str]]) -> Dict[str, Any]:
+    not_allowed_rows = [r for r in rows if str(r.get("reason") or "").startswith("not_allowed:")]
+    bucket_counts = Counter()
+    label_counts = Counter()
+    actionable_by_platform: Dict[str, Counter] = defaultdict(Counter)
+
+    for r in not_allowed_rows:
+        c = classify_not_allowed_policy(r)
+        bucket = c["bucket"]
+        label = c["label"]
+        blocked_module = c["module"]
+        bucket_counts[bucket] += 1
+        label_counts[label] += 1
+        if bucket == "actionable" and blocked_module:
+            actionable_by_platform[str(r.get("platform") or "")][blocked_module] += 1
+
+    actionable_top: Dict[str, List[Dict[str, Any]]] = {}
+    for platform in sorted(actionable_by_platform.keys()):
+        actionable_top[platform] = [
+            {"module_id": mid, "count": int(cnt)}
+            for mid, cnt in actionable_by_platform[platform].most_common(8)
+        ]
+
+    return {
+        "not_allowed_row_count": len(not_allowed_rows),
+        "bucket_counts": dict(bucket_counts),
+        "label_counts": dict(label_counts),
+        "actionable_top_modules_by_platform": actionable_top,
+    }
+
+
 def write_csv(rows: List[Dict[str, str]], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fields = [
@@ -392,6 +473,30 @@ def write_gap_report_md(gap_report: Dict[str, Any], out_path: Path) -> None:
     if actionable:
         lines.append("### Actionable Top Modules By Platform")
         lines.append("")
+
+    advanced_policy = gap_report.get("advanced_policy_summary") or {}
+    lines.append("## Advanced Peripheral Policy View")
+    lines.append("")
+    lines.append(f"- `not_allowed:*` rows considered: {int(advanced_policy.get('not_allowed_row_count', 0))}")
+    ab = advanced_policy.get("bucket_counts") or {}
+    lines.append(f"- Intentional `not_allowed` rows: {int(ab.get('intentional', 0))}")
+    lines.append(f"- Actionable `not_allowed` rows: {int(ab.get('actionable', 0))}")
+    lines.append("")
+    lines.append("| Advanced Policy Label | Count |")
+    lines.append("|---|---|")
+    for label, count in sorted((advanced_policy.get("label_counts") or {}).items(), key=lambda kv: (-int(kv[1]), kv[0])):
+        lines.append(f"| {label} | {int(count)} |")
+    lines.append("")
+
+    actionable_adv = advanced_policy.get("actionable_top_modules_by_platform") or {}
+    if actionable_adv:
+        lines.append("### Advanced Policy Actionable Top Modules By Platform")
+        lines.append("")
+        for platform in sorted(actionable_adv.keys()):
+            lines.append(f"- {platform}: " + ", ".join(
+                f"{item.get('module_id')} ({int(item.get('count', 0))})" for item in actionable_adv.get(platform, [])
+            ))
+        lines.append("")
         for platform in sorted(actionable.keys()):
             lines.append(f"- {platform}: " + ", ".join(
                 f"{item.get('module_id')} ({int(item.get('count', 0))})" for item in actionable.get(platform, [])
@@ -440,6 +545,7 @@ def main() -> int:
     summary = build_summary(rows)
     gap_report = build_gap_report(rows)
     gap_report["policy_summary"] = build_policy_summary(rows)
+    gap_report["advanced_policy_summary"] = build_advanced_policy_summary(rows)
 
     write_csv(rows, csv_out)
     write_json(rows, summary, gap_report, json_out)

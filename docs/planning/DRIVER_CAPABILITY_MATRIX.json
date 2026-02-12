@@ -990,6 +990,61 @@
         "intentional_wireless_scope": 5
       },
       "actionable_top_modules_by_platform": {}
+    },
+    "advanced_policy_summary": {
+      "not_allowed_row_count": 390,
+      "bucket_counts": {
+        "intentional": 372,
+        "actionable": 18
+      },
+      "label_counts": {
+        "intentional_wireless_capability_gate": 41,
+        "intentional_advanced_peripheral_opt_in": 331,
+        "actionable_foundation_capability_gap": 17,
+        "actionable_capability_scope_review": 1
+      },
+      "actionable_top_modules_by_platform": {
+        "esp32": [
+          {
+            "module_id": "adc",
+            "count": 4
+          },
+          {
+            "module_id": "mic",
+            "count": 4
+          },
+          {
+            "module_id": "pwm",
+            "count": 4
+          },
+          {
+            "module_id": "bluetooth",
+            "count": 1
+          },
+          {
+            "module_id": "dht22",
+            "count": 1
+          },
+          {
+            "module_id": "gpio",
+            "count": 1
+          },
+          {
+            "module_id": "l298n",
+            "count": 1
+          },
+          {
+            "module_id": "uln2003",
+            "count": 1
+          }
+        ],
+        "pic16": [
+          {
+            "module_id": "pwm",
+            "count": 1
+          }
+        ]
+      }
     }
   },
   "rows": [
