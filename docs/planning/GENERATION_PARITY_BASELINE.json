@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "representative_boards": {
     "atmega": "arduino_uno_r3",
     "atsam": "adafruit_circuit_playground_express",
@@ -32,7 +32,21 @@
       },
       "missing_artifacts": [],
       "status": "PASS",
-      "log_path": "tmp/generation_parity_baseline/atmega/arduino_uno_r3/run.log"
+      "log_path": "tmp/generation_parity_baseline/atmega/arduino_uno_r3/run.log",
+      "module_parity": {
+        "enabled_module_count": 0,
+        "default_module_count": 7,
+        "missing_default_module_count": 7,
+        "missing_default_modules": [
+          "adc",
+          "gpio",
+          "i2c",
+          "pwm",
+          "spi",
+          "timer",
+          "uart"
+        ]
+      }
     },
     {
       "platform": "atsam",
@@ -47,7 +61,22 @@
       },
       "missing_artifacts": [],
       "status": "PASS",
-      "log_path": "tmp/generation_parity_baseline/atsam/adafruit_circuit_playground_express/run.log"
+      "log_path": "tmp/generation_parity_baseline/atsam/adafruit_circuit_playground_express/run.log",
+      "module_parity": {
+        "enabled_module_count": 0,
+        "default_module_count": 8,
+        "missing_default_module_count": 8,
+        "missing_default_modules": [
+          "adc",
+          "gpio",
+          "i2c",
+          "pwm",
+          "shell_min",
+          "spi",
+          "timer",
+          "uart"
+        ]
+      }
     },
     {
       "platform": "avr",
@@ -62,7 +91,17 @@
       },
       "missing_artifacts": [],
       "status": "PASS",
-      "log_path": "tmp/generation_parity_baseline/avr/mega2560/run.log"
+      "log_path": "tmp/generation_parity_baseline/avr/mega2560/run.log",
+      "module_parity": {
+        "enabled_module_count": 0,
+        "default_module_count": 3,
+        "missing_default_module_count": 3,
+        "missing_default_modules": [
+          "gpio",
+          "timer",
+          "uart"
+        ]
+      }
     },
     {
       "platform": "esp32",
@@ -77,7 +116,23 @@
       },
       "missing_artifacts": [],
       "status": "PASS",
-      "log_path": "tmp/generation_parity_baseline/esp32/esp32-c3-supermini/run.log"
+      "log_path": "tmp/generation_parity_baseline/esp32/esp32-c3-supermini/run.log",
+      "module_parity": {
+        "enabled_module_count": 0,
+        "default_module_count": 9,
+        "missing_default_module_count": 9,
+        "missing_default_modules": [
+          "bme280",
+          "display_ssd1306",
+          "fs_spiffs",
+          "gpio",
+          "i2c",
+          "mcp2515",
+          "shell_full",
+          "spi",
+          "uart"
+        ]
+      }
     },
     {
       "platform": "linux-sbc",
@@ -92,7 +147,20 @@
       },
       "missing_artifacts": [],
       "status": "PASS",
-      "log_path": "tmp/generation_parity_baseline/linux-sbc/raspberry_pi_4b/run.log"
+      "log_path": "tmp/generation_parity_baseline/linux-sbc/raspberry_pi_4b/run.log",
+      "module_parity": {
+        "enabled_module_count": 0,
+        "default_module_count": 6,
+        "missing_default_module_count": 6,
+        "missing_default_modules": [
+          "fs_sd",
+          "gpio",
+          "i2c",
+          "shell_full",
+          "spi",
+          "uart"
+        ]
+      }
     },
     {
       "platform": "pic16",
@@ -107,7 +175,22 @@
       },
       "missing_artifacts": [],
       "status": "PASS",
-      "log_path": "tmp/generation_parity_baseline/pic16/curiosity_nano_pic16f13145/run.log"
+      "log_path": "tmp/generation_parity_baseline/pic16/curiosity_nano_pic16f13145/run.log",
+      "module_parity": {
+        "enabled_module_count": 0,
+        "default_module_count": 8,
+        "missing_default_module_count": 8,
+        "missing_default_modules": [
+          "adc",
+          "eeprom",
+          "gpio",
+          "i2c",
+          "pwm",
+          "spi",
+          "timer",
+          "uart"
+        ]
+      }
     },
     {
       "platform": "renesas_ra",
@@ -122,7 +205,21 @@
       },
       "missing_artifacts": [],
       "status": "PASS",
-      "log_path": "tmp/generation_parity_baseline/renesas_ra/arduino_uno_r4_wifi/run.log"
+      "log_path": "tmp/generation_parity_baseline/renesas_ra/arduino_uno_r4_wifi/run.log",
+      "module_parity": {
+        "enabled_module_count": 0,
+        "default_module_count": 7,
+        "missing_default_module_count": 7,
+        "missing_default_modules": [
+          "adc",
+          "gpio",
+          "i2c",
+          "pwm",
+          "spi",
+          "timer",
+          "uart"
+        ]
+      }
     },
     {
       "platform": "renesas_rx",
@@ -137,7 +234,21 @@
       },
       "missing_artifacts": [],
       "status": "PASS",
-      "log_path": "tmp/generation_parity_baseline/renesas_rx/rx65n_envision_kit/run.log"
+      "log_path": "tmp/generation_parity_baseline/renesas_rx/rx65n_envision_kit/run.log",
+      "module_parity": {
+        "enabled_module_count": 0,
+        "default_module_count": 7,
+        "missing_default_module_count": 7,
+        "missing_default_modules": [
+          "adc",
+          "gpio",
+          "i2c",
+          "pwm",
+          "spi",
+          "timer",
+          "uart"
+        ]
+      }
     },
     {
       "platform": "rp2040",
@@ -152,7 +263,21 @@
       },
       "missing_artifacts": [],
       "status": "PASS",
-      "log_path": "tmp/generation_parity_baseline/rp2040/raspberry_pi_pico/run.log"
+      "log_path": "tmp/generation_parity_baseline/rp2040/raspberry_pi_pico/run.log",
+      "module_parity": {
+        "enabled_module_count": 0,
+        "default_module_count": 7,
+        "missing_default_module_count": 7,
+        "missing_default_modules": [
+          "adc",
+          "gpio",
+          "i2c",
+          "pwm",
+          "spi",
+          "timer",
+          "uart"
+        ]
+      }
     },
     {
       "platform": "stm32",
@@ -167,9 +292,101 @@
       },
       "missing_artifacts": [],
       "status": "PASS",
-      "log_path": "tmp/generation_parity_baseline/stm32/nucleo_f401re/run.log"
+      "log_path": "tmp/generation_parity_baseline/stm32/nucleo_f401re/run.log",
+      "module_parity": {
+        "enabled_module_count": 0,
+        "default_module_count": 7,
+        "missing_default_module_count": 7,
+        "missing_default_modules": [
+          "adc",
+          "gpio",
+          "i2c",
+          "pwm",
+          "spi",
+          "timer",
+          "uart"
+        ]
+      }
     }
   ],
+  "module_parity_gap_summary": {
+    "max_enabled_module_count": 0,
+    "max_default_module_count": 9,
+    "platforms_with_missing_defaults": 10,
+    "platforms_without_missing_defaults": 0,
+    "by_platform": {
+      "atmega": {
+        "enabled_module_count": 0,
+        "default_module_count": 7,
+        "missing_default_module_count": 7,
+        "enabled_gap_to_max": 0,
+        "default_gap_to_max": 2
+      },
+      "atsam": {
+        "enabled_module_count": 0,
+        "default_module_count": 8,
+        "missing_default_module_count": 8,
+        "enabled_gap_to_max": 0,
+        "default_gap_to_max": 1
+      },
+      "avr": {
+        "enabled_module_count": 0,
+        "default_module_count": 3,
+        "missing_default_module_count": 3,
+        "enabled_gap_to_max": 0,
+        "default_gap_to_max": 6
+      },
+      "esp32": {
+        "enabled_module_count": 0,
+        "default_module_count": 9,
+        "missing_default_module_count": 9,
+        "enabled_gap_to_max": 0,
+        "default_gap_to_max": 0
+      },
+      "linux-sbc": {
+        "enabled_module_count": 0,
+        "default_module_count": 6,
+        "missing_default_module_count": 6,
+        "enabled_gap_to_max": 0,
+        "default_gap_to_max": 3
+      },
+      "pic16": {
+        "enabled_module_count": 0,
+        "default_module_count": 8,
+        "missing_default_module_count": 8,
+        "enabled_gap_to_max": 0,
+        "default_gap_to_max": 1
+      },
+      "renesas_ra": {
+        "enabled_module_count": 0,
+        "default_module_count": 7,
+        "missing_default_module_count": 7,
+        "enabled_gap_to_max": 0,
+        "default_gap_to_max": 2
+      },
+      "renesas_rx": {
+        "enabled_module_count": 0,
+        "default_module_count": 7,
+        "missing_default_module_count": 7,
+        "enabled_gap_to_max": 0,
+        "default_gap_to_max": 2
+      },
+      "rp2040": {
+        "enabled_module_count": 0,
+        "default_module_count": 7,
+        "missing_default_module_count": 7,
+        "enabled_gap_to_max": 0,
+        "default_gap_to_max": 2
+      },
+      "stm32": {
+        "enabled_module_count": 0,
+        "default_module_count": 7,
+        "missing_default_module_count": 7,
+        "enabled_gap_to_max": 0,
+        "default_gap_to_max": 2
+      }
+    }
+  },
   "summary": {
     "platform_count": 10,
     "pass_count": 10,

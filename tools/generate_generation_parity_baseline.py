@@ -5,7 +5,7 @@ import argparse
 import json
 import subprocess
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
 REPRESENTATIVE_BOARDS: Dict[str, str] = {
@@ -47,6 +47,33 @@ def run_case(root: Path, platform: str, board: str, out_root: Path) -> Dict[str,
     log_path.write_text((p.stdout or "") + ("\n" if p.stdout else "") + (p.stderr or ""), encoding="utf-8")
     artifacts = {name: (outdir / name).exists() for name in REQUIRED_ARTIFACTS}
     missing = [k for k, ok in artifacts.items() if not ok]
+    board_json = root / "boards" / platform / board / "board.json"
+    board_defaults: List[str] = []
+    if board_json.exists():
+        try:
+            board_data = json.loads(board_json.read_text(encoding="utf-8"))
+            board_defaults = sorted(
+                str(x).strip()
+                for x in (((board_data.get("defaults") or {}).get("modules") or []))
+                if str(x).strip()
+            )
+        except Exception:
+            board_defaults = []
+    enabled_modules: List[str] = []
+    features_json = outdir / "basalt.features.json"
+    if features_json.exists():
+        try:
+            features_data = json.loads(features_json.read_text(encoding="utf-8"))
+            enabled_modules = sorted(str(x).strip() for x in (features_data.get("modules") or []) if str(x).strip())
+        except Exception:
+            enabled_modules = []
+    missing_defaults = sorted(set(board_defaults) - set(enabled_modules))
+    parity = {
+        "enabled_module_count": len(enabled_modules),
+        "default_module_count": len(board_defaults),
+        "missing_default_module_count": len(missing_defaults),
+        "missing_default_modules": missing_defaults,
+    }
     return {
         "platform": platform,
         "board_dir": board,
@@ -56,6 +83,7 @@ def run_case(root: Path, platform: str, board: str, out_root: Path) -> Dict[str,
         "missing_artifacts": missing,
         "status": "PASS" if p.returncode == 0 and not missing else "FAIL",
         "log_path": str(log_path.relative_to(root)),
+        "module_parity": parity,
     }
 
 
@@ -64,7 +92,30 @@ def write_json(path: Path, payload: Dict[str, object]) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
-def write_md(path: Path, rows: List[Dict[str, object]], out_root: Path) -> None:
+def build_gap_summary(rows: List[Dict[str, object]]) -> Dict[str, object]:
+    max_enabled = max((int((r.get("module_parity") or {}).get("enabled_module_count", 0)) for r in rows), default=0)
+    max_defaults = max((int((r.get("module_parity") or {}).get("default_module_count", 0)) for r in rows), default=0)
+    with_missing = [r for r in rows if int((r.get("module_parity") or {}).get("missing_default_module_count", 0)) > 0]
+    by_platform: Dict[str, Dict[str, int]] = {}
+    for r in rows:
+        parity = r.get("module_parity") or {}
+        by_platform[str(r.get("platform"))] = {
+            "enabled_module_count": int(parity.get("enabled_module_count", 0)),
+            "default_module_count": int(parity.get("default_module_count", 0)),
+            "missing_default_module_count": int(parity.get("missing_default_module_count", 0)),
+            "enabled_gap_to_max": max_enabled - int(parity.get("enabled_module_count", 0)),
+            "default_gap_to_max": max_defaults - int(parity.get("default_module_count", 0)),
+        }
+    return {
+        "max_enabled_module_count": max_enabled,
+        "max_default_module_count": max_defaults,
+        "platforms_with_missing_defaults": len(with_missing),
+        "platforms_without_missing_defaults": len(rows) - len(with_missing),
+        "by_platform": by_platform,
+    }
+
+
+def write_md(path: Path, rows: List[Dict[str, object]], out_root: Path, gap_summary: Dict[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     pass_count = sum(1 for r in rows if r["status"] == "PASS")
     fail_count = len(rows) - pass_count
@@ -77,6 +128,9 @@ def write_md(path: Path, rows: List[Dict[str, object]], out_root: Path) -> None:
     lines.append(f"- PASS: {pass_count}")
     lines.append(f"- FAIL: {fail_count}")
     lines.append(f"- Artifact root: `{out_root}`")
+    lines.append(f"- Max enabled modules on any representative board: {gap_summary['max_enabled_module_count']}")
+    lines.append(f"- Max default modules on any representative board: {gap_summary['max_default_module_count']}")
+    lines.append(f"- Platforms with missing default modules in baseline run: {gap_summary['platforms_with_missing_defaults']}")
     lines.append("")
     lines.append("| Platform | Representative Board | Status | Missing Artifacts | Log |")
     lines.append("|---|---|---|---|---|")
@@ -85,6 +139,26 @@ def write_md(path: Path, rows: List[Dict[str, object]], out_root: Path) -> None:
         lines.append(
             f"| {r['platform']} | {r['board_dir']} | {r['status']} | {miss} | `{r['log_path']}` |"
         )
+    lines.append("")
+    lines.append("## Driver/Module Parity Counts")
+    lines.append("")
+    lines.append("| Platform | Enabled Modules | Board Default Modules | Missing Default Modules |")
+    lines.append("|---|---|---|---|")
+    for r in rows:
+        parity = r.get("module_parity") or {}
+        lines.append(
+            f"| {r['platform']} | {parity.get('enabled_module_count', 0)} | {parity.get('default_module_count', 0)} | {parity.get('missing_default_module_count', 0)} |"
+        )
+    lines.append("")
+    lines.append("## Gap Summary")
+    lines.append("")
+    for r in rows:
+        parity = r.get("module_parity") or {}
+        missing = parity.get("missing_default_modules") or []
+        if missing:
+            lines.append(f"- {r['platform']}: missing default modules -> {', '.join(missing)}")
+        else:
+            lines.append(f"- {r['platform']}: no default module gap")
     lines.append("")
     path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
 
@@ -108,12 +182,14 @@ def main() -> int:
     rows: List[Dict[str, object]] = []
     for platform in sorted(REPRESENTATIVE_BOARDS.keys()):
         rows.append(run_case(root, platform, REPRESENTATIVE_BOARDS[platform], artifact_root))
+    gap_summary = build_gap_summary(rows)
 
     payload = {
-        "version": "1.0.0",
+        "version": "1.1.0",
         "representative_boards": REPRESENTATIVE_BOARDS,
         "required_artifacts": REQUIRED_ARTIFACTS,
         "rows": rows,
+        "module_parity_gap_summary": gap_summary,
         "summary": {
             "platform_count": len(rows),
             "pass_count": sum(1 for r in rows if r["status"] == "PASS"),
@@ -121,7 +197,7 @@ def main() -> int:
         },
     }
     write_json(out_json, payload)
-    write_md(out_md, rows, artifact_root.relative_to(root))
+    write_md(out_md, rows, artifact_root.relative_to(root), gap_summary)
 
     print(f"[parity] wrote: {out_json}")
     print(f"[parity] wrote: {out_md}")
