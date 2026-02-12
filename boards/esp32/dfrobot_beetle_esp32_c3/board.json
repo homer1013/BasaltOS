@@ -1,0 +1,57 @@
+{
+  "id": "dfrobot_beetle_esp32_c3",
+  "name": "DFRobot Beetle ESP32-C3",
+  "description": "Metadata-first baseline profile for DFRobot Beetle ESP32-C3 (pinout should be verified against your exact board revision).",
+  "platform": "esp32",
+  "target": "esp32c3",
+  "manufacturer": "DF Robot",
+  "architecture": "RISC-V",
+  "family": "ESP32-C3",
+  "mcu": "ESP32-C3",
+  "flash": "4MB (typical)",
+  "ram": "400KB (typical)",
+  "capabilities": [
+    "wifi",
+    "bluetooth",
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "twai"
+  ],
+  "pins": {
+    "uart_tx": 21,
+    "uart_rx": 20,
+    "i2c_sda": 8,
+    "i2c_scl": 9,
+    "spi_mosi": 6,
+    "spi_miso": 7,
+    "spi_sclk": 10,
+    "spi_cs": 5,
+    "led": 8,
+    "button": 9,
+    "can_tx": 4,
+    "can_rx": 3
+  },
+  "pin_definitions": {
+    "uart_tx": { "description": "UART TX baseline pin", "alternatives": [21, 4, 5], "type": "output" },
+    "uart_rx": { "description": "UART RX baseline pin", "alternatives": [20, 4, 5], "type": "input" },
+    "i2c_sda": { "description": "I2C SDA baseline pin", "alternatives": [8, 6, 5, 4], "type": "bidirectional" },
+    "i2c_scl": { "description": "I2C SCL baseline pin", "alternatives": [9, 7, 6, 5], "type": "output" },
+    "spi_mosi": { "description": "SPI MOSI baseline pin", "alternatives": [6, 7, 10, 5], "type": "output" },
+    "spi_miso": { "description": "SPI MISO baseline pin", "alternatives": [7, 6, 10, 4], "type": "input" },
+    "spi_sclk": { "description": "SPI SCLK baseline pin", "alternatives": [10, 6, 7, 4], "type": "output" },
+    "spi_cs": { "description": "SPI CS baseline pin", "alternatives": [5, 8, 9, 4], "type": "output" },
+    "led": { "description": "Onboard LED (board-dependent)", "alternatives": [8, 2, 3], "type": "output" },
+    "button": { "description": "Boot/user button (board-dependent)", "alternatives": [9, 0], "type": "input" },
+    "can_tx": { "description": "TWAI TX baseline pin", "alternatives": [4, 5, 6], "type": "output" },
+    "can_rx": { "description": "TWAI RX baseline pin", "alternatives": [3, 4, 5], "type": "input" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "spi", "i2c", "fs_spiffs", "shell_full"],
+    "clock": { "freq_hz": 160000000 }
+  },
+  "notes": "Foundation baseline profile for metadata/config generation. Validate exact pin map and onboard peripherals during bench bring-up."
+}

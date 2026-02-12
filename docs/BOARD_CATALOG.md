@@ -4,7 +4,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 
 ## Summary
 
-- Total boards: 32
+- Total boards: 33
 - Platforms: 10
 - Manufacturers: 16
 
@@ -13,7 +13,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 - atmega: 2
 - atsam: 3
 - avr: 2
-- esp32: 10
+- esp32: 11
 - linux-sbc: 1
 - pic16: 2
 - renesas_ra: 3
@@ -28,12 +28,12 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 - Raspberry Pi: 3
 - Renesas: 3
 - Adafruit: 2
+- DF Robot: 2
 - M5Stack: 2
 - Microchip: 2
 - SparkFun: 2
 - STMicroelectronics: 2
 - AI-Thinker: 1
-- DF Robot: 1
 - Elecrow: 1
 - Generic: 1
 - Seeed Studio: 1
@@ -46,9 +46,9 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 - Xtensa: 8
 - ARM Cortex-M0+: 4
 - AVR 8-bit: 4
+- RISC-V: 3
 - PIC 8-bit: 2
 - Renesas RX 32-bit: 2
-- RISC-V: 2
 - ARM Cortex-A: 1
 
 ### Boards per Family
@@ -58,12 +58,12 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 - SAMD21: 3
 - STM32F4: 3
 - ATmega328: 2
+- ESP32-C3: 2
 - PIC16: 2
 - RA4: 2
 - ATmega2560: 1
 - ATmega32U4: 1
 - BCM2711: 1
-- ESP32-C3: 1
 - ESP32-C6: 1
 - ESP32-S3: 1
 - Renesas RA: 1
@@ -82,6 +82,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 | avr | arduino_pro_micro_5v_usbc | arduino_pro_micro_5v_usbc | Arduino Pro Micro 5V (USB-C) | SparkFun | AVR 8-bit | ATmega32U4 | ATmega32U4 | 8 |
 | avr | mega2560 | mega2560 | Arduino Mega 2560 (Generic) | Arduino | AVR 8-bit | ATmega2560 | ATmega2560 | 8 |
 | esp32 | cyd_3248s035r | cyd | CYD ESP32-3248S035R | Sunton | Xtensa | ESP32 | ESP32-WROOM-32 | 10 |
+| esp32 | dfrobot_beetle_esp32_c3 | dfrobot_beetle_esp32_c3 | DFRobot Beetle ESP32-C3 | DF Robot | RISC-V | ESP32-C3 | ESP32-C3 | 9 |
 | esp32 | dfrobot_firebeetle_esp32 | dfrobot_firebeetle_esp32 | DFRobot FireBeetle ESP32 | DF Robot | Xtensa | ESP32 | ESP32-WROOM-32E | 8 |
 | esp32 | elecrow_crowpanel_esp32 | elecrow_crowpanel_esp32 | Elecrow CrowPanel ESP32 | Elecrow | Xtensa | ESP32 | ESP32-WROOM-32 | 8 |
 | esp32 | esp32-c3-supermini | esp32-c3-supermini | ESP32-C3 SuperMini (Generic) | Generic | RISC-V | ESP32-C3 | ESP32-C3 | 8 |

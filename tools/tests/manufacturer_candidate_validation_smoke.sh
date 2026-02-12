@@ -14,6 +14,7 @@ declare -a CANDIDATES=(
   "Seeed Studio|atsam|seeeduino_xiao_samd21|metadata"
   "SparkFun|rp2040|sparkfun_thing_plus_rp2040|planned"
   "DF Robot|esp32|dfrobot_firebeetle_esp32|planned"
+  "DF Robot|esp32|dfrobot_beetle_esp32_c3|metadata"
   "Elecrow|esp32|elecrow_crowpanel_esp32|planned"
 )
 

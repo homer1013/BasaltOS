@@ -4,17 +4,6 @@
   "source_taxonomy": "docs/BOARD_TAXONOMY_INDEX.json",
   "items": [
     {
-      "manufacturer": "DF Robot",
-      "priority": "P2",
-      "platform": "esp32",
-      "family": "",
-      "board_dir": "dfrobot_beetle_esp32_c3",
-      "board_name": "DFRobot Beetle ESP32-C3",
-      "lane": "planned",
-      "rationale": "Future C3 coverage candidate.",
-      "scaffold_command": "python3 tools/board_intake_scaffold.py --manufacturer \"DF Robot\" --family \"TBD\" --platform esp32 --board-id dfrobot_beetle_esp32_c3 --board-name \"DFRobot Beetle ESP32-C3\""
-    },
-    {
       "manufacturer": "Elecrow",
       "priority": "P2",
       "platform": "esp32",

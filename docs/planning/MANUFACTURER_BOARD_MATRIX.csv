@@ -2,7 +2,7 @@ manufacturer,platform,board_dir,board_name,board_id,family,architecture,mcu,prio
 Adafruit,atsam,adafruit_circuit_playground_express,,adafruit_circuit_playground_express,SAMD21,ARM Cortex-M,ATSAMD21G18,P1,bench+metadata,PROFILE_PRESENT,yes,In-hand board; best baseline for ATSAM onboarding.
 Adafruit,rp2040,adafruit_feather_rp2040,,adafruit_feather_rp2040,RP2040,ARM Cortex-M0+,RP2040,P2,metadata,PROFILE_PRESENT,yes,Representative Feather RP2040 profile.
 DF Robot,esp32,dfrobot_firebeetle_esp32,,dfrobot_firebeetle_esp32,ESP32,Xtensa,ESP32-WROOM-32E,P1,metadata,PROFILE_PRESENT,yes,ESP32 baseline board for DF Robot lane.
-DF Robot,esp32,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,,,,,P2,planned,PLANNED_PROFILE,no,Future C3 coverage candidate.
+DF Robot,esp32,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,dfrobot_beetle_esp32_c3,ESP32-C3,RISC-V,ESP32-C3,P2,planned,PROFILE_PRESENT,yes,Future C3 coverage candidate.
 Elecrow,esp32,elecrow_crowpanel_esp32,,elecrow_crowpanel_esp32,ESP32,Xtensa,ESP32-WROOM-32,P1,metadata,PROFILE_PRESENT,yes,CrowPanel baseline profile.
 Elecrow,esp32,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,,,,,P2,planned,PLANNED_PROFILE,no,Future S3 display-focused candidate.
 Seeed Studio,atsam,seeeduino_xiao_samd21,,seeeduino_xiao_samd21,SAMD21,ARM Cortex-M,ATSAMD21G18A,P1,metadata,PROFILE_PRESENT,yes,Compact SAMD21 footprint family starter.
