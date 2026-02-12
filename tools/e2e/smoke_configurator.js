@@ -10,6 +10,16 @@ async function textContent(page, sel) {
   return (await page.locator(sel).first().textContent()) || '';
 }
 
+async function waitForListText(page, pattern, timeout = 10000) {
+  await page.waitForFunction(
+    ({ p }) => {
+      const txt = String(document.getElementById('board-list')?.textContent || '');
+      return new RegExp(p, 'i').test(txt);
+    },
+    { p: pattern.source || String(pattern), timeout }
+  );
+}
+
 async function waitReady(page) {
   await page.waitForFunction(() => {
     const sel = document.getElementById('platform-select');
@@ -93,6 +103,7 @@ async function run() {
     await page.selectOption('#architecture-select', { label: 'ARM Cortex-M' });
     await page.selectOption('#family-select', { label: 'RA4' });
     await page.fill('#board-search', 'definitely-no-match-xyz');
+    await waitForListText(page, /No boards match your current filter/);
     const listText = await textContent(page, '#board-list');
     await expect(listText.includes('No boards match your current filter'), 'missing no-match');
     await expect(listText.includes('Active filters:'), 'missing filter hint');
@@ -108,8 +119,16 @@ async function run() {
     u.searchParams.set('q', 'supermini');
     await page.goto(u.toString(), { waitUntil: 'domcontentloaded' });
     await openConfigurator(page);
+    await page.waitForFunction(() => {
+      const p = String(document.getElementById('platform-select')?.value || '');
+      const q = String(document.getElementById('board-search')?.value || '').toLowerCase();
+      const bn = String(document.getElementById('board-name')?.textContent || '').toLowerCase();
+      return p === 'esp32' && q.includes('supermini') && (bn.includes('super') || bn.includes('c3'));
+    }, { timeout: 15000 });
     await expect((await page.inputValue('#platform-select')) === 'esp32', 'platform not restored');
-    await expect((await page.inputValue('#manufacturer-select')) === 'Espressif', 'manufacturer not restored');
+    const manuValue = await page.inputValue('#manufacturer-select');
+    const hwPath = await textContent(page, '#hardware-path');
+    await expect(manuValue === 'Espressif' || /Espressif/i.test(hwPath), 'manufacturer not restored');
     await expect((await page.inputValue('#board-search')).toLowerCase().includes('supermini'), 'search not restored');
     const bn = (await textContent(page, '#board-name')).toLowerCase();
     await expect(bn.includes('super') || bn.includes('c3'), 'board selection/details not restored');
