@@ -7,6 +7,12 @@ Basalt supports two board-selection flows:
 Board onboarding references:
 - `docs/BOARD_ONBOARDING_CHECKLIST.md`
 - `docs/planning/BOARD_INTAKE_TEMPLATE.md`
+- `docs/BOARD_CATALOG.md` (auto-generated inventory)
+
+Regenerate catalog after adding/changing board metadata:
+```bash
+python3 tools/generate_board_catalog.py
+```
 
 ## Docs-First Board Addition Flow
 

@@ -19,6 +19,7 @@
 - `diff_local_sync_payload.py` – compare local vs remote payloads by item id/hash
 - `import_local_sync_payload.py` – import remote payloads into local workspace with conflict policy
 - `metadata_completeness_report.py` – generate board metadata completeness markdown report
+- `generate_board_catalog.py` – generate deterministic board inventory markdown (`docs/BOARD_CATALOG.md`)
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -158,6 +159,12 @@ Manufacturer candidate validation smoke (existing profiles + planned gaps):
 
 ```bash
 bash tools/tests/manufacturer_candidate_validation_smoke.sh
+```
+
+Board catalog drift smoke (docs inventory stays in sync):
+
+```bash
+bash tools/tests/board_catalog_drift_smoke.sh
 ```
 
 
