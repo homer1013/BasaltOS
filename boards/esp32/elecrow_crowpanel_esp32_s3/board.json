@@ -22,6 +22,9 @@
     "i2c",
     "pwm",
     "adc",
+    "remote_node",
+    "mcp23017",
+    "hp4067",
     "psram"
   ],
   "pins": {

@@ -17,6 +17,9 @@
     "spi",
     "i2c",
     "gpio",
+    "remote_node",
+    "mcp23017",
+    "hp4067",
     "tft",
     "fs_spiffs",
     "psram"

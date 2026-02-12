@@ -240,26 +240,14 @@
       ]
     },
     "esp32": {
-      "unsupported_or_gap_rows": 106,
+      "unsupported_or_gap_rows": 70,
       "top_module_gaps": [
         {
           "module_id": "eeprom",
           "count": 12
         },
         {
-          "module_id": "hp4067",
-          "count": 12
-        },
-        {
-          "module_id": "mcp23017",
-          "count": 12
-        },
-        {
           "module_id": "mcp2544fd",
-          "count": 12
-        },
-        {
-          "module_id": "remote_node",
           "count": 12
         },
         {
@@ -289,19 +277,7 @@
           "count": 12
         },
         {
-          "reason": "not_allowed:hp4067",
-          "count": 12
-        },
-        {
-          "reason": "not_allowed:mcp23017",
-          "count": 12
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
-          "count": 12
-        },
-        {
-          "reason": "not_allowed:remote_node",
           "count": 12
         },
         {
@@ -315,6 +291,14 @@
         {
           "reason": "not_allowed:psram",
           "count": 9
+        },
+        {
+          "reason": "not_allowed:tft",
+          "count": 7
+        },
+        {
+          "reason": "not_allowed:twai",
+          "count": 7
         }
       ]
     },
@@ -805,24 +789,24 @@
     "actionable_top_modules_by_platform": {}
   },
   "advanced_policy_summary": {
-    "not_allowed_row_count": 363,
+    "not_allowed_row_count": 327,
     "bucket_counts": {
-      "intentional": 363
+      "intentional": 327
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
-      "intentional_advanced_peripheral_opt_in": 322
+      "intentional_advanced_peripheral_opt_in": 286
     },
     "actionable_top_modules_by_platform": {}
   },
   "foundation_focus_summary": {
-    "gap_row_count": 374,
+    "gap_row_count": 338,
     "bucket_counts": {
-      "intentional": 374
+      "intentional": 338
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
-      "intentional_advanced_peripheral_opt_in": 322,
+      "intentional_advanced_peripheral_opt_in": 286,
       "intentional_8bit_mic_scope": 6,
       "intentional_wireless_scope": 5
     },

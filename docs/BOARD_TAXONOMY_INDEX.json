@@ -157,7 +157,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-WROOM-32",
-      "caps_count": 12
+      "caps_count": 15
     },
     {
       "platform": "esp32",
@@ -168,7 +168,7 @@
       "architecture": "RISC-V",
       "family": "ESP32-C3",
       "mcu": "ESP32-C3",
-      "caps_count": 9
+      "caps_count": 12
     },
     {
       "platform": "esp32",
@@ -179,7 +179,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-WROOM-32E",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "esp32",
@@ -190,7 +190,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-WROOM-32",
-      "caps_count": 10
+      "caps_count": 13
     },
     {
       "platform": "esp32",
@@ -201,7 +201,7 @@
       "architecture": "Xtensa",
       "family": "ESP32-S3",
       "mcu": "ESP32-S3",
-      "caps_count": 11
+      "caps_count": 14
     },
     {
       "platform": "esp32",
@@ -212,7 +212,7 @@
       "architecture": "RISC-V",
       "family": "ESP32-C3",
       "mcu": "ESP32-C3",
-      "caps_count": 9
+      "caps_count": 12
     },
     {
       "platform": "esp32",
@@ -223,7 +223,7 @@
       "architecture": "RISC-V",
       "family": "ESP32-C6",
       "mcu": "ESP32-C6",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "esp32",
@@ -234,7 +234,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-D0WDQ6",
-      "caps_count": 8
+      "caps_count": 11
     },
     {
       "platform": "esp32",
@@ -245,7 +245,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-WROOM-32",
-      "caps_count": 9
+      "caps_count": 12
     },
     {
       "platform": "esp32",
@@ -256,7 +256,7 @@
       "architecture": "Xtensa",
       "family": "ESP32-S3",
       "mcu": "ESP32-S3",
-      "caps_count": 9
+      "caps_count": 12
     },
     {
       "platform": "esp32",
@@ -267,7 +267,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-D0WDQ6-V3",
-      "caps_count": 11
+      "caps_count": 14
     },
     {
       "platform": "esp32",
@@ -278,7 +278,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-PICO-V3-02",
-      "caps_count": 12
+      "caps_count": 15
     },
     {
       "platform": "linux-sbc",

@@ -19,6 +19,9 @@
     "gpio",
     "adc",
     "pwm",
+    "remote_node",
+    "mcp23017",
+    "hp4067",
     "twai"
   ],
   "pins": {
