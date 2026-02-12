@@ -29,7 +29,10 @@ async function run() {
   // Top-nav and profile affordances must stay hidden in local mode.
   await assertHidden(page, '#btn-market', 'market nav button');
   await assertHidden(page, '#menu-profile', 'profile menu item');
+  await assertHidden(page, '#menu-switch-user', 'switch-user menu item');
   await assertHidden(page, '#top-profile-chip', 'top profile chip');
+  await assertHidden(page, '#btn-open-market-from-config', 'config market shortcut');
+  await assertHidden(page, '#stat-market', 'landing market stat');
 
   // Market/profile shells should not be displayed.
   await assertHidden(page, '#market-shell', 'market shell');
@@ -44,6 +47,8 @@ async function run() {
 
   await assertHidden(page, '#btn-market', 'market nav button after entering configurator');
   await assertHidden(page, '#menu-profile', 'profile menu item after entering configurator');
+  await assertHidden(page, '#menu-switch-user', 'switch-user menu item after entering configurator');
+  await assertHidden(page, '#btn-open-market-from-config', 'config market shortcut after entering configurator');
 
   // API should reject market endpoints in local mode.
   const res = await fetch(`${BASE}/api/market/catalog?platform=esp32`);
