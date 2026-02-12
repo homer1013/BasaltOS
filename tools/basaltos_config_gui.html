@@ -3671,6 +3671,98 @@
             pathEl.innerHTML = chips.map(c => `<span class="hardware-chip">${c}</span>`).join('');
         }
 
+        function loadFilterStateFromUrl() {
+            const params = new URLSearchParams(window.location.search || '');
+            selectedPlatform = String(params.get('platform') || '').trim();
+            selectedManufacturer = String(params.get('manufacturer') || '').trim();
+            selectedArchitecture = String(params.get('architecture') || '').trim();
+            selectedFamily = String(params.get('family') || '').trim();
+            selectedSilicon = String(params.get('silicon') || '').trim();
+            pendingBoardIdFromUrl = String(params.get('board') || '').trim();
+            pendingSearchFromUrl = String(params.get('q') || '').trim();
+        }
+
+        function persistFilterStateToUrl() {
+            const params = new URLSearchParams(window.location.search || '');
+            const boardSearch = String(document.getElementById('board-search')?.value || '').trim();
+            const selectedBoardId = String(selectedBoard?.id || '').trim();
+            const state = {
+                platform: selectedPlatform,
+                manufacturer: selectedManufacturer,
+                architecture: selectedArchitecture,
+                family: selectedFamily,
+                silicon: selectedSilicon,
+                board: selectedBoardId,
+                q: boardSearch
+            };
+            Object.entries(state).forEach(([k, v]) => {
+                if (v) params.set(k, v);
+                else params.delete(k);
+            });
+            const next = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
+            window.history.replaceState(null, '', next);
+        }
+
+        function taxonomyOptionsUrl(params = {}) {
+            const q = new URLSearchParams();
+            Object.entries(params).forEach(([k, v]) => {
+                const raw = String(v || '').trim();
+                if (raw) q.set(k, raw);
+            });
+            const qs = q.toString();
+            return qs ? `/api/board-taxonomy/options?${qs}` : '/api/board-taxonomy/options';
+        }
+
+        async function refreshTaxonomyOptionsFromApi() {
+            const base = {};
+            if (selectedPlatform) base.platform = selectedPlatform;
+
+            const root = await apiFetchJson(taxonomyOptionsUrl(base));
+            const manu = Array.from(new Set([...(root?.options?.manufacturer || []), ...PREFERRED_MANUFACTURERS])).sort((a, b) => a.localeCompare(b));
+            if (selectedManufacturer && !manu.includes(selectedManufacturer)) {
+                selectedManufacturer = '';
+                selectedArchitecture = '';
+                selectedFamily = '';
+                selectedSilicon = '';
+            }
+
+            const archResp = await apiFetchJson(taxonomyOptionsUrl({ ...base, manufacturer: selectedManufacturer }));
+            const arch = Array.from(new Set(archResp?.options?.architecture || [])).sort((a, b) => a.localeCompare(b));
+            if (selectedArchitecture && !arch.includes(selectedArchitecture)) {
+                selectedArchitecture = '';
+                selectedFamily = '';
+                selectedSilicon = '';
+            }
+
+            const famResp = await apiFetchJson(taxonomyOptionsUrl({
+                ...base,
+                manufacturer: selectedManufacturer,
+                architecture: selectedArchitecture
+            }));
+            const fam = Array.from(new Set(famResp?.options?.family || [])).sort((a, b) => a.localeCompare(b));
+            if (selectedFamily && !fam.includes(selectedFamily)) {
+                selectedFamily = '';
+                selectedSilicon = '';
+            }
+
+            const silResp = await apiFetchJson(taxonomyOptionsUrl({
+                ...base,
+                manufacturer: selectedManufacturer,
+                architecture: selectedArchitecture,
+                family: selectedFamily
+            }));
+            const silRows = Array.isArray(silResp?.boards) ? silResp.boards : [];
+            const sil = Array.from(new Set(silRows.map(b => String(b?.mcu || '').trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+            if (selectedSilicon && !sil.includes(selectedSilicon)) selectedSilicon = '';
+
+            taxonomyOptions = {
+                manufacturer: manu,
+                architecture: arch,
+                family: fam,
+                silicon: sil
+            };
+        }
+
         function applyHierarchyFilters() {
             const search = String(document.getElementById('board-search')?.value || '').trim().toLowerCase();
             return allBoardsFlat().filter(board => {
@@ -3694,17 +3786,21 @@
             const silSel = document.getElementById('silicon-select');
 
             const all = allBoardsFlat();
-            const manufacturers = Array.from(new Set([
-                ...PREFERRED_MANUFACTURERS,
-                ...all.map(b => boardTaxonomy(b).manufacturer)
-            ])).sort((a, b) => a.localeCompare(b));
+            const manufacturers = (taxonomyOptions?.manufacturer?.length
+                ? taxonomyOptions.manufacturer
+                : Array.from(new Set([
+                    ...PREFERRED_MANUFACTURERS,
+                    ...all.map(b => boardTaxonomy(b).manufacturer)
+                ])).sort((a, b) => a.localeCompare(b)));
             if (selectedManufacturer && !manufacturers.includes(selectedManufacturer)) selectedManufacturer = '';
             setSelectOptions(manuSel, manufacturers, 'All manufacturers');
             if (!selectedManufacturer && manufacturers.length === 1) selectedManufacturer = manufacturers[0];
             if (selectedManufacturer) manuSel.value = selectedManufacturer;
 
             const byManu = all.filter(b => !selectedManufacturer || boardTaxonomy(b).manufacturer === selectedManufacturer);
-            const architectures = Array.from(new Set(byManu.map(b => boardTaxonomy(b).architecture))).sort((a, b) => a.localeCompare(b));
+            const architectures = (taxonomyOptions?.architecture?.length
+                ? taxonomyOptions.architecture
+                : Array.from(new Set(byManu.map(b => boardTaxonomy(b).architecture))).sort((a, b) => a.localeCompare(b)));
             if (selectedArchitecture && !architectures.includes(selectedArchitecture)) selectedArchitecture = '';
             setSelectOptions(archSel, architectures, 'All architectures');
             if (!selectedArchitecture && architectures.length === 1) selectedArchitecture = architectures[0];
@@ -3712,7 +3808,9 @@
             else selectedArchitecture = '';
 
             const byArch = byManu.filter(b => !selectedArchitecture || boardTaxonomy(b).architecture === selectedArchitecture);
-            const families = Array.from(new Set(byArch.map(b => boardTaxonomy(b).family))).sort((a, b) => a.localeCompare(b));
+            const families = (taxonomyOptions?.family?.length
+                ? taxonomyOptions.family
+                : Array.from(new Set(byArch.map(b => boardTaxonomy(b).family))).sort((a, b) => a.localeCompare(b)));
             if (selectedFamily && !families.includes(selectedFamily)) selectedFamily = '';
             setSelectOptions(famSel, families, 'All families');
             if (!selectedFamily && families.length === 1) selectedFamily = families[0];
@@ -3720,7 +3818,9 @@
             else selectedFamily = '';
 
             const byFam = byArch.filter(b => !selectedFamily || boardTaxonomy(b).family === selectedFamily);
-            const silicons = Array.from(new Set(byFam.map(b => boardTaxonomy(b).silicon))).sort((a, b) => a.localeCompare(b));
+            const silicons = (taxonomyOptions?.silicon?.length
+                ? taxonomyOptions.silicon
+                : Array.from(new Set(byFam.map(b => boardTaxonomy(b).silicon))).sort((a, b) => a.localeCompare(b)));
             if (selectedSilicon && !silicons.includes(selectedSilicon)) selectedSilicon = '';
             setSelectOptions(silSel, silicons, 'All processors');
             if (!selectedSilicon && silicons.length === 1) selectedSilicon = silicons[0];
@@ -4719,6 +4819,9 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         let selectedArchitecture = '';
         let selectedFamily = '';
         let selectedSilicon = '';
+        let taxonomyOptions = null;
+        let pendingBoardIdFromUrl = '';
+        let pendingSearchFromUrl = '';
         let loadedPlatformForModules = '';
         let loadedPlatformForMarket = '';
         let moduleStates = {};
@@ -4734,12 +4837,29 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
         // Initialize
         async function init() {
+            loadFilterStateFromUrl();
             const ok = await loadFromApi();
             await populatePlatformSelect();
+            const searchInput = document.getElementById('board-search');
+            if (searchInput && pendingSearchFromUrl) searchInput.value = pendingSearchFromUrl;
+            try {
+                await refreshTaxonomyOptionsFromApi();
+            } catch (err) {
+                console.warn('Failed to load taxonomy options:', err);
+            }
             if (!ok || !platforms || platforms.length === 0) {
                 showPlatformError('No platforms loaded. Check http://localhost:5000/api/platforms');
             }
             populateBoardList();
+            if (pendingBoardIdFromUrl) {
+                const target = allBoardsFlat().find(b => String(b?.id || '') === pendingBoardIdFromUrl);
+                if (target) {
+                    await selectBoard(target, null);
+                    populateBoardList();
+                }
+                pendingBoardIdFromUrl = '';
+            }
+            persistFilterStateToUrl();
             populateModuleGrid();
             loadTemplates();
             updateLandingStats();
@@ -4872,6 +4992,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 boardList.appendChild(groupWrap);
             });
             renderHardwarePath();
+            persistFilterStateToUrl();
         }
 
         async function selectBoard(board, sourceEl) {
@@ -4894,6 +5015,11 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             selectedArchitecture = tx.architecture;
             selectedFamily = tx.family;
             selectedSilicon = tx.silicon;
+            try {
+                await refreshTaxonomyOptionsFromApi();
+            } catch (err) {
+                console.warn('Failed to refresh taxonomy options after board select:', err);
+            }
             
             // Update UI
             document.querySelectorAll('.board-item').forEach(item => {
@@ -4953,6 +5079,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             updateLandingStats();
             updateMemoryEstimatePanels();
             renderHardwarePath();
+            persistFilterStateToUrl();
         }
 
         function autoEnableByBoardCapabilities(board) {
@@ -6093,6 +6220,10 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     selectedBoard = null;
                     const boardDetails = document.getElementById('board-details');
                     if (boardDetails) boardDetails.style.display = 'none';
+                    await refreshTaxonomyOptionsFromApi().catch(err => {
+                        console.warn('Failed to refresh taxonomy options:', err);
+                        taxonomyOptions = null;
+                    });
                     populateBoardList();
                     populateModuleGrid();
                     renderSelectedAppsVisibility();
@@ -6148,6 +6279,10 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     const panel = document.getElementById('avr-config-panel');
                     if (panel) panel.style.display = 'none';
                 }
+                await refreshTaxonomyOptionsFromApi().catch(err => {
+                    console.warn('Failed to refresh taxonomy options:', err);
+                    taxonomyOptions = null;
+                });
                 populateBoardList();
                 if (selectedPlatform) {
                     await refreshModulesForPlatform(selectedPlatform);
@@ -6167,11 +6302,12 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 refreshWebFlasher({ silent: true });
                 refreshAvrFlasher({ silent: true });
                 updateMemoryEstimatePanels();
+                persistFilterStateToUrl();
             };
 
             const manufacturerSel = document.getElementById('manufacturer-select');
             if (manufacturerSel) {
-                manufacturerSel.addEventListener('change', () => {
+                manufacturerSel.addEventListener('change', async () => {
                     selectedManufacturer = String(manufacturerSel.value || '');
                     selectedArchitecture = '';
                     selectedFamily = '';
@@ -6179,41 +6315,56 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     selectedBoard = null;
                     const boardDetails = document.getElementById('board-details');
                     if (boardDetails) boardDetails.style.display = 'none';
+                    await refreshTaxonomyOptionsFromApi().catch(err => {
+                        console.warn('Failed to refresh taxonomy options:', err);
+                        taxonomyOptions = null;
+                    });
                     populateBoardList();
                     renderTemplateFilters();
                     renderTemplates();
                     updateMemoryEstimatePanels();
+                    persistFilterStateToUrl();
                 });
             }
 
             const architectureSel = document.getElementById('architecture-select');
             if (architectureSel) {
-                architectureSel.addEventListener('change', () => {
+                architectureSel.addEventListener('change', async () => {
                     selectedArchitecture = String(architectureSel.value || '');
                     selectedFamily = '';
                     selectedSilicon = '';
                     selectedBoard = null;
                     const boardDetails = document.getElementById('board-details');
                     if (boardDetails) boardDetails.style.display = 'none';
+                    await refreshTaxonomyOptionsFromApi().catch(err => {
+                        console.warn('Failed to refresh taxonomy options:', err);
+                        taxonomyOptions = null;
+                    });
                     populateBoardList();
                     renderTemplateFilters();
                     renderTemplates();
                     updateMemoryEstimatePanels();
+                    persistFilterStateToUrl();
                 });
             }
 
             const familySel = document.getElementById('family-select');
             if (familySel) {
-                familySel.addEventListener('change', () => {
+                familySel.addEventListener('change', async () => {
                     selectedFamily = String(familySel.value || '');
                     selectedSilicon = '';
                     selectedBoard = null;
                     const boardDetails = document.getElementById('board-details');
                     if (boardDetails) boardDetails.style.display = 'none';
+                    await refreshTaxonomyOptionsFromApi().catch(err => {
+                        console.warn('Failed to refresh taxonomy options:', err);
+                        taxonomyOptions = null;
+                    });
                     populateBoardList();
                     renderTemplateFilters();
                     renderTemplates();
                     updateMemoryEstimatePanels();
+                    persistFilterStateToUrl();
                 });
             }
 
@@ -6228,11 +6379,13 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     renderTemplateFilters();
                     renderTemplates();
                     updateMemoryEstimatePanels();
+                    persistFilterStateToUrl();
                 });
             }
 
             document.getElementById('board-search').oninput = () => {
                 populateBoardList();
+                persistFilterStateToUrl();
             };
             
             document.getElementById('btn-next').onclick = nextStep;

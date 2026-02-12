@@ -1604,6 +1604,66 @@ def _taxonomy_options_response(filtered_payload: Dict[str, Any]) -> Dict[str, An
         },
     }
 
+
+def _filter_boards_with_taxonomy(
+    boards: List[Dict[str, Any]],
+    platform: str,
+    board_id: str = "",
+    board_dir: str = "",
+    manufacturer: str = "",
+    architecture: str = "",
+    family: str = "",
+) -> List[Dict[str, Any]]:
+    board_id = str(board_id or "").strip().lower()
+    board_dir = str(board_dir or "").strip().lower()
+    manufacturer = str(manufacturer or "").strip().lower()
+    architecture = str(architecture or "").strip().lower()
+    family = str(family or "").strip().lower()
+
+    if not any((board_id, board_dir, manufacturer, architecture, family)):
+        return boards
+
+    def _match(value: Any, needle: str) -> bool:
+        if not needle:
+            return True
+        return str(value or "").strip().lower() == needle
+
+    index_obj = config_gen._read_json(BOARD_TAXONOMY_INDEX_FILE, {})
+    idx_rows = index_obj.get("boards") if isinstance(index_obj, dict) else []
+    if not isinstance(idx_rows, list):
+        idx_rows = []
+
+    allow_ids = set()
+    for row in idx_rows:
+        if not isinstance(row, dict):
+            continue
+        if not _match(row.get("platform"), str(platform or "").strip().lower()):
+            continue
+        if not _match(row.get("id"), board_id):
+            continue
+        if not _match(row.get("board_dir"), board_dir):
+            continue
+        if not _match(row.get("manufacturer"), manufacturer):
+            continue
+        if not _match(row.get("architecture"), architecture):
+            continue
+        if not _match(row.get("family"), family):
+            continue
+        rid = str(row.get("id") or "").strip().lower()
+        if rid:
+            allow_ids.add(rid)
+
+    if not allow_ids:
+        return []
+
+    out = []
+    for b in boards:
+        bid = str((b or {}).get("id") or "").strip().lower()
+        if bid in allow_ids:
+            out.append(b)
+    return out
+
+
 @app.route('/api/platforms', methods=['GET'])
 def get_platforms():
     """Get list of available platforms"""
@@ -1691,6 +1751,15 @@ def get_boards(platform):
     """Get boards for a specific platform"""
     config_gen.load_all_configs()
     boards = config_gen.get_boards_by_platform(platform)
+    boards = _filter_boards_with_taxonomy(
+        boards=boards,
+        platform=platform,
+        board_id=request.args.get('id', ''),
+        board_dir=request.args.get('board_dir', ''),
+        manufacturer=request.args.get('manufacturer', ''),
+        architecture=request.args.get('architecture', ''),
+        family=request.args.get('family', ''),
+    )
     return jsonify(boards)
 
 

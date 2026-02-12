@@ -54,6 +54,7 @@ PY
 
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/platforms" > "$OUT/platforms.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/boards/esp32" > "$OUT/boards_esp32.json"
+curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/boards/esp32?id=esp32-c3-supermini" > "$OUT/boards_esp32_filtered.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/drivers?platform=esp32" > "$OUT/drivers_esp32.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/board/esp32-c3-supermini" > "$OUT/board_esp32c3.json"
 curl --fail-with-body -sS "http://127.0.0.1:${PORT}/api/sync/export-preview" > "$OUT/sync_export_preview.json"
@@ -107,7 +108,7 @@ import json
 from pathlib import Path
 out=Path('tmp/test_configurator_api_smoke')
 
-for fn in ['platforms.json','boards_esp32.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','board_taxonomy_options.json','board_taxonomy_options_filtered.json','board_taxonomy_meta.json','board_taxonomy_lookup.json','generate_response.json','preview_response.json']:
+for fn in ['platforms.json','boards_esp32.json','boards_esp32_filtered.json','drivers_esp32.json','board_esp32c3.json','sync_export_preview.json','board_taxonomy.json','board_taxonomy_filtered.json','board_taxonomy_options.json','board_taxonomy_options_filtered.json','board_taxonomy_meta.json','board_taxonomy_lookup.json','generate_response.json','preview_response.json']:
     p=out/fn
     d=json.load(open(p,'r',encoding='utf-8'))
     if not d:
@@ -136,6 +137,14 @@ if int((tax.get('summary') or {}).get('total_boards', 0)) <= 0:
     raise SystemExit('board taxonomy summary total_boards must be > 0')
 if not isinstance(tax.get('boards'), list) or len(tax.get('boards')) == 0:
     raise SystemExit('board taxonomy boards list is empty')
+
+boards_f=json.load(open(out/'boards_esp32_filtered.json','r',encoding='utf-8'))
+if not isinstance(boards_f, list):
+    raise SystemExit('filtered /api/boards must return a list')
+if len(boards_f) != 1:
+    raise SystemExit('filtered /api/boards by id should return exactly one board')
+if str((boards_f[0] or {}).get('id')) != 'esp32-c3-supermini':
+    raise SystemExit('filtered /api/boards returned unexpected board id')
 
 tax_f=json.load(open(out/'board_taxonomy_filtered.json','r',encoding='utf-8'))
 if not tax_f.get('success'):
