@@ -1,0 +1,50 @@
+{
+  "id": "dfrobot_firebeetle_esp32",
+  "name": "DFRobot FireBeetle ESP32",
+  "description": "DFRobot FireBeetle ESP32 low-power development board baseline metadata profile.",
+  "platform": "esp32",
+  "target": "esp32",
+  "manufacturer": "DF Robot",
+  "architecture": "Xtensa",
+  "family": "ESP32",
+  "mcu": "ESP32-WROOM-32E",
+  "flash": "4MB",
+  "ram": "520KB",
+  "capabilities": [
+    "wifi",
+    "bluetooth",
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm"
+  ],
+  "pins": {
+    "uart_tx": 1,
+    "uart_rx": 3,
+    "i2c_sda": 21,
+    "i2c_scl": 22,
+    "spi_mosi": 23,
+    "spi_miso": 19,
+    "spi_sclk": 18,
+    "spi_cs": 5,
+    "led": 2,
+    "button": 0
+  },
+  "pin_definitions": {
+    "i2c_sda": { "description": "I2C SDA", "alternatives": [21, 25, 26, 27, 32, 33], "type": "bidirectional" },
+    "i2c_scl": { "description": "I2C SCL", "alternatives": [22, 14, 16, 17, 18, 19], "type": "output" },
+    "spi_mosi": { "description": "SPI MOSI", "alternatives": [23, 13], "type": "output" },
+    "spi_miso": { "description": "SPI MISO", "alternatives": [19, 12], "type": "input" },
+    "spi_sclk": { "description": "SPI SCLK", "alternatives": [18, 14], "type": "output" },
+    "spi_cs": { "description": "SPI CS", "alternatives": [5, 15, 4, 2], "type": "output" },
+    "led": { "description": "Onboard LED", "alternatives": [2, 4, 5, 16], "type": "output" },
+    "button": { "description": "Boot/User button", "alternatives": [0], "type": "input" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "spi", "i2c", "fs_spiffs", "shell_full"],
+    "clock": { "freq_hz": 240000000 }
+  },
+  "notes": "Initial metadata profile. Verify exact pin routing and LED/button mapping on in-hand FireBeetle variant."
+}

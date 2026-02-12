@@ -24,11 +24,11 @@ Scope for `SCRUM-111`.
 - Seeed Studio:
   - `atsam/seeeduino_xiao_samd21` (metadata lane)
 - SparkFun:
-  - first profile candidate planned (not present yet)
+  - `rp2040/sparkfun_thing_plus_rp2040` (metadata lane; profile added)
 - DF Robot:
-  - first profile candidate planned (not present yet)
+  - `esp32/dfrobot_firebeetle_esp32` (metadata lane; profile added)
 - Elecrow:
-  - first profile candidate planned (not present yet)
+  - `esp32/elecrow_crowpanel_esp32` (metadata lane; profile added)
 
 ## Command
 

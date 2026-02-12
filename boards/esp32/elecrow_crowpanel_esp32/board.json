@@ -1,0 +1,62 @@
+{
+  "id": "elecrow_crowpanel_esp32",
+  "name": "Elecrow CrowPanel ESP32",
+  "description": "Elecrow CrowPanel ESP32 touchscreen display board baseline metadata profile.",
+  "platform": "esp32",
+  "target": "esp32",
+  "manufacturer": "Elecrow",
+  "architecture": "Xtensa",
+  "family": "ESP32",
+  "mcu": "ESP32-WROOM-32",
+  "flash": "4MB",
+  "ram": "520KB",
+  "display": "320x480 TFT (variant-dependent controller)",
+  "capabilities": [
+    "wifi",
+    "bluetooth",
+    "gpio",
+    "tft",
+    "touch",
+    "uart",
+    "spi",
+    "i2c"
+  ],
+  "pins": {
+    "tft_mosi": 13,
+    "tft_miso": 12,
+    "tft_sclk": 14,
+    "tft_cs": 15,
+    "tft_dc": 2,
+    "tft_rst": -1,
+    "tft_bl": 27,
+    "touch_cs": 33,
+    "touch_irq": -1,
+    "i2c_sda": 21,
+    "i2c_scl": 22,
+    "uart_tx": 1,
+    "uart_rx": 3,
+    "led": 16,
+    "button": 0
+  },
+  "pin_definitions": {
+    "tft_mosi": { "description": "TFT SPI MOSI", "alternatives": [13, 23], "type": "output" },
+    "tft_miso": { "description": "TFT SPI MISO", "alternatives": [12, 19], "type": "input" },
+    "tft_sclk": { "description": "TFT SPI Clock", "alternatives": [14, 18], "type": "output" },
+    "tft_cs": { "description": "TFT Chip Select", "alternatives": [15, 5, 4], "type": "output" },
+    "tft_dc": { "description": "TFT Data/Command", "alternatives": [2, 4, 16], "type": "output" },
+    "tft_bl": { "description": "TFT Backlight", "alternatives": [21, 27], "type": "output" },
+    "touch_cs": { "description": "Touch Controller Chip Select", "alternatives": [33, 5, 15], "type": "output" },
+    "touch_irq": { "description": "Touch Controller Interrupt", "alternatives": [-1, 36, 39], "type": "input" },
+    "i2c_sda": { "description": "I2C SDA", "alternatives": [21, 33, 25], "type": "bidirectional" },
+    "i2c_scl": { "description": "I2C SCL", "alternatives": [22, 32, 26], "type": "output" },
+    "uart_tx": { "description": "UART TX", "alternatives": [1, 17, 25], "type": "output" },
+    "uart_rx": { "description": "UART RX", "alternatives": [3, 16, 26], "type": "input" },
+    "led": { "description": "Onboard LED", "alternatives": [16, 2, 4], "type": "output" },
+    "button": { "description": "Boot/User button", "alternatives": [0, 35, 39], "type": "input" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "spi", "i2c", "tft", "shell_full"],
+    "clock": { "freq_hz": 240000000 }
+  },
+  "notes": "Initial metadata profile based on common CrowPanel/CYD-style mappings. Must be bench-verified per exact panel/controller variant."
+}
