@@ -11,6 +11,8 @@
   "capabilities": [
     "wifi",
     "bluetooth",
+    "adc",
+    "pwm",
     "uart",
     "spi",
     "i2c",

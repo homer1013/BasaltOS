@@ -157,7 +157,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-WROOM-32",
-      "caps_count": 10
+      "caps_count": 12
     },
     {
       "platform": "esp32",
@@ -190,7 +190,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-WROOM-32",
-      "caps_count": 8
+      "caps_count": 10
     },
     {
       "platform": "esp32",
@@ -212,7 +212,7 @@
       "architecture": "RISC-V",
       "family": "ESP32-C3",
       "mcu": "ESP32-C3",
-      "caps_count": 8
+      "caps_count": 9
     },
     {
       "platform": "esp32",
@@ -267,7 +267,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-D0WDQ6-V3",
-      "caps_count": 9
+      "caps_count": 11
     },
     {
       "platform": "esp32",
@@ -278,7 +278,7 @@
       "architecture": "Xtensa",
       "family": "ESP32",
       "mcu": "ESP32-PICO-V3-02",
-      "caps_count": 9
+      "caps_count": 12
     },
     {
       "platform": "linux-sbc",
@@ -311,7 +311,7 @@
       "architecture": "PIC 8-bit",
       "family": "PIC16",
       "mcu": "PIC16F873",
-      "caps_count": 7
+      "caps_count": 8
     },
     {
       "platform": "renesas_ra",

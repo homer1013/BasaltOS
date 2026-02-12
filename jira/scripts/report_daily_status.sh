@@ -49,8 +49,18 @@ def points(issue):
     return float(val) if isinstance(val, (int, float)) else 0.0
 
 release = [i for i in issues if "release:v0.1.0" in labels(i)]
-open_release = [i for i in release if status_name(i) != "Done"]
-done_release = [i for i in release if status_name(i) == "Done"]
+scope_mode = "release-tagged"
+scope = release
+open_release_probe = [i for i in release if status_name(i) != "Done"]
+if not scope:
+    scope_mode = "all-issues-fallback"
+    scope = issues
+elif not open_release_probe:
+    scope_mode = "active-project-fallback"
+    scope = issues
+
+open_release = [i for i in scope if status_name(i) != "Done"]
+done_release = [i for i in scope if status_name(i) == "Done"]
 
 in_progress = [i for i in open_release if status_name(i) in {"In Progress", "In Review"}]
 todo = [i for i in open_release if status_name(i) not in {"In Progress", "In Review"}]
@@ -72,7 +82,9 @@ lines.append("")
 lines.append(f"Source export: `{issues_path}`")
 lines.append("")
 lines.append("## Snapshot")
-lines.append(f"- Release-tagged issues: {len(release)}")
+lines.append(f"- Scope mode: {scope_mode}")
+lines.append(f"- Release-tagged issues found: {len(release)}")
+lines.append(f"- Scope issues counted: {len(scope)}")
 lines.append(f"- Done: {len(done_release)} ({done_points:.1f} pts)")
 lines.append(f"- Open: {len(open_release)} ({open_points:.1f} pts)")
 lines.append(f"- In progress/review: {len(in_progress)}")
@@ -107,7 +119,8 @@ social = []
 social.append(f"# BasaltOS Daily Update ({date})")
 social.append("")
 social.append("Build update:")
-social.append(f"- v0.1.0 release scope: {len(done_release)}/{len(release)} tasks done")
+social.append(f"- Scope mode: {scope_mode}")
+social.append(f"- Tasks done: {len(done_release)}/{len(scope)}")
 social.append(f"- Active right now: {len(in_progress)} task(s) in progress/review")
 if top_next:
     social.append(f"- Next focus: {top_next[0].get('key')} {fields(top_next[0]).get('summary', '')}")

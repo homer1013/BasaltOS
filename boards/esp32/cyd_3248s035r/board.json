@@ -16,6 +16,8 @@
     "bluetooth",
     "twai",
     "gpio",
+    "adc",
+    "pwm",
     "tft",
     "touch",
     "sd_card",

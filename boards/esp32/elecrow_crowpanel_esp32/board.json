@@ -15,6 +15,8 @@
     "wifi",
     "bluetooth",
     "gpio",
+    "adc",
+    "pwm",
     "tft",
     "touch",
     "uart",

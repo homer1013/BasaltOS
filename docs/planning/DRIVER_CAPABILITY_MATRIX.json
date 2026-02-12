@@ -4,8 +4,8 @@
   "row_count": 1155,
   "summary": {
     "status_counts": {
-      "SUPPORTED": 754,
-      "UNSUPPORTED": 390,
+      "SUPPORTED": 772,
+      "UNSUPPORTED": 372,
       "CAPABILITY_ONLY": 11
     },
     "platform_summary": {
@@ -29,9 +29,9 @@
       },
       "esp32": {
         "boards": 12,
-        "SUPPORTED": 273,
+        "SUPPORTED": 290,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 123
+        "UNSUPPORTED": 106
       },
       "linux-sbc": {
         "boards": 1,
@@ -41,9 +41,9 @@
       },
       "pic16": {
         "boards": 2,
-        "SUPPORTED": 41,
+        "SUPPORTED": 42,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 23
+        "UNSUPPORTED": 22
       },
       "renesas_ra": {
         "boards": 3,
@@ -72,11 +72,19 @@
     },
     "module_coverage": [
       {
+        "module_id": "adc",
+        "supported_boards": 35
+      },
+      {
         "module_id": "ads1115",
         "supported_boards": 35
       },
       {
         "module_id": "bme280",
+        "supported_boards": 35
+      },
+      {
+        "module_id": "dht22",
         "supported_boards": 35
       },
       {
@@ -88,6 +96,10 @@
         "supported_boards": 35
       },
       {
+        "module_id": "gpio",
+        "supported_boards": 35
+      },
+      {
         "module_id": "i2c",
         "supported_boards": 35
       },
@@ -96,7 +108,15 @@
         "supported_boards": 35
       },
       {
+        "module_id": "l298n",
+        "supported_boards": 35
+      },
+      {
         "module_id": "mcp2515",
+        "supported_boards": 35
+      },
+      {
+        "module_id": "pwm",
         "supported_boards": 35
       },
       {
@@ -128,40 +148,20 @@
         "supported_boards": 35
       },
       {
-        "module_id": "dht22",
-        "supported_boards": 34
-      },
-      {
-        "module_id": "gpio",
-        "supported_boards": 34
-      },
-      {
-        "module_id": "l298n",
-        "supported_boards": 34
-      },
-      {
         "module_id": "uln2003",
-        "supported_boards": 34
-      },
-      {
-        "module_id": "adc",
-        "supported_boards": 31
-      },
-      {
-        "module_id": "pwm",
-        "supported_boards": 30
+        "supported_boards": 35
       },
       {
         "module_id": "mic",
-        "supported_boards": 25
+        "supported_boards": 29
+      },
+      {
+        "module_id": "bluetooth",
+        "supported_boards": 12
       },
       {
         "module_id": "wifi",
         "supported_boards": 12
-      },
-      {
-        "module_id": "bluetooth",
-        "supported_boards": 11
       },
       {
         "module_id": "tft",
@@ -427,7 +427,7 @@
         ]
       },
       "esp32": {
-        "unsupported_or_gap_rows": 123,
+        "unsupported_or_gap_rows": 106,
         "top_module_gaps": [
           {
             "module_id": "eeprom",
@@ -585,7 +585,7 @@
         ]
       },
       "pic16": {
-        "unsupported_or_gap_rows": 25,
+        "unsupported_or_gap_rows": 24,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -992,59 +992,15 @@
       "actionable_top_modules_by_platform": {}
     },
     "advanced_policy_summary": {
-      "not_allowed_row_count": 390,
+      "not_allowed_row_count": 372,
       "bucket_counts": {
-        "intentional": 372,
-        "actionable": 18
+        "intentional": 372
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 331,
-        "actionable_foundation_capability_gap": 17,
-        "actionable_capability_scope_review": 1
+        "intentional_advanced_peripheral_opt_in": 331
       },
-      "actionable_top_modules_by_platform": {
-        "esp32": [
-          {
-            "module_id": "adc",
-            "count": 4
-          },
-          {
-            "module_id": "mic",
-            "count": 4
-          },
-          {
-            "module_id": "pwm",
-            "count": 4
-          },
-          {
-            "module_id": "bluetooth",
-            "count": 1
-          },
-          {
-            "module_id": "dht22",
-            "count": 1
-          },
-          {
-            "module_id": "gpio",
-            "count": 1
-          },
-          {
-            "module_id": "l298n",
-            "count": 1
-          },
-          {
-            "module_id": "uln2003",
-            "count": 1
-          }
-        ],
-        "pic16": [
-          {
-            "module_id": "pwm",
-            "count": 1
-          }
-        ]
-      }
+      "actionable_top_modules_by_platform": {}
     }
   },
   "rows": [
@@ -4291,10 +4247,10 @@
       "module_name": "ADC",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:adc"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -4529,10 +4485,10 @@
       "module_name": "Microphone Input",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mic"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -4557,10 +4513,10 @@
       "module_name": "PWM",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:pwm"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5677,10 +5633,10 @@
       "module_name": "ADC",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:adc"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5915,10 +5871,10 @@
       "module_name": "Microphone Input",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mic"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5943,10 +5899,10 @@
       "module_name": "PWM",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:pwm"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -6629,10 +6585,10 @@
       "module_name": "Bluetooth Core",
       "module_platforms": "esp32",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:bluetooth"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8911,10 +8867,10 @@
       "module_name": "ADC",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:adc"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9149,10 +9105,10 @@
       "module_name": "Microphone Input",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mic"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9177,10 +9133,10 @@
       "module_name": "PWM",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:pwm"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9373,10 +9329,10 @@
       "module_name": "ADC",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:adc"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9429,10 +9385,10 @@
       "module_name": "DHT22 Sensor",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:dht22"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9499,10 +9455,10 @@
       "module_name": "GPIO",
       "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:gpio"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9555,10 +9511,10 @@
       "module_name": "L298N H-Bridge Driver",
       "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:l298n"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9611,10 +9567,10 @@
       "module_name": "Microphone Input",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:mic"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9639,10 +9595,10 @@
       "module_name": "PWM",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:pwm"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9807,10 +9763,10 @@
       "module_name": "ULN2003 Stepper Driver",
       "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:uln2003"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -11025,10 +10981,10 @@
       "module_name": "PWM",
       "module_platforms": "esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:pwm"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "pic16",

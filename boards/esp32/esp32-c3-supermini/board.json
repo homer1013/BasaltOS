@@ -9,6 +9,7 @@
   "ram": "400KB (typical)",
   "capabilities": [
     "wifi",
+    "bluetooth",
     "uart",
     "spi",
     "i2c",

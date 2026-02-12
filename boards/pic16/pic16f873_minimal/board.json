@@ -18,6 +18,7 @@
     "i2c",
     "gpio",
     "adc",
+    "pwm",
     "timer",
     "eeprom"
   ],
