@@ -30,9 +30,10 @@ bash tools/tests/run_s2_cli_matrix.sh
 
 | ID | Area | Command / Flow | Expected Result | Evidence | Gate |
 |---|---|---|---|---|---|
-| CLI-01 | Discovery | `python3 tools/configure.py --list-boards` | Exit `0`; boards listed from multiple platforms | `commands.log` | Must Pass |
-| CLI-02 | Discovery | `python3 tools/configure.py --list-drivers` | Exit `0`; non-empty driver list | `commands.log` | Must Pass |
-| CLI-03 | Help/UX | `python3 tools/configure.py --help` | Exit `0`; includes platform/board usage text | `commands.log` | Must Pass |
+| CLI-01 | Discovery | `python3 tools/configure.py --list-boards` | Exit `0`; output includes known boards (`esp32-c3-supermini`, `arduino_uno_r3`) | `commands.log` | Must Pass |
+| CLI-01b | Discovery (platform-filtered) | `python3 tools/configure.py --platform esp32 --list-boards` | Exit `0`; output includes ESP32 board ids (`esp32-c3-supermini` or `esp32-devkitc_v4`) | `commands.log` | Must Pass |
+| CLI-02 | Discovery | `python3 tools/configure.py --list-drivers` | Exit `0`; output includes known driver markers (`gpio`, `shell_full`) | `commands.log` | Must Pass |
+| CLI-03 | Help/UX | `python3 tools/configure.py --help` | Exit `0`; includes key flags (`--list-boards`, `--enable-drivers`) | `commands.log` | Must Pass |
 | CLI-04 | Generation (ESP32) | `python3 tools/configure.py --platform esp32 --board esp32-c3-supermini --enable-drivers uart --outdir "$OUT/artifacts/esp32"` | Exit `0`; files generated | `artifacts/esp32/*` | Must Pass |
 | CLI-05 | Generation (STM32) | `python3 tools/configure.py --platform stm32 --board nucleo_f401re --enable-drivers uart --outdir "$OUT/artifacts/stm32"` | Exit `0`; files generated | `artifacts/stm32/*` | Must Pass |
 | CLI-06 | Generation (RP2040) | `python3 tools/configure.py --platform rp2040 --board raspberry_pi_pico --enable-drivers uart --outdir "$OUT/artifacts/rp2040"` | Exit `0`; files generated | `artifacts/rp2040/*` | Must Pass |

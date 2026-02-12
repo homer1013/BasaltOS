@@ -58,6 +58,48 @@ run_expect_zero() {
   fi
 }
 
+run_expect_zero_with_msg() {
+  local id="$1"
+  local cmd="$2"
+  local pattern="$3"
+  local case_log="$OUT/cases/${id}.log"
+
+  {
+    echo "### $id"
+    echo "\$ $cmd"
+  } >> "$LOG"
+
+  set +e
+  eval "$cmd" >"$case_log" 2>&1
+  local rc=$?
+  set -e
+
+  cat "$case_log" >> "$LOG"
+  echo >> "$LOG"
+
+  if [[ "$rc" -ne 0 ]]; then
+    mark_result "$id" "FAIL" "expected exit=0, got exit=$rc"
+    failures=$((failures + 1))
+    return
+  fi
+
+  if command -v rg >/dev/null 2>&1; then
+    if rg -qi -- "$pattern" "$case_log"; then
+      mark_result "$id" "PASS" "exit=0 and message matched /$pattern/"
+    else
+      mark_result "$id" "FAIL" "exit=0 but missing message /$pattern/"
+      failures=$((failures + 1))
+    fi
+  else
+    if grep -Eiq "$pattern" "$case_log"; then
+      mark_result "$id" "PASS" "exit=0 and message matched /$pattern/"
+    else
+      mark_result "$id" "FAIL" "exit=0 but missing message /$pattern/"
+      failures=$((failures + 1))
+    fi
+  fi
+}
+
 run_expect_nonzero_with_msg() {
   local id="$1"
   local cmd="$2"
@@ -125,9 +167,10 @@ require_generated_set() {
   fi
 }
 
-run_expect_zero "CLI-01" "python3 tools/configure.py --list-boards"
-run_expect_zero "CLI-02" "python3 tools/configure.py --list-drivers"
-run_expect_zero "CLI-03" "python3 tools/configure.py --help"
+run_expect_zero_with_msg "CLI-01" "python3 tools/configure.py --list-boards" "esp32-c3-supermini|arduino_uno_r3"
+run_expect_zero_with_msg "CLI-01b" "python3 tools/configure.py --platform esp32 --list-boards" "esp32-c3-supermini|esp32-devkitc_v4"
+run_expect_zero_with_msg "CLI-02" "python3 tools/configure.py --list-drivers" "^gpio$|^shell_full$|BASALT_ENABLE_GPIO"
+run_expect_zero_with_msg "CLI-03" "python3 tools/configure.py --help" "--list-boards|--enable-drivers"
 
 run_expect_zero "CLI-04" "python3 tools/configure.py --platform esp32 --board esp32-c3-supermini --enable-drivers uart --outdir \"$ARTIFACTS/esp32\""
 require_generated_set "CLI-04" "$ARTIFACTS/esp32"
