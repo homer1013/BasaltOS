@@ -1,0 +1,254 @@
+{
+  "version": "1.0.0",
+  "policy": {
+    "intentional_boundary": "Missing `psram` is intentional unless board profile explicitly confirms physical PSRAM.",
+    "actionable_boundary": "`psram` capability declared on a board platform outside module/psram platform scope."
+  },
+  "psram_module_contract": {
+    "platforms": [
+      "esp32"
+    ],
+    "notes": [
+      "Enable only on boards that physically include PSRAM",
+      "Configurator should gate this by board capability"
+    ]
+  },
+  "summary": {
+    "board_count": 35,
+    "psram_enabled_count": 3,
+    "psram_missing_intentional_count": 32,
+    "actionable_total": 0,
+    "psram_enabled_by_platform": {
+      "esp32": 3
+    },
+    "psram_missing_by_platform": {
+      "atmega": 2,
+      "atsam": 3,
+      "avr": 2,
+      "esp32": 9,
+      "linux-sbc": 1,
+      "pic16": 2,
+      "renesas_ra": 3,
+      "renesas_rx": 2,
+      "rp2040": 5,
+      "stm32": 3
+    }
+  },
+  "lists": {
+    "psram_enabled": [
+      {
+        "board_id": "elecrow_crowpanel_esp32_s3",
+        "platform": "esp32",
+        "manufacturer": "Elecrow",
+        "mcu": "ESP32-S3"
+      },
+      {
+        "board_id": "m5stack_core2",
+        "platform": "esp32",
+        "manufacturer": "M5Stack",
+        "mcu": "ESP32-D0WDQ6-V3"
+      },
+      {
+        "board_id": "m5stickc_plus2",
+        "platform": "esp32",
+        "manufacturer": "M5Stack",
+        "mcu": "ESP32-PICO-V3-02"
+      }
+    ],
+    "psram_missing_intentional": [
+      {
+        "board_id": "arduino_nano_v3",
+        "platform": "atmega",
+        "manufacturer": "Arduino",
+        "mcu": "ATmega328P"
+      },
+      {
+        "board_id": "arduino_uno_r3",
+        "platform": "atmega",
+        "manufacturer": "Arduino",
+        "mcu": "ATmega328P"
+      },
+      {
+        "board_id": "adafruit_circuit_playground_express",
+        "platform": "atsam",
+        "manufacturer": "Adafruit",
+        "mcu": "ATSAMD21G18"
+      },
+      {
+        "board_id": "arduino_zero",
+        "platform": "atsam",
+        "manufacturer": "Arduino",
+        "mcu": "ATSAMD21G18"
+      },
+      {
+        "board_id": "seeeduino_xiao_samd21",
+        "platform": "atsam",
+        "manufacturer": "Seeed Studio",
+        "mcu": "ATSAMD21G18A"
+      },
+      {
+        "board_id": "arduino_pro_micro_5v_usbc",
+        "platform": "avr",
+        "manufacturer": "SparkFun",
+        "mcu": "ATmega32U4"
+      },
+      {
+        "board_id": "mega2560",
+        "platform": "avr",
+        "manufacturer": "Arduino",
+        "mcu": "ATmega2560"
+      },
+      {
+        "board_id": "cyd",
+        "platform": "esp32",
+        "manufacturer": "Sunton",
+        "mcu": "ESP32-WROOM-32"
+      },
+      {
+        "board_id": "dfrobot_beetle_esp32_c3",
+        "platform": "esp32",
+        "manufacturer": "DF Robot",
+        "mcu": "ESP32-C3"
+      },
+      {
+        "board_id": "dfrobot_firebeetle_esp32",
+        "platform": "esp32",
+        "manufacturer": "DF Robot",
+        "mcu": "ESP32-WROOM-32E"
+      },
+      {
+        "board_id": "elecrow_crowpanel_esp32",
+        "platform": "esp32",
+        "manufacturer": "Elecrow",
+        "mcu": "ESP32-WROOM-32"
+      },
+      {
+        "board_id": "esp32-c3-supermini",
+        "platform": "esp32",
+        "manufacturer": "Generic",
+        "mcu": "ESP32-C3"
+      },
+      {
+        "board_id": "esp32-c6",
+        "platform": "esp32",
+        "manufacturer": "Espressif",
+        "mcu": "ESP32-C6"
+      },
+      {
+        "board_id": "esp32-cam",
+        "platform": "esp32",
+        "manufacturer": "AI-Thinker",
+        "mcu": "ESP32-D0WDQ6"
+      },
+      {
+        "board_id": "esp32-devkitc_v4",
+        "platform": "esp32",
+        "manufacturer": "Espressif",
+        "mcu": "ESP32-WROOM-32"
+      },
+      {
+        "board_id": "esp32s3_devkitc_1",
+        "platform": "esp32",
+        "manufacturer": "Espressif",
+        "mcu": "ESP32-S3"
+      },
+      {
+        "board_id": "raspberry_pi_4b",
+        "platform": "linux-sbc",
+        "manufacturer": "Raspberry Pi",
+        "mcu": "Broadcom BCM2711"
+      },
+      {
+        "board_id": "curiosity_nano_pic16f13145",
+        "platform": "pic16",
+        "manufacturer": "Microchip",
+        "mcu": "PIC16F13145"
+      },
+      {
+        "board_id": "pic16f873-minimal",
+        "platform": "pic16",
+        "manufacturer": "Microchip",
+        "mcu": "PIC16F873"
+      },
+      {
+        "board_id": "arduino_uno_r4_minima",
+        "platform": "renesas_ra",
+        "manufacturer": "Arduino",
+        "mcu": "Renesas RA4M1"
+      },
+      {
+        "board_id": "arduino_uno_r4_wifi",
+        "platform": "renesas_ra",
+        "manufacturer": "Arduino",
+        "mcu": "Renesas RA4M1"
+      },
+      {
+        "board_id": "ek_ra4m1",
+        "platform": "renesas_ra",
+        "manufacturer": "Renesas",
+        "mcu": "R7FA4M1AB3CFM"
+      },
+      {
+        "board_id": "rx65n_envision_kit",
+        "platform": "renesas_rx",
+        "manufacturer": "Renesas",
+        "mcu": "Renesas RX65N"
+      },
+      {
+        "board_id": "rx72n_envision_kit",
+        "platform": "renesas_rx",
+        "manufacturer": "Renesas",
+        "mcu": "R5F572NN"
+      },
+      {
+        "board_id": "adafruit_feather_rp2040",
+        "platform": "rp2040",
+        "manufacturer": "Adafruit",
+        "mcu": "RP2040"
+      },
+      {
+        "board_id": "raspberry_pi_pico",
+        "platform": "rp2040",
+        "manufacturer": "Raspberry Pi",
+        "mcu": "RP2040"
+      },
+      {
+        "board_id": "raspberry_pi_pico_w",
+        "platform": "rp2040",
+        "manufacturer": "Raspberry Pi",
+        "mcu": "RP2040"
+      },
+      {
+        "board_id": "seeed_xiao_rp2040",
+        "platform": "rp2040",
+        "manufacturer": "Seeed Studio",
+        "mcu": "RP2040"
+      },
+      {
+        "board_id": "sparkfun_thing_plus_rp2040",
+        "platform": "rp2040",
+        "manufacturer": "SparkFun",
+        "mcu": "RP2040"
+      },
+      {
+        "board_id": "blackpill_f411ce",
+        "platform": "stm32",
+        "manufacturer": "WeAct",
+        "mcu": "STM32F411CEU6"
+      },
+      {
+        "board_id": "nucleo_f401re",
+        "platform": "stm32",
+        "manufacturer": "STMicroelectronics",
+        "mcu": "STM32F401RE"
+      },
+      {
+        "board_id": "nucleo_f446re",
+        "platform": "stm32",
+        "manufacturer": "STMicroelectronics",
+        "mcu": "STM32F446RE"
+      }
+    ],
+    "psram_enabled_out_of_scope_actionable": []
+  }
+}
