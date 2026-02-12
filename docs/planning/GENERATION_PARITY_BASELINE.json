@@ -1,0 +1,178 @@
+{
+  "version": "1.0.0",
+  "representative_boards": {
+    "atmega": "arduino_uno_r3",
+    "atsam": "adafruit_circuit_playground_express",
+    "avr": "mega2560",
+    "esp32": "esp32-c3-supermini",
+    "linux-sbc": "raspberry_pi_4b",
+    "pic16": "curiosity_nano_pic16f13145",
+    "renesas_ra": "arduino_uno_r4_wifi",
+    "renesas_rx": "rx65n_envision_kit",
+    "rp2040": "raspberry_pi_pico",
+    "stm32": "nucleo_f401re"
+  },
+  "required_artifacts": [
+    "basalt_config.h",
+    "basalt.features.json",
+    "sdkconfig.defaults",
+    "basalt_config.json"
+  ],
+  "rows": [
+    {
+      "platform": "atmega",
+      "board_dir": "arduino_uno_r3",
+      "command": "python3 tools/configure.py --platform atmega --board arduino_uno_r3 --outdir /home/homer/Projects/basaltos/BasaltOS_Main/tmp/generation_parity_baseline/atmega/arduino_uno_r3",
+      "exit_code": 0,
+      "artifacts": {
+        "basalt_config.h": true,
+        "basalt.features.json": true,
+        "sdkconfig.defaults": true,
+        "basalt_config.json": true
+      },
+      "missing_artifacts": [],
+      "status": "PASS",
+      "log_path": "tmp/generation_parity_baseline/atmega/arduino_uno_r3/run.log"
+    },
+    {
+      "platform": "atsam",
+      "board_dir": "adafruit_circuit_playground_express",
+      "command": "python3 tools/configure.py --platform atsam --board adafruit_circuit_playground_express --outdir /home/homer/Projects/basaltos/BasaltOS_Main/tmp/generation_parity_baseline/atsam/adafruit_circuit_playground_express",
+      "exit_code": 0,
+      "artifacts": {
+        "basalt_config.h": true,
+        "basalt.features.json": true,
+        "sdkconfig.defaults": true,
+        "basalt_config.json": true
+      },
+      "missing_artifacts": [],
+      "status": "PASS",
+      "log_path": "tmp/generation_parity_baseline/atsam/adafruit_circuit_playground_express/run.log"
+    },
+    {
+      "platform": "avr",
+      "board_dir": "mega2560",
+      "command": "python3 tools/configure.py --platform avr --board mega2560 --outdir /home/homer/Projects/basaltos/BasaltOS_Main/tmp/generation_parity_baseline/avr/mega2560",
+      "exit_code": 0,
+      "artifacts": {
+        "basalt_config.h": true,
+        "basalt.features.json": true,
+        "sdkconfig.defaults": true,
+        "basalt_config.json": true
+      },
+      "missing_artifacts": [],
+      "status": "PASS",
+      "log_path": "tmp/generation_parity_baseline/avr/mega2560/run.log"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-c3-supermini",
+      "command": "python3 tools/configure.py --platform esp32 --board esp32-c3-supermini --outdir /home/homer/Projects/basaltos/BasaltOS_Main/tmp/generation_parity_baseline/esp32/esp32-c3-supermini",
+      "exit_code": 0,
+      "artifacts": {
+        "basalt_config.h": true,
+        "basalt.features.json": true,
+        "sdkconfig.defaults": true,
+        "basalt_config.json": true
+      },
+      "missing_artifacts": [],
+      "status": "PASS",
+      "log_path": "tmp/generation_parity_baseline/esp32/esp32-c3-supermini/run.log"
+    },
+    {
+      "platform": "linux-sbc",
+      "board_dir": "raspberry_pi_4b",
+      "command": "python3 tools/configure.py --platform linux-sbc --board raspberry_pi_4b --outdir /home/homer/Projects/basaltos/BasaltOS_Main/tmp/generation_parity_baseline/linux-sbc/raspberry_pi_4b",
+      "exit_code": 0,
+      "artifacts": {
+        "basalt_config.h": true,
+        "basalt.features.json": true,
+        "sdkconfig.defaults": true,
+        "basalt_config.json": true
+      },
+      "missing_artifacts": [],
+      "status": "PASS",
+      "log_path": "tmp/generation_parity_baseline/linux-sbc/raspberry_pi_4b/run.log"
+    },
+    {
+      "platform": "pic16",
+      "board_dir": "curiosity_nano_pic16f13145",
+      "command": "python3 tools/configure.py --platform pic16 --board curiosity_nano_pic16f13145 --outdir /home/homer/Projects/basaltos/BasaltOS_Main/tmp/generation_parity_baseline/pic16/curiosity_nano_pic16f13145",
+      "exit_code": 0,
+      "artifacts": {
+        "basalt_config.h": true,
+        "basalt.features.json": true,
+        "sdkconfig.defaults": true,
+        "basalt_config.json": true
+      },
+      "missing_artifacts": [],
+      "status": "PASS",
+      "log_path": "tmp/generation_parity_baseline/pic16/curiosity_nano_pic16f13145/run.log"
+    },
+    {
+      "platform": "renesas_ra",
+      "board_dir": "arduino_uno_r4_wifi",
+      "command": "python3 tools/configure.py --platform renesas_ra --board arduino_uno_r4_wifi --outdir /home/homer/Projects/basaltos/BasaltOS_Main/tmp/generation_parity_baseline/renesas_ra/arduino_uno_r4_wifi",
+      "exit_code": 0,
+      "artifacts": {
+        "basalt_config.h": true,
+        "basalt.features.json": true,
+        "sdkconfig.defaults": true,
+        "basalt_config.json": true
+      },
+      "missing_artifacts": [],
+      "status": "PASS",
+      "log_path": "tmp/generation_parity_baseline/renesas_ra/arduino_uno_r4_wifi/run.log"
+    },
+    {
+      "platform": "renesas_rx",
+      "board_dir": "rx65n_envision_kit",
+      "command": "python3 tools/configure.py --platform renesas_rx --board rx65n_envision_kit --outdir /home/homer/Projects/basaltos/BasaltOS_Main/tmp/generation_parity_baseline/renesas_rx/rx65n_envision_kit",
+      "exit_code": 0,
+      "artifacts": {
+        "basalt_config.h": true,
+        "basalt.features.json": true,
+        "sdkconfig.defaults": true,
+        "basalt_config.json": true
+      },
+      "missing_artifacts": [],
+      "status": "PASS",
+      "log_path": "tmp/generation_parity_baseline/renesas_rx/rx65n_envision_kit/run.log"
+    },
+    {
+      "platform": "rp2040",
+      "board_dir": "raspberry_pi_pico",
+      "command": "python3 tools/configure.py --platform rp2040 --board raspberry_pi_pico --outdir /home/homer/Projects/basaltos/BasaltOS_Main/tmp/generation_parity_baseline/rp2040/raspberry_pi_pico",
+      "exit_code": 0,
+      "artifacts": {
+        "basalt_config.h": true,
+        "basalt.features.json": true,
+        "sdkconfig.defaults": true,
+        "basalt_config.json": true
+      },
+      "missing_artifacts": [],
+      "status": "PASS",
+      "log_path": "tmp/generation_parity_baseline/rp2040/raspberry_pi_pico/run.log"
+    },
+    {
+      "platform": "stm32",
+      "board_dir": "nucleo_f401re",
+      "command": "python3 tools/configure.py --platform stm32 --board nucleo_f401re --outdir /home/homer/Projects/basaltos/BasaltOS_Main/tmp/generation_parity_baseline/stm32/nucleo_f401re",
+      "exit_code": 0,
+      "artifacts": {
+        "basalt_config.h": true,
+        "basalt.features.json": true,
+        "sdkconfig.defaults": true,
+        "basalt_config.json": true
+      },
+      "missing_artifacts": [],
+      "status": "PASS",
+      "log_path": "tmp/generation_parity_baseline/stm32/nucleo_f401re/run.log"
+    }
+  ],
+  "summary": {
+    "platform_count": 10,
+    "pass_count": 10,
+    "fail_count": 0
+  }
+}

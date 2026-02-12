@@ -22,6 +22,7 @@
 - `metadata_completeness_report.py` – generate board metadata completeness markdown report
 - `generate_board_catalog.py` – generate deterministic board inventory docs (`docs/BOARD_CATALOG.md`, `docs/BOARD_TAXONOMY_INDEX.json`, `docs/BOARD_TAXONOMY_INDEX.csv`)
 - `generate_manufacturer_matrix.py` – generate manufacturer starter matrix + profile queue docs (`docs/planning/MANUFACTURER_BOARD_MATRIX.csv`, `docs/planning/MANUFACTURER_BOARD_MATRIX.md`, `docs/planning/MANUFACTURER_PROFILE_CREATION_QUEUE.json`, `docs/planning/MANUFACTURER_PROFILE_CREATION_QUEUE.md`)
+- `generate_generation_parity_baseline.py` – generate representative cross-platform configure parity baseline docs (`docs/planning/GENERATION_PARITY_BASELINE.json`, `docs/planning/GENERATION_PARITY_BASELINE.md`)
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -191,6 +192,12 @@ Manufacturer starter matrix drift smoke:
 
 ```bash
 bash tools/tests/manufacturer_matrix_drift_smoke.sh
+```
+
+Cross-platform generation parity baseline drift smoke:
+
+```bash
+bash tools/tests/generation_parity_baseline_drift_smoke.sh
 ```
 
 

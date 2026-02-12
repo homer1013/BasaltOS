@@ -29,6 +29,14 @@ Goal: maximize user adoption and trust before adding more drivers.
 - Keep a release/tag/changelog alignment checklist to avoid drift between GitHub and Jira.
 - Include one short status template for social updates (ships + next up + support links).
 
+## Cross-Platform Generation Parity Baseline
+
+- Baseline artifacts:
+  - `docs/planning/GENERATION_PARITY_BASELINE.json`
+  - `docs/planning/GENERATION_PARITY_BASELINE.md`
+- Refresh command:
+  - `python3 tools/generate_generation_parity_baseline.py`
+
 ## Working Style
 - Pull next task when current one is done; do not timebox artificially.
 - Re-prioritize anytime based on blocker removal or user feedback.
