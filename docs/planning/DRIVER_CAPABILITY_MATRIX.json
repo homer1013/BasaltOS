@@ -4,34 +4,34 @@
   "row_count": 1155,
   "summary": {
     "status_counts": {
-      "SUPPORTED": 877,
-      "UNSUPPORTED": 267,
+      "SUPPORTED": 910,
+      "UNSUPPORTED": 234,
       "CAPABILITY_ONLY": 11
     },
     "platform_summary": {
       "atmega": {
         "boards": 2,
-        "SUPPORTED": 46,
-        "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 18
-      },
-      "atsam": {
-        "boards": 3,
-        "SUPPORTED": 72,
-        "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 27
-      },
-      "avr": {
-        "boards": 2,
         "SUPPORTED": 48,
         "CAPABILITY_ONLY": 2,
         "UNSUPPORTED": 16
       },
+      "atsam": {
+        "boards": 3,
+        "SUPPORTED": 75,
+        "CAPABILITY_ONLY": 0,
+        "UNSUPPORTED": 24
+      },
+      "avr": {
+        "boards": 2,
+        "SUPPORTED": 50,
+        "CAPABILITY_ONLY": 2,
+        "UNSUPPORTED": 14
+      },
       "esp32": {
         "boards": 12,
-        "SUPPORTED": 326,
+        "SUPPORTED": 337,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 70
+        "UNSUPPORTED": 59
       },
       "linux-sbc": {
         "boards": 1,
@@ -41,33 +41,33 @@
       },
       "pic16": {
         "boards": 2,
-        "SUPPORTED": 48,
+        "SUPPORTED": 50,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 16
+        "UNSUPPORTED": 14
       },
       "renesas_ra": {
         "boards": 3,
-        "SUPPORTED": 72,
+        "SUPPORTED": 75,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 25
+        "UNSUPPORTED": 22
       },
       "renesas_rx": {
         "boards": 2,
-        "SUPPORTED": 48,
+        "SUPPORTED": 50,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 18
+        "UNSUPPORTED": 16
       },
       "rp2040": {
         "boards": 5,
-        "SUPPORTED": 120,
+        "SUPPORTED": 125,
         "CAPABILITY_ONLY": 1,
-        "UNSUPPORTED": 44
+        "UNSUPPORTED": 39
       },
       "stm32": {
         "boards": 3,
-        "SUPPORTED": 72,
+        "SUPPORTED": 75,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 27
+        "UNSUPPORTED": 24
       }
     },
     "module_coverage": [
@@ -89,6 +89,10 @@
       },
       {
         "module_id": "display_ssd1306",
+        "supported_boards": 35
+      },
+      {
+        "module_id": "fs_sd",
         "supported_boards": 35
       },
       {
@@ -190,10 +194,6 @@
       {
         "module_id": "psram",
         "supported_boards": 3
-      },
-      {
-        "module_id": "fs_sd",
-        "supported_boards": 2
       }
     ]
   },
@@ -202,160 +202,6 @@
     "platform_count": 10,
     "platforms": {
       "atmega": {
-        "unsupported_or_gap_rows": 20,
-        "top_module_gaps": [
-          {
-            "module_id": "bluetooth",
-            "count": 2
-          },
-          {
-            "module_id": "eeprom",
-            "count": 2
-          },
-          {
-            "module_id": "fs_sd",
-            "count": 2
-          },
-          {
-            "module_id": "mcp2544fd",
-            "count": 2
-          },
-          {
-            "module_id": "mic",
-            "count": 2
-          },
-          {
-            "module_id": "psram",
-            "count": 2
-          },
-          {
-            "module_id": "tft",
-            "count": 2
-          },
-          {
-            "module_id": "tp4056",
-            "count": 2
-          },
-          {
-            "module_id": "twai",
-            "count": 2
-          },
-          {
-            "module_id": "wifi",
-            "count": 2
-          }
-        ],
-        "top_reasons": [
-          {
-            "reason": "not_allowed:bluetooth",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:eeprom",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:fs_sd",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:mcp2544fd",
-            "count": 2
-          },
-          {
-            "reason": "module_platform_mismatch",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:psram",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:tft",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:tp4056",
-            "count": 2
-          }
-        ]
-      },
-      "atsam": {
-        "unsupported_or_gap_rows": 27,
-        "top_module_gaps": [
-          {
-            "module_id": "bluetooth",
-            "count": 3
-          },
-          {
-            "module_id": "eeprom",
-            "count": 3
-          },
-          {
-            "module_id": "fs_sd",
-            "count": 3
-          },
-          {
-            "module_id": "mcp2544fd",
-            "count": 3
-          },
-          {
-            "module_id": "psram",
-            "count": 3
-          },
-          {
-            "module_id": "tft",
-            "count": 3
-          },
-          {
-            "module_id": "tp4056",
-            "count": 3
-          },
-          {
-            "module_id": "twai",
-            "count": 3
-          },
-          {
-            "module_id": "wifi",
-            "count": 3
-          }
-        ],
-        "top_reasons": [
-          {
-            "reason": "not_allowed:bluetooth",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:eeprom",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:fs_sd",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:mcp2544fd",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:psram",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:tft",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:tp4056",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:twai",
-            "count": 3
-          }
-        ]
-      },
-      "avr": {
         "unsupported_or_gap_rows": 18,
         "top_module_gaps": [
           {
@@ -363,7 +209,7 @@
             "count": 2
           },
           {
-            "module_id": "fs_sd",
+            "module_id": "eeprom",
             "count": 2
           },
           {
@@ -401,7 +247,7 @@
             "count": 2
           },
           {
-            "reason": "not_allowed:fs_sd",
+            "reason": "not_allowed:eeprom",
             "count": 2
           },
           {
@@ -430,8 +276,150 @@
           }
         ]
       },
+      "atsam": {
+        "unsupported_or_gap_rows": 24,
+        "top_module_gaps": [
+          {
+            "module_id": "bluetooth",
+            "count": 3
+          },
+          {
+            "module_id": "eeprom",
+            "count": 3
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 3
+          },
+          {
+            "module_id": "psram",
+            "count": 3
+          },
+          {
+            "module_id": "tft",
+            "count": 3
+          },
+          {
+            "module_id": "tp4056",
+            "count": 3
+          },
+          {
+            "module_id": "twai",
+            "count": 3
+          },
+          {
+            "module_id": "wifi",
+            "count": 3
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:tft",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:tp4056",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:twai",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:wifi",
+            "count": 3
+          }
+        ]
+      },
+      "avr": {
+        "unsupported_or_gap_rows": 16,
+        "top_module_gaps": [
+          {
+            "module_id": "bluetooth",
+            "count": 2
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 2
+          },
+          {
+            "module_id": "mic",
+            "count": 2
+          },
+          {
+            "module_id": "psram",
+            "count": 2
+          },
+          {
+            "module_id": "tft",
+            "count": 2
+          },
+          {
+            "module_id": "tp4056",
+            "count": 2
+          },
+          {
+            "module_id": "twai",
+            "count": 2
+          },
+          {
+            "module_id": "wifi",
+            "count": 2
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 2
+          },
+          {
+            "reason": "module_platform_mismatch",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:tft",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:tp4056",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:twai",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:wifi",
+            "count": 2
+          }
+        ]
+      },
       "esp32": {
-        "unsupported_or_gap_rows": 70,
+        "unsupported_or_gap_rows": 59,
         "top_module_gaps": [
           {
             "module_id": "eeprom",
@@ -444,10 +432,6 @@
           {
             "module_id": "tp4056",
             "count": 12
-          },
-          {
-            "module_id": "fs_sd",
-            "count": 11
           },
           {
             "module_id": "psram",
@@ -474,10 +458,6 @@
           {
             "reason": "not_allowed:tp4056",
             "count": 12
-          },
-          {
-            "reason": "not_allowed:fs_sd",
-            "count": 11
           },
           {
             "reason": "not_allowed:psram",
@@ -561,14 +541,10 @@
         ]
       },
       "pic16": {
-        "unsupported_or_gap_rows": 18,
+        "unsupported_or_gap_rows": 16,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
-            "count": 2
-          },
-          {
-            "module_id": "fs_sd",
             "count": 2
           },
           {
@@ -606,10 +582,6 @@
             "count": 2
           },
           {
-            "reason": "not_allowed:fs_sd",
-            "count": 2
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 2
           },
@@ -632,11 +604,15 @@
           {
             "reason": "not_allowed:twai",
             "count": 2
+          },
+          {
+            "reason": "not_allowed:wifi",
+            "count": 2
           }
         ]
       },
       "renesas_ra": {
-        "unsupported_or_gap_rows": 27,
+        "unsupported_or_gap_rows": 24,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -644,10 +620,6 @@
           },
           {
             "module_id": "eeprom",
-            "count": 3
-          },
-          {
-            "module_id": "fs_sd",
             "count": 3
           },
           {
@@ -681,10 +653,6 @@
             "count": 3
           },
           {
-            "reason": "not_allowed:fs_sd",
-            "count": 3
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 3
           },
@@ -706,12 +674,16 @@
           },
           {
             "reason": "not_allowed:bluetooth",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:wifi",
             "count": 2
           }
         ]
       },
       "renesas_rx": {
-        "unsupported_or_gap_rows": 18,
+        "unsupported_or_gap_rows": 16,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -719,10 +691,6 @@
           },
           {
             "module_id": "eeprom",
-            "count": 2
-          },
-          {
-            "module_id": "fs_sd",
             "count": 2
           },
           {
@@ -760,10 +728,6 @@
             "count": 2
           },
           {
-            "reason": "not_allowed:fs_sd",
-            "count": 2
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 2
           },
@@ -781,12 +745,16 @@
           },
           {
             "reason": "not_allowed:twai",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:wifi",
             "count": 2
           }
         ]
       },
       "rp2040": {
-        "unsupported_or_gap_rows": 45,
+        "unsupported_or_gap_rows": 40,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -794,10 +762,6 @@
           },
           {
             "module_id": "eeprom",
-            "count": 5
-          },
-          {
-            "module_id": "fs_sd",
             "count": 5
           },
           {
@@ -835,10 +799,6 @@
             "count": 5
           },
           {
-            "reason": "not_allowed:fs_sd",
-            "count": 5
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 5
           },
@@ -857,11 +817,15 @@
           {
             "reason": "not_allowed:twai",
             "count": 5
+          },
+          {
+            "reason": "not_allowed:wifi",
+            "count": 4
           }
         ]
       },
       "stm32": {
-        "unsupported_or_gap_rows": 27,
+        "unsupported_or_gap_rows": 24,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -869,10 +833,6 @@
           },
           {
             "module_id": "eeprom",
-            "count": 3
-          },
-          {
-            "module_id": "fs_sd",
             "count": 3
           },
           {
@@ -910,10 +870,6 @@
             "count": 3
           },
           {
-            "reason": "not_allowed:fs_sd",
-            "count": 3
-          },
-          {
             "reason": "not_allowed:mcp2544fd",
             "count": 3
           },
@@ -931,6 +887,10 @@
           },
           {
             "reason": "not_allowed:twai",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:wifi",
             "count": 3
           }
         ]
@@ -948,24 +908,24 @@
       "actionable_top_modules_by_platform": {}
     },
     "advanced_policy_summary": {
-      "not_allowed_row_count": 267,
+      "not_allowed_row_count": 234,
       "bucket_counts": {
-        "intentional": 267
+        "intentional": 234
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 226
+        "intentional_advanced_peripheral_opt_in": 193
       },
       "actionable_top_modules_by_platform": {}
     },
     "foundation_focus_summary": {
-      "gap_row_count": 278,
+      "gap_row_count": 245,
       "bucket_counts": {
-        "intentional": 278
+        "intentional": 245
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 226,
+        "intentional_advanced_peripheral_opt_in": 193,
         "intentional_8bit_mic_scope": 6,
         "intentional_wireless_scope": 5
       },
@@ -1080,10 +1040,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -1542,10 +1502,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atmega",
@@ -2004,10 +1964,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2466,10 +2426,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -2928,10 +2888,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "atsam",
@@ -3390,10 +3350,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "avr",
@@ -3852,10 +3812,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "avr",
@@ -4776,10 +4736,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5238,10 +5198,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -5700,10 +5660,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -6162,10 +6122,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -6624,10 +6584,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -7086,10 +7046,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -7548,10 +7508,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8010,10 +7970,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8472,10 +8432,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -8934,10 +8894,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -9396,10 +9356,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -10320,10 +10280,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "pic16",
@@ -10782,10 +10742,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "pic16",
@@ -11244,10 +11204,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -11706,10 +11666,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -12168,10 +12128,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_ra",
@@ -12630,10 +12590,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -13092,10 +13052,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "renesas_rx",
@@ -13554,10 +13514,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14016,10 +13976,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14478,10 +14438,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -14940,10 +14900,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -15402,10 +15362,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "rp2040",
@@ -15864,10 +15824,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16326,10 +16286,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",
@@ -16788,10 +16748,10 @@
       "module_name": "SD Card Filesystem",
       "module_platforms": "",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:fs_sd"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "stm32",

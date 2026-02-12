@@ -66,7 +66,8 @@
     "uart",
     "tft",
     "fs_spiffs",
-    "psram"
+    "psram",
+    "fs_sd"
   ],
   "mcu": "ESP32-PICO-V3-02",
   "architecture": "Xtensa",

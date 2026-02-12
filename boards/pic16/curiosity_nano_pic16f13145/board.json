@@ -20,7 +20,8 @@
     "debug",
     "remote_node",
     "mcp23017",
-    "hp4067"
+    "hp4067",
+    "fs_sd"
   ],
   "pins": {
     "uart_tx": "RC4",

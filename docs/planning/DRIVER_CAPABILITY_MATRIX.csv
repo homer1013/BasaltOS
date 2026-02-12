@@ -6,7 +6,7 @@ atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),bme280,BME28
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -39,7 +39,7 @@ atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,bme280,BME280 Environmental 
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -72,7 +72,7 @@ atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Ad
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:eeprom
-atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -105,7 +105,7 @@ atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),bme280,BME280 Environme
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:eeprom
-atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -138,7 +138,7 @@ atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),bme280
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:eeprom
-atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -171,7 +171,7 @@ avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (US
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,yes,yes,SUPPORTED,-
-avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -204,7 +204,7 @@ avr,mega2560,mega2560,Arduino Mega 2560 (Generic),bme280,BME280 Environmental Se
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,yes,yes,SUPPORTED,-
-avr,mega2560,mega2560,Arduino Mega 2560 (Generic),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+avr,mega2560,mega2560,Arduino Mega 2560 (Generic),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -270,7 +270,7 @@ esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,bm
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -303,7 +303,7 @@ esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -336,7 +336,7 @@ esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,bm
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -369,7 +369,7 @@ esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ES
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -402,7 +402,7 @@ esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),bme280,
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -435,7 +435,7 @@ esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),bme280,BME280 Environmental S
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -468,7 +468,7 @@ esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),bme280,BME280 Environm
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -501,7 +501,7 @@ esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),bme280,BME280
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -534,7 +534,7 @@ esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),bme280,B
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -567,7 +567,7 @@ esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),bme280,BME280 Environ
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -600,7 +600,7 @@ esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),bme280,BME
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -666,7 +666,7 @@ pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,yes,yes,SUPPORTED,-
-pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -699,7 +699,7 @@ pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),bme280,BME
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,yes,yes,SUPPORTED,-
-pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -732,7 +732,7 @@ renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:eeprom
-renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -765,7 +765,7 @@ renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),b
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:eeprom
-renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -798,7 +798,7 @@ renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,bme280,BME280 Environmental Sensor
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:eeprom
-renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -831,7 +831,7 @@ renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,bme2
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:eeprom
-renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -864,7 +864,7 @@ renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,bme2
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",no,no,no,UNSUPPORTED,not_allowed:eeprom
-renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -897,7 +897,7 @@ rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,b
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -930,7 +930,7 @@ rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),bme280,BME
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -963,7 +963,7 @@ rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,bme280,BME280
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -996,7 +996,7 @@ rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,bme280,BME28
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -1029,7 +1029,7 @@ rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -1062,7 +1062,7 @@ stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,bme280,BME280 En
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -1095,7 +1095,7 @@ stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,bme280,BME280 Environmental S
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -1128,7 +1128,7 @@ stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,bme280,BME280 Environmental S
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
-stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,fs_sd,SD Card Filesystem,,yes,no,no,UNSUPPORTED,not_allowed:fs_sd
+stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-

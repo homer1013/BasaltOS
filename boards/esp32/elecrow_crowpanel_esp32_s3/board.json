@@ -25,7 +25,8 @@
     "remote_node",
     "mcp23017",
     "hp4067",
-    "psram"
+    "psram",
+    "fs_sd"
   ],
   "pins": {
     "uart_tx": 43,

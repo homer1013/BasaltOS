@@ -3,160 +3,6 @@
   "platform_count": 10,
   "platforms": {
     "atmega": {
-      "unsupported_or_gap_rows": 20,
-      "top_module_gaps": [
-        {
-          "module_id": "bluetooth",
-          "count": 2
-        },
-        {
-          "module_id": "eeprom",
-          "count": 2
-        },
-        {
-          "module_id": "fs_sd",
-          "count": 2
-        },
-        {
-          "module_id": "mcp2544fd",
-          "count": 2
-        },
-        {
-          "module_id": "mic",
-          "count": 2
-        },
-        {
-          "module_id": "psram",
-          "count": 2
-        },
-        {
-          "module_id": "tft",
-          "count": 2
-        },
-        {
-          "module_id": "tp4056",
-          "count": 2
-        },
-        {
-          "module_id": "twai",
-          "count": 2
-        },
-        {
-          "module_id": "wifi",
-          "count": 2
-        }
-      ],
-      "top_reasons": [
-        {
-          "reason": "not_allowed:bluetooth",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:eeprom",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:fs_sd",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:mcp2544fd",
-          "count": 2
-        },
-        {
-          "reason": "module_platform_mismatch",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:psram",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:tft",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:tp4056",
-          "count": 2
-        }
-      ]
-    },
-    "atsam": {
-      "unsupported_or_gap_rows": 27,
-      "top_module_gaps": [
-        {
-          "module_id": "bluetooth",
-          "count": 3
-        },
-        {
-          "module_id": "eeprom",
-          "count": 3
-        },
-        {
-          "module_id": "fs_sd",
-          "count": 3
-        },
-        {
-          "module_id": "mcp2544fd",
-          "count": 3
-        },
-        {
-          "module_id": "psram",
-          "count": 3
-        },
-        {
-          "module_id": "tft",
-          "count": 3
-        },
-        {
-          "module_id": "tp4056",
-          "count": 3
-        },
-        {
-          "module_id": "twai",
-          "count": 3
-        },
-        {
-          "module_id": "wifi",
-          "count": 3
-        }
-      ],
-      "top_reasons": [
-        {
-          "reason": "not_allowed:bluetooth",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:eeprom",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:fs_sd",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:mcp2544fd",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:psram",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:tft",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:tp4056",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:twai",
-          "count": 3
-        }
-      ]
-    },
-    "avr": {
       "unsupported_or_gap_rows": 18,
       "top_module_gaps": [
         {
@@ -164,7 +10,7 @@
           "count": 2
         },
         {
-          "module_id": "fs_sd",
+          "module_id": "eeprom",
           "count": 2
         },
         {
@@ -202,7 +48,7 @@
           "count": 2
         },
         {
-          "reason": "not_allowed:fs_sd",
+          "reason": "not_allowed:eeprom",
           "count": 2
         },
         {
@@ -231,8 +77,150 @@
         }
       ]
     },
+    "atsam": {
+      "unsupported_or_gap_rows": 24,
+      "top_module_gaps": [
+        {
+          "module_id": "bluetooth",
+          "count": 3
+        },
+        {
+          "module_id": "eeprom",
+          "count": 3
+        },
+        {
+          "module_id": "mcp2544fd",
+          "count": 3
+        },
+        {
+          "module_id": "psram",
+          "count": 3
+        },
+        {
+          "module_id": "tft",
+          "count": 3
+        },
+        {
+          "module_id": "tp4056",
+          "count": 3
+        },
+        {
+          "module_id": "twai",
+          "count": 3
+        },
+        {
+          "module_id": "wifi",
+          "count": 3
+        }
+      ],
+      "top_reasons": [
+        {
+          "reason": "not_allowed:bluetooth",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:eeprom",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:mcp2544fd",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:psram",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:tft",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:tp4056",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:twai",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:wifi",
+          "count": 3
+        }
+      ]
+    },
+    "avr": {
+      "unsupported_or_gap_rows": 16,
+      "top_module_gaps": [
+        {
+          "module_id": "bluetooth",
+          "count": 2
+        },
+        {
+          "module_id": "mcp2544fd",
+          "count": 2
+        },
+        {
+          "module_id": "mic",
+          "count": 2
+        },
+        {
+          "module_id": "psram",
+          "count": 2
+        },
+        {
+          "module_id": "tft",
+          "count": 2
+        },
+        {
+          "module_id": "tp4056",
+          "count": 2
+        },
+        {
+          "module_id": "twai",
+          "count": 2
+        },
+        {
+          "module_id": "wifi",
+          "count": 2
+        }
+      ],
+      "top_reasons": [
+        {
+          "reason": "not_allowed:bluetooth",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:mcp2544fd",
+          "count": 2
+        },
+        {
+          "reason": "module_platform_mismatch",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:psram",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:tft",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:tp4056",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:twai",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:wifi",
+          "count": 2
+        }
+      ]
+    },
     "esp32": {
-      "unsupported_or_gap_rows": 70,
+      "unsupported_or_gap_rows": 59,
       "top_module_gaps": [
         {
           "module_id": "eeprom",
@@ -245,10 +233,6 @@
         {
           "module_id": "tp4056",
           "count": 12
-        },
-        {
-          "module_id": "fs_sd",
-          "count": 11
         },
         {
           "module_id": "psram",
@@ -275,10 +259,6 @@
         {
           "reason": "not_allowed:tp4056",
           "count": 12
-        },
-        {
-          "reason": "not_allowed:fs_sd",
-          "count": 11
         },
         {
           "reason": "not_allowed:psram",
@@ -362,14 +342,10 @@
       ]
     },
     "pic16": {
-      "unsupported_or_gap_rows": 18,
+      "unsupported_or_gap_rows": 16,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
-          "count": 2
-        },
-        {
-          "module_id": "fs_sd",
           "count": 2
         },
         {
@@ -407,10 +383,6 @@
           "count": 2
         },
         {
-          "reason": "not_allowed:fs_sd",
-          "count": 2
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 2
         },
@@ -433,11 +405,15 @@
         {
           "reason": "not_allowed:twai",
           "count": 2
+        },
+        {
+          "reason": "not_allowed:wifi",
+          "count": 2
         }
       ]
     },
     "renesas_ra": {
-      "unsupported_or_gap_rows": 27,
+      "unsupported_or_gap_rows": 24,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -445,10 +421,6 @@
         },
         {
           "module_id": "eeprom",
-          "count": 3
-        },
-        {
-          "module_id": "fs_sd",
           "count": 3
         },
         {
@@ -482,10 +454,6 @@
           "count": 3
         },
         {
-          "reason": "not_allowed:fs_sd",
-          "count": 3
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 3
         },
@@ -507,12 +475,16 @@
         },
         {
           "reason": "not_allowed:bluetooth",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:wifi",
           "count": 2
         }
       ]
     },
     "renesas_rx": {
-      "unsupported_or_gap_rows": 18,
+      "unsupported_or_gap_rows": 16,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -520,10 +492,6 @@
         },
         {
           "module_id": "eeprom",
-          "count": 2
-        },
-        {
-          "module_id": "fs_sd",
           "count": 2
         },
         {
@@ -561,10 +529,6 @@
           "count": 2
         },
         {
-          "reason": "not_allowed:fs_sd",
-          "count": 2
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 2
         },
@@ -582,12 +546,16 @@
         },
         {
           "reason": "not_allowed:twai",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:wifi",
           "count": 2
         }
       ]
     },
     "rp2040": {
-      "unsupported_or_gap_rows": 45,
+      "unsupported_or_gap_rows": 40,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -595,10 +563,6 @@
         },
         {
           "module_id": "eeprom",
-          "count": 5
-        },
-        {
-          "module_id": "fs_sd",
           "count": 5
         },
         {
@@ -636,10 +600,6 @@
           "count": 5
         },
         {
-          "reason": "not_allowed:fs_sd",
-          "count": 5
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 5
         },
@@ -658,11 +618,15 @@
         {
           "reason": "not_allowed:twai",
           "count": 5
+        },
+        {
+          "reason": "not_allowed:wifi",
+          "count": 4
         }
       ]
     },
     "stm32": {
-      "unsupported_or_gap_rows": 27,
+      "unsupported_or_gap_rows": 24,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -670,10 +634,6 @@
         },
         {
           "module_id": "eeprom",
-          "count": 3
-        },
-        {
-          "module_id": "fs_sd",
           "count": 3
         },
         {
@@ -711,10 +671,6 @@
           "count": 3
         },
         {
-          "reason": "not_allowed:fs_sd",
-          "count": 3
-        },
-        {
           "reason": "not_allowed:mcp2544fd",
           "count": 3
         },
@@ -732,6 +688,10 @@
         },
         {
           "reason": "not_allowed:twai",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:wifi",
           "count": 3
         }
       ]
@@ -749,24 +709,24 @@
     "actionable_top_modules_by_platform": {}
   },
   "advanced_policy_summary": {
-    "not_allowed_row_count": 267,
+    "not_allowed_row_count": 234,
     "bucket_counts": {
-      "intentional": 267
+      "intentional": 234
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
-      "intentional_advanced_peripheral_opt_in": 226
+      "intentional_advanced_peripheral_opt_in": 193
     },
     "actionable_top_modules_by_platform": {}
   },
   "foundation_focus_summary": {
-    "gap_row_count": 278,
+    "gap_row_count": 245,
     "bucket_counts": {
-      "intentional": 278
+      "intentional": 245
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
-      "intentional_advanced_peripheral_opt_in": 226,
+      "intentional_advanced_peripheral_opt_in": 193,
       "intentional_8bit_mic_scope": 6,
       "intentional_wireless_scope": 5
     },

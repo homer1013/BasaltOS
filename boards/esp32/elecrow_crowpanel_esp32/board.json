@@ -24,7 +24,8 @@
     "touch",
     "uart",
     "spi",
-    "i2c"
+    "i2c",
+    "fs_sd"
   ],
   "pins": {
     "tft_mosi": 13,
