@@ -2,9 +2,23 @@
   "id": "pwm",
   "name": "PWM",
   "description": "Pulse-width modulation output support",
-  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic", "pic16"],
-  "provides": ["pwm"],
-  "depends": ["timer"],
+  "platforms": [
+    "esp32",
+    "stm32",
+    "rp2040",
+    "avr",
+    "pic",
+    "pic16",
+    "atsam",
+    "renesas_ra",
+    "renesas_rx"
+  ],
+  "provides": [
+    "pwm"
+  ],
+  "depends": [
+    "timer"
+  ],
   "conflicts": [],
   "constraints": {},
   "defines": [

@@ -7,7 +7,10 @@
     "stm32",
     "rp2040",
     "avr",
-    "pic16"
+    "pic16",
+    "atsam",
+    "renesas_ra",
+    "renesas_rx"
   ],
   "provides": [
     "can_controller",

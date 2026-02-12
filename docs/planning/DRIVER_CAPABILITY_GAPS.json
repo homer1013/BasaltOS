@@ -82,30 +82,10 @@
       ]
     },
     "atsam": {
-      "unsupported_or_gap_rows": 84,
+      "unsupported_or_gap_rows": 42,
       "top_module_gaps": [
         {
-          "module_id": "adc",
-          "count": 3
-        },
-        {
-          "module_id": "ads1115",
-          "count": 3
-        },
-        {
           "module_id": "bluetooth",
-          "count": 3
-        },
-        {
-          "module_id": "bme280",
-          "count": 3
-        },
-        {
-          "module_id": "dht22",
-          "count": 3
-        },
-        {
-          "module_id": "display_ssd1306",
           "count": 3
         },
         {
@@ -117,19 +97,35 @@
           "count": 3
         },
         {
-          "module_id": "gpio",
+          "module_id": "hp4067",
           "count": 3
         },
         {
-          "module_id": "hp4067",
+          "module_id": "mcp23017",
+          "count": 3
+        },
+        {
+          "module_id": "mcp2544fd",
+          "count": 3
+        },
+        {
+          "module_id": "psram",
+          "count": 3
+        },
+        {
+          "module_id": "remote_node",
+          "count": 3
+        },
+        {
+          "module_id": "tft",
+          "count": 3
+        },
+        {
+          "module_id": "tp4056",
           "count": 3
         }
       ],
       "top_reasons": [
-        {
-          "reason": "module_platform_mismatch",
-          "count": 42
-        },
         {
           "reason": "dependency_not_allowed:timer",
           "count": 4
@@ -156,6 +152,10 @@
         },
         {
           "reason": "not_allowed:mcp2544fd",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:psram",
           "count": 3
         }
       ]
@@ -477,30 +477,10 @@
       ]
     },
     "renesas_ra": {
-      "unsupported_or_gap_rows": 84,
+      "unsupported_or_gap_rows": 39,
       "top_module_gaps": [
         {
-          "module_id": "adc",
-          "count": 3
-        },
-        {
-          "module_id": "ads1115",
-          "count": 3
-        },
-        {
           "module_id": "bluetooth",
-          "count": 3
-        },
-        {
-          "module_id": "bme280",
-          "count": 3
-        },
-        {
-          "module_id": "dht22",
-          "count": 3
-        },
-        {
-          "module_id": "display_ssd1306",
           "count": 3
         },
         {
@@ -512,19 +492,35 @@
           "count": 3
         },
         {
-          "module_id": "gpio",
+          "module_id": "hp4067",
           "count": 3
         },
         {
-          "module_id": "hp4067",
+          "module_id": "mcp23017",
+          "count": 3
+        },
+        {
+          "module_id": "mcp2544fd",
+          "count": 3
+        },
+        {
+          "module_id": "psram",
+          "count": 3
+        },
+        {
+          "module_id": "remote_node",
+          "count": 3
+        },
+        {
+          "module_id": "tft",
+          "count": 3
+        },
+        {
+          "module_id": "tp4056",
           "count": 3
         }
       ],
       "top_reasons": [
-        {
-          "reason": "module_platform_mismatch",
-          "count": 47
-        },
         {
           "reason": "not_allowed:eeprom",
           "count": 3
@@ -552,34 +548,18 @@
         {
           "reason": "not_allowed:remote_node",
           "count": 3
+        },
+        {
+          "reason": "not_allowed:tft",
+          "count": 3
         }
       ]
     },
     "renesas_rx": {
-      "unsupported_or_gap_rows": 56,
+      "unsupported_or_gap_rows": 27,
       "top_module_gaps": [
         {
-          "module_id": "adc",
-          "count": 2
-        },
-        {
-          "module_id": "ads1115",
-          "count": 2
-        },
-        {
           "module_id": "bluetooth",
-          "count": 2
-        },
-        {
-          "module_id": "bme280",
-          "count": 2
-        },
-        {
-          "module_id": "dht22",
-          "count": 2
-        },
-        {
-          "module_id": "display_ssd1306",
           "count": 2
         },
         {
@@ -591,19 +571,35 @@
           "count": 2
         },
         {
-          "module_id": "gpio",
+          "module_id": "hp4067",
           "count": 2
         },
         {
-          "module_id": "hp4067",
+          "module_id": "mcp23017",
+          "count": 2
+        },
+        {
+          "module_id": "mcp2544fd",
+          "count": 2
+        },
+        {
+          "module_id": "psram",
+          "count": 2
+        },
+        {
+          "module_id": "remote_node",
+          "count": 2
+        },
+        {
+          "module_id": "tft",
+          "count": 2
+        },
+        {
+          "module_id": "tp4056",
           "count": 2
         }
       ],
       "top_reasons": [
-        {
-          "reason": "module_platform_mismatch",
-          "count": 29
-        },
         {
           "reason": "not_allowed:bluetooth",
           "count": 2
@@ -630,6 +626,10 @@
         },
         {
           "reason": "not_allowed:psram",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:remote_node",
           "count": 2
         }
       ]

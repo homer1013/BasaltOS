@@ -2,18 +2,41 @@
   "id": "bme280",
   "name": "BME280 Environmental Sensor",
   "description": "Temperature, humidity, and pressure sensor over I2C.",
-  "platforms": ["esp32", "stm32", "rp2040", "avr", "pic16"],
-  "provides": ["sensor_temp", "sensor_humidity", "sensor_pressure"],
-  "depends": ["i2c"],
+  "platforms": [
+    "esp32",
+    "stm32",
+    "rp2040",
+    "avr",
+    "pic16",
+    "atsam",
+    "renesas_ra",
+    "renesas_rx"
+  ],
+  "provides": [
+    "sensor_temp",
+    "sensor_humidity",
+    "sensor_pressure"
+  ],
+  "depends": [
+    "i2c"
+  ],
   "conflicts": [],
-  "defines": ["BASALT_ENABLE_BME280"],
-  "pins": ["i2c_sda", "i2c_scl"],
+  "defines": [
+    "BASALT_ENABLE_BME280"
+  ],
+  "pins": [
+    "i2c_sda",
+    "i2c_scl"
+  ],
   "configuration_options": [
     {
       "id": "i2c_address",
       "name": "I2C Address",
       "type": "select",
-      "options": ["0x76", "0x77"],
+      "options": [
+        "0x76",
+        "0x77"
+      ],
       "default": "0x76"
     },
     {
