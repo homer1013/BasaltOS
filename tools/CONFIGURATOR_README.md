@@ -51,6 +51,7 @@ python tools/basaltos_config_server.py
 - `GET /api/board-taxonomy/meta`
 - `GET /api/board-taxonomy/lookup/<board_ref>`
 - `GET /api/boards/<platform>`
+  - Optional exact-match query filters: `id`, `board_dir`, `manufacturer`, `architecture`, `family`
 - `GET /api/drivers?platform=<platform>`
 - `GET /api/board/<board_id>`
 - `GET /api/sync/export-preview`
@@ -79,6 +80,9 @@ bash tools/tests/board_catalog_drift_smoke.sh
 
 # Optional taxonomy guard: explicit manufacturer/architecture/family fields
 bash tools/tests/board_taxonomy_fields_smoke.sh
+
+# Optional taxonomy schema guard: ids/values/index consistency
+bash tools/tests/board_taxonomy_schema_smoke.sh
 
 # CLI metadata baseline
 python3 tools/validate_metadata.py

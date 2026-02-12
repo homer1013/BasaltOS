@@ -173,6 +173,12 @@ Board taxonomy explicit-fields smoke (manufacturer/architecture/family):
 bash tools/tests/board_taxonomy_fields_smoke.sh
 ```
 
+Board taxonomy schema smoke (id/value/index consistency):
+
+```bash
+bash tools/tests/board_taxonomy_schema_smoke.sh
+```
+
 
 ## PlatformIO Phase-1 Bootstrap
 
