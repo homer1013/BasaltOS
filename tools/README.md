@@ -21,6 +21,7 @@
 - `import_local_sync_payload.py` – import remote payloads into local workspace with conflict policy
 - `metadata_completeness_report.py` – generate board metadata completeness markdown report
 - `generate_board_catalog.py` – generate deterministic board inventory docs (`docs/BOARD_CATALOG.md`, `docs/BOARD_TAXONOMY_INDEX.json`, `docs/BOARD_TAXONOMY_INDEX.csv`)
+- `generate_manufacturer_matrix.py` – generate manufacturer starter matrix docs (`docs/planning/MANUFACTURER_BOARD_MATRIX.csv`, `docs/planning/MANUFACTURER_BOARD_MATRIX.md`)
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -184,6 +185,12 @@ Board intake scaffold smoke:
 
 ```bash
 bash tools/tests/board_intake_scaffold_smoke.sh
+```
+
+Manufacturer starter matrix drift smoke:
+
+```bash
+bash tools/tests/manufacturer_matrix_drift_smoke.sh
 ```
 
 

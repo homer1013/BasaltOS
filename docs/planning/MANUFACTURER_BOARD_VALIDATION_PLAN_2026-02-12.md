@@ -2,6 +2,17 @@
 
 Scope for `SCRUM-111`.
 
+Primary matrix artifacts (generated):
+
+- `docs/planning/MANUFACTURER_BOARD_MATRIX.csv`
+- `docs/planning/MANUFACTURER_BOARD_MATRIX.md`
+
+Generate/update:
+
+```bash
+python3 tools/generate_manufacturer_matrix.py
+```
+
 ## Constraint
 
 - In-hand bench testing currently available for one manufacturer board:
@@ -18,17 +29,9 @@ Scope for `SCRUM-111`.
 
 ## Candidate Set
 
-- Adafruit:
-  - `atsam/adafruit_circuit_playground_express` (bench lane + metadata lane)
-  - `rp2040/adafruit_feather_rp2040` (metadata lane)
-- Seeed Studio:
-  - `atsam/seeeduino_xiao_samd21` (metadata lane)
-- SparkFun:
-  - `rp2040/sparkfun_thing_plus_rp2040` (metadata lane; profile added)
-- DF Robot:
-  - `esp32/dfrobot_firebeetle_esp32` (metadata lane; profile added)
-- Elecrow:
-  - `esp32/elecrow_crowpanel_esp32` (metadata lane; profile added)
+See generated matrix for current candidate set and readiness status:
+
+- `docs/planning/MANUFACTURER_BOARD_MATRIX.md`
 
 ## Command
 
