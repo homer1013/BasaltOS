@@ -2,17 +2,5 @@
   "version": "1.0.0",
   "source_seed": "docs/planning/MANUFACTURER_STARTER_CANDIDATES.json",
   "source_taxonomy": "docs/BOARD_TAXONOMY_INDEX.json",
-  "items": [
-    {
-      "manufacturer": "Seeed Studio",
-      "priority": "P2",
-      "platform": "rp2040",
-      "family": "",
-      "board_dir": "seeed_xiao_rp2040",
-      "board_name": "Seeed XIAO RP2040",
-      "lane": "planned",
-      "rationale": "High-value next profile for RP2040 lane.",
-      "scaffold_command": "python3 tools/board_intake_scaffold.py --manufacturer \"Seeed Studio\" --family \"TBD\" --platform rp2040 --board-id seeed_xiao_rp2040 --board-name \"Seeed XIAO RP2040\""
-    }
-  ]
+  "items": []
 }

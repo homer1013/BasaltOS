@@ -1,0 +1,50 @@
+{
+  "id": "seeed_xiao_rp2040",
+  "name": "Seeed Studio XIAO RP2040",
+  "description": "Metadata-first baseline profile for Seeed Studio XIAO RP2040 compact board (verify exact pin breakout usage for your wiring).",
+  "platform": "rp2040",
+  "target_profile": "rp2040_generic",
+  "manufacturer": "Seeed Studio",
+  "architecture": "ARM Cortex-M0+",
+  "family": "RP2040",
+  "mcu": "RP2040",
+  "flash": "2MB",
+  "ram": "264KB",
+  "capabilities": [
+    "uart",
+    "spi",
+    "i2c",
+    "gpio",
+    "adc",
+    "pwm",
+    "usb_device"
+  ],
+  "pins": {
+    "uart_tx": 0,
+    "uart_rx": 1,
+    "i2c_sda": 6,
+    "i2c_scl": 7,
+    "spi_mosi": 3,
+    "spi_miso": 4,
+    "spi_sclk": 2,
+    "spi_cs": 5,
+    "led": 25,
+    "button": -1
+  },
+  "pin_definitions": {
+    "uart_tx": { "description": "UART TX baseline pin", "alternatives": [0, 8, 12], "type": "output" },
+    "uart_rx": { "description": "UART RX baseline pin", "alternatives": [1, 9, 13], "type": "input" },
+    "i2c_sda": { "description": "I2C SDA baseline pin", "alternatives": [6, 2, 10, 14], "type": "bidirectional" },
+    "i2c_scl": { "description": "I2C SCL baseline pin", "alternatives": [7, 3, 11, 15], "type": "output" },
+    "spi_mosi": { "description": "SPI MOSI baseline pin", "alternatives": [3, 7, 11, 19], "type": "output" },
+    "spi_miso": { "description": "SPI MISO baseline pin", "alternatives": [4, 8, 12, 20], "type": "input" },
+    "spi_sclk": { "description": "SPI SCLK baseline pin", "alternatives": [2, 6, 10, 18], "type": "output" },
+    "spi_cs": { "description": "SPI chip-select baseline pin", "alternatives": [5, 9, 13, 17], "type": "output" },
+    "led": { "description": "Onboard LED (RP2040 default LED GPIO in many SDK examples)", "alternatives": [25], "type": "output" }
+  },
+  "defaults": {
+    "modules": ["gpio", "uart", "i2c", "spi", "timer", "shell_min"],
+    "clock": { "freq_hz": 133000000 }
+  },
+  "notes": "Foundation baseline profile for XIAO RP2040. Verify physical pin numbering (D0..Dx mapping) and onboard LED behavior during bench validation."
+}

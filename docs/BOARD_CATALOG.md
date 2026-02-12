@@ -4,7 +4,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 
 ## Summary
 
-- Total boards: 34
+- Total boards: 35
 - Platforms: 10
 - Manufacturers: 16
 
@@ -18,7 +18,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 - pic16: 2
 - renesas_ra: 3
 - renesas_rx: 2
-- rp2040: 4
+- rp2040: 5
 - stm32: 3
 
 ### Boards per Manufacturer
@@ -32,11 +32,11 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 - Elecrow: 2
 - M5Stack: 2
 - Microchip: 2
+- Seeed Studio: 2
 - SparkFun: 2
 - STMicroelectronics: 2
 - AI-Thinker: 1
 - Generic: 1
-- Seeed Studio: 1
 - Sunton: 1
 - WeAct: 1
 
@@ -44,7 +44,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 
 - ARM Cortex-M: 9
 - Xtensa: 9
-- ARM Cortex-M0+: 4
+- ARM Cortex-M0+: 5
 - AVR 8-bit: 4
 - RISC-V: 3
 - PIC 8-bit: 2
@@ -54,7 +54,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 ### Boards per Family
 
 - ESP32: 7
-- RP2040: 4
+- RP2040: 5
 - SAMD21: 3
 - STM32F4: 3
 - ATmega328: 2
@@ -104,6 +104,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 | rp2040 | adafruit_feather_rp2040 | adafruit_feather_rp2040 | Adafruit Feather RP2040 | Adafruit | ARM Cortex-M0+ | RP2040 | RP2040 | 7 |
 | rp2040 | raspberry_pi_pico | raspberry_pi_pico | Raspberry Pi Pico (RP2040) | Raspberry Pi | ARM Cortex-M0+ | RP2040 | RP2040 | 7 |
 | rp2040 | raspberry_pi_pico_w | raspberry_pi_pico_w | Raspberry Pi Pico W | Raspberry Pi | ARM Cortex-M0+ | RP2040 | RP2040 | 8 |
+| rp2040 | seeed_xiao_rp2040 | seeed_xiao_rp2040 | Seeed Studio XIAO RP2040 | Seeed Studio | ARM Cortex-M0+ | RP2040 | RP2040 | 7 |
 | rp2040 | sparkfun_thing_plus_rp2040 | sparkfun_thing_plus_rp2040 | SparkFun Thing Plus RP2040 | SparkFun | ARM Cortex-M0+ | RP2040 | RP2040 | 7 |
 | stm32 | blackpill_f411ce | blackpill_f411ce | STM32 Black Pill F411CE | WeAct | ARM Cortex-M | STM32F4 | STM32F411CEU6 | 8 |
 | stm32 | nucleo_f401re | nucleo_f401re | ST Nucleo-F401RE | STMicroelectronics | ARM Cortex-M | STM32F4 | STM32F401RE | 7 |

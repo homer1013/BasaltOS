@@ -4,7 +4,7 @@
     "generator": "tools/generate_board_catalog.py"
   },
   "summary": {
-    "total_boards": 34,
+    "total_boards": 35,
     "platform_count": 10,
     "manufacturer_count": 16,
     "architecture_count": 8,
@@ -20,7 +20,7 @@
       "pic16": 2,
       "renesas_ra": 3,
       "renesas_rx": 2,
-      "rp2040": 4,
+      "rp2040": 5,
       "stm32": 3
     },
     "manufacturer": {
@@ -33,18 +33,18 @@
       "Elecrow": 2,
       "M5Stack": 2,
       "Microchip": 2,
+      "Seeed Studio": 2,
       "SparkFun": 2,
       "STMicroelectronics": 2,
       "AI-Thinker": 1,
       "Generic": 1,
-      "Seeed Studio": 1,
       "Sunton": 1,
       "WeAct": 1
     },
     "architecture": {
       "ARM Cortex-M": 9,
       "Xtensa": 9,
-      "ARM Cortex-M0+": 4,
+      "ARM Cortex-M0+": 5,
       "AVR 8-bit": 4,
       "RISC-V": 3,
       "PIC 8-bit": 2,
@@ -53,7 +53,7 @@
     },
     "family": {
       "ESP32": 7,
-      "RP2040": 4,
+      "RP2040": 5,
       "SAMD21": 3,
       "STM32F4": 3,
       "ATmega328": 2,
@@ -400,6 +400,17 @@
       "family": "RP2040",
       "mcu": "RP2040",
       "caps_count": 8
+    },
+    {
+      "platform": "rp2040",
+      "board_dir": "seeed_xiao_rp2040",
+      "id": "seeed_xiao_rp2040",
+      "name": "Seeed Studio XIAO RP2040",
+      "manufacturer": "Seeed Studio",
+      "architecture": "ARM Cortex-M0+",
+      "family": "RP2040",
+      "mcu": "RP2040",
+      "caps_count": 7
     },
     {
       "platform": "rp2040",

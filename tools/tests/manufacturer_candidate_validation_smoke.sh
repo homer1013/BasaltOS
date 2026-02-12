@@ -12,6 +12,7 @@ declare -a CANDIDATES=(
   "Adafruit|atsam|adafruit_circuit_playground_express|bench"
   "Adafruit|rp2040|adafruit_feather_rp2040|metadata"
   "Seeed Studio|atsam|seeeduino_xiao_samd21|metadata"
+  "Seeed Studio|rp2040|seeed_xiao_rp2040|metadata"
   "SparkFun|rp2040|sparkfun_thing_plus_rp2040|planned"
   "DF Robot|esp32|dfrobot_firebeetle_esp32|planned"
   "DF Robot|esp32|dfrobot_beetle_esp32_c3|metadata"
