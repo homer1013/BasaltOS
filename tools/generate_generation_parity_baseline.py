@@ -56,6 +56,7 @@ def run_case(
     outdir = out_root / mode / platform / board
     outdir.mkdir(parents=True, exist_ok=True)
     log_path = outdir / "run.log"
+    outdir_arg = str(outdir.relative_to(root))
 
     cmd = [
         "python3",
@@ -65,7 +66,7 @@ def run_case(
         "--board",
         board,
         "--outdir",
-        str(outdir),
+        outdir_arg,
     ]
     if enabled_drivers:
         cmd.extend(["--enable-drivers", ",".join(enabled_drivers)])
