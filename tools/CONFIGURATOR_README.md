@@ -64,6 +64,9 @@ Generation writes config artifacts such as:
 ## Baseline Validation Commands
 
 ```bash
+# One-command hardening bundle (recommended before push)
+bash tools/tests/main_hardening_smoke_bundle.sh
+
 # CLI metadata baseline
 python3 tools/validate_metadata.py
 
