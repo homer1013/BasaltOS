@@ -3070,7 +3070,6 @@
                     await refreshModulesForPlatform(selectedPlatform);
                     await refreshMarketCatalogForPlatform(selectedPlatform);
                 }
-                renderProfilePanel();
                 populateBoardList();
                 const created = (boards[platform] || []).find(b => String(b.id) === String(payload.id));
                 if (created) await selectBoard(created);
@@ -3090,10 +3089,6 @@
             showPlatformError(`UI error: ${e.message}`);
         });
 
-        // Local scope feature flags
-        const ENABLE_LOCAL_MARKET_UI = false;
-        const ENABLE_LOCAL_PROFILE_UI = false;
-
         // Data structures
         let platforms = [];
         let boards = {};
@@ -3103,11 +3098,6 @@
         let marketApps = [];
         let marketAppStates = {};
         let marketCatalog = [];
-        let userProfile = {
-            name: '',
-            ownedBoards: []
-        };
-        let profileInventoryPlatform = '';
         let targets = {};
         let boardDetails = {};
         let moduleConfigs = {};
@@ -3455,10 +3445,6 @@
             allPanels.forEach(p => { p.innerHTML = html; });
         }
 
-        function profileStorageKey() {
-            return 'basaltos_profile_v1';
-        }
-
         function updateTopProfileChip() {
             // Profile chip UI was removed for local-scope mode.
         }
@@ -3500,40 +3486,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function showMarketPage() {
-            if (!ENABLE_LOCAL_MARKET_UI) {
-                notify('Local app catalog is disabled in local configurator mode.', 'warning');
-                return;
-            }
-            const landing = document.getElementById('landing-home');
-            const shell = document.getElementById('configurator-shell');
-            const marketShell = document.getElementById('market-shell');
-            const profileShell = document.getElementById('profile-shell');
-            if (landing) landing.style.display = 'none';
-            if (shell) shell.style.display = 'none';
-            if (marketShell) marketShell.style.display = 'block';
-            if (profileShell) profileShell.style.display = 'none';
-            renderMarketPage();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function showProfilePage() {
-            if (!ENABLE_LOCAL_PROFILE_UI) {
-                notify('Profile features are disabled in local configurator mode.', 'warning');
-                return;
-            }
-            const landing = document.getElementById('landing-home');
-            const shell = document.getElementById('configurator-shell');
-            const marketShell = document.getElementById('market-shell');
-            const profileShell = document.getElementById('profile-shell');
-            if (landing) landing.style.display = 'none';
-            if (shell) shell.style.display = 'none';
-            if (marketShell) marketShell.style.display = 'none';
-            if (profileShell) profileShell.style.display = 'block';
-            renderProfilePanel();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
         function starterCatalogForMarket() {
             const fromPlatform = Array.isArray(PLATFORM_APPLETS[selectedPlatform]) ? PLATFORM_APPLETS[selectedPlatform] : [];
             return fromPlatform.filter(Boolean);
@@ -3567,190 +3519,6 @@
                 </div>
             `;
             updateMemoryEstimatePanels();
-        }
-
-        function renderMarketPage() {
-            const grid = document.getElementById('market-page-grid');
-            if (!grid) return;
-            const search = String(document.getElementById('market-page-search')?.value || '').toLowerCase().trim();
-            applets = starterCatalogForMarket();
-            marketApps = (marketCatalog || []).map(item => item.id);
-            const starter = starterCatalogForMarket().map(id => {
-                const meta = getAppletMeta(id);
-                return {
-                    id,
-                    name: meta.name || id,
-                    description: meta.description || '',
-                    kind: 'starter',
-                    platforms: [selectedPlatform],
-                    version: 'builtin',
-                };
-            }).filter(item => {
-                const blob = `${item.id} ${item.name || ''} ${item.description || ''}`.toLowerCase();
-                return !search || blob.includes(search);
-            });
-            const market = (marketCatalog || []).filter(item => {
-                const blob = `${item.id} ${item.name || ''} ${item.description || ''}`.toLowerCase();
-                return !search || blob.includes(search);
-            });
-            const items = [...starter, ...market.map(x => ({ ...x, kind: 'market' }))];
-            grid.innerHTML = '';
-            if (!items.length) {
-                grid.innerHTML = '<div class="board-empty">No market apps found for current filters.</div>';
-                return;
-            }
-            if (!selectedBoard) {
-                const msg = document.createElement('div');
-                msg.className = 'alert alert-warning';
-                msg.style.gridColumn = '1 / -1';
-                msg.textContent = 'Select platform and board in Configurator first. Add-to-build is disabled until board compatibility can be checked.';
-                grid.appendChild(msg);
-            }
-            items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'market-card';
-                const enabled = item.kind === 'starter' ? !!appletStates[item.id] : !!marketAppStates[item.id];
-                const allowed = item.kind === 'starter'
-                    ? starterAllowedForCurrentBuild(item.id)
-                    : marketAllowedForCurrentBuild(item.id);
-                let reason = 'Supported by current board';
-                if (!selectedBoard) {
-                    reason = 'Select board first';
-                } else if (!allowed) {
-                    const req = Array.isArray(item.requires_capabilities) ? item.requires_capabilities.map(x => String(x)) : [];
-                    const caps = new Set((selectedBoard.capabilities || []).map(x => String(x)));
-                    const missing = req.filter(cap => !caps.has(cap));
-                    reason = missing.length
-                        ? `Missing capabilities: ${missing.join(', ')}`
-                        : 'Not supported by current board';
-                }
-                card.innerHTML = `
-                    <h4>${item.name || item.id}</h4>
-                    <p>${item.description || ''}</p>
-                    <div class="market-meta">
-                        type: <code>${item.kind === 'starter' ? 'starter-app' : 'market-app'}</code><br>
-                        id: <code>${item.id}</code><br>
-                        version: <code>${item.version || '0.1.0'}</code><br>
-                        platforms: <code>${(item.platforms || []).join(', ') || selectedPlatform}</code><br>
-                        requires: <code>${(item.requires_capabilities || []).join(', ') || 'none'}</code><br>
-                        package: <code>${item.source_size_bytes ? formatBytes(item.source_size_bytes) : 'n/a'}</code>
-                    </div>
-                    <div class="market-actions">
-                        <label title="${reason}">
-                            <input type="checkbox" data-market-page-add="${item.id}" data-market-kind="${item.kind}" ${enabled ? 'checked' : ''} ${allowed ? '' : 'disabled'}>
-                            Add to current build
-                        </label>
-                        ${item.kind === 'market' ? `<button class="btn btn-secondary" type="button" data-market-download="${item.id}">Download</button>` : ''}
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-            grid.querySelectorAll('[data-market-page-add]').forEach(el => {
-                el.addEventListener('change', () => {
-                    const id = el.getAttribute('data-market-page-add');
-                    const kind = el.getAttribute('data-market-kind');
-                    if (kind === 'starter') {
-                        appletStates[id] = !!el.checked;
-                    } else {
-                        marketAppStates[id] = !!el.checked;
-                    }
-                    renderSelectedAppsVisibility();
-                    updateValidation();
-                    notify(`${id} ${el.checked ? 'added to' : 'removed from'} current build.`, 'success', 1600);
-                });
-            });
-            grid.querySelectorAll('[data-market-download]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const id = btn.getAttribute('data-market-download');
-                    const platform = encodeURIComponent(selectedPlatform || '');
-                    window.open(`/api/market/download/${encodeURIComponent(id)}?platform=${platform}`, '_blank');
-                });
-            });
-        }
-
-        async function uploadMarketApp() {
-            const fileInput = document.getElementById('market-upload-package');
-            const idInput = document.getElementById('market-upload-id');
-            const nameInput = document.getElementById('market-upload-name');
-            const descInput = document.getElementById('market-upload-description');
-            const verInput = document.getElementById('market-upload-version');
-            const authorInput = document.getElementById('market-upload-author');
-            const platformsInput = document.getElementById('market-upload-platforms');
-            const btn = document.getElementById('btn-market-upload');
-
-            const file = fileInput?.files?.[0];
-            if (!file) {
-                notify('Choose a ZIP package to upload.', 'warning');
-                return;
-            }
-
-            const fd = new FormData();
-            fd.append('package', file);
-            fd.append('id', String(idInput?.value || '').trim());
-            fd.append('name', String(nameInput?.value || '').trim());
-            fd.append('description', String(descInput?.value || '').trim());
-            fd.append('version', String(verInput?.value || '').trim());
-            fd.append('author', String(authorInput?.value || '').trim());
-            fd.append('platforms', String(platformsInput?.value || selectedPlatform || 'esp32').trim());
-
-            if (btn) {
-                btn.disabled = true;
-                btn.textContent = 'Uploading...';
-            }
-            try {
-                const resp = await fetch('/api/market/upload', { method: 'POST', body: fd, cache: 'no-store' });
-                const raw = await resp.text();
-                let data = null;
-                try { data = raw ? JSON.parse(raw) : null; } catch (_e) { data = null; }
-                if (!resp.ok || !data?.success) {
-                    throw new Error(data?.error || raw || `HTTP ${resp.status}`);
-                }
-                await refreshMarketCatalogForPlatform(selectedPlatform);
-                updateLandingStats();
-                renderMarketPage();
-                if (idInput) idInput.value = '';
-                if (nameInput) nameInput.value = '';
-                if (descInput) descInput.value = '';
-                if (verInput) verInput.value = '';
-                if (authorInput) authorInput.value = '';
-                if (fileInput) fileInput.value = '';
-                notify(`Added app to local catalog: ${data.app?.id || 'unknown'}`, 'success');
-            } catch (err) {
-                notify(`Upload failed: ${err.message || err}`, 'error');
-            } finally {
-                if (btn) {
-                    btn.disabled = false;
-                    btn.textContent = 'Upload to Market';
-                }
-            }
-        }
-
-        function loadUserProfile() {
-            try {
-                const raw = localStorage.getItem(profileStorageKey());
-                if (!raw) return;
-                const parsed = JSON.parse(raw);
-                if (!parsed || typeof parsed !== 'object') return;
-                userProfile.name = String(parsed.name || '');
-                userProfile.ownedBoards = Array.isArray(parsed.ownedBoards) ? parsed.ownedBoards.map(x => String(x)) : [];
-                profileInventoryPlatform = String(parsed.inventoryPlatform || '');
-            } catch (_e) {
-                userProfile = { name: '', ownedBoards: [] };
-                profileInventoryPlatform = '';
-            }
-        }
-
-        function saveUserProfile() {
-            try {
-                const payload = {
-                    ...userProfile,
-                    inventoryPlatform: profileInventoryPlatform || ''
-                };
-                localStorage.setItem(profileStorageKey(), JSON.stringify(payload));
-            } catch (_e) {
-                // ignore persistence errors
-            }
-            updateTopProfileChip();
         }
 
         const PLATFORM_MANUFACTURER = {
@@ -3883,9 +3651,7 @@
             if (selectedSilicon) parts.push(`processor=${selectedSilicon}`);
             const search = String(document.getElementById('board-search')?.value || '').trim();
             if (search) parts.push(`search="${search}"`);
-            const ownedOnly = !!document.getElementById('owned-only-toggle')?.checked;
-            if (ownedOnly) parts.push('inventory-only');
-            if (!parts.length) return 'Try changing any filter above, or disable inventory-only mode.';
+            if (!parts.length) return 'Try changing any filter above.';
             return `Active filters: ${parts.join(' • ')}`;
         }
 
@@ -3906,11 +3672,8 @@
         }
 
         function applyHierarchyFilters() {
-            const ownedOnly = !!document.getElementById('owned-only-toggle')?.checked;
-            const ownedSet = new Set((userProfile.ownedBoards || []).map(String));
             const search = String(document.getElementById('board-search')?.value || '').trim().toLowerCase();
             return allBoardsFlat().filter(board => {
-                if (ownedOnly && !ownedSet.has(String(board.id))) return false;
                 const tx = boardTaxonomy(board);
                 if (selectedManufacturer && tx.manufacturer !== selectedManufacturer) return false;
                 if (selectedArchitecture && tx.architecture !== selectedArchitecture) return false;
@@ -3965,66 +3728,6 @@
             else selectedSilicon = '';
         }
 
-        function renderProfilePanel() {
-            const nameInput = document.getElementById('profile-name');
-            const ownedOnly = document.getElementById('owned-only-toggle');
-            const stats = document.getElementById('profile-stats');
-            const inventory = document.getElementById('inventory-list');
-            const platformSel = document.getElementById('profile-platform-select');
-            if (!nameInput || !ownedOnly || !stats || !inventory || !platformSel) return;
-
-            if (nameInput.value !== userProfile.name) {
-                nameInput.value = userProfile.name || '';
-            }
-
-            const platformOptions = Array.isArray(platforms)
-                ? [...platforms].sort((a, b) => String(a?.name || a?.id || '').localeCompare(String(b?.name || b?.id || ''), undefined, { sensitivity: 'base' }))
-                : [];
-            const fallbackPlatform = selectedPlatform || platformOptions[0]?.id || '';
-            if (!profileInventoryPlatform || (!boards[profileInventoryPlatform] && profileInventoryPlatform !== '')) {
-                profileInventoryPlatform = fallbackPlatform;
-            }
-
-            platformSel.innerHTML = '';
-            const allOpt = document.createElement('option');
-            allOpt.value = '';
-            allOpt.textContent = 'All Platforms';
-            platformSel.appendChild(allOpt);
-            platformOptions.forEach(p => {
-                const opt = document.createElement('option');
-                opt.value = p.id;
-                opt.textContent = p.name || p.id;
-                platformSel.appendChild(opt);
-            });
-            platformSel.value = profileInventoryPlatform || '';
-
-            const platformBoards = profileInventoryPlatform
-                ? (boards[profileInventoryPlatform] || [])
-                : Object.values(boards || {}).flat();
-            const ownedSet = new Set((userProfile.ownedBoards || []).map(String));
-            const points = (ownedSet.size * 25);
-            stats.textContent = `Owned boards: ${ownedSet.size} • Points: ${points}`;
-
-            inventory.innerHTML = '';
-            if (!platformBoards.length) {
-                inventory.innerHTML = '<div class="board-empty">No boards available for this platform.</div>';
-                return;
-            }
-            platformBoards
-                .slice()
-                .sort((a, b) => String(a.name || a.id || '').localeCompare(String(b.name || b.id || ''), undefined, { sensitivity: 'base' }))
-                .forEach(board => {
-                const row = document.createElement('label');
-                row.className = 'inventory-item';
-                row.innerHTML = `
-                    <input type="checkbox" data-owned-board="${board.id}" ${ownedSet.has(String(board.id)) ? 'checked' : ''}>
-                    <span>${board.name}</span>
-                `;
-                inventory.appendChild(row);
-            });
-            updateTopProfileChip();
-        }
-
         function moduleSectionFor(moduleId) {
             const id = String(moduleId || '');
             if (id.startsWith('fs_')) return 'storage';
@@ -4077,24 +3780,8 @@
                     notify(`Targets API unavailable: ${err.message || err}`, 'warning');
                 }
 
-                if (ENABLE_LOCAL_MARKET_UI) {
-                    try {
-                        if (selectedPlatform) {
-                            marketCatalog = await apiFetchJson(`/api/market/catalog?platform=${encodeURIComponent(selectedPlatform)}`);
-                            loadedPlatformForMarket = String(selectedPlatform || '');
-                        } else {
-                            marketCatalog = [];
-                            loadedPlatformForMarket = '';
-                        }
-                    } catch (err) {
-                        marketCatalog = [];
-                        loadedPlatformForMarket = '';
-                        notify(`Local catalog unavailable: ${err.message || err}`, 'warning');
-                    }
-                } else {
-                    marketCatalog = [];
-                    loadedPlatformForMarket = '';
-                }
+                marketCatalog = [];
+                loadedPlatformForMarket = '';
 
                 return true;
             } catch (err) {
@@ -4158,14 +3845,7 @@
         }
 
         async function refreshMarketCatalogForPlatform(platformId) {
-            if (!ENABLE_LOCAL_MARKET_UI) {
-                marketCatalog = [];
-                loadedPlatformForMarket = '';
-                return;
-            }
-            const url = platformId ? `/api/market/catalog?platform=${encodeURIComponent(platformId)}` : '/api/market/catalog';
-            marketCatalog = await apiFetchJson(url);
-            if (!Array.isArray(marketCatalog)) marketCatalog = [];
+            marketCatalog = [];
             loadedPlatformForMarket = String(platformId || '');
         }
 
@@ -4527,29 +4207,11 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             document.getElementById('template-modal').classList.remove('active');
         }
 
-        function openProfileModal() {
-            showProfilePage();
-        }
-
-        function closeProfileModal() {
-            showLanding();
-        }
-
         function toggleOverflowMenu(show = null) {
             const menu = document.getElementById('overflow-menu');
             if (!menu) return;
             const shouldShow = show === null ? !menu.classList.contains('active') : !!show;
             menu.classList.toggle('active', shouldShow);
-        }
-
-        function switchUserFlow() {
-            showProfilePage();
-            const input = document.getElementById('profile-name');
-            if (!input) return;
-            setTimeout(() => {
-                input.focus();
-                input.select();
-            }, 0);
         }
 
         function templateEnabledDrivers(template) {
@@ -5072,20 +4734,17 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
         // Initialize
         async function init() {
-            loadUserProfile();
             const ok = await loadFromApi();
             await populatePlatformSelect();
             if (!ok || !platforms || platforms.length === 0) {
                 showPlatformError('No platforms loaded. Check http://localhost:5000/api/platforms');
             }
-            renderProfilePanel();
             populateBoardList();
             populateModuleGrid();
             loadTemplates();
             updateLandingStats();
             applyLocalScopeMode();
             showLanding();
-            if (ENABLE_LOCAL_MARKET_UI) renderMarketPage();
             renderSelectedAppsVisibility();
             attachEventListeners();
             const flasherBtn = document.getElementById('btn-refresh-flasher');
@@ -5286,7 +4945,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
             populateModuleGrid();
             renderSelectedAppsVisibility();
-            renderMarketPage();
             renderTemplateFilters();
             renderTemplates();
             clearInlineOutput();
@@ -6401,16 +6059,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     toggleOverflowMenu();
                 });
             }
-            const menuProfile = document.getElementById('menu-profile');
-            if (ENABLE_LOCAL_PROFILE_UI && menuProfile) menuProfile.addEventListener('click', () => {
-                toggleOverflowMenu(false);
-                showProfilePage();
-            });
-            const menuSwitchUser = document.getElementById('menu-switch-user');
-            if (ENABLE_LOCAL_PROFILE_UI && menuSwitchUser) menuSwitchUser.addEventListener('click', () => {
-                toggleOverflowMenu(false);
-                switchUserFlow();
-            });
             const menuDiyBoard = document.getElementById('menu-diy-board');
             if (menuDiyBoard) menuDiyBoard.addEventListener('click', () => {
                 toggleOverflowMenu(false);
@@ -6448,7 +6096,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     populateBoardList();
                     populateModuleGrid();
                     renderSelectedAppsVisibility();
-                    renderMarketPage();
                     renderTemplateFilters();
                     renderTemplates();
                     updateLandingStats();
@@ -6457,33 +6104,8 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             }
             const topOpenBtn = document.getElementById('btn-open-config');
             if (topOpenBtn) topOpenBtn.addEventListener('click', () => enterConfigurator());
-            const topMarketBtn = document.getElementById('btn-market');
-            if (ENABLE_LOCAL_MARKET_UI && topMarketBtn) topMarketBtn.addEventListener('click', () => showMarketPage());
             const topHomeBtn = document.getElementById('btn-home');
             if (topHomeBtn) topHomeBtn.addEventListener('click', () => showLanding());
-            const btnProfileToConfig = document.getElementById('btn-profile-to-config');
-            if (ENABLE_LOCAL_PROFILE_UI && btnProfileToConfig) btnProfileToConfig.addEventListener('click', () => enterConfigurator());
-            const btnProfileToHome = document.getElementById('btn-profile-to-home');
-            if (ENABLE_LOCAL_PROFILE_UI && btnProfileToHome) btnProfileToHome.addEventListener('click', () => showLanding());
-            const btnProfileOpenDiy = document.getElementById('btn-profile-open-diy');
-            if (ENABLE_LOCAL_PROFILE_UI && btnProfileOpenDiy) btnProfileOpenDiy.addEventListener('click', () => openDIYBoardModal());
-            const btnMarketToConfig = document.getElementById('btn-market-to-config');
-            if (ENABLE_LOCAL_MARKET_UI && btnMarketToConfig) btnMarketToConfig.addEventListener('click', () => enterConfigurator());
-            const btnOpenMarketFromConfig = document.getElementById('btn-open-market-from-config');
-            if (ENABLE_LOCAL_MARKET_UI && btnOpenMarketFromConfig) btnOpenMarketFromConfig.addEventListener('click', () => showMarketPage());
-            const btnMarketRefresh = document.getElementById('btn-market-refresh');
-            if (ENABLE_LOCAL_MARKET_UI && btnMarketRefresh) {
-                btnMarketRefresh.addEventListener('click', async () => {
-                    await refreshMarketCatalogForPlatform(selectedPlatform);
-                    updateLandingStats();
-                    renderMarketPage();
-                    notify('Local catalog refreshed.', 'success', 1400);
-                });
-            }
-            const marketPageSearch = document.getElementById('market-page-search');
-            if (ENABLE_LOCAL_MARKET_UI && marketPageSearch) marketPageSearch.addEventListener('input', () => renderMarketPage());
-            const btnMarketUpload = document.getElementById('btn-market-upload');
-            if (ENABLE_LOCAL_MARKET_UI && btnMarketUpload) btnMarketUpload.addEventListener('click', () => uploadMarketApp());
             const btnOptimizeSize = document.getElementById('btn-optimize-size');
             if (btnOptimizeSize) btnOptimizeSize.addEventListener('click', optimizeForSize);
             const driverTabWrap = document.getElementById('driver-tabs');
@@ -6500,39 +6122,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             }
             const btnBuildHealthFix = document.getElementById('btn-build-health-fix');
             if (btnBuildHealthFix) btnBuildHealthFix.addEventListener('click', () => applyQuickFixes());
-            const profilePlatformSelect = document.getElementById('profile-platform-select');
-            if (profilePlatformSelect) {
-                profilePlatformSelect.addEventListener('change', () => {
-                    profileInventoryPlatform = String(profilePlatformSelect.value || '');
-                    saveUserProfile();
-                    renderProfilePanel();
-                });
-            }
-            const btnProfileSelectVisible = document.getElementById('btn-profile-select-visible');
-            if (btnProfileSelectVisible) {
-                btnProfileSelectVisible.addEventListener('click', () => {
-                    const pool = profileInventoryPlatform
-                        ? (boards[profileInventoryPlatform] || [])
-                        : Object.values(boards || {}).flat();
-                    const owned = new Set((userProfile.ownedBoards || []).map(String));
-                    pool.forEach(board => owned.add(String(board.id)));
-                    userProfile.ownedBoards = Array.from(owned);
-                    saveUserProfile();
-                    renderProfilePanel();
-                    populateBoardList();
-                    notify('Added visible boards to inventory.', 'success', 1400);
-                });
-            }
-            const btnProfileClearInventory = document.getElementById('btn-profile-clear-inventory');
-            if (btnProfileClearInventory) {
-                btnProfileClearInventory.addEventListener('click', () => {
-                    userProfile.ownedBoards = [];
-                    saveUserProfile();
-                    renderProfilePanel();
-                    populateBoardList();
-                    notify('Inventory cleared.', 'success', 1400);
-                });
-            }
 
             document.getElementById('platform-select').onchange = async (e) => {
                 selectedPlatform = e.target.value;
@@ -6559,7 +6148,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     const panel = document.getElementById('avr-config-panel');
                     if (panel) panel.style.display = 'none';
                 }
-                renderProfilePanel();
                 populateBoardList();
                 if (selectedPlatform) {
                     await refreshModulesForPlatform(selectedPlatform);
@@ -6573,7 +6161,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 updateLandingStats();
                 populateModuleGrid();
                 renderSelectedAppsVisibility();
-                renderMarketPage();
                 renderTemplateFilters();
                 renderTemplates();
                 clearInlineOutput();
@@ -6641,40 +6228,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     renderTemplateFilters();
                     renderTemplates();
                     updateMemoryEstimatePanels();
-                });
-            }
-
-            const profileNameInput = document.getElementById('profile-name');
-            if (profileNameInput) {
-                profileNameInput.addEventListener('change', () => {
-                    userProfile.name = (profileNameInput.value || '').trim();
-                    saveUserProfile();
-                    renderProfilePanel();
-                });
-            }
-
-            const ownedOnlyToggle = document.getElementById('owned-only-toggle');
-            if (ownedOnlyToggle) {
-                ownedOnlyToggle.checked = false;
-                ownedOnlyToggle.addEventListener('change', () => {
-                    populateBoardList();
-                });
-            }
-
-            const inventoryList = document.getElementById('inventory-list');
-            if (inventoryList) {
-                inventoryList.addEventListener('change', (e) => {
-                    const target = e.target;
-                    if (!(target instanceof HTMLInputElement)) return;
-                    const boardId = target.dataset.ownedBoard;
-                    if (!boardId) return;
-                    const owned = new Set((userProfile.ownedBoards || []).map(String));
-                    if (target.checked) owned.add(String(boardId));
-                    else owned.delete(String(boardId));
-                    userProfile.ownedBoards = Array.from(owned);
-                    saveUserProfile();
-                    renderProfilePanel();
-                    populateBoardList();
                 });
             }
 
