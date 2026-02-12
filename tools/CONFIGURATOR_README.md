@@ -67,6 +67,9 @@ Generation writes config artifacts such as:
 # One-command hardening bundle (recommended before push)
 bash tools/tests/main_hardening_smoke_bundle.sh
 
+# Optional focused guard: block staged local/generated artifacts
+bash tools/tests/staged_artifact_guard.sh
+
 # CLI metadata baseline
 python3 tools/validate_metadata.py
 
