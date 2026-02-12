@@ -3116,6 +3116,7 @@
         let configuratorVisible = false;
         let driverView = 'essential';
         let issuesPopoverHideTimer = null;
+        let boardSearchDebounceTimer = null;
 
         const MODULE_ICONS = {
             uart: '📡',
@@ -3689,7 +3690,7 @@
             }
         }
 
-        function setSelectOptions(selectEl, values, placeholder) {
+        function setSelectOptions(selectEl, values, placeholder, counts = null) {
             if (!selectEl) return;
             const prev = selectEl.value;
             selectEl.innerHTML = '';
@@ -3700,7 +3701,8 @@
             values.forEach(v => {
                 const opt = document.createElement('option');
                 opt.value = v;
-                opt.textContent = v;
+                const n = Number((counts || {})[v]);
+                opt.textContent = Number.isFinite(n) && n > 0 ? `${v} (${n})` : v;
                 selectEl.appendChild(opt);
             });
             if (values.includes(prev)) selectEl.value = prev;
@@ -3844,6 +3846,28 @@
             });
         }
 
+        async function runBoardSearchRefresh() {
+            await refreshTaxonomyOptionsFromApi().catch(err => {
+                console.warn('Failed to refresh taxonomy options:', err);
+                taxonomyOptions = null;
+            });
+            await refreshBoardsForCurrentFilters({ force: true });
+            populateBoardList();
+            renderTemplateFilters();
+            renderTemplates();
+            updateMemoryEstimatePanels();
+            persistFilterStateToUrl();
+        }
+
+        function scheduleBoardSearchRefresh() {
+            if (boardSearchDebounceTimer) clearTimeout(boardSearchDebounceTimer);
+            boardSearchDebounceTimer = setTimeout(() => {
+                runBoardSearchRefresh().catch(err => {
+                    console.warn('Debounced board search refresh failed:', err);
+                });
+            }, 180);
+        }
+
         function syncHierarchySelectors() {
             const manuSel = document.getElementById('manufacturer-select');
             const archSel = document.getElementById('architecture-select');
@@ -3858,7 +3882,7 @@
                     ...all.map(b => boardTaxonomy(b).manufacturer)
                 ])).sort((a, b) => a.localeCompare(b)));
             if (selectedManufacturer && !manufacturers.includes(selectedManufacturer)) selectedManufacturer = '';
-            setSelectOptions(manuSel, manufacturers, 'All manufacturers');
+            setSelectOptions(manuSel, manufacturers, 'All manufacturers', taxonomyOptions?.counts?.manufacturer || null);
             if (!selectedManufacturer && manufacturers.length === 1) selectedManufacturer = manufacturers[0];
             if (selectedManufacturer) manuSel.value = selectedManufacturer;
 
@@ -3867,7 +3891,7 @@
                 ? taxonomyOptions.architecture
                 : Array.from(new Set(byManu.map(b => boardTaxonomy(b).architecture))).sort((a, b) => a.localeCompare(b)));
             if (selectedArchitecture && !architectures.includes(selectedArchitecture)) selectedArchitecture = '';
-            setSelectOptions(archSel, architectures, 'All architectures');
+            setSelectOptions(archSel, architectures, 'All architectures', taxonomyOptions?.counts?.architecture || null);
             if (!selectedArchitecture && architectures.length === 1) selectedArchitecture = architectures[0];
             if (selectedArchitecture && architectures.includes(selectedArchitecture)) archSel.value = selectedArchitecture;
             else selectedArchitecture = '';
@@ -3877,7 +3901,7 @@
                 ? taxonomyOptions.family
                 : Array.from(new Set(byArch.map(b => boardTaxonomy(b).family))).sort((a, b) => a.localeCompare(b)));
             if (selectedFamily && !families.includes(selectedFamily)) selectedFamily = '';
-            setSelectOptions(famSel, families, 'All families');
+            setSelectOptions(famSel, families, 'All families', taxonomyOptions?.counts?.family || null);
             if (!selectedFamily && families.length === 1) selectedFamily = families[0];
             if (selectedFamily && families.includes(selectedFamily)) famSel.value = selectedFamily;
             else selectedFamily = '';
@@ -3887,7 +3911,7 @@
                 ? taxonomyOptions.silicon
                 : Array.from(new Set(byFam.map(b => boardTaxonomy(b).silicon))).sort((a, b) => a.localeCompare(b)));
             if (selectedSilicon && !silicons.includes(selectedSilicon)) selectedSilicon = '';
-            setSelectOptions(silSel, silicons, 'All processors');
+            setSelectOptions(silSel, silicons, 'All processors', taxonomyOptions?.counts?.silicon || null);
             if (!selectedSilicon && silicons.length === 1) selectedSilicon = silicons[0];
             if (selectedSilicon && silicons.includes(selectedSilicon)) silSel.value = selectedSilicon;
             else selectedSilicon = '';
@@ -6463,14 +6487,9 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 });
             }
 
-            document.getElementById('board-search').oninput = async () => {
-                await refreshTaxonomyOptionsFromApi().catch(err => {
-                    console.warn('Failed to refresh taxonomy options:', err);
-                    taxonomyOptions = null;
-                });
-                await refreshBoardsForCurrentFilters({ force: true });
-                populateBoardList();
+            document.getElementById('board-search').oninput = () => {
                 persistFilterStateToUrl();
+                scheduleBoardSearchRefresh();
             };
             
             document.getElementById('btn-next').onclick = nextStep;
