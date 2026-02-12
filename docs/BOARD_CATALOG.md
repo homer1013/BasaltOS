@@ -4,7 +4,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 
 ## Summary
 
-- Total boards: 33
+- Total boards: 34
 - Platforms: 10
 - Manufacturers: 16
 
@@ -13,7 +13,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 - atmega: 2
 - atsam: 3
 - avr: 2
-- esp32: 11
+- esp32: 12
 - linux-sbc: 1
 - pic16: 2
 - renesas_ra: 3
@@ -29,12 +29,12 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 - Renesas: 3
 - Adafruit: 2
 - DF Robot: 2
+- Elecrow: 2
 - M5Stack: 2
 - Microchip: 2
 - SparkFun: 2
 - STMicroelectronics: 2
 - AI-Thinker: 1
-- Elecrow: 1
 - Generic: 1
 - Seeed Studio: 1
 - Sunton: 1
@@ -43,7 +43,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 ### Boards per Architecture
 
 - ARM Cortex-M: 9
-- Xtensa: 8
+- Xtensa: 9
 - ARM Cortex-M0+: 4
 - AVR 8-bit: 4
 - RISC-V: 3
@@ -59,13 +59,13 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 - STM32F4: 3
 - ATmega328: 2
 - ESP32-C3: 2
+- ESP32-S3: 2
 - PIC16: 2
 - RA4: 2
 - ATmega2560: 1
 - ATmega32U4: 1
 - BCM2711: 1
 - ESP32-C6: 1
-- ESP32-S3: 1
 - Renesas RA: 1
 - Renesas RX: 1
 - RX65: 1
@@ -85,6 +85,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 | esp32 | dfrobot_beetle_esp32_c3 | dfrobot_beetle_esp32_c3 | DFRobot Beetle ESP32-C3 | DF Robot | RISC-V | ESP32-C3 | ESP32-C3 | 9 |
 | esp32 | dfrobot_firebeetle_esp32 | dfrobot_firebeetle_esp32 | DFRobot FireBeetle ESP32 | DF Robot | Xtensa | ESP32 | ESP32-WROOM-32E | 8 |
 | esp32 | elecrow_crowpanel_esp32 | elecrow_crowpanel_esp32 | Elecrow CrowPanel ESP32 | Elecrow | Xtensa | ESP32 | ESP32-WROOM-32 | 8 |
+| esp32 | elecrow_crowpanel_esp32_s3 | elecrow_crowpanel_esp32_s3 | Elecrow CrowPanel ESP32-S3 | Elecrow | Xtensa | ESP32-S3 | ESP32-S3 | 11 |
 | esp32 | esp32-c3-supermini | esp32-c3-supermini | ESP32-C3 SuperMini (Generic) | Generic | RISC-V | ESP32-C3 | ESP32-C3 | 8 |
 | esp32 | esp32-c6 | esp32-c6 | ESP32-C6 DevKit (Baseline) | Espressif | RISC-V | ESP32-C6 | ESP32-C6 | 8 |
 | esp32 | esp32-cam | esp32-cam | ESP32-CAM (AI-Thinker baseline) | AI-Thinker | Xtensa | ESP32 | ESP32-D0WDQ6 | 8 |

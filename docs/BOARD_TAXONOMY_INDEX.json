@@ -4,7 +4,7 @@
     "generator": "tools/generate_board_catalog.py"
   },
   "summary": {
-    "total_boards": 33,
+    "total_boards": 34,
     "platform_count": 10,
     "manufacturer_count": 16,
     "architecture_count": 8,
@@ -15,7 +15,7 @@
       "atmega": 2,
       "atsam": 3,
       "avr": 2,
-      "esp32": 11,
+      "esp32": 12,
       "linux-sbc": 1,
       "pic16": 2,
       "renesas_ra": 3,
@@ -30,12 +30,12 @@
       "Renesas": 3,
       "Adafruit": 2,
       "DF Robot": 2,
+      "Elecrow": 2,
       "M5Stack": 2,
       "Microchip": 2,
       "SparkFun": 2,
       "STMicroelectronics": 2,
       "AI-Thinker": 1,
-      "Elecrow": 1,
       "Generic": 1,
       "Seeed Studio": 1,
       "Sunton": 1,
@@ -43,7 +43,7 @@
     },
     "architecture": {
       "ARM Cortex-M": 9,
-      "Xtensa": 8,
+      "Xtensa": 9,
       "ARM Cortex-M0+": 4,
       "AVR 8-bit": 4,
       "RISC-V": 3,
@@ -58,13 +58,13 @@
       "STM32F4": 3,
       "ATmega328": 2,
       "ESP32-C3": 2,
+      "ESP32-S3": 2,
       "PIC16": 2,
       "RA4": 2,
       "ATmega2560": 1,
       "ATmega32U4": 1,
       "BCM2711": 1,
       "ESP32-C6": 1,
-      "ESP32-S3": 1,
       "Renesas RA": 1,
       "Renesas RX": 1,
       "RX65": 1
@@ -191,6 +191,17 @@
       "family": "ESP32",
       "mcu": "ESP32-WROOM-32",
       "caps_count": 8
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "elecrow_crowpanel_esp32_s3",
+      "id": "elecrow_crowpanel_esp32_s3",
+      "name": "Elecrow CrowPanel ESP32-S3",
+      "manufacturer": "Elecrow",
+      "architecture": "Xtensa",
+      "family": "ESP32-S3",
+      "mcu": "ESP32-S3",
+      "caps_count": 11
     },
     {
       "platform": "esp32",

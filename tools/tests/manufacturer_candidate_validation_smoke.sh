@@ -16,6 +16,7 @@ declare -a CANDIDATES=(
   "DF Robot|esp32|dfrobot_firebeetle_esp32|planned"
   "DF Robot|esp32|dfrobot_beetle_esp32_c3|metadata"
   "Elecrow|esp32|elecrow_crowpanel_esp32|planned"
+  "Elecrow|esp32|elecrow_crowpanel_esp32_s3|metadata"
 )
 
 pass=0
