@@ -6,6 +6,7 @@ guest mode (local-only) to account mode (cloud-backed).
 Status:
 - Local guest-first storage contract exists in `docs/LOCAL_DATA_WORKSPACE.md`.
 - This document defines the payload + behavior handoff for Platform integration.
+- Export tool: `python3 tools/export_local_sync_payload.py`
 
 ## Principles
 

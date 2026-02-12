@@ -15,6 +15,7 @@
 - `new_app.py` – create a new app skeleton (app.toml + main.py)
 - `basaltos_config_server.py` – local configurator backend + App Market API
 - `platformio/bootstrap_from_features.py` – generate a PlatformIO phase-1 starter config from `config/generated/basalt.features.json`
+- `export_local_sync_payload.py` – export local guest data to schema-versioned sync payload (`docs/GUEST_SYNC_CONTRACT.md`)
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -118,6 +119,12 @@ Local-mode UI/API guard test (market/profile hidden + market API disabled):
 
 ```bash
 node tools/e2e/local_mode_nav_guard.js
+```
+
+Local sync payload export smoke:
+
+```bash
+bash tools/tests/export_local_sync_payload_smoke.sh
 ```
 
 

@@ -62,6 +62,7 @@ Use:
 ```bash
 python3 tools/local_data_migrate.py --dry-run
 python3 tools/local_data_migrate.py --apply
+python3 tools/export_local_sync_payload.py
 ```
 
 This helper can migrate common ad-hoc local folders (for example `build_*`) into
