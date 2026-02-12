@@ -405,6 +405,18 @@
             background: transparent;
         }
 
+        .board-perf-panel {
+            margin-top: 8px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px dashed #cbd5e0;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 11px;
+            line-height: 1.45;
+            display: none;
+        }
+
         .main-content {
             background: white;
             padding: 30px;
@@ -1794,6 +1806,7 @@
                     <ul class="board-list" id="board-list">
                         <!-- Populated by JavaScript -->
                     </ul>
+                    <div id="board-perf-panel" class="board-perf-panel"></div>
                 </div>
             </div>
 
@@ -3144,7 +3157,10 @@
         let boardVirtualRows = [];
         let boardVirtualOffsets = [];
         let boardVirtualTotalHeight = 0;
+        let boardVirtualItemCount = 0;
         let boardVirtualRafId = 0;
+        let boardPerfEnabled = false;
+        let boardLastRenderMs = 0;
 
         const MODULE_ICONS = {
             uart: '📡',
@@ -3774,6 +3790,7 @@
             selectedSilicon = String(params.get('silicon') || '').trim();
             pendingBoardIdFromUrl = String(params.get('board') || '').trim();
             pendingSearchFromUrl = String(params.get('q') || '').trim();
+            boardPerfEnabled = String(params.get('debug_perf') || '').trim() === '1';
         }
 
         function persistFilterStateToUrl() {
@@ -3795,6 +3812,23 @@
             });
             const next = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
             window.history.replaceState(null, '', next);
+        }
+
+        function initBoardPerfPanel() {
+            const panel = document.getElementById('board-perf-panel');
+            if (!panel) return;
+            panel.style.display = boardPerfEnabled ? 'block' : 'none';
+            if (boardPerfEnabled) {
+                panel.textContent = 'Board Perf: waiting for first render...';
+            }
+        }
+
+        function updateBoardPerfPanel({ mode = 'full', totalRows = 0, renderedRows = 0, totalBoards = 0, ms = boardLastRenderMs } = {}) {
+            if (!boardPerfEnabled) return;
+            const panel = document.getElementById('board-perf-panel');
+            if (!panel) return;
+            const m = Number(ms || 0);
+            panel.textContent = `Board Perf: mode=${mode} rows=${renderedRows}/${totalRows} boards=${totalBoards} render=${m.toFixed(2)}ms`;
         }
 
         function taxonomyOptionsUrl(params = {}) {
@@ -4958,6 +4992,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         // Initialize
         async function init() {
             loadFilterStateFromUrl();
+            initBoardPerfPanel();
             const ok = await loadFromApi();
             await populatePlatformSelect();
             const searchInput = document.getElementById('board-search');
@@ -5113,6 +5148,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             boardVirtualRows = rows;
             boardVirtualOffsets = offsets;
             boardVirtualTotalHeight = y;
+            boardVirtualItemCount = rows.filter(r => r.type === 'item').length;
         }
 
         function findBoardVirtualRowIndex(y) {
@@ -5131,6 +5167,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             if (!boardVirtualEnabled) return;
             const boardList = document.getElementById('board-list');
             if (!boardList) return;
+            const t0 = performance.now();
             const viewportH = Math.max(boardList.clientHeight || 0, 1);
             const scrollTop = Math.max(boardList.scrollTop || 0, 0);
             const startY = Math.max(0, scrollTop - BOARD_VIRTUAL_OVERSCAN_PX);
@@ -5161,6 +5198,14 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 frag.appendChild(spacerBottom);
             }
             boardList.appendChild(frag);
+            boardLastRenderMs = performance.now() - t0;
+            updateBoardPerfPanel({
+                mode: 'virtual',
+                totalRows: boardVirtualRows.length,
+                renderedRows: Math.max(0, endIdx - startIdx + 1),
+                totalBoards: boardVirtualItemCount,
+                ms: boardLastRenderMs,
+            });
         }
 
         function scheduleBoardVirtualRender() {
@@ -5175,6 +5220,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         function renderBoardListFull(groupEntries) {
             const boardList = document.getElementById('board-list');
             if (!boardList) return;
+            const t0 = performance.now();
             boardList.innerHTML = '';
             const frag = document.createDocumentFragment();
             groupEntries.forEach(g => {
@@ -5185,6 +5231,16 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 frag.appendChild(groupWrap);
             });
             boardList.appendChild(frag);
+            boardLastRenderMs = performance.now() - t0;
+            const totalRows = groupEntries.reduce((n, g) => n + g.boards.length + 1, 0);
+            const totalBoards = groupEntries.reduce((n, g) => n + g.boards.length, 0);
+            updateBoardPerfPanel({
+                mode: 'full',
+                totalRows,
+                renderedRows: totalRows,
+                totalBoards,
+                ms: boardLastRenderMs,
+            });
         }
 
         function populateBoardList() {
@@ -5196,6 +5252,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             boardVirtualRows = [];
             boardVirtualOffsets = [];
             boardVirtualTotalHeight = 0;
+            boardVirtualItemCount = 0;
             if (boardVirtualRafId) {
                 window.cancelAnimationFrame(boardVirtualRafId);
                 boardVirtualRafId = 0;
@@ -5214,6 +5271,8 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             if (platformSelect) platformSelect.value = selectedPlatform || '';
             if (!filteredBoards.length) {
                 boardList.innerHTML = `<li class="board-empty">No boards match your current filter.<br>${buildBoardEmptyHint()}</li>`;
+                boardLastRenderMs = 0;
+                updateBoardPerfPanel({ mode: 'empty', totalRows: 0, renderedRows: 0, totalBoards: 0, ms: 0 });
                 renderHardwarePath();
                 persistFilterStateToUrl();
                 return;

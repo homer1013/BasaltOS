@@ -63,6 +63,7 @@ python tools/basaltos_config_server.py
 Board picker behavior:
 - When a platform is selected, the UI calls filtered `/api/boards/<platform>` requests using taxonomy fields (`manufacturer`, `architecture`, `family`).
 - Filter/search state is persisted to URL query params for quick reload/share during local dev.
+- Optional picker perf telemetry panel: add `?debug_perf=1` to the configurator URL.
 
 ## Expected Outputs
 
