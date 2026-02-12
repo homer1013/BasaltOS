@@ -77,6 +77,19 @@ curl --fail-with-body -sS "http://127.0.0.1:5000/api/drivers?platform=esp32"
 If you are looking for hosted marketplace/account/community capabilities, those
 belong in the future `basaltos.io` platform codebase, not this local repo tool.
 
+## Local Data Workspace
+
+Local-only user data and caches should live under the workspace contract in:
+
+- `docs/LOCAL_DATA_WORKSPACE.md`
+
+Quick migration helper:
+
+```bash
+python3 tools/local_data_migrate.py --dry-run
+python3 tools/local_data_migrate.py --apply
+```
+
 ## Local Mode Guard Checks
 
 Verify local-mode scope enforcement:

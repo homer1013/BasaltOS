@@ -83,7 +83,6 @@ What’s working today:
   - CLI wizard now starts board-first with taxonomy filters:
     - Manufacturer -> Architecture -> Family -> Processor/Silicon -> Board
   - Local web configurator: `python tools/basaltos_config_server.py`
-  - dedicated **App Market page** for selecting compatible apps
   - generated outputs:
     - `config/generated/basalt_config.h`
     - `config/generated/basalt.features.json`
@@ -212,6 +211,16 @@ http://localhost:5000
 ```
 
 This is intended for local workflow right now (no hosting/deployment required).
+
+## Local Data Workspace
+
+BasaltOS keeps local-only user data and machine-specific cache outside git under a
+canonical local workspace root.
+
+- Contract: `docs/LOCAL_DATA_WORKSPACE.md`
+- Migration helper:
+  - `python3 tools/local_data_migrate.py --dry-run`
+  - `python3 tools/local_data_migrate.py --apply`
 
 First-success checkpoint:
 - device boots without crash/reset loop
