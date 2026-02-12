@@ -51,6 +51,11 @@ Expected generated files:
 - `config/generated/sdkconfig.defaults`
 - `config/generated/basalt.features.json`
 
+Optional quick check:
+```bash
+ls -1 config/generated/{basalt_config.h,sdkconfig.defaults,basalt.features.json}
+```
+
 ## 4) Build firmware
 ```bash
 SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build set-target esp32c3
@@ -61,6 +66,13 @@ Expected:
 - build exits `0`
 - firmware artifacts exist under `build/`
 
+Expected output snippet (build):
+```text
+Project build complete.
+To flash, run this command:
+idf.py -p (PORT) flash
+```
+
 ## 5) Flash and monitor
 ```bash
 idf.py -B build -p /dev/ttyUSB0 flash monitor
@@ -70,6 +82,25 @@ Expected runtime sanity checks:
 - device boots without panic/reset loop
 - shell prompt appears
 - `help -commands` prints command list
+
+Expected output snippet (boot + shell):
+```text
+Basalt OS booted. Type 'help'.
+basalt> help
+Basalt shell. Type 'help -commands' for the list, or 'help <cmd>' for details.
+basalt> help -commands
+Shell level: full
+```
+
+Quick shell verification commands:
+```text
+basalt> drivers
+basalt> help run
+```
+
+Expected behavior:
+- `drivers` prints enabled/disabled driver states
+- `help run` prints usage text like `run <app|script>`
 
 Exit monitor:
 - `Ctrl+]`
@@ -87,6 +118,7 @@ You are successful when all are true:
 - firmware built successfully
 - flash completed
 - shell is reachable and responds to `help -commands`
+- prompt accepts command input without crashing or reboot looping
 
 ## Next steps after first success
 - Try local configurator: `python tools/basaltos_config_server.py`
