@@ -4,6 +4,7 @@ config/generated/
 # Build outputs
 build/
 */build/
+build_*/
 
 # Release output (keep folder, ignore contents)
 dist/*
