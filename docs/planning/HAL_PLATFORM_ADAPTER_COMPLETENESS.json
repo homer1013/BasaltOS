@@ -1,0 +1,152 @@
+{
+  "version": "1.0.0",
+  "generator": "tools/generate_hal_platform_adapter_completeness.py",
+  "sources": {
+    "matrix": "docs/planning/HAL_ADAPTER_MATRIX.json",
+    "policy": "docs/planning/HAL_CONTRACT_POLICY.json",
+    "boards_glob": "boards/**/board.json"
+  },
+  "summary": {
+    "required_adapter_count": 8,
+    "required_board_count": 25,
+    "status_counts": {
+      "partial": 1,
+      "complete": 7
+    },
+    "contract_state_counts": {
+      "pass_acknowledged_partial": 1,
+      "pass": 7
+    },
+    "blocking_gaps": 0
+  },
+  "rows": [
+    {
+      "port": "esp32",
+      "status": "partial",
+      "contract_state": "pass_acknowledged_partial",
+      "reason": "Partial adapter is explicitly acknowledged in HAL policy.",
+      "required_board_count": 7,
+      "required_boards": [
+        "cyd",
+        "dfrobot_firebeetle_esp32",
+        "elecrow_crowpanel_esp32",
+        "esp32-cam",
+        "esp32-devkitc_v4",
+        "m5stack_core2",
+        "m5stickc_plus2"
+      ],
+      "present_count": 3,
+      "missing_count": 6,
+      "missing_primitives": [
+        "adc",
+        "fs",
+        "pwm",
+        "spi",
+        "sys",
+        "timer"
+      ]
+    },
+    {
+      "port": "esp32c3",
+      "status": "complete",
+      "contract_state": "pass",
+      "reason": "Adapter is complete for required platform.",
+      "required_board_count": 2,
+      "required_boards": [
+        "dfrobot_beetle_esp32_c3",
+        "esp32-c3-supermini"
+      ],
+      "present_count": 9,
+      "missing_count": 0,
+      "missing_primitives": []
+    },
+    {
+      "port": "esp32c6",
+      "status": "complete",
+      "contract_state": "pass",
+      "reason": "Adapter is complete for required platform.",
+      "required_board_count": 1,
+      "required_boards": [
+        "esp32-c6"
+      ],
+      "present_count": 9,
+      "missing_count": 0,
+      "missing_primitives": []
+    },
+    {
+      "port": "esp32s3",
+      "status": "complete",
+      "contract_state": "pass",
+      "reason": "Adapter is complete for required platform.",
+      "required_board_count": 2,
+      "required_boards": [
+        "elecrow_crowpanel_esp32_s3",
+        "esp32s3_devkitc_1"
+      ],
+      "present_count": 9,
+      "missing_count": 0,
+      "missing_primitives": []
+    },
+    {
+      "port": "pic16",
+      "status": "complete",
+      "contract_state": "pass",
+      "reason": "Adapter is complete for required platform.",
+      "required_board_count": 2,
+      "required_boards": [
+        "curiosity_nano_pic16f13145",
+        "pic16f873-minimal"
+      ],
+      "present_count": 9,
+      "missing_count": 0,
+      "missing_primitives": []
+    },
+    {
+      "port": "ra4m1",
+      "status": "complete",
+      "contract_state": "pass",
+      "reason": "Adapter is complete for required platform.",
+      "required_board_count": 3,
+      "required_boards": [
+        "arduino_uno_r4_minima",
+        "arduino_uno_r4_wifi",
+        "ek_ra4m1"
+      ],
+      "present_count": 9,
+      "missing_count": 0,
+      "missing_primitives": []
+    },
+    {
+      "port": "rp2040",
+      "status": "complete",
+      "contract_state": "pass",
+      "reason": "Adapter is complete for required platform.",
+      "required_board_count": 5,
+      "required_boards": [
+        "adafruit_feather_rp2040",
+        "raspberry_pi_pico",
+        "raspberry_pi_pico_w",
+        "seeed_xiao_rp2040",
+        "sparkfun_thing_plus_rp2040"
+      ],
+      "present_count": 9,
+      "missing_count": 0,
+      "missing_primitives": []
+    },
+    {
+      "port": "stm32",
+      "status": "complete",
+      "contract_state": "pass",
+      "reason": "Adapter is complete for required platform.",
+      "required_board_count": 3,
+      "required_boards": [
+        "blackpill_f411ce",
+        "nucleo_f401re",
+        "nucleo_f446re"
+      ],
+      "present_count": 9,
+      "missing_count": 0,
+      "missing_primitives": []
+    }
+  ]
+}

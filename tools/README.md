@@ -31,6 +31,7 @@
 - `generate_psram_posture_report.py` – generate PSRAM capability posture policy report (`docs/planning/PSRAM_CAPABILITY_POSTURE.json`, `docs/planning/PSRAM_CAPABILITY_POSTURE.md`)
 - `generate_tp4056_posture_report.py` – generate TP4056 capability posture policy report (`docs/planning/TP4056_CAPABILITY_POSTURE.json`, `docs/planning/TP4056_CAPABILITY_POSTURE.md`)
 - `generate_hal_adapter_matrix.py` – generate HAL port adapter coverage matrix artifacts (`docs/planning/HAL_ADAPTER_MATRIX.csv`, `docs/planning/HAL_ADAPTER_MATRIX.json`, `docs/planning/HAL_ADAPTER_MATRIX.md`)
+- `generate_hal_platform_adapter_completeness.py` – generate required platform adapter completeness artifacts (`docs/planning/HAL_PLATFORM_ADAPTER_COMPLETENESS.json`, `docs/planning/HAL_PLATFORM_ADAPTER_COMPLETENESS.md`)
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -266,6 +267,12 @@ HAL contract policy smoke:
 
 ```bash
 bash tools/tests/hal_contract_policy_smoke.sh
+```
+
+HAL platform adapter completeness smoke:
+
+```bash
+bash tools/tests/hal_platform_adapter_completeness_smoke.sh
 ```
 
 
