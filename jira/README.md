@@ -62,6 +62,18 @@ bash jira/scripts/report_daily_status.sh
 
 This writes `daily_status_*.md` and `daily_social_*.md` to `jira/reports/`.
 
+Weekly shipping summary + release/tag/jira alignment checklist:
+
+```bash
+bash jira/scripts/report_weekly_shipping.sh
+```
+
+Optional arguments:
+- `bash jira/scripts/report_weekly_shipping.sh <export_dir> <days> [version]`
+- Example: `bash jira/scripts/report_weekly_shipping.sh jira/exports/2026-02-13 7 v0.1.0`
+
+This writes `weekly_shipping_*.md` and `weekly_alignment_*.md` to `jira/reports/`.
+
 
 Sprint cadence policy:
 

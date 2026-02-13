@@ -44,7 +44,7 @@ curl --fail-with-body -sS -u "$JIRA_EMAIL:$JIRA_TOKEN" -H "Accept: application/j
   --get "$JIRA_SITE/rest/api/3/search/jql" \
   --data-urlencode "jql=project=$JIRA_PROJECT_KEY ORDER BY key ASC" \
   --data-urlencode "maxResults=500" \
-  --data-urlencode "fields=summary,issuetype,status,labels,assignee,parent,priority,duedate,customfield_10016,customfield_10020" \
+  --data-urlencode "fields=summary,issuetype,status,labels,assignee,parent,priority,duedate,created,updated,resolutiondate,customfield_10016,customfield_10020" \
   > "$OUT_DIR/issues.json"
 
 tar -czf "$ROOT/exports/jira_export_${DATE}.tar.gz" -C "$ROOT/exports" "$DATE"
