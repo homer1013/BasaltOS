@@ -16,9 +16,7 @@ This policy controls runtime init/status contract coverage checks for required H
 
 ## Current Acknowledged Missing Runtime Implementation Ports
 
-- `pic16`
-- `ra4m1`
-- `rp2040`
+- none
 
 Machine-readable policy source:
 

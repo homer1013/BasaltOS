@@ -1,182 +1,102 @@
-#pragma once
-/*
- * BasaltOS Hardware Abstraction Layer - UART
- *
- * Portable UART contract used by BasaltOS.
- *
- * Rules:
- *  - No vendor SDK headers here (ESP-IDF, Pico SDK, STM32 HAL, etc.)
- *  - Consistent error model:
- *      0 / -errno for config calls
- *      bytes / -errno for send/recv calls
- *  - Blocking behavior must be explicit via timeout_ms
- */
+// BasaltOS RA4M1 HAL - I2C
+//
+// Minimal runtime contract implementation for:
+//   hal/include/hal/hal_i2c.h
 
+#include <errno.h>
 #include <stdint.h>
-#include <stddef.h>
-#include "hal/hal_types.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* ------------------------------------------------------------
- * UART configuration types
- * ------------------------------------------------------------ */
-
-typedef enum {
-    HAL_UART_PARITY_NONE = 0,
-    HAL_UART_PARITY_EVEN,
-    HAL_UART_PARITY_ODD,
-} hal_uart_parity_t;
-
-typedef enum {
-    HAL_UART_STOP_BITS_1 = 0,
-    HAL_UART_STOP_BITS_2,
-} hal_uart_stop_bits_t;
-
-typedef enum {
-    HAL_UART_DATA_BITS_5 = 5,
-    HAL_UART_DATA_BITS_6 = 6,
-    HAL_UART_DATA_BITS_7 = 7,
-    HAL_UART_DATA_BITS_8 = 8,
-} hal_uart_data_bits_t;
-
-typedef enum {
-    HAL_UART_FLOW_NONE = 0,
-    HAL_UART_FLOW_RTS_CTS,
-    HAL_UART_FLOW_XON_XOFF,
-} hal_uart_flow_t;
-
-/* ------------------------------------------------------------
- * UART init configuration (optional helper)
- * ------------------------------------------------------------ */
+#include "hal/hal_i2c.h"
 
 typedef struct {
-    uint32_t baud;                 // e.g. 115200
-    hal_uart_data_bits_t data_bits;
-    hal_uart_stop_bits_t stop_bits;
-    hal_uart_parity_t parity;
-    hal_uart_flow_t flow;
-} hal_uart_config_t;
+    int bus;
+    uint32_t freq_hz;
+    int sda_pin;
+    int scl_pin;
+    int initialized;
+} hal_i2c_impl_t;
 
-/* Recommended default config */
-static inline hal_uart_config_t hal_uart_config_default(uint32_t baud) {
-    hal_uart_config_t c;
-    c.baud = baud;
-    c.data_bits = HAL_UART_DATA_BITS_8;
-    c.stop_bits = HAL_UART_STOP_BITS_1;
-    c.parity = HAL_UART_PARITY_NONE;
-    c.flow = HAL_UART_FLOW_NONE;
-    return c;
+_Static_assert(sizeof(hal_i2c_impl_t) <= sizeof(((hal_i2c_t *)0)->_opaque),
+               "hal_i2c_t opaque storage too small for ra4m1 hal_i2c_impl_t");
+
+static inline hal_i2c_impl_t *I(hal_i2c_t *i2c) {
+    return (hal_i2c_impl_t *)i2c->_opaque;
 }
 
-/* ------------------------------------------------------------
- * API
- * ------------------------------------------------------------ */
-
-/**
- * @brief Initialize a UART peripheral.
- *
- * @param u     UART handle storage (caller-provided)
- * @param bus   Platform UART index (e.g. 0,1,2)
- * @param baud  Baud rate (e.g. 115200)
- *
- * @return 0 on success, -errno on failure
- *
- * Notes:
- *  - Minimal profile required
- *  - Non-blocking configuration call
- */
-int hal_uart_init(hal_uart_t *u, int bus, uint32_t baud);
-
-/**
- * @brief Initialize UART with a full configuration (optional).
- *
- * @return 0 on success, -errno on failure
- *
- * Platforms may return -ENOSYS if only basic init is supported.
- */
-int hal_uart_init_ex(hal_uart_t *u, int bus, const hal_uart_config_t *cfg);
-
-/**
- * @brief Deinitialize the UART peripheral.
- */
-int hal_uart_deinit(hal_uart_t *u);
-
-/**
- * @brief Send bytes over UART.
- *
- * @param timeout_ms  0 = nonblocking attempt
- *                    >0 = block up to timeout
- *                    UINT32_MAX = block "forever" (platform-defined)
- *
- * @return bytes sent on success, -errno on failure
- *
- * Thread-safety:
- *  - ISR: No
- *  - Blocking: Yes (depending on timeout)
- */
-int hal_uart_send(hal_uart_t *u,
-                  const uint8_t *buf,
-                  size_t len,
-                  uint32_t timeout_ms);
-
-/**
- * @brief Receive bytes over UART.
- *
- * @param timeout_ms  0 = nonblocking attempt
- *                    >0 = block up to timeout
- *                    UINT32_MAX = block "forever" (platform-defined)
- *
- * @return bytes received on success, -errno on failure
- *
- * Thread-safety:
- *  - ISR: No
- *  - Blocking: Yes (depending on timeout)
- */
-int hal_uart_recv(hal_uart_t *u,
-                  uint8_t *buf,
-                  size_t len,
-                  uint32_t timeout_ms);
-
-/**
- * @brief Flush the TX path (ensure all bytes are transmitted).
- *
- * @return 0 on success, -errno on failure
- *
- * May block until drained.
- */
-int hal_uart_flush(hal_uart_t *u);
-
-/**
- * @brief Query number of bytes available to read without blocking.
- *
- * @param avail receives number of readable bytes
- *
- * @return 0 on success, -errno on failure
- */
-int hal_uart_available(hal_uart_t *u, size_t *avail);
-
-/**
- * @brief Set baud rate after initialization.
- */
-int hal_uart_set_baud(hal_uart_t *u, uint32_t baud);
-
-/**
- * @brief Configure flow control (RTS/CTS or XON/XOFF) if supported.
- *
- * Platforms that do not support flow control may return -ENOSYS.
- */
-int hal_uart_set_flow(hal_uart_t *u, hal_uart_flow_t flow);
-
-/**
- * @brief Send a UART break condition (optional).
- *
- * Platforms that do not support this may return -ENOSYS.
- */
-int hal_uart_set_break(hal_uart_t *u, uint32_t duration_ms);
-
-#ifdef __cplusplus
+static inline int valid_addr7(uint8_t addr) {
+    return addr <= 0x7F;
 }
-#endif
+
+int hal_i2c_init(hal_i2c_t *i2c, int bus, uint32_t freq_hz, int sda_pin, int scl_pin) {
+    if (!i2c) return -EINVAL;
+    if (bus < 0 || freq_hz == 0 || sda_pin < 0 || scl_pin < 0) return -EINVAL;
+    hal_i2c_impl_t *impl = I(i2c);
+    impl->bus = bus;
+    impl->freq_hz = freq_hz;
+    impl->sda_pin = sda_pin;
+    impl->scl_pin = scl_pin;
+    impl->initialized = 1;
+    return 0;
+}
+
+int hal_i2c_deinit(hal_i2c_t *i2c) {
+    if (!i2c) return -EINVAL;
+    hal_i2c_impl_t *impl = I(i2c);
+    if (!impl->initialized) return -EINVAL;
+    impl->initialized = 0;
+    return 0;
+}
+
+int hal_i2c_set_freq(hal_i2c_t *i2c, uint32_t freq_hz) {
+    if (!i2c || freq_hz == 0) return -EINVAL;
+    hal_i2c_impl_t *impl = I(i2c);
+    if (!impl->initialized) return -EINVAL;
+    impl->freq_hz = freq_hz;
+    return 0;
+}
+
+int hal_i2c_probe(hal_i2c_t *i2c, uint8_t addr, uint32_t timeout_ms) {
+    (void)timeout_ms;
+    if (!i2c || !valid_addr7(addr)) return -EINVAL;
+    hal_i2c_impl_t *impl = I(i2c);
+    if (!impl->initialized) return -EINVAL;
+    return -ENOSYS;
+}
+
+int hal_i2c_write(hal_i2c_t *i2c, uint8_t addr,
+                  const uint8_t *data, size_t len,
+                  uint32_t timeout_ms) {
+    (void)timeout_ms;
+    if (!i2c || !valid_addr7(addr)) return -EINVAL;
+    if (len > 0 && data == NULL) return -EINVAL;
+    hal_i2c_impl_t *impl = I(i2c);
+    if (!impl->initialized) return -EINVAL;
+    if (len == 0) return 0;
+    return -ENOSYS;
+}
+
+int hal_i2c_read(hal_i2c_t *i2c, uint8_t addr,
+                 uint8_t *data, size_t len,
+                 uint32_t timeout_ms) {
+    (void)timeout_ms;
+    if (!i2c || !valid_addr7(addr)) return -EINVAL;
+    if (len > 0 && data == NULL) return -EINVAL;
+    hal_i2c_impl_t *impl = I(i2c);
+    if (!impl->initialized) return -EINVAL;
+    if (len == 0) return 0;
+    return -ENOSYS;
+}
+
+int hal_i2c_write_read(hal_i2c_t *i2c, uint8_t addr,
+                       const uint8_t *wdata, size_t wlen,
+                       uint8_t *rdata, size_t rlen,
+                       uint32_t timeout_ms) {
+    (void)timeout_ms;
+    if (!i2c || !valid_addr7(addr)) return -EINVAL;
+    if (wlen > 0 && wdata == NULL) return -EINVAL;
+    if (rlen > 0 && rdata == NULL) return -EINVAL;
+    hal_i2c_impl_t *impl = I(i2c);
+    if (!impl->initialized) return -EINVAL;
+    if (wlen == 0 && rlen == 0) return 0;
+    return -ENOSYS;
+}

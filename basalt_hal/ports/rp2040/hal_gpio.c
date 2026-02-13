@@ -1,182 +1,158 @@
-#pragma once
-/*
- * BasaltOS Hardware Abstraction Layer - UART
- *
- * Portable UART contract used by BasaltOS.
- *
- * Rules:
- *  - No vendor SDK headers here (ESP-IDF, Pico SDK, STM32 HAL, etc.)
- *  - Consistent error model:
- *      0 / -errno for config calls
- *      bytes / -errno for send/recv calls
- *  - Blocking behavior must be explicit via timeout_ms
- */
+// BasaltOS RP2040 HAL - GPIO
+//
+// Minimal runtime contract implementation for:
+//   hal/include/hal/hal_gpio.h
+//
+// Note:
+// - This provides concrete function bodies and state handling for foundation
+//   contract validation.
+// - Hardware-specific register/LL binding can be layered in later slices.
 
+#include <errno.h>
+#include <stdbool.h>
 #include <stdint.h>
-#include <stddef.h>
-#include "hal/hal_types.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* ------------------------------------------------------------
- * UART configuration types
- * ------------------------------------------------------------ */
-
-typedef enum {
-    HAL_UART_PARITY_NONE = 0,
-    HAL_UART_PARITY_EVEN,
-    HAL_UART_PARITY_ODD,
-} hal_uart_parity_t;
-
-typedef enum {
-    HAL_UART_STOP_BITS_1 = 0,
-    HAL_UART_STOP_BITS_2,
-} hal_uart_stop_bits_t;
-
-typedef enum {
-    HAL_UART_DATA_BITS_5 = 5,
-    HAL_UART_DATA_BITS_6 = 6,
-    HAL_UART_DATA_BITS_7 = 7,
-    HAL_UART_DATA_BITS_8 = 8,
-} hal_uart_data_bits_t;
-
-typedef enum {
-    HAL_UART_FLOW_NONE = 0,
-    HAL_UART_FLOW_RTS_CTS,
-    HAL_UART_FLOW_XON_XOFF,
-} hal_uart_flow_t;
-
-/* ------------------------------------------------------------
- * UART init configuration (optional helper)
- * ------------------------------------------------------------ */
+#include "hal/hal_gpio.h"
 
 typedef struct {
-    uint32_t baud;                 // e.g. 115200
-    hal_uart_data_bits_t data_bits;
-    hal_uart_stop_bits_t stop_bits;
-    hal_uart_parity_t parity;
-    hal_uart_flow_t flow;
-} hal_uart_config_t;
+    int pin;
+    int initialized;
+    int level;
+    int irq_enabled;
+    hal_gpio_mode_t mode;
+    hal_gpio_pull_t pull;
+    hal_gpio_drive_t drive;
+    hal_gpio_irq_t irq_trig;
+    hal_gpio_irq_cb_t irq_cb;
+    void *irq_arg;
+} hal_gpio_impl_t;
 
-/* Recommended default config */
-static inline hal_uart_config_t hal_uart_config_default(uint32_t baud) {
-    hal_uart_config_t c;
-    c.baud = baud;
-    c.data_bits = HAL_UART_DATA_BITS_8;
-    c.stop_bits = HAL_UART_STOP_BITS_1;
-    c.parity = HAL_UART_PARITY_NONE;
-    c.flow = HAL_UART_FLOW_NONE;
-    return c;
+_Static_assert(sizeof(hal_gpio_impl_t) <= sizeof(((hal_gpio_t *)0)->_opaque),
+               "hal_gpio_t opaque storage too small for rp2040 hal_gpio_impl_t");
+
+static inline hal_gpio_impl_t *G(hal_gpio_t *g) {
+    return (hal_gpio_impl_t *)g->_opaque;
 }
 
-/* ------------------------------------------------------------
- * API
- * ------------------------------------------------------------ */
-
-/**
- * @brief Initialize a UART peripheral.
- *
- * @param u     UART handle storage (caller-provided)
- * @param bus   Platform UART index (e.g. 0,1,2)
- * @param baud  Baud rate (e.g. 115200)
- *
- * @return 0 on success, -errno on failure
- *
- * Notes:
- *  - Minimal profile required
- *  - Non-blocking configuration call
- */
-int hal_uart_init(hal_uart_t *u, int bus, uint32_t baud);
-
-/**
- * @brief Initialize UART with a full configuration (optional).
- *
- * @return 0 on success, -errno on failure
- *
- * Platforms may return -ENOSYS if only basic init is supported.
- */
-int hal_uart_init_ex(hal_uart_t *u, int bus, const hal_uart_config_t *cfg);
-
-/**
- * @brief Deinitialize the UART peripheral.
- */
-int hal_uart_deinit(hal_uart_t *u);
-
-/**
- * @brief Send bytes over UART.
- *
- * @param timeout_ms  0 = nonblocking attempt
- *                    >0 = block up to timeout
- *                    UINT32_MAX = block "forever" (platform-defined)
- *
- * @return bytes sent on success, -errno on failure
- *
- * Thread-safety:
- *  - ISR: No
- *  - Blocking: Yes (depending on timeout)
- */
-int hal_uart_send(hal_uart_t *u,
-                  const uint8_t *buf,
-                  size_t len,
-                  uint32_t timeout_ms);
-
-/**
- * @brief Receive bytes over UART.
- *
- * @param timeout_ms  0 = nonblocking attempt
- *                    >0 = block up to timeout
- *                    UINT32_MAX = block "forever" (platform-defined)
- *
- * @return bytes received on success, -errno on failure
- *
- * Thread-safety:
- *  - ISR: No
- *  - Blocking: Yes (depending on timeout)
- */
-int hal_uart_recv(hal_uart_t *u,
-                  uint8_t *buf,
-                  size_t len,
-                  uint32_t timeout_ms);
-
-/**
- * @brief Flush the TX path (ensure all bytes are transmitted).
- *
- * @return 0 on success, -errno on failure
- *
- * May block until drained.
- */
-int hal_uart_flush(hal_uart_t *u);
-
-/**
- * @brief Query number of bytes available to read without blocking.
- *
- * @param avail receives number of readable bytes
- *
- * @return 0 on success, -errno on failure
- */
-int hal_uart_available(hal_uart_t *u, size_t *avail);
-
-/**
- * @brief Set baud rate after initialization.
- */
-int hal_uart_set_baud(hal_uart_t *u, uint32_t baud);
-
-/**
- * @brief Configure flow control (RTS/CTS or XON/XOFF) if supported.
- *
- * Platforms that do not support flow control may return -ENOSYS.
- */
-int hal_uart_set_flow(hal_uart_t *u, hal_uart_flow_t flow);
-
-/**
- * @brief Send a UART break condition (optional).
- *
- * Platforms that do not support this may return -ENOSYS.
- */
-int hal_uart_set_break(hal_uart_t *u, uint32_t duration_ms);
-
-#ifdef __cplusplus
+static inline int gpio_valid_pin(int pin) {
+    return pin >= 0;
 }
-#endif
+
+int hal_gpio_init(hal_gpio_t *gpio, int pin) {
+    if (!gpio || !gpio_valid_pin(pin)) return -EINVAL;
+    hal_gpio_impl_t *g = G(gpio);
+    g->pin = pin;
+    g->initialized = 1;
+    g->level = 0;
+    g->irq_enabled = 0;
+    g->mode = HAL_GPIO_INPUT;
+    g->pull = HAL_GPIO_PULL_NONE;
+    g->drive = HAL_GPIO_DRIVE_DEFAULT;
+    g->irq_trig = HAL_GPIO_IRQ_NONE;
+    g->irq_cb = NULL;
+    g->irq_arg = NULL;
+    return 0;
+}
+
+int hal_gpio_deinit(hal_gpio_t *gpio) {
+    if (!gpio) return -EINVAL;
+    hal_gpio_impl_t *g = G(gpio);
+    if (!g->initialized) return -EINVAL;
+    g->initialized = 0;
+    g->irq_enabled = 0;
+    g->irq_cb = NULL;
+    g->irq_arg = NULL;
+    return 0;
+}
+
+int hal_gpio_set_mode(hal_gpio_t *gpio, hal_gpio_mode_t mode) {
+    if (!gpio) return -EINVAL;
+    hal_gpio_impl_t *g = G(gpio);
+    if (!g->initialized) return -EINVAL;
+    if (mode < HAL_GPIO_INPUT || mode > HAL_GPIO_OPEN_DRAIN) return -EINVAL;
+    g->mode = mode;
+    return 0;
+}
+
+int hal_gpio_set_pull(hal_gpio_t *gpio, hal_gpio_pull_t pull) {
+    if (!gpio) return -EINVAL;
+    hal_gpio_impl_t *g = G(gpio);
+    if (!g->initialized) return -EINVAL;
+    if (pull < HAL_GPIO_PULL_NONE || pull > HAL_GPIO_PULL_DOWN) return -EINVAL;
+    g->pull = pull;
+    return 0;
+}
+
+int hal_gpio_set_drive(hal_gpio_t *gpio, hal_gpio_drive_t drive) {
+    if (!gpio) return -EINVAL;
+    hal_gpio_impl_t *g = G(gpio);
+    if (!g->initialized) return -EINVAL;
+    if (drive < HAL_GPIO_DRIVE_DEFAULT || drive > HAL_GPIO_DRIVE_HIGH) return -EINVAL;
+    g->drive = drive;
+    return 0;
+}
+
+int hal_gpio_read(hal_gpio_t *gpio, int *value) {
+    if (!gpio || !value) return -EINVAL;
+    hal_gpio_impl_t *g = G(gpio);
+    if (!g->initialized) return -EINVAL;
+    *value = (g->level != 0) ? 1 : 0;
+    return 0;
+}
+
+int hal_gpio_write(hal_gpio_t *gpio, int value) {
+    if (!gpio) return -EINVAL;
+    hal_gpio_impl_t *g = G(gpio);
+    if (!g->initialized) return -EINVAL;
+    if (g->mode != HAL_GPIO_OUTPUT && g->mode != HAL_GPIO_OPEN_DRAIN) return -EPERM;
+    g->level = (value != 0) ? 1 : 0;
+    return 0;
+}
+
+int hal_gpio_toggle(hal_gpio_t *gpio) {
+    if (!gpio) return -EINVAL;
+    hal_gpio_impl_t *g = G(gpio);
+    if (!g->initialized) return -EINVAL;
+    if (g->mode != HAL_GPIO_OUTPUT && g->mode != HAL_GPIO_OPEN_DRAIN) return -EPERM;
+    g->level = g->level ? 0 : 1;
+    return 0;
+}
+
+int hal_gpio_set_irq(hal_gpio_t *gpio,
+                     hal_gpio_irq_t trig,
+                     hal_gpio_irq_cb_t cb,
+                     void *arg) {
+    if (!gpio) return -EINVAL;
+    hal_gpio_impl_t *g = G(gpio);
+    if (!g->initialized) return -EINVAL;
+    if (trig < HAL_GPIO_IRQ_NONE || trig > HAL_GPIO_IRQ_HIGH) return -EINVAL;
+    if (trig != HAL_GPIO_IRQ_NONE && !cb) return -EINVAL;
+
+    g->irq_trig = trig;
+    g->irq_cb = cb;
+    g->irq_arg = arg;
+    if (trig == HAL_GPIO_IRQ_NONE) {
+        g->irq_enabled = 0;
+    }
+    return 0;
+}
+
+int hal_gpio_irq_enable(hal_gpio_t *gpio, int enable) {
+    if (!gpio) return -EINVAL;
+    hal_gpio_impl_t *g = G(gpio);
+    if (!g->initialized) return -EINVAL;
+    if (g->irq_trig == HAL_GPIO_IRQ_NONE || g->irq_cb == NULL) return -EINVAL;
+    g->irq_enabled = (enable != 0) ? 1 : 0;
+    return 0;
+}
+
+int hal_gpio_get_caps(int pin, uint32_t *caps) {
+    if (!gpio_valid_pin(pin) || !caps) return -EINVAL;
+    *caps = HAL_GPIO_CAP_INPUT |
+            HAL_GPIO_CAP_OUTPUT |
+            HAL_GPIO_CAP_OPEN_DRAIN |
+            HAL_GPIO_CAP_PULL_UP |
+            HAL_GPIO_CAP_PULL_DOWN |
+            HAL_GPIO_CAP_IRQ;
+    return 0;
+}

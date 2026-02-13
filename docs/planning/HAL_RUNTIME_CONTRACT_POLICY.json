@@ -9,9 +9,5 @@
     "no_silent_runtime_gap": true,
     "description": "Required ports must have runtime function bodies for tracked HAL primitives or be explicitly acknowledged."
   },
-  "acknowledged_missing_runtime_impl_ports": [
-    "pic16",
-    "ra4m1",
-    "rp2040"
-  ]
+  "acknowledged_missing_runtime_impl_ports": []
 }

@@ -15,8 +15,7 @@
     "required_port_count": 8,
     "blocking_gaps": 0,
     "contract_state_counts": {
-      "pass": 5,
-      "pass_acknowledged_missing_runtime_impl": 3
+      "pass": 8
     }
   },
   "rows": [
@@ -274,109 +273,190 @@
     },
     {
       "port": "pic16",
-      "contract_state": "pass_acknowledged_missing_runtime_impl",
-      "reason": "Missing runtime implementations are explicitly acknowledged in policy.",
-      "missing_runtime_impl_primitives": [
-        "gpio",
-        "i2c",
-        "uart"
-      ],
+      "contract_state": "pass",
+      "reason": "Runtime implementations found for all tracked primitives.",
+      "missing_runtime_impl_primitives": [],
       "primitives": [
         {
           "primitive": "gpio",
           "file": "basalt_hal/ports/pic16/hal_gpio.c",
           "file_exists": true,
-          "function_definitions": 0,
-          "symbols_found": [],
-          "state": "declaration_only_or_empty"
+          "function_definitions": 11,
+          "symbols_found": [
+            "hal_gpio_deinit",
+            "hal_gpio_get_caps",
+            "hal_gpio_init",
+            "hal_gpio_irq_enable",
+            "hal_gpio_read",
+            "hal_gpio_set_drive",
+            "hal_gpio_set_irq",
+            "hal_gpio_set_mode",
+            "hal_gpio_set_pull",
+            "hal_gpio_toggle",
+            "hal_gpio_write"
+          ],
+          "state": "runtime_impl_present"
         },
         {
           "primitive": "i2c",
           "file": "basalt_hal/ports/pic16/hal_i2c.c",
           "file_exists": true,
-          "function_definitions": 0,
-          "symbols_found": [],
-          "state": "declaration_only_or_empty"
+          "function_definitions": 7,
+          "symbols_found": [
+            "hal_i2c_deinit",
+            "hal_i2c_init",
+            "hal_i2c_probe",
+            "hal_i2c_read",
+            "hal_i2c_set_freq",
+            "hal_i2c_write",
+            "hal_i2c_write_read"
+          ],
+          "state": "runtime_impl_present"
         },
         {
           "primitive": "uart",
           "file": "basalt_hal/ports/pic16/hal_uart.c",
           "file_exists": true,
-          "function_definitions": 0,
-          "symbols_found": [],
-          "state": "declaration_only_or_empty"
+          "function_definitions": 10,
+          "symbols_found": [
+            "hal_uart_available",
+            "hal_uart_deinit",
+            "hal_uart_flush",
+            "hal_uart_init",
+            "hal_uart_init_ex",
+            "hal_uart_recv",
+            "hal_uart_send",
+            "hal_uart_set_baud",
+            "hal_uart_set_break",
+            "hal_uart_set_flow"
+          ],
+          "state": "runtime_impl_present"
         }
       ]
     },
     {
       "port": "ra4m1",
-      "contract_state": "pass_acknowledged_missing_runtime_impl",
-      "reason": "Missing runtime implementations are explicitly acknowledged in policy.",
-      "missing_runtime_impl_primitives": [
-        "gpio",
-        "i2c",
-        "uart"
-      ],
+      "contract_state": "pass",
+      "reason": "Runtime implementations found for all tracked primitives.",
+      "missing_runtime_impl_primitives": [],
       "primitives": [
         {
           "primitive": "gpio",
           "file": "basalt_hal/ports/ra4m1/hal_gpio.c",
           "file_exists": true,
-          "function_definitions": 0,
-          "symbols_found": [],
-          "state": "declaration_only_or_empty"
+          "function_definitions": 11,
+          "symbols_found": [
+            "hal_gpio_deinit",
+            "hal_gpio_get_caps",
+            "hal_gpio_init",
+            "hal_gpio_irq_enable",
+            "hal_gpio_read",
+            "hal_gpio_set_drive",
+            "hal_gpio_set_irq",
+            "hal_gpio_set_mode",
+            "hal_gpio_set_pull",
+            "hal_gpio_toggle",
+            "hal_gpio_write"
+          ],
+          "state": "runtime_impl_present"
         },
         {
           "primitive": "i2c",
           "file": "basalt_hal/ports/ra4m1/hal_i2c.c",
           "file_exists": true,
-          "function_definitions": 0,
-          "symbols_found": [],
-          "state": "declaration_only_or_empty"
+          "function_definitions": 7,
+          "symbols_found": [
+            "hal_i2c_deinit",
+            "hal_i2c_init",
+            "hal_i2c_probe",
+            "hal_i2c_read",
+            "hal_i2c_set_freq",
+            "hal_i2c_write",
+            "hal_i2c_write_read"
+          ],
+          "state": "runtime_impl_present"
         },
         {
           "primitive": "uart",
           "file": "basalt_hal/ports/ra4m1/hal_uart.c",
           "file_exists": true,
-          "function_definitions": 0,
-          "symbols_found": [],
-          "state": "declaration_only_or_empty"
+          "function_definitions": 10,
+          "symbols_found": [
+            "hal_uart_available",
+            "hal_uart_deinit",
+            "hal_uart_flush",
+            "hal_uart_init",
+            "hal_uart_init_ex",
+            "hal_uart_recv",
+            "hal_uart_send",
+            "hal_uart_set_baud",
+            "hal_uart_set_break",
+            "hal_uart_set_flow"
+          ],
+          "state": "runtime_impl_present"
         }
       ]
     },
     {
       "port": "rp2040",
-      "contract_state": "pass_acknowledged_missing_runtime_impl",
-      "reason": "Missing runtime implementations are explicitly acknowledged in policy.",
-      "missing_runtime_impl_primitives": [
-        "gpio",
-        "i2c",
-        "uart"
-      ],
+      "contract_state": "pass",
+      "reason": "Runtime implementations found for all tracked primitives.",
+      "missing_runtime_impl_primitives": [],
       "primitives": [
         {
           "primitive": "gpio",
           "file": "basalt_hal/ports/rp2040/hal_gpio.c",
           "file_exists": true,
-          "function_definitions": 0,
-          "symbols_found": [],
-          "state": "declaration_only_or_empty"
+          "function_definitions": 11,
+          "symbols_found": [
+            "hal_gpio_deinit",
+            "hal_gpio_get_caps",
+            "hal_gpio_init",
+            "hal_gpio_irq_enable",
+            "hal_gpio_read",
+            "hal_gpio_set_drive",
+            "hal_gpio_set_irq",
+            "hal_gpio_set_mode",
+            "hal_gpio_set_pull",
+            "hal_gpio_toggle",
+            "hal_gpio_write"
+          ],
+          "state": "runtime_impl_present"
         },
         {
           "primitive": "i2c",
           "file": "basalt_hal/ports/rp2040/hal_i2c.c",
           "file_exists": true,
-          "function_definitions": 0,
-          "symbols_found": [],
-          "state": "declaration_only_or_empty"
+          "function_definitions": 7,
+          "symbols_found": [
+            "hal_i2c_deinit",
+            "hal_i2c_init",
+            "hal_i2c_probe",
+            "hal_i2c_read",
+            "hal_i2c_set_freq",
+            "hal_i2c_write",
+            "hal_i2c_write_read"
+          ],
+          "state": "runtime_impl_present"
         },
         {
           "primitive": "uart",
           "file": "basalt_hal/ports/rp2040/hal_uart.c",
           "file_exists": true,
-          "function_definitions": 0,
-          "symbols_found": [],
-          "state": "declaration_only_or_empty"
+          "function_definitions": 10,
+          "symbols_found": [
+            "hal_uart_available",
+            "hal_uart_deinit",
+            "hal_uart_flush",
+            "hal_uart_init",
+            "hal_uart_init_ex",
+            "hal_uart_recv",
+            "hal_uart_send",
+            "hal_uart_set_baud",
+            "hal_uart_set_break",
+            "hal_uart_set_flow"
+          ],
+          "state": "runtime_impl_present"
         }
       ]
     },
