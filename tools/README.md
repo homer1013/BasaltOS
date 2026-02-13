@@ -145,6 +145,12 @@ Local-mode UI/API guard test (market/profile hidden + market API disabled):
 node tools/e2e/local_mode_nav_guard.js
 ```
 
+Playwright e2e harness setup smoke:
+
+```bash
+bash tools/tests/e2e_playwright_harness_smoke.sh
+```
+
 Local sync payload export smoke:
 
 ```bash

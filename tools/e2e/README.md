@@ -10,11 +10,11 @@ These are lightweight Playwright-based checks for `tools/basaltos_config_gui.htm
 python tools/basaltos_config_server.py
 ```
 
-2. In another terminal, install Playwright once (in any temp folder or project-local):
+2. Install harness dependencies (project-local):
 
 ```bash
-npm install playwright@1.51.1
-npx playwright install chromium
+npm --prefix tools/e2e install
+npm --prefix tools/e2e run e2e:install-browsers
 ```
 
 ## Run
@@ -22,17 +22,29 @@ npx playwright install chromium
 Smoke suite:
 
 ```bash
-node tools/e2e/smoke_configurator.js
+npm --prefix tools/e2e run e2e:smoke
 ```
 
 Deep suite:
 
 ```bash
-node tools/e2e/deep_configurator.js
+npm --prefix tools/e2e run e2e:deep
+```
+
+Local-mode guard suite:
+
+```bash
+npm --prefix tools/e2e run e2e:local
+```
+
+All suites:
+
+```bash
+npm --prefix tools/e2e run e2e:all
 ```
 
 Optional URL override:
 
 ```bash
-BASALT_UI_URL=http://127.0.0.1:5000 node tools/e2e/smoke_configurator.js
+BASALT_UI_URL=http://127.0.0.1:5000 npm --prefix tools/e2e run e2e:smoke
 ```

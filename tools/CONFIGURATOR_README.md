@@ -126,8 +126,12 @@ python3 tools/local_data_migrate.py --apply
 Verify local-mode scope enforcement:
 
 ```bash
-# UI guard test (requires playwright installed)
-node tools/e2e/local_mode_nav_guard.js
+# Install Playwright harness dependencies once
+npm --prefix tools/e2e install
+npm --prefix tools/e2e run e2e:install-browsers
+
+# UI guard test
+npm --prefix tools/e2e run e2e:local
 ```
 
 Expected:

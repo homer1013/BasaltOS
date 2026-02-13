@@ -21,6 +21,9 @@ runtime/python/embed_build/
 __pycache__/
 *.pyc
 
+# Node / Playwright harness
+tools/e2e/node_modules/
+
 # ESP-IDF
 sdkconfig
 sdkconfig.old

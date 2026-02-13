@@ -1,0 +1,19 @@
+{
+  "name": "basaltos-configurator-e2e",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Playwright harness for BasaltOS local configurator e2e suites",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "e2e:smoke": "node smoke_configurator.js",
+    "e2e:deep": "node deep_configurator.js",
+    "e2e:local": "node local_mode_nav_guard.js",
+    "e2e:all": "npm run e2e:smoke && npm run e2e:deep && npm run e2e:local",
+    "e2e:install-browsers": "playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "1.51.1"
+  }
+}
