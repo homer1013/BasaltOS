@@ -4,76 +4,79 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
-echo "[hardening] 1/24 configure invalid-board regression"
+echo "[hardening] 1/25 configure invalid-board regression"
 bash tools/tests/configure_invalid_board_regression.sh
 
-echo "[hardening] 2/24 configure UX guidance"
+echo "[hardening] 2/25 configure UX guidance"
 bash tools/tests/configure_ux_guidance_smoke.sh
 
-echo "[hardening] 3/24 e2e Playwright harness contract"
+echo "[hardening] 3/25 e2e Playwright harness contract"
 bash tools/tests/e2e_playwright_harness_smoke.sh
 
-echo "[hardening] 4/24 shell UX contract"
+echo "[hardening] 4/25 shell UX contract"
 bash tools/tests/shell_ux_polish_smoke.sh
 
-echo "[hardening] 5/24 quickstart contract"
+echo "[hardening] 5/25 quickstart contract"
 bash tools/tests/esp32_first_success_quickstart_smoke.sh
 
-echo "[hardening] 6/24 examples pack contract"
+echo "[hardening] 6/25 examples pack contract"
 bash tools/tests/examples_pack_recipes_smoke.sh
 
-echo "[hardening] 7/24 staged artifact guard"
+echo "[hardening] 7/25 staged artifact guard"
 bash tools/tests/staged_artifact_guard.sh
 
-echo "[hardening] 8/24 board catalog drift"
+echo "[hardening] 8/25 board catalog drift"
 bash tools/tests/board_catalog_drift_smoke.sh
 
-echo "[hardening] 9/24 board taxonomy fields"
+echo "[hardening] 9/25 board taxonomy fields"
 bash tools/tests/board_taxonomy_fields_smoke.sh
 
-echo "[hardening] 10/24 board taxonomy schema"
+echo "[hardening] 10/25 board taxonomy schema"
 bash tools/tests/board_taxonomy_schema_smoke.sh
 
-echo "[hardening] 11/24 board taxonomy API contract"
+echo "[hardening] 11/25 board taxonomy API contract"
 bash tools/tests/board_taxonomy_api_contract_smoke.sh
 
-echo "[hardening] 12/24 driver capability matrix drift"
+echo "[hardening] 12/25 driver capability matrix drift"
 bash tools/tests/driver_capability_matrix_drift_smoke.sh
 
-echo "[hardening] 13/24 tft posture drift"
+echo "[hardening] 13/25 tft posture drift"
 bash tools/tests/tft_posture_report_drift_smoke.sh
 
-echo "[hardening] 14/24 twai posture drift"
+echo "[hardening] 14/25 twai posture drift"
 bash tools/tests/twai_posture_report_drift_smoke.sh
 
-echo "[hardening] 15/24 eeprom posture drift"
+echo "[hardening] 15/25 eeprom posture drift"
 bash tools/tests/eeprom_posture_report_drift_smoke.sh
 
-echo "[hardening] 16/24 mcp2544fd posture drift"
+echo "[hardening] 16/25 mcp2544fd posture drift"
 bash tools/tests/mcp2544fd_posture_report_drift_smoke.sh
 
-echo "[hardening] 17/24 psram posture drift"
+echo "[hardening] 17/25 psram posture drift"
 bash tools/tests/psram_posture_report_drift_smoke.sh
 
-echo "[hardening] 18/24 tp4056 posture drift"
+echo "[hardening] 18/25 tp4056 posture drift"
 bash tools/tests/tp4056_posture_report_drift_smoke.sh
 
-echo "[hardening] 19/24 hal adapter matrix drift"
+echo "[hardening] 19/25 hal adapter matrix drift"
 bash tools/tests/hal_adapter_matrix_drift_smoke.sh
 
-echo "[hardening] 20/24 HAL contract policy"
+echo "[hardening] 20/25 HAL contract policy"
 bash tools/tests/hal_contract_policy_smoke.sh
 
-echo "[hardening] 21/24 HAL platform adapter completeness"
+echo "[hardening] 21/25 HAL platform adapter completeness"
 bash tools/tests/hal_platform_adapter_completeness_smoke.sh
 
-echo "[hardening] 22/24 driver-to-HAL dependency map drift"
+echo "[hardening] 22/25 driver-to-HAL dependency map drift"
 bash tools/tests/driver_hal_dependency_map_drift_smoke.sh
 
-echo "[hardening] 23/24 HAL runtime contract"
+echo "[hardening] 23/25 HAL runtime contract"
 bash tools/tests/hal_runtime_contract_smoke.sh
 
-echo "[hardening] 24/24 configurator API smoke"
+echo "[hardening] 24/25 board picker accessibility"
+bash tools/tests/board_picker_accessibility_smoke.sh
+
+echo "[hardening] 25/25 configurator API smoke"
 bash tools/tests/configurator_api_smoke.sh
 
 echo "PASS: main hardening smoke bundle"

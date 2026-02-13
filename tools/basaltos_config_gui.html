@@ -364,6 +364,11 @@
             font-weight: 600;
         }
 
+        .board-item:focus-visible {
+            outline: 2px solid #2b6cb0;
+            outline-offset: 2px;
+        }
+
         .board-group {
             margin-bottom: 12px;
         }
@@ -403,6 +408,18 @@
             border: 0;
             list-style: none;
             background: transparent;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
         .board-perf-panel {
@@ -1802,10 +1819,12 @@
                 <div id="board-selection" style="margin-top: 20px;">
                     <h3>Boards</h3>
                     <div id="hardware-path" class="hardware-path"></div>
-                    <input type="text" class="search-box" placeholder="Search boards..." id="board-search">
-                    <ul class="board-list" id="board-list">
+                    <label for="board-search" class="sr-only">Search boards</label>
+                    <input type="text" class="search-box" placeholder="Search boards..." id="board-search" aria-label="Search boards" aria-controls="board-list">
+                    <ul class="board-list" id="board-list" role="listbox" tabindex="0" aria-label="Board picker">
                         <!-- Populated by JavaScript -->
                     </ul>
+                    <div id="board-list-status" class="sr-only" role="status" aria-live="polite"></div>
                     <div id="board-perf-panel" class="board-perf-panel"></div>
                 </div>
             </div>
@@ -3161,6 +3180,8 @@
         let boardVirtualRafId = 0;
         let boardPerfEnabled = false;
         let boardLastRenderMs = 0;
+        let boardKeyboardFlatItems = [];
+        let boardKeyboardIndex = -1;
 
         const MODULE_ICONS = {
             uart: '📡',
@@ -5108,10 +5129,111 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 }));
         }
 
+        function boardItemElementId(boardId) {
+            const raw = String(boardId || '').trim();
+            const safe = raw.replace(/[^A-Za-z0-9_-]/g, '-');
+            return `board-opt-${safe || 'unknown'}`;
+        }
+
+        function boardFlatIndexById(boardId) {
+            const id = String(boardId || '');
+            return boardKeyboardFlatItems.findIndex(b => String(b?.id || '') === id);
+        }
+
+        function flattenBoardsFromGroups(groupEntries) {
+            return (groupEntries || []).flatMap(g => (Array.isArray(g?.boards) ? g.boards : []));
+        }
+
+        function syncRenderedBoardSelection(selectedId, selectedEl = null) {
+            document.querySelectorAll('.board-item').forEach(item => {
+                const isSel = String(item.dataset.boardId || '') === String(selectedId || '');
+                item.classList.toggle('selected', isSel);
+                item.setAttribute('aria-selected', isSel ? 'true' : 'false');
+                item.tabIndex = -1;
+            });
+            const boardList = document.getElementById('board-list');
+            let targetEl = selectedEl || null;
+            if (!targetEl && selectedId) {
+                targetEl = Array.from(document.querySelectorAll('.board-item')).find(item => String(item.dataset.boardId || '') === String(selectedId)) || null;
+            }
+            if (targetEl) {
+                targetEl.tabIndex = 0;
+                if (boardList) boardList.setAttribute('aria-activedescendant', targetEl.id);
+            } else if (boardList) {
+                boardList.removeAttribute('aria-activedescendant');
+            }
+        }
+
+        function announceBoardListStatus(totalBoards, totalGroups) {
+            const status = document.getElementById('board-list-status');
+            if (!status) return;
+            if (!totalBoards) {
+                status.textContent = 'No boards match your current filters.';
+                return;
+            }
+            const groupCount = Number.isFinite(totalGroups) ? totalGroups : 0;
+            status.textContent = `${totalBoards} board${totalBoards === 1 ? '' : 's'} available across ${groupCount} group${groupCount === 1 ? '' : 's'}.`;
+        }
+
+        function ensureBoardVisibleForKeyboard(index) {
+            if (!boardVirtualEnabled) return;
+            const boardList = document.getElementById('board-list');
+            if (!boardList) return;
+            const rowIndex = boardVirtualRows.findIndex(r => r.type === 'item' && String(r.board?.id || '') === String(boardKeyboardFlatItems[index]?.id || ''));
+            if (rowIndex < 0) return;
+            const y = boardVirtualOffsets[rowIndex] || 0;
+            const rowH = boardVirtualRowHeight(boardVirtualRows[rowIndex]);
+            const top = boardList.scrollTop || 0;
+            const bottom = top + Math.max(boardList.clientHeight || 1, 1);
+            if (y < top) boardList.scrollTop = y;
+            else if ((y + rowH) > bottom) boardList.scrollTop = Math.max(0, y - Math.floor((boardList.clientHeight || 1) / 2));
+            renderBoardVirtualWindow();
+        }
+
+        async function focusBoardKeyboardIndex(nextIndex, { select = false } = {}) {
+            if (!boardKeyboardFlatItems.length) return;
+            const bounded = Math.max(0, Math.min(nextIndex, boardKeyboardFlatItems.length - 1));
+            boardKeyboardIndex = bounded;
+            ensureBoardVisibleForKeyboard(boardKeyboardIndex);
+            const board = boardKeyboardFlatItems[boardKeyboardIndex];
+            const el = document.getElementById(boardItemElementId(board?.id));
+            const boardList = document.getElementById('board-list');
+            if (el) {
+                document.querySelectorAll('.board-item').forEach(item => { item.tabIndex = -1; });
+                el.tabIndex = 0;
+                if (boardList) boardList.setAttribute('aria-activedescendant', el.id);
+                try { el.focus({ preventScroll: true }); } catch (_e) { el.focus(); }
+                if (select) await selectBoard(board, el);
+            }
+        }
+
+        async function handleBoardListKeydown(event) {
+            if (!boardKeyboardFlatItems.length) return;
+            const key = String(event.key || '');
+            const selecting = key === 'Enter' || key === ' ';
+            const moving = key === 'ArrowDown' || key === 'ArrowUp' || key === 'Home' || key === 'End';
+            if (!selecting && !moving) return;
+            event.preventDefault();
+
+            if (boardKeyboardIndex < 0) {
+                const selectedIdx = selectedBoard ? boardFlatIndexById(selectedBoard.id) : -1;
+                boardKeyboardIndex = selectedIdx >= 0 ? selectedIdx : 0;
+            }
+
+            if (key === 'ArrowDown') boardKeyboardIndex += 1;
+            else if (key === 'ArrowUp') boardKeyboardIndex -= 1;
+            else if (key === 'Home') boardKeyboardIndex = 0;
+            else if (key === 'End') boardKeyboardIndex = boardKeyboardFlatItems.length - 1;
+
+            await focusBoardKeyboardIndex(boardKeyboardIndex, { select: selecting });
+        }
+
         function createBoardGroupTitleNode(groupName, count) {
             const title = document.createElement('li');
             title.className = 'board-group-title board-group-title-row';
             title.textContent = `${groupName} (${count})`;
+            title.setAttribute('role', 'presentation');
+            title.setAttribute('aria-hidden', 'true');
             return title;
         }
 
@@ -5122,10 +5244,26 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             li.textContent = board.name;
             li.title = `${tx.silicon} • ${String(board.platform || '').toUpperCase()}`;
             li.dataset.boardId = board.id;
+            li.id = boardItemElementId(board.id);
+            li.setAttribute('role', 'option');
+            li.tabIndex = -1;
             if (selectedBoard && String(selectedBoard.id) === String(board.id)) {
                 li.classList.add('selected');
             }
-            li.onclick = async () => { await selectBoard(board, li); };
+            li.setAttribute('aria-selected', li.classList.contains('selected') ? 'true' : 'false');
+            li.onclick = async () => {
+                const idx = boardFlatIndexById(board.id);
+                if (idx >= 0) boardKeyboardIndex = idx;
+                await selectBoard(board, li);
+            };
+            li.onkeydown = async (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    const idx = boardFlatIndexById(board.id);
+                    if (idx >= 0) boardKeyboardIndex = idx;
+                    await selectBoard(board, li);
+                }
+            };
             return li;
         }
 
@@ -5226,6 +5364,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             groupEntries.forEach(g => {
                 const groupWrap = document.createElement('li');
                 groupWrap.className = 'board-group';
+                groupWrap.setAttribute('role', 'presentation');
                 groupWrap.appendChild(createBoardGroupTitleNode(g.groupName, g.boards.length));
                 g.boards.forEach(board => groupWrap.appendChild(createBoardItemNode(board)));
                 frag.appendChild(groupWrap);
@@ -5248,11 +5387,14 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             if (!boardList) return;
             boardList.innerHTML = '';
             boardList.classList.remove('virtualized');
+            boardList.removeAttribute('aria-activedescendant');
             boardVirtualEnabled = false;
             boardVirtualRows = [];
             boardVirtualOffsets = [];
             boardVirtualTotalHeight = 0;
             boardVirtualItemCount = 0;
+            boardKeyboardFlatItems = [];
+            boardKeyboardIndex = -1;
             if (boardVirtualRafId) {
                 window.cancelAnimationFrame(boardVirtualRafId);
                 boardVirtualRafId = 0;
@@ -5273,12 +5415,14 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 boardList.innerHTML = `<li class="board-empty">No boards match your current filter.<br>${buildBoardEmptyHint()}</li>`;
                 boardLastRenderMs = 0;
                 updateBoardPerfPanel({ mode: 'empty', totalRows: 0, renderedRows: 0, totalBoards: 0, ms: 0 });
+                announceBoardListStatus(0, 0);
                 renderHardwarePath();
                 persistFilterStateToUrl();
                 return;
             }
 
             const groupEntries = buildBoardGroups(filteredBoards);
+            boardKeyboardFlatItems = flattenBoardsFromGroups(groupEntries);
             const totalRows = groupEntries.reduce((n, g) => n + g.boards.length + 1, 0);
             if (totalRows > BOARD_VIRTUAL_ROW_THRESHOLD) {
                 prepareBoardVirtualRows(groupEntries);
@@ -5288,6 +5432,14 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 renderBoardVirtualWindow();
             } else {
                 renderBoardListFull(groupEntries);
+            }
+            announceBoardListStatus(boardKeyboardFlatItems.length, groupEntries.length);
+            const selectedIdx = selectedBoard ? boardFlatIndexById(selectedBoard.id) : -1;
+            if (selectedIdx >= 0) {
+                boardKeyboardIndex = selectedIdx;
+                ensureBoardVisibleForKeyboard(boardKeyboardIndex);
+                const selectedEl = document.getElementById(boardItemElementId(selectedBoard.id));
+                syncRenderedBoardSelection(selectedBoard.id, selectedEl || null);
             }
             renderHardwarePath();
             persistFilterStateToUrl();
@@ -5325,6 +5477,11 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 item.classList.remove('selected');
             });
             if (sourceEl) sourceEl.classList.add('selected');
+            syncRenderedBoardSelection(board.id, sourceEl || null);
+            const selectedIdx = boardFlatIndexById(board.id);
+            if (selectedIdx >= 0) boardKeyboardIndex = selectedIdx;
+            const boardStatus = document.getElementById('board-list-status');
+            if (boardStatus) boardStatus.textContent = `${board.name} selected.`;
             
             // Show board details
             document.getElementById('board-details').style.display = 'block';
@@ -6692,11 +6849,34 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 });
             }
 
-            document.getElementById('board-search').oninput = () => {
-                persistFilterStateToUrl();
-                scheduleBoardSearchRefresh();
-            };
-            
+            const boardSearch = document.getElementById('board-search');
+            if (boardSearch) {
+                boardSearch.oninput = () => {
+                    persistFilterStateToUrl();
+                    scheduleBoardSearchRefresh();
+                };
+                boardSearch.onkeydown = async (event) => {
+                    if (event.key === 'ArrowDown') {
+                        event.preventDefault();
+                        if (boardKeyboardFlatItems.length > 0) {
+                            await focusBoardKeyboardIndex(boardKeyboardIndex >= 0 ? boardKeyboardIndex : 0, { select: false });
+                        }
+                    }
+                };
+            }
+
+            const boardList = document.getElementById('board-list');
+            if (boardList) {
+                boardList.addEventListener('keydown', async (event) => {
+                    await handleBoardListKeydown(event);
+                });
+                boardList.addEventListener('focus', async () => {
+                    if (boardKeyboardFlatItems.length === 0) return;
+                    const idx = boardKeyboardIndex >= 0 ? boardKeyboardIndex : (selectedBoard ? boardFlatIndexById(selectedBoard.id) : 0);
+                    await focusBoardKeyboardIndex(idx >= 0 ? idx : 0, { select: false });
+                });
+            }
+
             document.getElementById('btn-next').onclick = nextStep;
             document.getElementById('btn-prev').onclick = prevStep;
             document.getElementById('btn-generate').onclick = generateFiles;
