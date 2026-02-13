@@ -1,0 +1,756 @@
+{
+  "version": "1.0.0",
+  "generator": "tools/generate_driver_hal_dependency_map.py",
+  "sources": {
+    "modules_glob": "modules/**/module.json",
+    "hal_matrix": "docs/planning/HAL_ADAPTER_MATRIX.json",
+    "adapter_completeness": "docs/planning/HAL_PLATFORM_ADAPTER_COMPLETENESS.json"
+  },
+  "summary": {
+    "modules_total": 33,
+    "modules_with_dependencies": 24,
+    "unique_dependencies": 7,
+    "hal_dependencies": 6,
+    "non_hal_dependencies": 1,
+    "modules_with_unmapped_dependency": 1,
+    "modules_with_coverage_gap": 6,
+    "required_adapter_count": 8
+  },
+  "dependencies": [
+    {
+      "module_id": "mic",
+      "dependency": "adc",
+      "dependency_type": "hal_primitive",
+      "risk": "coverage_gap",
+      "blocking_ports": [
+        "esp32"
+      ]
+    },
+    {
+      "module_id": "dht22",
+      "dependency": "gpio",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "hp4067",
+      "dependency": "gpio",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "l298n",
+      "dependency": "gpio",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "mcp2544fd",
+      "dependency": "gpio",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "tp4056",
+      "dependency": "gpio",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "uln2003",
+      "dependency": "gpio",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "ads1115",
+      "dependency": "i2c",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "bme280",
+      "dependency": "i2c",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "display_ssd1306",
+      "dependency": "i2c",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "imu",
+      "dependency": "i2c",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "mcp23017",
+      "dependency": "i2c",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "rtc",
+      "dependency": "i2c",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "fs_sd",
+      "dependency": "spi",
+      "dependency_type": "hal_primitive",
+      "risk": "coverage_gap",
+      "blocking_ports": [
+        "esp32"
+      ]
+    },
+    {
+      "module_id": "mcp2515",
+      "dependency": "spi",
+      "dependency_type": "hal_primitive",
+      "risk": "coverage_gap",
+      "blocking_ports": [
+        "esp32"
+      ]
+    },
+    {
+      "module_id": "tft",
+      "dependency": "spi",
+      "dependency_type": "hal_primitive",
+      "risk": "coverage_gap",
+      "blocking_ports": [
+        "esp32"
+      ]
+    },
+    {
+      "module_id": "dht22",
+      "dependency": "timer",
+      "dependency_type": "hal_primitive",
+      "risk": "coverage_gap",
+      "blocking_ports": [
+        "esp32"
+      ]
+    },
+    {
+      "module_id": "pwm",
+      "dependency": "timer",
+      "dependency_type": "hal_primitive",
+      "risk": "coverage_gap",
+      "blocking_ports": [
+        "esp32"
+      ]
+    },
+    {
+      "module_id": "mcp2544fd",
+      "dependency": "twai",
+      "dependency_type": "non_hal_dependency",
+      "risk": "unmapped_dependency",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "bluetooth",
+      "dependency": "uart",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "remote_node",
+      "dependency": "uart",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "shell_full",
+      "dependency": "uart",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "shell_min",
+      "dependency": "uart",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "shell_tiny",
+      "dependency": "uart",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "twai",
+      "dependency": "uart",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "wifi",
+      "dependency": "uart",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    }
+  ],
+  "modules": [
+    {
+      "id": "adc",
+      "name": "ADC",
+      "path": "modules/adc/module.json",
+      "depends": [],
+      "analysis": [],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "ads1115",
+      "name": "ADS1115 16-bit ADC + PGA",
+      "path": "modules/ads1115/module.json",
+      "depends": [
+        "i2c"
+      ],
+      "analysis": [
+        {
+          "dependency": "i2c",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "bluetooth",
+      "name": "Bluetooth Core",
+      "path": "modules/bluetooth/module.json",
+      "depends": [
+        "uart"
+      ],
+      "analysis": [
+        {
+          "dependency": "uart",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "bme280",
+      "name": "BME280 Environmental Sensor",
+      "path": "modules/bme280/module.json",
+      "depends": [
+        "i2c"
+      ],
+      "analysis": [
+        {
+          "dependency": "i2c",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "dht22",
+      "name": "DHT22 Sensor",
+      "path": "modules/dht22/module.json",
+      "depends": [
+        "gpio",
+        "timer"
+      ],
+      "analysis": [
+        {
+          "dependency": "gpio",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        },
+        {
+          "dependency": "timer",
+          "dependency_type": "hal_primitive",
+          "risk": "coverage_gap",
+          "blocking_ports": [
+            "esp32"
+          ]
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": true
+    },
+    {
+      "id": "display_ssd1306",
+      "name": "SSD1306 Display",
+      "path": "modules/display_ssd1306/module.json",
+      "depends": [
+        "i2c"
+      ],
+      "analysis": [
+        {
+          "dependency": "i2c",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "eeprom",
+      "name": "EEPROM",
+      "path": "modules/eeprom/module.json",
+      "depends": [],
+      "analysis": [],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "fs_sd",
+      "name": "SD Card Filesystem",
+      "path": "modules/fs_sd/module.json",
+      "depends": [
+        "spi"
+      ],
+      "analysis": [
+        {
+          "dependency": "spi",
+          "dependency_type": "hal_primitive",
+          "risk": "coverage_gap",
+          "blocking_ports": [
+            "esp32"
+          ]
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": true
+    },
+    {
+      "id": "fs_spiffs",
+      "name": "SPIFFS Filesystem",
+      "path": "modules/fs_spiffs/module.json",
+      "depends": [],
+      "analysis": [],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "gpio",
+      "name": "GPIO",
+      "path": "modules/gpio/module.json",
+      "depends": [],
+      "analysis": [],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "hp4067",
+      "name": "HP4067 / 74HC4067 Mux",
+      "path": "modules/hp4067/module.json",
+      "depends": [
+        "gpio"
+      ],
+      "analysis": [
+        {
+          "dependency": "gpio",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "i2c",
+      "name": "I2C Core",
+      "path": "modules/i2c/module.json",
+      "depends": [],
+      "analysis": [],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "imu",
+      "name": "IMU Sensor",
+      "path": "modules/imu/module.json",
+      "depends": [
+        "i2c"
+      ],
+      "analysis": [
+        {
+          "dependency": "i2c",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "l298n",
+      "name": "L298N H-Bridge Driver",
+      "path": "modules/l298n/module.json",
+      "depends": [
+        "gpio"
+      ],
+      "analysis": [
+        {
+          "dependency": "gpio",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "mcp23017",
+      "name": "MCP23017 I/O Expander",
+      "path": "modules/mcp23017/module.json",
+      "depends": [
+        "i2c"
+      ],
+      "analysis": [
+        {
+          "dependency": "i2c",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "mcp2515",
+      "name": "MCP2515 SPI CAN Controller",
+      "path": "modules/mcp2515/module.json",
+      "depends": [
+        "spi"
+      ],
+      "analysis": [
+        {
+          "dependency": "spi",
+          "dependency_type": "hal_primitive",
+          "risk": "coverage_gap",
+          "blocking_ports": [
+            "esp32"
+          ]
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": true
+    },
+    {
+      "id": "mcp2544fd",
+      "name": "MCP2544FD CAN PHY",
+      "path": "modules/mcp2544fd/module.json",
+      "depends": [
+        "gpio",
+        "twai"
+      ],
+      "analysis": [
+        {
+          "dependency": "gpio",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        },
+        {
+          "dependency": "twai",
+          "dependency_type": "non_hal_dependency",
+          "risk": "unmapped_dependency",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": true,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "mic",
+      "name": "Microphone Input",
+      "path": "modules/mic/module.json",
+      "depends": [
+        "adc"
+      ],
+      "analysis": [
+        {
+          "dependency": "adc",
+          "dependency_type": "hal_primitive",
+          "risk": "coverage_gap",
+          "blocking_ports": [
+            "esp32"
+          ]
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": true
+    },
+    {
+      "id": "psram",
+      "name": "PSRAM",
+      "path": "modules/psram/module.json",
+      "depends": [],
+      "analysis": [],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "pwm",
+      "name": "PWM",
+      "path": "modules/pwm/module.json",
+      "depends": [
+        "timer"
+      ],
+      "analysis": [
+        {
+          "dependency": "timer",
+          "dependency_type": "hal_primitive",
+          "risk": "coverage_gap",
+          "blocking_ports": [
+            "esp32"
+          ]
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": true
+    },
+    {
+      "id": "remote_node",
+      "name": "Remote Node",
+      "path": "modules/remote_node/module.json",
+      "depends": [
+        "uart"
+      ],
+      "analysis": [
+        {
+          "dependency": "uart",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "rtc",
+      "name": "RTC (DS3231/PCF8523)",
+      "path": "modules/rtc/module.json",
+      "depends": [
+        "i2c"
+      ],
+      "analysis": [
+        {
+          "dependency": "i2c",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "shell_full",
+      "name": "Shell (Full)",
+      "path": "modules/shell_full/module.json",
+      "depends": [
+        "uart"
+      ],
+      "analysis": [
+        {
+          "dependency": "uart",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "shell_min",
+      "name": "Shell (Lite)",
+      "path": "modules/shell_min/module.json",
+      "depends": [
+        "uart"
+      ],
+      "analysis": [
+        {
+          "dependency": "uart",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "shell_tiny",
+      "name": "Shell (Tiny)",
+      "path": "modules/shell_tiny/module.json",
+      "depends": [
+        "uart"
+      ],
+      "analysis": [
+        {
+          "dependency": "uart",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "spi",
+      "name": "SPI Bus",
+      "path": "modules/spi/module.json",
+      "depends": [],
+      "analysis": [],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "tft",
+      "name": "TFT Display",
+      "path": "modules/tft/module.json",
+      "depends": [
+        "spi"
+      ],
+      "analysis": [
+        {
+          "dependency": "spi",
+          "dependency_type": "hal_primitive",
+          "risk": "coverage_gap",
+          "blocking_ports": [
+            "esp32"
+          ]
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": true
+    },
+    {
+      "id": "timer",
+      "name": "Timer",
+      "path": "modules/timer/module.json",
+      "depends": [],
+      "analysis": [],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "tp4056",
+      "name": "TP4056 Li-Ion Charger",
+      "path": "modules/tp4056/module.json",
+      "depends": [
+        "gpio"
+      ],
+      "analysis": [
+        {
+          "dependency": "gpio",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "twai",
+      "name": "TWAI / CAN",
+      "path": "modules/twai/module.json",
+      "depends": [
+        "uart"
+      ],
+      "analysis": [
+        {
+          "dependency": "uart",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "uart",
+      "name": "UART",
+      "path": "modules/uart/module.json",
+      "depends": [],
+      "analysis": [],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "uln2003",
+      "name": "ULN2003 Stepper Driver",
+      "path": "modules/uln2003/module.json",
+      "depends": [
+        "gpio"
+      ],
+      "analysis": [
+        {
+          "dependency": "gpio",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "wifi",
+      "name": "Wi-Fi (Station)",
+      "path": "modules/wifi/module.json",
+      "depends": [
+        "uart"
+      ],
+      "analysis": [
+        {
+          "dependency": "uart",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    }
+  ]
+}

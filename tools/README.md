@@ -32,6 +32,7 @@
 - `generate_tp4056_posture_report.py` – generate TP4056 capability posture policy report (`docs/planning/TP4056_CAPABILITY_POSTURE.json`, `docs/planning/TP4056_CAPABILITY_POSTURE.md`)
 - `generate_hal_adapter_matrix.py` – generate HAL port adapter coverage matrix artifacts (`docs/planning/HAL_ADAPTER_MATRIX.csv`, `docs/planning/HAL_ADAPTER_MATRIX.json`, `docs/planning/HAL_ADAPTER_MATRIX.md`)
 - `generate_hal_platform_adapter_completeness.py` – generate required platform adapter completeness artifacts (`docs/planning/HAL_PLATFORM_ADAPTER_COMPLETENESS.json`, `docs/planning/HAL_PLATFORM_ADAPTER_COMPLETENESS.md`)
+- `generate_driver_hal_dependency_map.py` – generate module dependency-to-HAL mapping and coverage risk artifacts (`docs/planning/DRIVER_HAL_DEPENDENCY_MAP.json`, `docs/planning/DRIVER_HAL_DEPENDENCY_MAP.md`)
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -273,6 +274,12 @@ HAL platform adapter completeness smoke:
 
 ```bash
 bash tools/tests/hal_platform_adapter_completeness_smoke.sh
+```
+
+Driver-to-HAL dependency map drift smoke:
+
+```bash
+bash tools/tests/driver_hal_dependency_map_drift_smoke.sh
 ```
 
 
