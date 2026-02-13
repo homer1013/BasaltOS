@@ -109,6 +109,12 @@ Invalid-board hard-fail regression guard:
 bash tools/tests/configure_invalid_board_regression.sh
 ```
 
+Configurator UX guidance smoke (error/suggestion/default guidance):
+
+```bash
+bash tools/tests/configure_ux_guidance_smoke.sh
+```
+
 Negative-path CLI validation (template/platform/driver/input failures):
 
 ```bash

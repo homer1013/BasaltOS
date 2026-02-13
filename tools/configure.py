@@ -21,6 +21,7 @@ Wizard mode:
 from __future__ import annotations
 
 import argparse
+import difflib
 import json
 import sys
 from dataclasses import dataclass
@@ -425,6 +426,66 @@ class ConfigError(Exception):
     pass
 
 
+def suggest_board_matches(
+    boards: List[BoardProfile],
+    platform: str,
+    query: str,
+    limit: int = 6,
+) -> List[str]:
+    q = str(query or "").strip().lower()
+    if not q:
+        return []
+    candidates = [b for b in boards if b.platform == platform]
+    if not candidates:
+        return []
+
+    out: List[str] = []
+    # 1) direct substring hits first
+    for b in sorted(candidates, key=lambda x: (x.board_dir, x.id)):
+        if q in b.board_dir.lower() or q in b.id.lower() or q in b.name.lower():
+            out.append(f"{b.board_dir} (id='{b.id}', name='{b.name}')")
+            if len(out) >= limit:
+                return out
+
+    # 2) fuzzy fallback across dir/id/name tokens
+    token_map: Dict[str, BoardProfile] = {}
+    tokens: List[str] = []
+    for b in candidates:
+        for tok in (b.board_dir, b.id, b.name):
+            key = str(tok).strip().lower()
+            if not key:
+                continue
+            token_map[key] = b
+            tokens.append(key)
+
+    for tok in difflib.get_close_matches(q, sorted(set(tokens)), n=limit * 2, cutoff=0.45):
+        b = token_map.get(tok)
+        if not b:
+            continue
+        label = f"{b.board_dir} (id='{b.id}', name='{b.name}')"
+        if label not in out:
+            out.append(label)
+            if len(out) >= limit:
+                break
+    return out
+
+
+def suggest_driver_matches(modules: Dict[str, Module], query: str, limit: int = 6) -> List[str]:
+    q = norm_slug(query or "")
+    if not q:
+        return []
+    known = sorted(modules.keys())
+    if q in known:
+        return [q]
+    matches = [m for m in known if q in m]
+    if len(matches) < limit:
+        fuzzy = difflib.get_close_matches(q, known, n=limit, cutoff=0.45)
+        for m in fuzzy:
+            if m not in matches:
+                matches.append(m)
+    return matches[:limit]
+
+
 def select_board_noninteractive(
     boards: List[BoardProfile],
     platform: Optional[str],
@@ -439,7 +500,11 @@ def select_board_noninteractive(
 
     candidates = [b for b in boards if b.platform == platform]
     if not candidates:
-        return None, None
+        known_platforms = sorted({b.platform for b in boards})
+        raise ConfigError(
+            f"platform '{platform}' has no discovered boards. "
+            f"Known platforms: {', '.join(known_platforms) if known_platforms else '(none)'}"
+        )
 
     # Prefer exact folder name match
     exact_dir = [b for b in candidates if b.board_dir == board_arg]
@@ -459,7 +524,11 @@ def select_board_noninteractive(
             "ambiguous board id; matches multiple variants:\n  - " + "\n  - ".join(lines)
         )
 
-    return None, None
+    hints = suggest_board_matches(boards, platform, board_arg)
+    msg = f"board '{board_arg}' not found under platform '{platform}'."
+    if hints:
+        msg += "\nClosest matches:\n  - " + "\n  - ".join(hints)
+    raise ConfigError(msg)
 
 
 def wizard_select_platform(root: Path) -> Optional[str]:
@@ -616,7 +685,19 @@ def resolve_modules(
 ) -> List[str]:
     unknown = sorted([m for m in requested if m not in modules])
     if unknown:
-        raise ConfigError(f"Unknown driver(s): {', '.join(unknown)}")
+        details: List[str] = []
+        for miss in unknown:
+            hints = suggest_driver_matches(modules, miss)
+            if hints:
+                details.append(f"{miss} -> did you mean: {', '.join(hints)}")
+        hint_block = ""
+        if details:
+            hint_block = "\nDriver suggestions:\n  - " + "\n  - ".join(details)
+        sample = ", ".join(sorted(list(modules.keys()))[:12])
+        raise ConfigError(
+            f"Unknown driver(s): {', '.join(unknown)}"
+            f"{hint_block}\nAvailable drivers (sample): {sample}"
+        )
 
     enabled: Set[str] = set()
     stack: List[str] = sorted(requested)
@@ -627,7 +708,10 @@ def resolve_modules(
             continue
 
         if allow is not None and mid not in allow:
-            raise ConfigError(f"Driver '{mid}' is not supported by selected board/capabilities.")
+            raise ConfigError(
+                f"Driver '{mid}' is not supported by selected board/capabilities. "
+                "Run --list-boards for a different board, or choose from board-supported drivers."
+            )
 
         enabled.add(mid)
 
@@ -638,7 +722,9 @@ def resolve_modules(
             if dep not in modules:
                 raise ConfigError(f"Driver '{mid}' depends on missing driver '{dep}'.")
             if allow is not None and dep not in allow:
-                raise ConfigError(f"Driver '{mid}' depends on '{dep}', but '{dep}' is not supported by the selected board.")
+                raise ConfigError(
+                    f"Driver '{mid}' depends on '{dep}', but '{dep}' is not supported by the selected board."
+                )
             if dep not in enabled:
                 stack.append(dep)
 
@@ -1433,6 +1519,14 @@ def main() -> int:
         if allow is not None:
             eprint("[configure] NOTE: board capabilities restriction is active.")
             eprint(f"[configure] Allowed drivers for board: {', '.join(sorted(allow))}")
+        if board_profile:
+            defaults_hint = sorted(default_drivers_for_board(board_profile))
+            if defaults_hint:
+                eprint(f"[configure] Board default drivers: {', '.join(defaults_hint)}")
+                eprint(
+                    "[configure] TIP: start from board defaults, then add drivers incrementally "
+                    "to isolate compatibility issues."
+                )
         return 4
 
     # Apply disables after dependency resolution
@@ -1587,6 +1681,12 @@ def main() -> int:
         print(f"[configure] Enabled drivers: {', '.join(enabled_list)}")
     else:
         print("[configure] Enabled drivers: (none)")
+    if board_profile:
+        defaults_hint = sorted(default_drivers_for_board(board_profile))
+        if defaults_hint:
+            print(f"[configure] Board default drivers: {', '.join(defaults_hint)}")
+            if set(enabled_list) != set(defaults_hint):
+                print("[configure] TIP: if troubleshooting, retry with board defaults first, then add extras.")
     print(f"[configure] Selected applets: {', '.join(selected_applets) if selected_applets else '(none)'}")
     print(f"[configure] Selected market apps: {', '.join(selected_market_apps) if selected_market_apps else '(none)'}")
     if avr_clock or avr_fuses or avr_upload:
