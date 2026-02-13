@@ -16,9 +16,6 @@ This policy controls runtime init/status contract coverage checks for required H
 
 ## Current Acknowledged Missing Runtime Implementation Ports
 
-- `esp32c3`
-- `esp32c6`
-- `esp32s3`
 - `pic16`
 - `ra4m1`
 - `rp2040`

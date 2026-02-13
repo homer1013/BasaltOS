@@ -1,182 +1,227 @@
-#pragma once
-/*
- * BasaltOS Hardware Abstraction Layer - UART
- *
- * Portable UART contract used by BasaltOS.
- *
- * Rules:
- *  - No vendor SDK headers here (ESP-IDF, Pico SDK, STM32 HAL, etc.)
- *  - Consistent error model:
- *      0 / -errno for config calls
- *      bytes / -errno for send/recv calls
- *  - Blocking behavior must be explicit via timeout_ms
- */
+// BasaltOS ESP32C3 HAL - I2C
+//
+// ESP-IDF implementation of:
+//   hal/include/hal/hal_i2c.h
 
+#include <errno.h>
+#include <stdbool.h>
 #include <stdint.h>
-#include <stddef.h>
-#include "hal/hal_types.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "hal/hal_i2c.h"
 
-/* ------------------------------------------------------------
- * UART configuration types
- * ------------------------------------------------------------ */
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
-typedef enum {
-    HAL_UART_PARITY_NONE = 0,
-    HAL_UART_PARITY_EVEN,
-    HAL_UART_PARITY_ODD,
-} hal_uart_parity_t;
+#include "driver/i2c.h"
+#include "esp_err.h"
 
-typedef enum {
-    HAL_UART_STOP_BITS_1 = 0,
-    HAL_UART_STOP_BITS_2,
-} hal_uart_stop_bits_t;
-
-typedef enum {
-    HAL_UART_DATA_BITS_5 = 5,
-    HAL_UART_DATA_BITS_6 = 6,
-    HAL_UART_DATA_BITS_7 = 7,
-    HAL_UART_DATA_BITS_8 = 8,
-} hal_uart_data_bits_t;
-
-typedef enum {
-    HAL_UART_FLOW_NONE = 0,
-    HAL_UART_FLOW_RTS_CTS,
-    HAL_UART_FLOW_XON_XOFF,
-} hal_uart_flow_t;
-
-/* ------------------------------------------------------------
- * UART init configuration (optional helper)
- * ------------------------------------------------------------ */
+// -----------------------------------------------------------------------------
+// Private implementation type stored inside hal_i2c_t opaque storage
+// -----------------------------------------------------------------------------
 
 typedef struct {
-    uint32_t baud;                 // e.g. 115200
-    hal_uart_data_bits_t data_bits;
-    hal_uart_stop_bits_t stop_bits;
-    hal_uart_parity_t parity;
-    hal_uart_flow_t flow;
-} hal_uart_config_t;
+    int port;            // i2c_port_t but stored as int to keep public headers clean
+    uint32_t freq_hz;
+    int sda_pin;
+    int scl_pin;
+    bool initialized;
+} hal_i2c_impl_t;
 
-/* Recommended default config */
-static inline hal_uart_config_t hal_uart_config_default(uint32_t baud) {
-    hal_uart_config_t c;
-    c.baud = baud;
-    c.data_bits = HAL_UART_DATA_BITS_8;
-    c.stop_bits = HAL_UART_STOP_BITS_1;
-    c.parity = HAL_UART_PARITY_NONE;
-    c.flow = HAL_UART_FLOW_NONE;
-    return c;
+_Static_assert(sizeof(hal_i2c_impl_t) <= sizeof(((hal_i2c_t *)0)->_opaque),
+               "hal_i2c_t opaque storage too small for esp32 hal_i2c_impl_t");
+
+static inline hal_i2c_impl_t *I(hal_i2c_t *i2c) {
+    return (hal_i2c_impl_t *)i2c->_opaque;
 }
 
-/* ------------------------------------------------------------
- * API
- * ------------------------------------------------------------ */
+// -----------------------------------------------------------------------------
+// Helpers
+// -----------------------------------------------------------------------------
 
-/**
- * @brief Initialize a UART peripheral.
- *
- * @param u     UART handle storage (caller-provided)
- * @param bus   Platform UART index (e.g. 0,1,2)
- * @param baud  Baud rate (e.g. 115200)
- *
- * @return 0 on success, -errno on failure
- *
- * Notes:
- *  - Minimal profile required
- *  - Non-blocking configuration call
- */
-int hal_uart_init(hal_uart_t *u, int bus, uint32_t baud);
-
-/**
- * @brief Initialize UART with a full configuration (optional).
- *
- * @return 0 on success, -errno on failure
- *
- * Platforms may return -ENOSYS if only basic init is supported.
- */
-int hal_uart_init_ex(hal_uart_t *u, int bus, const hal_uart_config_t *cfg);
-
-/**
- * @brief Deinitialize the UART peripheral.
- */
-int hal_uart_deinit(hal_uart_t *u);
-
-/**
- * @brief Send bytes over UART.
- *
- * @param timeout_ms  0 = nonblocking attempt
- *                    >0 = block up to timeout
- *                    UINT32_MAX = block "forever" (platform-defined)
- *
- * @return bytes sent on success, -errno on failure
- *
- * Thread-safety:
- *  - ISR: No
- *  - Blocking: Yes (depending on timeout)
- */
-int hal_uart_send(hal_uart_t *u,
-                  const uint8_t *buf,
-                  size_t len,
-                  uint32_t timeout_ms);
-
-/**
- * @brief Receive bytes over UART.
- *
- * @param timeout_ms  0 = nonblocking attempt
- *                    >0 = block up to timeout
- *                    UINT32_MAX = block "forever" (platform-defined)
- *
- * @return bytes received on success, -errno on failure
- *
- * Thread-safety:
- *  - ISR: No
- *  - Blocking: Yes (depending on timeout)
- */
-int hal_uart_recv(hal_uart_t *u,
-                  uint8_t *buf,
-                  size_t len,
-                  uint32_t timeout_ms);
-
-/**
- * @brief Flush the TX path (ensure all bytes are transmitted).
- *
- * @return 0 on success, -errno on failure
- *
- * May block until drained.
- */
-int hal_uart_flush(hal_uart_t *u);
-
-/**
- * @brief Query number of bytes available to read without blocking.
- *
- * @param avail receives number of readable bytes
- *
- * @return 0 on success, -errno on failure
- */
-int hal_uart_available(hal_uart_t *u, size_t *avail);
-
-/**
- * @brief Set baud rate after initialization.
- */
-int hal_uart_set_baud(hal_uart_t *u, uint32_t baud);
-
-/**
- * @brief Configure flow control (RTS/CTS or XON/XOFF) if supported.
- *
- * Platforms that do not support flow control may return -ENOSYS.
- */
-int hal_uart_set_flow(hal_uart_t *u, hal_uart_flow_t flow);
-
-/**
- * @brief Send a UART break condition (optional).
- *
- * Platforms that do not support this may return -ENOSYS.
- */
-int hal_uart_set_break(hal_uart_t *u, uint32_t duration_ms);
-
-#ifdef __cplusplus
+static inline int esp_err_to_errno(esp_err_t err) {
+    switch (err) {
+        case ESP_OK: return 0;
+        case ESP_ERR_INVALID_ARG: return -EINVAL;
+        case ESP_ERR_INVALID_STATE: return -EALREADY;
+        case ESP_ERR_NO_MEM: return -ENOMEM;
+        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
+        default: return -EIO;
+    }
 }
-#endif
+
+static inline TickType_t ms_to_ticks(uint32_t timeout_ms) {
+    // If timeout_ms==0, let the driver do a "no wait" attempt where supported.
+    return (timeout_ms == 0) ? 0 : pdMS_TO_TICKS(timeout_ms);
+}
+
+static inline bool valid_addr7(uint8_t addr) {
+    return (addr <= 0x7F);
+}
+
+// -----------------------------------------------------------------------------
+// Public API
+// -----------------------------------------------------------------------------
+
+int hal_i2c_init(hal_i2c_t *i2c, int bus, uint32_t freq_hz, int sda_pin, int scl_pin) {
+    if (!i2c) return -EINVAL;
+    if (bus < 0) return -EINVAL;
+    if (freq_hz == 0) return -EINVAL;
+    if (sda_pin < 0 || scl_pin < 0) return -EINVAL;
+
+    hal_i2c_impl_t *h = I(i2c);
+
+    h->port = bus;
+    h->freq_hz = freq_hz;
+    h->sda_pin = sda_pin;
+    h->scl_pin = scl_pin;
+
+    i2c_config_t conf = {0};
+    conf.mode = I2C_MODE_MASTER;
+    conf.sda_io_num = (gpio_num_t)sda_pin;
+    conf.scl_io_num = (gpio_num_t)scl_pin;
+    conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
+    conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
+    conf.master.clk_speed = freq_hz;
+
+    esp_err_t e1 = i2c_param_config((i2c_port_t)bus, &conf);
+    if (e1 != ESP_OK) return esp_err_to_errno(e1);
+
+    // Last two args are RX/TX buffer sizes for slave mode; set 0 for master mode.
+    esp_err_t e2 = i2c_driver_install((i2c_port_t)bus, I2C_MODE_MASTER, 0, 0, 0);
+    if (e2 != ESP_OK && e2 != ESP_ERR_INVALID_STATE) {
+        return esp_err_to_errno(e2);
+    }
+
+    h->initialized = true;
+    return 0;
+}
+
+int hal_i2c_deinit(hal_i2c_t *i2c) {
+    if (!i2c) return -EINVAL;
+    hal_i2c_impl_t *h = I(i2c);
+    if (!h->initialized) return -EINVAL;
+
+    esp_err_t e = i2c_driver_delete((i2c_port_t)h->port);
+    h->initialized = false;
+    return esp_err_to_errno(e);
+}
+
+int hal_i2c_set_freq(hal_i2c_t *i2c, uint32_t freq_hz) {
+    if (!i2c) return -EINVAL;
+    hal_i2c_impl_t *h = I(i2c);
+    if (!h->initialized) return -EINVAL;
+    if (freq_hz == 0) return -EINVAL;
+
+    i2c_config_t conf = {0};
+    conf.mode = I2C_MODE_MASTER;
+    conf.sda_io_num = (gpio_num_t)h->sda_pin;
+    conf.scl_io_num = (gpio_num_t)h->scl_pin;
+    conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
+    conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
+    conf.master.clk_speed = freq_hz;
+
+    esp_err_t e = i2c_param_config((i2c_port_t)h->port, &conf);
+    if (e == ESP_OK) {
+        h->freq_hz = freq_hz;
+        return 0;
+    }
+    return esp_err_to_errno(e);
+}
+
+int hal_i2c_probe(hal_i2c_t *i2c, uint8_t addr, uint32_t timeout_ms) {
+    if (!i2c) return -EINVAL;
+    hal_i2c_impl_t *h = I(i2c);
+    if (!h->initialized) return -EINVAL;
+    if (!valid_addr7(addr)) return -EINVAL;
+
+    i2c_cmd_handle_t cmd = i2c_cmd_link_create();
+    if (!cmd) return -ENOMEM;
+
+    esp_err_t e = ESP_OK;
+    e |= i2c_master_start(cmd);
+    e |= i2c_master_write_byte(cmd, (uint8_t)((addr << 1) | I2C_MASTER_WRITE), true);
+    e |= i2c_master_stop(cmd);
+
+    if (e != ESP_OK) {
+        i2c_cmd_link_delete(cmd);
+        return esp_err_to_errno(e);
+    }
+
+    esp_err_t ex = i2c_master_cmd_begin((i2c_port_t)h->port, cmd, ms_to_ticks(timeout_ms));
+    i2c_cmd_link_delete(cmd);
+
+    if (ex == ESP_OK) return 0;
+
+    if (ex == ESP_ERR_TIMEOUT) return -ETIMEDOUT;
+    if (ex == ESP_ERR_INVALID_STATE) return -EALREADY;
+    if (ex == ESP_ERR_INVALID_ARG) return -EINVAL;
+
+    return -ENODEV;
+}
+
+int hal_i2c_write(hal_i2c_t *i2c, uint8_t addr,
+                  const uint8_t *data, size_t len,
+                  uint32_t timeout_ms) {
+    if (!i2c) return -EINVAL;
+    hal_i2c_impl_t *h = I(i2c);
+    if (!h->initialized) return -EINVAL;
+    if (!valid_addr7(addr)) return -EINVAL;
+    if (!data && len > 0) return -EINVAL;
+
+    esp_err_t e = i2c_master_write_to_device(
+        (i2c_port_t)h->port,
+        addr,
+        (uint8_t *)data,
+        len,
+        ms_to_ticks(timeout_ms)
+    );
+
+    if (e != ESP_OK) return esp_err_to_errno(e);
+    return (int)len;
+}
+
+int hal_i2c_read(hal_i2c_t *i2c, uint8_t addr,
+                 uint8_t *data, size_t len,
+                 uint32_t timeout_ms) {
+    if (!i2c) return -EINVAL;
+    hal_i2c_impl_t *h = I(i2c);
+    if (!h->initialized) return -EINVAL;
+    if (!valid_addr7(addr)) return -EINVAL;
+    if (!data && len > 0) return -EINVAL;
+
+    esp_err_t e = i2c_master_read_from_device(
+        (i2c_port_t)h->port,
+        addr,
+        data,
+        len,
+        ms_to_ticks(timeout_ms)
+    );
+
+    if (e != ESP_OK) return esp_err_to_errno(e);
+    return (int)len;
+}
+
+int hal_i2c_write_read(hal_i2c_t *i2c, uint8_t addr,
+                       const uint8_t *wdata, size_t wlen,
+                       uint8_t *rdata, size_t rlen,
+                       uint32_t timeout_ms) {
+    if (!i2c) return -EINVAL;
+    hal_i2c_impl_t *h = I(i2c);
+    if (!h->initialized) return -EINVAL;
+    if (!valid_addr7(addr)) return -EINVAL;
+    if (!wdata && wlen > 0) return -EINVAL;
+    if (!rdata && rlen > 0) return -EINVAL;
+
+    esp_err_t e = i2c_master_write_read_device(
+        (i2c_port_t)h->port,
+        addr,
+        (uint8_t *)wdata,
+        wlen,
+        rdata,
+        rlen,
+        ms_to_ticks(timeout_ms)
+    );
+
+    if (e != ESP_OK) return esp_err_to_errno(e);
+    return (int)rlen;
+}
