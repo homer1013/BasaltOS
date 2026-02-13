@@ -1,0 +1,13 @@
+port,status,has_adc,has_fs,has_gpio,has_i2c,has_pwm,has_spi,has_sys,has_timer,has_uart
+esp32,partial,no,no,yes,yes,no,no,no,no,yes
+esp32c3,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes
+esp32c6,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes
+esp32h2,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes
+esp32pico,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes
+esp32s2,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes
+esp32s3,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes
+esp8266,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes
+pic16,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes
+ra4m1,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes
+rp2040,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes
+stm32,complete,yes,yes,yes,yes,yes,yes,yes,yes,yes

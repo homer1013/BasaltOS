@@ -30,6 +30,7 @@
 - `generate_mcp2544fd_posture_report.py` – generate MCP2544FD capability posture policy report (`docs/planning/MCP2544FD_CAPABILITY_POSTURE.json`, `docs/planning/MCP2544FD_CAPABILITY_POSTURE.md`)
 - `generate_psram_posture_report.py` – generate PSRAM capability posture policy report (`docs/planning/PSRAM_CAPABILITY_POSTURE.json`, `docs/planning/PSRAM_CAPABILITY_POSTURE.md`)
 - `generate_tp4056_posture_report.py` – generate TP4056 capability posture policy report (`docs/planning/TP4056_CAPABILITY_POSTURE.json`, `docs/planning/TP4056_CAPABILITY_POSTURE.md`)
+- `generate_hal_adapter_matrix.py` – generate HAL port adapter coverage matrix artifacts (`docs/planning/HAL_ADAPTER_MATRIX.csv`, `docs/planning/HAL_ADAPTER_MATRIX.json`, `docs/planning/HAL_ADAPTER_MATRIX.md`)
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
@@ -253,6 +254,12 @@ TP4056 posture report drift smoke:
 
 ```bash
 bash tools/tests/tp4056_posture_report_drift_smoke.sh
+```
+
+HAL adapter matrix drift smoke:
+
+```bash
+bash tools/tests/hal_adapter_matrix_drift_smoke.sh
 ```
 
 
