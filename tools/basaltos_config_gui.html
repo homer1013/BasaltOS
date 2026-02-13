@@ -1475,116 +1475,6 @@
             border-color: #667eea;
         }
 
-        .build-health-bar {
-            position: sticky;
-            bottom: 10px;
-            z-index: 40;
-            margin-top: 10px;
-            background: #0f172a;
-            color: #e2e8f0;
-            border: 1px solid #1e293b;
-            border-radius: 12px;
-            padding: 10px 12px;
-            box-shadow: 0 8px 24px rgba(2, 6, 23, 0.35);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .health-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            font-size: 12px;
-        }
-
-        .health-pill {
-            border-radius: 999px;
-            padding: 4px 9px;
-            font-size: 12px;
-            font-weight: 700;
-            border: 1px solid #334155;
-            background: #1e293b;
-        }
-
-        .health-pill.ok {
-            background: #052e16;
-            border-color: #14532d;
-            color: #86efac;
-        }
-
-        .health-pill.warn {
-            background: #422006;
-            border-color: #92400e;
-            color: #fdba74;
-        }
-
-        .health-pill.err {
-            background: #450a0a;
-            border-color: #7f1d1d;
-            color: #fca5a5;
-        }
-
-        .health-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .issues-popover {
-            position: absolute;
-            right: 14px;
-            bottom: calc(100% + 8px);
-            width: min(420px, calc(100vw - 40px));
-            max-height: 220px;
-            overflow: auto;
-            background: #0b1220;
-            color: #e2e8f0;
-            border: 1px solid #334155;
-            border-radius: 10px;
-            box-shadow: 0 12px 24px rgba(2, 6, 23, 0.4);
-            padding: 10px;
-            display: none;
-            z-index: 80;
-        }
-
-        .issues-popover.active {
-            display: block;
-        }
-
-        .issues-popover-item {
-            font-size: 12px;
-            line-height: 1.35;
-            padding: 6px 0;
-            border-bottom: 1px solid #1e293b;
-        }
-
-        .issues-popover-item:last-child {
-            border-bottom: none;
-        }
-
-        .health-pill.issues-hover {
-            cursor: help;
-        }
-
-        .health-progress {
-            width: 160px;
-            height: 8px;
-            border-radius: 999px;
-            background: #334155;
-            overflow: hidden;
-        }
-
-        .health-progress-fill {
-            height: 100%;
-            width: 0%;
-            background: #22c55e;
-            transition: width 0.2s ease;
-        }
-
         .driver-tabs {
             display: flex;
             gap: 8px;
@@ -1699,9 +1589,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .build-health-bar {
-                bottom: 6px;
-            }
         }
     </style>
 </head>
@@ -2142,15 +2029,6 @@
                     <button class="btn btn-primary" id="btn-generate-build" style="display: none;">Generate + Build ESP32</button>
                     <button class="btn btn-success" id="btn-generate" style="display: none;">Generate Files</button>
         </div>
-        </div>
-        <div id="build-health-bar" class="build-health-bar">
-            <div class="health-meta" id="build-health-meta"></div>
-            <div class="health-actions">
-                <div class="health-progress" aria-hidden="true">
-                    <div id="build-health-progress" class="health-progress-fill"></div>
-                </div>
-            </div>
-            <div id="build-health-issues-popover" class="issues-popover"></div>
         </div>
         </div>
     </div>
