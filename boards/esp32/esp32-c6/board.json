@@ -17,20 +17,39 @@
     "gpio",
     "adc",
     "pwm",
+    "timer",
+    "twai",
+    "tft",
+    "eeprom",
     "remote_node",
     "mcp23017",
     "hp4067",
+    "tp4056",
     "fs_sd"
   ],
   "pins": {
     "uart_tx": 16,
     "uart_rx": 17,
+    "can_tx": 20,
+    "can_rx": 21,
     "i2c_sda": 6,
     "i2c_scl": 7,
     "spi_mosi": 7,
     "spi_miso": 2,
     "spi_sclk": 6,
     "spi_cs": 10,
+    "tft_mosi": 7,
+    "tft_miso": 2,
+    "tft_sclk": 6,
+    "tft_cs": 10,
+    "tft_dc": 4,
+    "tft_rst": 5,
+    "tft_bl": 8,
+    "tp4056_chrg": 18,
+    "tp4056_done": 19,
+    "tp4056_ce": 3,
+    "adc_in": 1,
+    "pwm_out": 3,
     "led": 8,
     "button": 9
   },
@@ -52,6 +71,26 @@
         16,
         4,
         5
+      ],
+      "type": "input"
+    },
+    "can_tx": {
+      "description": "TWAI/CAN TX baseline pin (verify with transceiver wiring)",
+      "alternatives": [
+        20,
+        4,
+        6,
+        10
+      ],
+      "type": "output"
+    },
+    "can_rx": {
+      "description": "TWAI/CAN RX baseline pin (verify with transceiver wiring)",
+      "alternatives": [
+        21,
+        5,
+        7,
+        11
       ],
       "type": "input"
     },
@@ -121,6 +160,127 @@
       ],
       "type": "output"
     },
+    "tft_mosi": {
+      "description": "TFT SPI MOSI baseline pin",
+      "alternatives": [
+        7,
+        6,
+        10,
+        4
+      ],
+      "type": "output"
+    },
+    "tft_miso": {
+      "description": "TFT SPI MISO baseline pin (optional for display-only)",
+      "alternatives": [
+        2,
+        6,
+        7,
+        4
+      ],
+      "type": "input"
+    },
+    "tft_sclk": {
+      "description": "TFT SPI SCLK baseline pin",
+      "alternatives": [
+        6,
+        7,
+        10,
+        4
+      ],
+      "type": "output"
+    },
+    "tft_cs": {
+      "description": "TFT chip-select baseline pin",
+      "alternatives": [
+        10,
+        8,
+        9,
+        4
+      ],
+      "type": "output"
+    },
+    "tft_dc": {
+      "description": "TFT data/command pin",
+      "alternatives": [
+        4,
+        5,
+        8,
+        9
+      ],
+      "type": "output"
+    },
+    "tft_rst": {
+      "description": "TFT reset pin (optional)",
+      "alternatives": [
+        5,
+        4,
+        8,
+        9,
+        -1
+      ],
+      "type": "output"
+    },
+    "tft_bl": {
+      "description": "TFT backlight pin (optional)",
+      "alternatives": [
+        8,
+        5,
+        4,
+        -1
+      ],
+      "type": "output"
+    },
+    "tp4056_chrg": {
+      "description": "TP4056 CHRG status pin",
+      "alternatives": [
+        18,
+        4,
+        5,
+        9
+      ],
+      "type": "input"
+    },
+    "tp4056_done": {
+      "description": "TP4056 DONE status pin",
+      "alternatives": [
+        19,
+        5,
+        4,
+        10
+      ],
+      "type": "input"
+    },
+    "tp4056_ce": {
+      "description": "TP4056 CE control pin (optional)",
+      "alternatives": [
+        3,
+        4,
+        5,
+        -1
+      ],
+      "type": "output"
+    },
+    "adc_in": {
+      "description": "Generic ADC input baseline pin",
+      "alternatives": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "type": "input"
+    },
+    "pwm_out": {
+      "description": "Generic PWM output baseline pin",
+      "alternatives": [
+        3,
+        4,
+        5,
+        8
+      ],
+      "type": "output"
+    },
     "led": {
       "description": "Onboard LED (board-dependent)",
       "alternatives": [
@@ -161,7 +321,7 @@
       "freq_hz": 160000000
     }
   },
-  "notes": "This profile is a conservative baseline intended to unblock C6 configuration and early bring-up. Confirm all pins, especially SPI/I2C/LED, against your board documentation.",
+  "notes": "This profile is a bring-up baseline for ESP32-C6 peripheral work. Confirm pin routing against your exact board revision, especially CAN/TFT/TP4056 wiring.",
   "architecture": "RISC-V",
   "family": "ESP32-C6"
 }

@@ -15,13 +15,13 @@
   },
   "summary": {
     "board_count": 35,
-    "twai_enabled_count": 5,
+    "twai_enabled_count": 6,
     "esp32_missing_twai_with_can_pin_contract": 0,
-    "esp32_missing_twai_without_can_pin_contract": 7,
+    "esp32_missing_twai_without_can_pin_contract": 6,
     "non_esp32_missing_twai": 23,
     "actionable_total": 0,
     "twai_enabled_by_platform": {
-      "esp32": 5
+      "esp32": 6
     },
     "non_esp32_missing_twai_by_platform": {
       "atmega": 2,
@@ -53,6 +53,11 @@
         "manufacturer": "Generic"
       },
       {
+        "board_id": "esp32-c6",
+        "platform": "esp32",
+        "manufacturer": "Espressif"
+      },
+      {
         "board_id": "esp32-devkitc_v4",
         "platform": "esp32",
         "manufacturer": "Espressif"
@@ -79,11 +84,6 @@
         "board_id": "elecrow_crowpanel_esp32_s3",
         "platform": "esp32",
         "manufacturer": "Elecrow"
-      },
-      {
-        "board_id": "esp32-c6",
-        "platform": "esp32",
-        "manufacturer": "Espressif"
       },
       {
         "board_id": "esp32-cam",

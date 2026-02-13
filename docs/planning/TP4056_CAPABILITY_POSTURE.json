@@ -27,19 +27,19 @@
   },
   "summary": {
     "board_count": 35,
-    "tp4056_enabled_count": 4,
-    "tp4056_missing_intentional_count": 31,
+    "tp4056_enabled_count": 5,
+    "tp4056_missing_intentional_count": 30,
     "actionable_total": 0,
     "tp4056_enabled_by_platform": {
       "atsam": 1,
-      "esp32": 2,
+      "esp32": 3,
       "rp2040": 1
     },
     "tp4056_missing_by_platform": {
       "atmega": 2,
       "atsam": 2,
       "avr": 2,
-      "esp32": 10,
+      "esp32": 9,
       "linux-sbc": 1,
       "pic16": 2,
       "renesas_ra": 3,
@@ -61,6 +61,12 @@
         "platform": "esp32",
         "manufacturer": "DF Robot",
         "mcu": "ESP32-WROOM-32E"
+      },
+      {
+        "board_id": "esp32-c6",
+        "platform": "esp32",
+        "manufacturer": "Espressif",
+        "mcu": "ESP32-C6"
       },
       {
         "board_id": "m5stickc_plus2",
@@ -141,12 +147,6 @@
         "platform": "esp32",
         "manufacturer": "Generic",
         "mcu": "ESP32-C3"
-      },
-      {
-        "board_id": "esp32-c6",
-        "platform": "esp32",
-        "manufacturer": "Espressif",
-        "mcu": "ESP32-C6"
       },
       {
         "board_id": "esp32-cam",

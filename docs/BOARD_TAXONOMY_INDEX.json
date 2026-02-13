@@ -223,7 +223,7 @@
       "architecture": "RISC-V",
       "family": "ESP32-C6",
       "mcu": "ESP32-C6",
-      "caps_count": 12
+      "caps_count": 17
     },
     {
       "platform": "esp32",

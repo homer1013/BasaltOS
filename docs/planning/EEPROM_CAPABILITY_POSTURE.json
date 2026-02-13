@@ -19,17 +19,18 @@
   },
   "summary": {
     "board_count": 35,
-    "eeprom_enabled_count": 4,
-    "eeprom_missing_intentional_count": 31,
+    "eeprom_enabled_count": 5,
+    "eeprom_missing_intentional_count": 30,
     "actionable_total": 0,
     "eeprom_enabled_by_platform": {
       "avr": 2,
+      "esp32": 1,
       "pic16": 2
     },
     "eeprom_missing_by_platform": {
       "atmega": 2,
       "atsam": 3,
-      "esp32": 12,
+      "esp32": 11,
       "linux-sbc": 1,
       "renesas_ra": 3,
       "renesas_rx": 2,
@@ -48,6 +49,11 @@
         "board_id": "mega2560",
         "platform": "avr",
         "manufacturer": "Arduino"
+      },
+      {
+        "board_id": "esp32-c6",
+        "platform": "esp32",
+        "manufacturer": "Espressif"
       },
       {
         "board_id": "curiosity_nano_pic16f13145",
@@ -115,11 +121,6 @@
         "board_id": "esp32-c3-supermini",
         "platform": "esp32",
         "manufacturer": "Generic"
-      },
-      {
-        "board_id": "esp32-c6",
-        "platform": "esp32",
-        "manufacturer": "Espressif"
       },
       {
         "board_id": "esp32-cam",

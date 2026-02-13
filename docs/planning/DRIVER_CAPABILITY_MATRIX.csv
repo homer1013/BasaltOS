@@ -434,7 +434,7 @@ esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),bluetooth,Bluetooth Core,esp3
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),bme280,BME280 Environmental Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),dht22,DHT22 Sensor,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),display_ssd1306,SSD1306 Display,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
-esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,no,no,UNSUPPORTED,not_allowed:eeprom
+esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),eeprom,EEPROM,"esp32,stm32,rp2040,avr,pic,pic16",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),fs_sd,SD Card Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),fs_spiffs,SPIFFS Filesystem,,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -454,10 +454,10 @@ esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),shell_full,Shell (Full),"esp3
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),shell_tiny,Shell (Tiny),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),spi,SPI Bus,,yes,yes,yes,SUPPORTED,-
-esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),tft,TFT Display,"esp32,stm32,rp2040",yes,no,no,UNSUPPORTED,not_allowed:tft
+esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),tft,TFT Display,"esp32,stm32,rp2040",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),timer,Timer,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
-esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),tp4056,TP4056 Li-Ion Charger,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",yes,no,no,UNSUPPORTED,not_allowed:tp4056
-esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),twai,TWAI / CAN,esp32,yes,no,no,UNSUPPORTED,not_allowed:twai
+esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),tp4056,TP4056 Li-Ion Charger,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",yes,yes,yes,SUPPORTED,-
+esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),twai,TWAI / CAN,esp32,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),uart,UART,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),uln2003,ULN2003 Stepper Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),wifi,Wi-Fi (Station),esp32,yes,yes,yes,SUPPORTED,-

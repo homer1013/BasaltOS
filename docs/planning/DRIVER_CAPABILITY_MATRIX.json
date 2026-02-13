@@ -4,8 +4,8 @@
   "row_count": 1155,
   "summary": {
     "status_counts": {
-      "SUPPORTED": 918,
-      "UNSUPPORTED": 226,
+      "SUPPORTED": 922,
+      "UNSUPPORTED": 222,
       "CAPABILITY_ONLY": 11
     },
     "platform_summary": {
@@ -29,9 +29,9 @@
       },
       "esp32": {
         "boards": 12,
-        "SUPPORTED": 343,
+        "SUPPORTED": 347,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 53
+        "UNSUPPORTED": 49
       },
       "linux-sbc": {
         "boards": 1,
@@ -181,22 +181,22 @@
       },
       {
         "module_id": "tft",
-        "supported_boards": 5
+        "supported_boards": 6
       },
       {
         "module_id": "twai",
-        "supported_boards": 5
+        "supported_boards": 6
       },
       {
         "module_id": "eeprom",
-        "supported_boards": 4
-      },
-      {
-        "module_id": "mcp2544fd",
-        "supported_boards": 4
+        "supported_boards": 5
       },
       {
         "module_id": "tp4056",
+        "supported_boards": 5
+      },
+      {
+        "module_id": "mcp2544fd",
         "supported_boards": 4
       },
       {
@@ -427,18 +427,18 @@
         ]
       },
       "esp32": {
-        "unsupported_or_gap_rows": 53,
+        "unsupported_or_gap_rows": 49,
         "top_module_gaps": [
           {
             "module_id": "eeprom",
-            "count": 12
-          },
-          {
-            "module_id": "tp4056",
-            "count": 10
+            "count": 11
           },
           {
             "module_id": "psram",
+            "count": 9
+          },
+          {
+            "module_id": "tp4056",
             "count": 9
           },
           {
@@ -447,24 +447,24 @@
           },
           {
             "module_id": "tft",
-            "count": 7
+            "count": 6
           },
           {
             "module_id": "twai",
-            "count": 7
+            "count": 6
           }
         ],
         "top_reasons": [
           {
             "reason": "not_allowed:eeprom",
-            "count": 12
-          },
-          {
-            "reason": "not_allowed:tp4056",
-            "count": 10
+            "count": 11
           },
           {
             "reason": "not_allowed:psram",
+            "count": 9
+          },
+          {
+            "reason": "not_allowed:tp4056",
             "count": 9
           },
           {
@@ -473,11 +473,11 @@
           },
           {
             "reason": "not_allowed:tft",
-            "count": 7
+            "count": 6
           },
           {
             "reason": "not_allowed:twai",
-            "count": 7
+            "count": 6
           }
         ]
       },
@@ -916,24 +916,24 @@
       "actionable_top_modules_by_platform": {}
     },
     "advanced_policy_summary": {
-      "not_allowed_row_count": 226,
+      "not_allowed_row_count": 222,
       "bucket_counts": {
-        "intentional": 226
+        "intentional": 222
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 185
+        "intentional_advanced_peripheral_opt_in": 181
       },
       "actionable_top_modules_by_platform": {}
     },
     "foundation_focus_summary": {
-      "gap_row_count": 237,
+      "gap_row_count": 233,
       "bucket_counts": {
-        "intentional": 237
+        "intentional": 233
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 185,
+        "intentional_advanced_peripheral_opt_in": 181,
         "intentional_8bit_mic_scope": 6,
         "intentional_wireless_scope": 5
       },
@@ -7040,10 +7040,10 @@
       "module_name": "EEPROM",
       "module_platforms": "esp32,stm32,rp2040,avr,pic,pic16",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:eeprom"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -7320,10 +7320,10 @@
       "module_name": "TFT Display",
       "module_platforms": "esp32,stm32,rp2040",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:tft"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -7348,10 +7348,10 @@
       "module_name": "TP4056 Li-Ion Charger",
       "module_platforms": "esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:tp4056"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",
@@ -7362,10 +7362,10 @@
       "module_name": "TWAI / CAN",
       "module_platforms": "esp32",
       "module_platform_match": "yes",
-      "allow_contains_module": "no",
-      "resolve_with_allow": "no",
-      "status": "UNSUPPORTED",
-      "reason": "not_allowed:twai"
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
     },
     {
       "platform": "esp32",

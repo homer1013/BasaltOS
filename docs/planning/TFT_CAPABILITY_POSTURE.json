@@ -19,8 +19,8 @@
   },
   "summary": {
     "board_count": 35,
-    "boards_with_tft_capability": 5,
-    "boards_with_spi_but_no_tft": 30,
+    "boards_with_tft_capability": 6,
+    "boards_with_spi_but_no_tft": 29,
     "actionable_total": 0,
     "actionable_breakdown": {
       "display_without_tft": 0,
@@ -29,13 +29,13 @@
       "tft_capability_out_of_platform_scope": 0
     },
     "boards_with_tft_by_platform": {
-      "esp32": 5
+      "esp32": 6
     },
     "boards_with_spi_no_tft_by_platform": {
       "atmega": 2,
       "atsam": 3,
       "avr": 2,
-      "esp32": 7,
+      "esp32": 6,
       "linux-sbc": 1,
       "pic16": 2,
       "renesas_ra": 3,
@@ -45,11 +45,11 @@
     },
     "boards_with_spi_no_tft_by_manufacturer": {
       "Arduino": 6,
-      "Espressif": 3,
       "Raspberry Pi": 3,
       "Renesas": 3,
       "Adafruit": 2,
       "DF Robot": 2,
+      "Espressif": 2,
       "Microchip": 2,
       "STMicroelectronics": 2,
       "Seeed Studio": 2,
@@ -79,6 +79,13 @@
         "board_id": "elecrow_crowpanel_esp32_s3",
         "platform": "esp32",
         "manufacturer": "Elecrow",
+        "missing_required_pins": [],
+        "required_pin_contract_ok": true
+      },
+      {
+        "board_id": "esp32-c6",
+        "platform": "esp32",
+        "manufacturer": "Espressif",
         "missing_required_pins": [],
         "required_pin_contract_ok": true
       },
@@ -147,11 +154,6 @@
         "board_id": "esp32-c3-supermini",
         "platform": "esp32",
         "manufacturer": "Generic"
-      },
-      {
-        "board_id": "esp32-c6",
-        "platform": "esp32",
-        "manufacturer": "Espressif"
       },
       {
         "board_id": "esp32-cam",
