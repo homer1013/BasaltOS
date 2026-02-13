@@ -1927,6 +1927,7 @@
                     <div class="module-grid" id="module-grid">
                         <!-- Populated by JavaScript -->
                     </div>
+                    <div id="module-grid-status" class="sr-only" role="status" aria-live="polite"></div>
 
                     <h3 style="margin-top: 30px;">Selected Apps</h3>
                     <div class="alert alert-info">
@@ -4712,16 +4713,50 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             return moduleConfigs;
         }
 
+        function moduleCardA11yLabel(module, enabled, allowed) {
+            return `${module.name}: ${enabled ? 'enabled' : 'disabled'}${allowed ? '' : ' (not compatible with selected board)'}`;
+        }
+
+        function isInteractiveModuleTarget(target) {
+            return !!target?.closest('input,button,select,textarea,label,a,.btn-config,.module-options');
+        }
+
+        function syncModuleCardAccessibility(module, card, toggle, enabled, allowed) {
+            if (!module || !card) return;
+            card.setAttribute('role', 'checkbox');
+            card.setAttribute('aria-checked', enabled ? 'true' : 'false');
+            card.setAttribute('aria-disabled', allowed ? 'false' : 'true');
+            card.setAttribute('aria-label', moduleCardA11yLabel(module, enabled, allowed));
+            card.tabIndex = allowed ? 0 : -1;
+            if (toggle) {
+                toggle.checked = !!enabled;
+                toggle.setAttribute('aria-label', `Toggle ${module.name}`);
+            }
+        }
+
+        function announceModuleGridStatus(actionText = '') {
+            const status = document.getElementById('module-grid-status');
+            if (!status) return;
+            const total = modules.length;
+            const enabled = modules.filter(m => !!m.enabled).length;
+            const prefix = actionText ? `${actionText}. ` : '';
+            status.textContent = `${prefix}${enabled} of ${total} drivers enabled.`;
+        }
+
         function handleModuleToggle(moduleId, enabled) {
             const module = modules.find(m => m.id === moduleId);
             if (!module) return;
             activeTemplateId = null;
+            const caps = new Set(selectedBoard?.capabilities || []);
+            const allowed = moduleAllowed(module, caps);
 
             module.enabled = enabled;
             moduleStates[moduleId] = enabled;
 
             const card = document.getElementById(`module-card-${moduleId}`);
             if (card) card.classList.toggle('enabled', enabled);
+            const toggle = card?.querySelector('input[type="checkbox"]');
+            syncModuleCardAccessibility(module, card, toggle, enabled, allowed);
 
             if (enabled) {
                 const depends = Array.isArray(module.depends) ? module.depends : [];
@@ -4735,7 +4770,8 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                         if (depCard) {
                             depCard.classList.add('enabled');
                             const checkbox = depCard.querySelector('input[type="checkbox"]');
-                            if (checkbox) checkbox.checked = true;
+                            const depAllowed = moduleAllowed(depModule, caps);
+                            syncModuleCardAccessibility(depModule, depCard, checkbox, true, depAllowed);
                         }
                     }
                 });
@@ -4750,6 +4786,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             }
 
             refreshModuleSectionCounts();
+            announceModuleGridStatus(`${module.name} ${enabled ? 'enabled' : 'disabled'}`);
             updateValidation();
             updateMemoryEstimatePanels();
         }
@@ -5826,6 +5863,18 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 if (allowed) {
                     toggle.onchange = () => handleModuleToggle(module.id, toggle.checked);
                 }
+                syncModuleCardAccessibility(module, card, toggle, enabled, allowed);
+                card.onclick = (event) => {
+                    if (!allowed || isInteractiveModuleTarget(event.target)) return;
+                    handleModuleToggle(module.id, !module.enabled);
+                };
+                card.onkeydown = (event) => {
+                    if (!allowed) return;
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        handleModuleToggle(module.id, !module.enabled);
+                    }
+                };
 
                 const configBtn = card.querySelector('.btn-config');
                 if (configBtn) {
@@ -5866,6 +5915,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
             initModuleFilters();
             refreshModuleSectionCounts();
+            announceModuleGridStatus();
             updateValidation();
             renderStatusChips();
         }
