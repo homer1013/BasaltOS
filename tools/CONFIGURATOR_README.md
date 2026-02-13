@@ -11,7 +11,7 @@ future hosted platform.
 - Driver discovery and selection from local `modules/**/module.json`
 - Pin assignment validation and conflict detection
 - Configuration preview and file generation
-- Local helper flows for development (templates, flash/monitor helpers, DIY board metadata save)
+- Local helper flows for development (flash/monitor helpers, DIY board metadata save)
 
 ## Out of scope (not in this local tool)
 

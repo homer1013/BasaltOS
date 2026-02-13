@@ -1838,16 +1838,6 @@
                     </div>
                     <div id="memory-step1-panel" class="memory-panel"></div>
 
-                    <div class="templates-section">
-                        <h3>🚀 Quick Start Templates</h3>
-                        <div class="template-filter" id="template-filters">
-                            <!-- Filter tags populated by JS -->
-                        </div>
-                        <div class="template-grid" id="templates-grid">
-                            <!-- Templates populated by JS -->
-                        </div>
-                    </div>
-                    
                     <div id="board-details" style="display: none;">
                         <div class="board-header">
                             <div class="board-image">📟</div>
@@ -2164,12 +2154,6 @@
         </div>
         </div>
     </div>
-    </div>
-
-    <div class="template-modal" id="template-modal">
-        <div class="template-modal-content" id="template-modal-body">
-            <!-- Modal content populated by JS -->
-        </div>
     </div>
 
     <div class="template-modal" id="diy-board-modal">
@@ -3937,8 +3921,6 @@
             });
             await refreshBoardsForCurrentFilters({ force: true });
             populateBoardList();
-            renderTemplateFilters();
-            renderTemplates();
             updateMemoryEstimatePanels();
             persistFilterStateToUrl();
         }
@@ -4263,8 +4245,6 @@
                 ];
             }
 
-            renderTemplateFilters();
-            renderTemplates();
         }
 
         function renderTemplateFilters() {
@@ -4359,7 +4339,6 @@
             document.querySelectorAll('.filter-tag').forEach(el => {
                 el.classList.toggle('active', el.textContent.toLowerCase() === tag);
             });
-            renderTemplates(tag);
         }
 
         function renderTemplates(filterTag = 'all') {
@@ -5075,7 +5054,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             }
             persistFilterStateToUrl();
             populateModuleGrid();
-            loadTemplates();
             updateLandingStats();
             applyLocalScopeMode();
             showLanding();
@@ -5564,8 +5542,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
             populateModuleGrid();
             renderSelectedAppsVisibility();
-            renderTemplateFilters();
-            renderTemplates();
             clearInlineOutput();
             refreshWebFlasher({ silent: true });
             refreshAvrFlasher({ silent: true });
@@ -6734,8 +6710,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     populateBoardList();
                     populateModuleGrid();
                     renderSelectedAppsVisibility();
-                    renderTemplateFilters();
-                    renderTemplates();
                     updateLandingStats();
                     enterConfigurator(1);
                 });
@@ -6804,8 +6778,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 updateLandingStats();
                 populateModuleGrid();
                 renderSelectedAppsVisibility();
-                renderTemplateFilters();
-                renderTemplates();
                 clearInlineOutput();
                 refreshWebFlasher({ silent: true });
                 refreshAvrFlasher({ silent: true });
@@ -6829,8 +6801,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     });
                     await refreshBoardsForCurrentFilters({ force: true });
                     populateBoardList();
-                    renderTemplateFilters();
-                    renderTemplates();
                     updateMemoryEstimatePanels();
                     persistFilterStateToUrl();
                 });
@@ -6851,8 +6821,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     });
                     await refreshBoardsForCurrentFilters({ force: true });
                     populateBoardList();
-                    renderTemplateFilters();
-                    renderTemplates();
                     updateMemoryEstimatePanels();
                     persistFilterStateToUrl();
                 });
@@ -6872,8 +6840,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     });
                     await refreshBoardsForCurrentFilters({ force: true });
                     populateBoardList();
-                    renderTemplateFilters();
-                    renderTemplates();
                     updateMemoryEstimatePanels();
                     persistFilterStateToUrl();
                 });
@@ -6892,8 +6858,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     });
                     await refreshBoardsForCurrentFilters({ force: true });
                     populateBoardList();
-                    renderTemplateFilters();
-                    renderTemplates();
                     updateMemoryEstimatePanels();
                     persistFilterStateToUrl();
                 });
