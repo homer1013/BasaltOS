@@ -1,182 +1,148 @@
-#pragma once
-/*
- * BasaltOS Hardware Abstraction Layer - UART
- *
- * Portable UART contract used by BasaltOS.
- *
- * Rules:
- *  - No vendor SDK headers here (ESP-IDF, Pico SDK, STM32 HAL, etc.)
- *  - Consistent error model:
- *      0 / -errno for config calls
- *      bytes / -errno for send/recv calls
- *  - Blocking behavior must be explicit via timeout_ms
- */
+// BasaltOS ESP32-s3 HAL - Timer (esp_timer backend)
 
+#include <errno.h>
+#include <stdbool.h>
 #include <stdint.h>
-#include <stddef.h>
-#include "hal/hal_types.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "hal/hal_timer.h"
 
-/* ------------------------------------------------------------
- * UART configuration types
- * ------------------------------------------------------------ */
-
-typedef enum {
-    HAL_UART_PARITY_NONE = 0,
-    HAL_UART_PARITY_EVEN,
-    HAL_UART_PARITY_ODD,
-} hal_uart_parity_t;
-
-typedef enum {
-    HAL_UART_STOP_BITS_1 = 0,
-    HAL_UART_STOP_BITS_2,
-} hal_uart_stop_bits_t;
-
-typedef enum {
-    HAL_UART_DATA_BITS_5 = 5,
-    HAL_UART_DATA_BITS_6 = 6,
-    HAL_UART_DATA_BITS_7 = 7,
-    HAL_UART_DATA_BITS_8 = 8,
-} hal_uart_data_bits_t;
-
-typedef enum {
-    HAL_UART_FLOW_NONE = 0,
-    HAL_UART_FLOW_RTS_CTS,
-    HAL_UART_FLOW_XON_XOFF,
-} hal_uart_flow_t;
-
-/* ------------------------------------------------------------
- * UART init configuration (optional helper)
- * ------------------------------------------------------------ */
+#include "esp_err.h"
+#include "esp_timer.h"
 
 typedef struct {
-    uint32_t baud;                 // e.g. 115200
-    hal_uart_data_bits_t data_bits;
-    hal_uart_stop_bits_t stop_bits;
-    hal_uart_parity_t parity;
-    hal_uart_flow_t flow;
-} hal_uart_config_t;
+    esp_timer_handle_t h;
+    uint64_t period_us;
+    bool periodic;
+    bool initialized;
+    bool running;
+    hal_timer_cb_t cb;
+    void *arg;
+} hal_timer_impl_t;
 
-/* Recommended default config */
-static inline hal_uart_config_t hal_uart_config_default(uint32_t baud) {
-    hal_uart_config_t c;
-    c.baud = baud;
-    c.data_bits = HAL_UART_DATA_BITS_8;
-    c.stop_bits = HAL_UART_STOP_BITS_1;
-    c.parity = HAL_UART_PARITY_NONE;
-    c.flow = HAL_UART_FLOW_NONE;
-    return c;
+_Static_assert(sizeof(hal_timer_impl_t) <= sizeof(((hal_timer_t *)0)->_opaque),
+               "hal_timer_t opaque storage too small for esp32s3 hal_timer_impl_t");
+
+static inline hal_timer_impl_t *T(hal_timer_t *timer) {
+    return (hal_timer_impl_t *)timer->_opaque;
 }
 
-/* ------------------------------------------------------------
- * API
- * ------------------------------------------------------------ */
-
-/**
- * @brief Initialize a UART peripheral.
- *
- * @param u     UART handle storage (caller-provided)
- * @param bus   Platform UART index (e.g. 0,1,2)
- * @param baud  Baud rate (e.g. 115200)
- *
- * @return 0 on success, -errno on failure
- *
- * Notes:
- *  - Minimal profile required
- *  - Non-blocking configuration call
- */
-int hal_uart_init(hal_uart_t *u, int bus, uint32_t baud);
-
-/**
- * @brief Initialize UART with a full configuration (optional).
- *
- * @return 0 on success, -errno on failure
- *
- * Platforms may return -ENOSYS if only basic init is supported.
- */
-int hal_uart_init_ex(hal_uart_t *u, int bus, const hal_uart_config_t *cfg);
-
-/**
- * @brief Deinitialize the UART peripheral.
- */
-int hal_uart_deinit(hal_uart_t *u);
-
-/**
- * @brief Send bytes over UART.
- *
- * @param timeout_ms  0 = nonblocking attempt
- *                    >0 = block up to timeout
- *                    UINT32_MAX = block "forever" (platform-defined)
- *
- * @return bytes sent on success, -errno on failure
- *
- * Thread-safety:
- *  - ISR: No
- *  - Blocking: Yes (depending on timeout)
- */
-int hal_uart_send(hal_uart_t *u,
-                  const uint8_t *buf,
-                  size_t len,
-                  uint32_t timeout_ms);
-
-/**
- * @brief Receive bytes over UART.
- *
- * @param timeout_ms  0 = nonblocking attempt
- *                    >0 = block up to timeout
- *                    UINT32_MAX = block "forever" (platform-defined)
- *
- * @return bytes received on success, -errno on failure
- *
- * Thread-safety:
- *  - ISR: No
- *  - Blocking: Yes (depending on timeout)
- */
-int hal_uart_recv(hal_uart_t *u,
-                  uint8_t *buf,
-                  size_t len,
-                  uint32_t timeout_ms);
-
-/**
- * @brief Flush the TX path (ensure all bytes are transmitted).
- *
- * @return 0 on success, -errno on failure
- *
- * May block until drained.
- */
-int hal_uart_flush(hal_uart_t *u);
-
-/**
- * @brief Query number of bytes available to read without blocking.
- *
- * @param avail receives number of readable bytes
- *
- * @return 0 on success, -errno on failure
- */
-int hal_uart_available(hal_uart_t *u, size_t *avail);
-
-/**
- * @brief Set baud rate after initialization.
- */
-int hal_uart_set_baud(hal_uart_t *u, uint32_t baud);
-
-/**
- * @brief Configure flow control (RTS/CTS or XON/XOFF) if supported.
- *
- * Platforms that do not support flow control may return -ENOSYS.
- */
-int hal_uart_set_flow(hal_uart_t *u, hal_uart_flow_t flow);
-
-/**
- * @brief Send a UART break condition (optional).
- *
- * Platforms that do not support this may return -ENOSYS.
- */
-int hal_uart_set_break(hal_uart_t *u, uint32_t duration_ms);
-
-#ifdef __cplusplus
+static inline int esp_err_to_errno(esp_err_t err) {
+    switch (err) {
+        case ESP_OK: return 0;
+        case ESP_ERR_INVALID_ARG: return -EINVAL;
+        case ESP_ERR_INVALID_STATE: return -EALREADY;
+        case ESP_ERR_NO_MEM: return -ENOMEM;
+        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
+        default: return -EIO;
+    }
 }
-#endif
+
+static void timer_cb_thunk(void *arg) {
+    hal_timer_impl_t *t = (hal_timer_impl_t *)arg;
+    if (t && t->cb) t->cb(t->arg);
+}
+
+int hal_timer_init(hal_timer_t *timer,
+                   uint64_t period_us,
+                   int periodic,
+                   hal_timer_cb_t cb,
+                   void *arg) {
+    if (!timer || !cb || period_us == 0) return -EINVAL;
+
+    hal_timer_impl_t *t = T(timer);
+    t->h = NULL;
+    t->period_us = period_us;
+    t->periodic = periodic != 0;
+    t->cb = cb;
+    t->arg = arg;
+    t->initialized = false;
+    t->running = false;
+
+    esp_timer_create_args_t args = {
+        .callback = timer_cb_thunk,
+        .arg = t,
+        .dispatch_method = ESP_TIMER_TASK,
+        .name = "basalt_hal_timer",
+        .skip_unhandled_events = false,
+    };
+
+    esp_err_t e = esp_timer_create(&args, &t->h);
+    if (e != ESP_OK) return esp_err_to_errno(e);
+
+    t->initialized = true;
+    return 0;
+}
+
+int hal_timer_deinit(hal_timer_t *timer) {
+    if (!timer) return -EINVAL;
+    hal_timer_impl_t *t = T(timer);
+    if (!t->initialized || !t->h) return -EINVAL;
+
+    if (t->running) {
+        (void)esp_timer_stop(t->h);
+        t->running = false;
+    }
+    esp_err_t e = esp_timer_delete(t->h);
+    t->h = NULL;
+    t->initialized = false;
+    return esp_err_to_errno(e);
+}
+
+int hal_timer_start(hal_timer_t *timer) {
+    if (!timer) return -EINVAL;
+    hal_timer_impl_t *t = T(timer);
+    if (!t->initialized || !t->h) return -EINVAL;
+
+    if (t->running) {
+        (void)esp_timer_stop(t->h);
+        t->running = false;
+    }
+
+    esp_err_t e = t->periodic
+        ? esp_timer_start_periodic(t->h, t->period_us)
+        : esp_timer_start_once(t->h, t->period_us);
+    if (e != ESP_OK) return esp_err_to_errno(e);
+
+    t->running = true;
+    return 0;
+}
+
+int hal_timer_stop(hal_timer_t *timer) {
+    if (!timer) return -EINVAL;
+    hal_timer_impl_t *t = T(timer);
+    if (!t->initialized || !t->h) return -EINVAL;
+    if (!t->running) return 0;
+
+    esp_err_t e = esp_timer_stop(t->h);
+    if (e != ESP_OK) return esp_err_to_errno(e);
+
+    t->running = false;
+    return 0;
+}
+
+int hal_timer_set_period(hal_timer_t *timer, uint64_t period_us) {
+    if (!timer || period_us == 0) return -EINVAL;
+    hal_timer_impl_t *t = T(timer);
+    if (!t->initialized || !t->h) return -EINVAL;
+
+    bool was_running = t->running;
+    if (was_running) {
+        int rc = hal_timer_stop(timer);
+        if (rc != 0) return rc;
+    }
+
+    t->period_us = period_us;
+    if (was_running) {
+        return hal_timer_start(timer);
+    }
+    return 0;
+}
+
+int hal_timer_is_running(hal_timer_t *timer, int *running_out) {
+    if (!timer || !running_out) return -EINVAL;
+    hal_timer_impl_t *t = T(timer);
+    if (!t->initialized) return -EINVAL;
+
+    *running_out = t->running ? 1 : 0;
+    return 0;
+}
