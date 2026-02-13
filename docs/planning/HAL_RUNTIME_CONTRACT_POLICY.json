@@ -12,7 +12,6 @@
   "acknowledged_missing_runtime_impl_ports": [
     "pic16",
     "ra4m1",
-    "rp2040",
-    "stm32"
+    "rp2040"
   ]
 }

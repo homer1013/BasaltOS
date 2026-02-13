@@ -19,7 +19,6 @@ This policy controls runtime init/status contract coverage checks for required H
 - `pic16`
 - `ra4m1`
 - `rp2040`
-- `stm32`
 
 Machine-readable policy source:
 
