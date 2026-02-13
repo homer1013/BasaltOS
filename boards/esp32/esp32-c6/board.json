@@ -18,6 +18,7 @@
     "adc",
     "pwm",
     "i2s",
+    "rmt",
     "timer",
     "twai",
     "tft",
@@ -43,6 +44,8 @@
     "i2s_ws": 23,
     "i2s_din": 1,
     "i2s_dout": 3,
+    "rmt_tx": 4,
+    "rmt_rx": 5,
     "tft_mosi": 7,
     "tft_miso": 2,
     "tft_sclk": 6,
@@ -204,6 +207,26 @@
         8
       ],
       "type": "output"
+    },
+    "rmt_tx": {
+      "description": "RMT transmit baseline pin",
+      "alternatives": [
+        4,
+        5,
+        8,
+        10
+      ],
+      "type": "output"
+    },
+    "rmt_rx": {
+      "description": "RMT receive baseline pin",
+      "alternatives": [
+        5,
+        4,
+        9,
+        11
+      ],
+      "type": "input"
     },
     "tft_mosi": {
       "description": "TFT SPI MOSI baseline pin",

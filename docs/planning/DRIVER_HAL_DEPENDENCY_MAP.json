@@ -7,13 +7,13 @@
     "adapter_completeness": "docs/planning/HAL_PLATFORM_ADAPTER_COMPLETENESS.json"
   },
   "summary": {
-    "modules_total": 34,
-    "modules_with_dependencies": 25,
+    "modules_total": 35,
+    "modules_with_dependencies": 26,
     "unique_dependencies": 7,
     "hal_dependencies": 6,
     "non_hal_dependencies": 1,
     "modules_with_unmapped_dependency": 1,
-    "modules_with_coverage_gap": 6,
+    "modules_with_coverage_gap": 7,
     "required_adapter_count": 8
   },
   "dependencies": [
@@ -56,6 +56,13 @@
     },
     {
       "module_id": "mcp2544fd",
+      "dependency": "gpio",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "rmt",
       "dependency": "gpio",
       "dependency_type": "hal_primitive",
       "risk": "none",
@@ -155,6 +162,15 @@
     },
     {
       "module_id": "pwm",
+      "dependency": "timer",
+      "dependency_type": "hal_primitive",
+      "risk": "coverage_gap",
+      "blocking_ports": [
+        "esp32"
+      ]
+    },
+    {
+      "module_id": "rmt",
       "dependency": "timer",
       "dependency_type": "hal_primitive",
       "risk": "coverage_gap",
@@ -585,6 +601,33 @@
       ],
       "has_unmapped_dependency": false,
       "has_coverage_gap": false
+    },
+    {
+      "id": "rmt",
+      "name": "RMT Pulse Engine",
+      "path": "modules/rmt/module.json",
+      "depends": [
+        "gpio",
+        "timer"
+      ],
+      "analysis": [
+        {
+          "dependency": "gpio",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        },
+        {
+          "dependency": "timer",
+          "dependency_type": "hal_primitive",
+          "risk": "coverage_gap",
+          "blocking_ports": [
+            "esp32"
+          ]
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": true
     },
     {
       "id": "rtc",

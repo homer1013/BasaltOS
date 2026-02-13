@@ -3,6 +3,164 @@
   "platform_count": 10,
   "platforms": {
     "atmega": {
+      "unsupported_or_gap_rows": 22,
+      "top_module_gaps": [
+        {
+          "module_id": "bluetooth",
+          "count": 2
+        },
+        {
+          "module_id": "eeprom",
+          "count": 2
+        },
+        {
+          "module_id": "i2s",
+          "count": 2
+        },
+        {
+          "module_id": "mcp2544fd",
+          "count": 2
+        },
+        {
+          "module_id": "mic",
+          "count": 2
+        },
+        {
+          "module_id": "psram",
+          "count": 2
+        },
+        {
+          "module_id": "rmt",
+          "count": 2
+        },
+        {
+          "module_id": "tft",
+          "count": 2
+        },
+        {
+          "module_id": "tp4056",
+          "count": 2
+        },
+        {
+          "module_id": "twai",
+          "count": 2
+        }
+      ],
+      "top_reasons": [
+        {
+          "reason": "not_allowed:bluetooth",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:eeprom",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:i2s",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:mcp2544fd",
+          "count": 2
+        },
+        {
+          "reason": "module_platform_mismatch",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:psram",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:rmt",
+          "count": 2
+        },
+        {
+          "reason": "not_allowed:tft",
+          "count": 2
+        }
+      ]
+    },
+    "atsam": {
+      "unsupported_or_gap_rows": 29,
+      "top_module_gaps": [
+        {
+          "module_id": "bluetooth",
+          "count": 3
+        },
+        {
+          "module_id": "eeprom",
+          "count": 3
+        },
+        {
+          "module_id": "i2s",
+          "count": 3
+        },
+        {
+          "module_id": "mcp2544fd",
+          "count": 3
+        },
+        {
+          "module_id": "psram",
+          "count": 3
+        },
+        {
+          "module_id": "rmt",
+          "count": 3
+        },
+        {
+          "module_id": "tft",
+          "count": 3
+        },
+        {
+          "module_id": "twai",
+          "count": 3
+        },
+        {
+          "module_id": "wifi",
+          "count": 3
+        },
+        {
+          "module_id": "tp4056",
+          "count": 2
+        }
+      ],
+      "top_reasons": [
+        {
+          "reason": "not_allowed:bluetooth",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:eeprom",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:i2s",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:mcp2544fd",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:psram",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:rmt",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:tft",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:twai",
+          "count": 3
+        }
+      ]
+    },
+    "avr": {
       "unsupported_or_gap_rows": 20,
       "top_module_gaps": [
         {
@@ -10,10 +168,6 @@
           "count": 2
         },
         {
-          "module_id": "eeprom",
-          "count": 2
-        },
-        {
           "module_id": "i2s",
           "count": 2
         },
@@ -30,153 +184,7 @@
           "count": 2
         },
         {
-          "module_id": "tft",
-          "count": 2
-        },
-        {
-          "module_id": "tp4056",
-          "count": 2
-        },
-        {
-          "module_id": "twai",
-          "count": 2
-        },
-        {
-          "module_id": "wifi",
-          "count": 2
-        }
-      ],
-      "top_reasons": [
-        {
-          "reason": "not_allowed:bluetooth",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:eeprom",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:i2s",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:mcp2544fd",
-          "count": 2
-        },
-        {
-          "reason": "module_platform_mismatch",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:psram",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:tft",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:tp4056",
-          "count": 2
-        }
-      ]
-    },
-    "atsam": {
-      "unsupported_or_gap_rows": 26,
-      "top_module_gaps": [
-        {
-          "module_id": "bluetooth",
-          "count": 3
-        },
-        {
-          "module_id": "eeprom",
-          "count": 3
-        },
-        {
-          "module_id": "i2s",
-          "count": 3
-        },
-        {
-          "module_id": "mcp2544fd",
-          "count": 3
-        },
-        {
-          "module_id": "psram",
-          "count": 3
-        },
-        {
-          "module_id": "tft",
-          "count": 3
-        },
-        {
-          "module_id": "twai",
-          "count": 3
-        },
-        {
-          "module_id": "wifi",
-          "count": 3
-        },
-        {
-          "module_id": "tp4056",
-          "count": 2
-        }
-      ],
-      "top_reasons": [
-        {
-          "reason": "not_allowed:bluetooth",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:eeprom",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:i2s",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:mcp2544fd",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:psram",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:tft",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:twai",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:wifi",
-          "count": 3
-        }
-      ]
-    },
-    "avr": {
-      "unsupported_or_gap_rows": 18,
-      "top_module_gaps": [
-        {
-          "module_id": "bluetooth",
-          "count": 2
-        },
-        {
-          "module_id": "i2s",
-          "count": 2
-        },
-        {
-          "module_id": "mcp2544fd",
-          "count": 2
-        },
-        {
-          "module_id": "mic",
-          "count": 2
-        },
-        {
-          "module_id": "psram",
+          "module_id": "rmt",
           "count": 2
         },
         {
@@ -218,21 +226,21 @@
           "count": 2
         },
         {
+          "reason": "not_allowed:rmt",
+          "count": 2
+        },
+        {
           "reason": "not_allowed:tft",
           "count": 2
         },
         {
           "reason": "not_allowed:tp4056",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:twai",
           "count": 2
         }
       ]
     },
     "esp32": {
-      "unsupported_or_gap_rows": 60,
+      "unsupported_or_gap_rows": 71,
       "top_module_gaps": [
         {
           "module_id": "eeprom",
@@ -240,6 +248,10 @@
         },
         {
           "module_id": "i2s",
+          "count": 11
+        },
+        {
+          "module_id": "rmt",
           "count": 11
         },
         {
@@ -270,6 +282,10 @@
         },
         {
           "reason": "not_allowed:i2s",
+          "count": 11
+        },
+        {
+          "reason": "not_allowed:rmt",
           "count": 11
         },
         {
@@ -295,7 +311,7 @@
       ]
     },
     "linux-sbc": {
-      "unsupported_or_gap_rows": 9,
+      "unsupported_or_gap_rows": 10,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -315,6 +331,10 @@
         },
         {
           "module_id": "psram",
+          "count": 1
+        },
+        {
+          "module_id": "rmt",
           "count": 1
         },
         {
@@ -356,21 +376,21 @@
           "count": 1
         },
         {
+          "reason": "not_allowed:rmt",
+          "count": 1
+        },
+        {
           "reason": "not_allowed:tft",
           "count": 1
         },
         {
           "reason": "not_allowed:tp4056",
           "count": 1
-        },
-        {
-          "reason": "not_allowed:twai",
-          "count": 1
         }
       ]
     },
     "pic16": {
-      "unsupported_or_gap_rows": 18,
+      "unsupported_or_gap_rows": 20,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -393,6 +413,10 @@
           "count": 2
         },
         {
+          "module_id": "rmt",
+          "count": 2
+        },
+        {
           "module_id": "tft",
           "count": 2
         },
@@ -431,21 +455,21 @@
           "count": 2
         },
         {
+          "reason": "not_allowed:rmt",
+          "count": 2
+        },
+        {
           "reason": "not_allowed:tft",
           "count": 2
         },
         {
           "reason": "not_allowed:tp4056",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:twai",
           "count": 2
         }
       ]
     },
     "renesas_ra": {
-      "unsupported_or_gap_rows": 27,
+      "unsupported_or_gap_rows": 30,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -465,6 +489,10 @@
         },
         {
           "module_id": "psram",
+          "count": 3
+        },
+        {
+          "module_id": "rmt",
           "count": 3
         },
         {
@@ -502,6 +530,10 @@
           "count": 3
         },
         {
+          "reason": "not_allowed:rmt",
+          "count": 3
+        },
+        {
           "reason": "not_allowed:tft",
           "count": 3
         },
@@ -512,15 +544,11 @@
         {
           "reason": "not_allowed:twai",
           "count": 3
-        },
-        {
-          "reason": "not_allowed:bluetooth",
-          "count": 2
         }
       ]
     },
     "renesas_rx": {
-      "unsupported_or_gap_rows": 18,
+      "unsupported_or_gap_rows": 20,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -540,6 +568,10 @@
         },
         {
           "module_id": "psram",
+          "count": 2
+        },
+        {
+          "module_id": "rmt",
           "count": 2
         },
         {
@@ -581,21 +613,21 @@
           "count": 2
         },
         {
+          "reason": "not_allowed:rmt",
+          "count": 2
+        },
+        {
           "reason": "not_allowed:tft",
           "count": 2
         },
         {
           "reason": "not_allowed:tp4056",
-          "count": 2
-        },
-        {
-          "reason": "not_allowed:twai",
           "count": 2
         }
       ]
     },
     "rp2040": {
-      "unsupported_or_gap_rows": 44,
+      "unsupported_or_gap_rows": 49,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -615,6 +647,10 @@
         },
         {
           "module_id": "psram",
+          "count": 5
+        },
+        {
+          "module_id": "rmt",
           "count": 5
         },
         {
@@ -653,6 +689,10 @@
         },
         {
           "reason": "not_allowed:psram",
+          "count": 5
+        },
+        {
+          "reason": "not_allowed:rmt",
           "count": 5
         },
         {
@@ -662,15 +702,11 @@
         {
           "reason": "not_allowed:twai",
           "count": 5
-        },
-        {
-          "reason": "not_allowed:wifi",
-          "count": 4
         }
       ]
     },
     "stm32": {
-      "unsupported_or_gap_rows": 27,
+      "unsupported_or_gap_rows": 30,
       "top_module_gaps": [
         {
           "module_id": "bluetooth",
@@ -690,6 +726,10 @@
         },
         {
           "module_id": "psram",
+          "count": 3
+        },
+        {
+          "module_id": "rmt",
           "count": 3
         },
         {
@@ -728,6 +768,10 @@
         },
         {
           "reason": "not_allowed:psram",
+          "count": 3
+        },
+        {
+          "reason": "not_allowed:rmt",
           "count": 3
         },
         {
@@ -736,10 +780,6 @@
         },
         {
           "reason": "not_allowed:tp4056",
-          "count": 3
-        },
-        {
-          "reason": "not_allowed:twai",
           "count": 3
         }
       ]
@@ -757,20 +797,24 @@
     "actionable_top_modules_by_platform": {}
   },
   "advanced_policy_summary": {
-    "not_allowed_row_count": 256,
+    "not_allowed_row_count": 290,
     "bucket_counts": {
       "intentional": 222,
-      "actionable": 34
+      "actionable": 68
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
       "intentional_advanced_peripheral_opt_in": 181,
-      "actionable_capability_scope_review": 34
+      "actionable_capability_scope_review": 68
     },
     "actionable_top_modules_by_platform": {
       "atmega": [
         {
           "module_id": "i2s",
+          "count": 2
+        },
+        {
+          "module_id": "rmt",
           "count": 2
         }
       ],
@@ -778,11 +822,19 @@
         {
           "module_id": "i2s",
           "count": 3
+        },
+        {
+          "module_id": "rmt",
+          "count": 3
         }
       ],
       "avr": [
         {
           "module_id": "i2s",
+          "count": 2
+        },
+        {
+          "module_id": "rmt",
           "count": 2
         }
       ],
@@ -790,11 +842,19 @@
         {
           "module_id": "i2s",
           "count": 11
+        },
+        {
+          "module_id": "rmt",
+          "count": 11
         }
       ],
       "linux-sbc": [
         {
           "module_id": "i2s",
+          "count": 1
+        },
+        {
+          "module_id": "rmt",
           "count": 1
         }
       ],
@@ -802,11 +862,19 @@
         {
           "module_id": "i2s",
           "count": 2
+        },
+        {
+          "module_id": "rmt",
+          "count": 2
         }
       ],
       "renesas_ra": [
         {
           "module_id": "i2s",
+          "count": 3
+        },
+        {
+          "module_id": "rmt",
           "count": 3
         }
       ],
@@ -814,11 +882,19 @@
         {
           "module_id": "i2s",
           "count": 2
+        },
+        {
+          "module_id": "rmt",
+          "count": 2
         }
       ],
       "rp2040": [
         {
           "module_id": "i2s",
+          "count": 5
+        },
+        {
+          "module_id": "rmt",
           "count": 5
         }
       ],
@@ -826,20 +902,24 @@
         {
           "module_id": "i2s",
           "count": 3
+        },
+        {
+          "module_id": "rmt",
+          "count": 3
         }
       ]
     }
   },
   "foundation_focus_summary": {
-    "gap_row_count": 267,
+    "gap_row_count": 301,
     "bucket_counts": {
       "intentional": 233,
-      "actionable": 34
+      "actionable": 68
     },
     "label_counts": {
       "intentional_wireless_capability_gate": 41,
       "intentional_advanced_peripheral_opt_in": 181,
-      "actionable_capability_scope_review": 34,
+      "actionable_capability_scope_review": 68,
       "intentional_8bit_mic_scope": 6,
       "intentional_wireless_scope": 5
     },
@@ -848,11 +928,19 @@
         {
           "module_id": "i2s",
           "count": 2
+        },
+        {
+          "module_id": "rmt",
+          "count": 2
         }
       ],
       "atsam": [
         {
           "module_id": "i2s",
+          "count": 3
+        },
+        {
+          "module_id": "rmt",
           "count": 3
         }
       ],
@@ -860,11 +948,19 @@
         {
           "module_id": "i2s",
           "count": 2
+        },
+        {
+          "module_id": "rmt",
+          "count": 2
         }
       ],
       "esp32": [
         {
           "module_id": "i2s",
+          "count": 11
+        },
+        {
+          "module_id": "rmt",
           "count": 11
         }
       ],
@@ -872,11 +968,19 @@
         {
           "module_id": "i2s",
           "count": 1
+        },
+        {
+          "module_id": "rmt",
+          "count": 1
         }
       ],
       "pic16": [
         {
           "module_id": "i2s",
+          "count": 2
+        },
+        {
+          "module_id": "rmt",
           "count": 2
         }
       ],
@@ -884,11 +988,19 @@
         {
           "module_id": "i2s",
           "count": 3
+        },
+        {
+          "module_id": "rmt",
+          "count": 3
         }
       ],
       "renesas_rx": [
         {
           "module_id": "i2s",
+          "count": 2
+        },
+        {
+          "module_id": "rmt",
           "count": 2
         }
       ],
@@ -896,11 +1008,19 @@
         {
           "module_id": "i2s",
           "count": 5
+        },
+        {
+          "module_id": "rmt",
+          "count": 5
         }
       ],
       "stm32": [
         {
           "module_id": "i2s",
+          "count": 3
+        },
+        {
+          "module_id": "rmt",
           "count": 3
         }
       ]

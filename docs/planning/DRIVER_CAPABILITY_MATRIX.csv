@@ -21,6 +21,7 @@ atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),mic,Micropho
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -55,6 +56,7 @@ atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,mic,Microphone Input,"esp32,
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -89,6 +91,7 @@ atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Ad
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -123,6 +126,7 @@ atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),mic,Microphone Input,"e
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -157,6 +161,7 @@ atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),mic,Mi
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -191,6 +196,7 @@ avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (US
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -225,6 +231,7 @@ avr,mega2560,mega2560,Arduino Mega 2560 (Generic),mic,Microphone Input,"esp32,st
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+avr,mega2560,mega2560,Arduino Mega 2560 (Generic),rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -259,6 +266,7 @@ esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mic,Microphone Input,"esp32,stm32,rp
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -293,6 +301,7 @@ esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,mi
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -327,6 +336,7 @@ esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -361,6 +371,7 @@ esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,mi
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -395,6 +406,7 @@ esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ES
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,psram,PSRAM,esp32,yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -429,6 +441,7 @@ esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mic,Mic
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -463,6 +476,7 @@ esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),mic,Microphone Input,"esp32,s
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),rmt,RMT Pulse Engine,esp32,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -497,6 +511,7 @@ esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),mic,Microphone Input,"
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -531,6 +546,7 @@ esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mic,Microphon
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -565,6 +581,7 @@ esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),mic,Micr
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),psram,PSRAM,esp32,yes,no,no,UNSUPPORTED,not_allowed:psram
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -599,6 +616,7 @@ esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),mic,Microphone Input,
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),psram,PSRAM,esp32,yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -633,6 +651,7 @@ esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mic,Microp
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),psram,PSRAM,esp32,yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),rmt,RMT Pulse Engine,esp32,yes,no,no,UNSUPPORTED,not_allowed:rmt
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -667,6 +686,7 @@ linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,mic,Microphone 
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -701,6 +721,7 @@ pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -735,6 +756,7 @@ pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),mic,Microp
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -769,6 +791,7 @@ renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -803,6 +826,7 @@ renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),m
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -837,6 +861,7 @@ renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,mic,Microphone Input,"esp32,stm32,
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -871,6 +896,7 @@ renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,mic,
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -905,6 +931,7 @@ renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,mic,
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -939,6 +966,7 @@ rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,m
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -973,6 +1001,7 @@ rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),mic,Microp
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1007,6 +1036,7 @@ rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,mic,Microphon
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1041,6 +1071,7 @@ rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mic,Micropho
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1075,6 +1106,7 @@ rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1109,6 +1141,7 @@ stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,mic,Microphone I
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1143,6 +1176,7 @@ stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,mic,Microphone Input,"esp32,s
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
@@ -1177,6 +1211,7 @@ stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,mic,Microphone Input,"esp32,s
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,psram,PSRAM,esp32,no,no,no,UNSUPPORTED,not_allowed:psram
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,pwm,PWM,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,remote_node,Remote Node,"esp32,stm32,rp2040,linux-sbc,avr,pic,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
+stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,rmt,RMT Pulse Engine,esp32,no,no,no,UNSUPPORTED,not_allowed:rmt
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,rtc,RTC (DS3231/PCF8523),"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,shell_full,Shell (Full),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,shell_min,Shell (Lite),"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-

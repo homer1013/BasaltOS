@@ -1,0 +1,67 @@
+{
+  "id": "rmt",
+  "name": "RMT Pulse Engine",
+  "description": "Remote Control peripheral for precise pulse TX/RX (IR, one-wire-like timings, custom waveforms).",
+  "platforms": [
+    "esp32"
+  ],
+  "provides": [
+    "rmt",
+    "pulse_tx",
+    "pulse_rx"
+  ],
+  "depends": [
+    "gpio",
+    "timer"
+  ],
+  "conflicts": [],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_RMT"
+  ],
+  "default_enabled": false,
+  "pins": [
+    "rmt_tx",
+    "rmt_rx"
+  ],
+  "pin_requirements": {
+    "rmt_tx": {
+      "required": false,
+      "description": "RMT transmit pin"
+    },
+    "rmt_rx": {
+      "required": false,
+      "description": "RMT receive pin"
+    }
+  },
+  "configuration_options": [
+    {
+      "id": "resolution_hz",
+      "name": "Resolution (Hz)",
+      "type": "select",
+      "options": [
+        1000000,
+        2000000,
+        5000000,
+        10000000
+      ],
+      "default": 1000000
+    },
+    {
+      "id": "enable_tx",
+      "name": "Enable TX Channel",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "enable_rx",
+      "name": "Enable RX Channel",
+      "type": "boolean",
+      "default": false
+    }
+  ],
+  "notes": [
+    "Useful for IR remotes, custom pulse protocols, and tight timing waveforms.",
+    "Keep TX/RX channels disabled when unused to reduce runtime footprint."
+  ]
+}
