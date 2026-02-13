@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "tracked_primitives": [
+    "gpio",
+    "i2c",
+    "uart"
+  ],
+  "policy": {
+    "no_silent_runtime_gap": true,
+    "description": "Required ports must have runtime function bodies for tracked HAL primitives or be explicitly acknowledged."
+  },
+  "acknowledged_missing_runtime_impl_ports": [
+    "esp32c3",
+    "esp32c6",
+    "esp32s3",
+    "pic16",
+    "ra4m1",
+    "rp2040",
+    "stm32"
+  ]
+}
