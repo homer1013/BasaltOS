@@ -48,6 +48,13 @@
 #include "esp_gap_ble_api.h"
 #endif
 
+#include "hal/hal_adc.h"
+#include "hal/hal_i2c.h"
+#include "hal/hal_i2s.h"
+#include "hal/hal_pwm.h"
+#include "hal/hal_rmt.h"
+#include "hal/hal_uart.h"
+
 #include "tft_console.h"
 #include "mpy_runtime.h"
 
@@ -108,14 +115,23 @@
 #ifndef BASALT_ENABLE_ADS1115
 #define BASALT_ENABLE_ADS1115 0
 #endif
+#ifndef BASALT_ENABLE_I2S
+#define BASALT_ENABLE_I2S 0
+#endif
 #ifndef BASALT_ENABLE_MIC
 #define BASALT_ENABLE_MIC 0
 #endif
 #ifndef BASALT_ENABLE_TP4056
 #define BASALT_ENABLE_TP4056 0
 #endif
+#ifndef BASALT_ENABLE_RMT
+#define BASALT_ENABLE_RMT 0
+#endif
 #ifndef BASALT_ENABLE_I2C
 #define BASALT_ENABLE_I2C 0
+#endif
+#ifndef BASALT_ENABLE_PWM
+#define BASALT_ENABLE_PWM 0
 #endif
 #ifndef BASALT_ENABLE_WIFI
 #define BASALT_ENABLE_WIFI 0
@@ -128,6 +144,27 @@
 #endif
 #ifndef BASALT_ENABLE_MCP2544FD
 #define BASALT_ENABLE_MCP2544FD 0
+#endif
+#ifndef BASALT_PIN_UART_TX
+#define BASALT_PIN_UART_TX -1
+#endif
+#ifndef BASALT_PIN_UART_RX
+#define BASALT_PIN_UART_RX -1
+#endif
+#ifndef BASALT_CFG_UART_UART_NUM
+#define BASALT_CFG_UART_UART_NUM 0
+#endif
+#ifndef BASALT_CFG_UART_UART_BAUDRATE
+#define BASALT_CFG_UART_UART_BAUDRATE 115200
+#endif
+#ifndef BASALT_CFG_UART_UART_DATA_BITS
+#define BASALT_CFG_UART_UART_DATA_BITS 8
+#endif
+#ifndef BASALT_CFG_UART_UART_STOP_BITS
+#define BASALT_CFG_UART_UART_STOP_BITS 1
+#endif
+#ifndef BASALT_CFG_UART_UART_PARITY
+#define BASALT_CFG_UART_UART_PARITY "none"
 #endif
 #ifndef BASALT_ENABLE_MCP2515
 #define BASALT_ENABLE_MCP2515 0
@@ -234,6 +271,21 @@
 #ifndef BASALT_PIN_DHT22_DATA
 #define BASALT_PIN_DHT22_DATA -1
 #endif
+#ifndef BASALT_PIN_I2S_BCLK
+#define BASALT_PIN_I2S_BCLK -1
+#endif
+#ifndef BASALT_PIN_I2S_WS
+#define BASALT_PIN_I2S_WS -1
+#endif
+#ifndef BASALT_PIN_I2S_DIN
+#define BASALT_PIN_I2S_DIN -1
+#endif
+#ifndef BASALT_PIN_I2S_DOUT
+#define BASALT_PIN_I2S_DOUT -1
+#endif
+#ifndef BASALT_PIN_MIC_IN
+#define BASALT_PIN_MIC_IN -1
+#endif
 #ifndef BASALT_PIN_TP4056_CHRG
 #define BASALT_PIN_TP4056_CHRG -1
 #endif
@@ -243,6 +295,27 @@
 #ifndef BASALT_PIN_TP4056_CE
 #define BASALT_PIN_TP4056_CE -1
 #endif
+#ifndef BASALT_PIN_RMT_TX
+#define BASALT_PIN_RMT_TX -1
+#endif
+#ifndef BASALT_PIN_RMT_RX
+#define BASALT_PIN_RMT_RX -1
+#endif
+#ifndef BASALT_PIN_PWM_OUT
+#define BASALT_PIN_PWM_OUT -1
+#endif
+#ifndef BASALT_CFG_I2C_BUS
+#define BASALT_CFG_I2C_BUS 0
+#endif
+#ifndef BASALT_CFG_I2C_FREQ_HZ
+#define BASALT_CFG_I2C_FREQ_HZ 100000
+#endif
+#ifndef BASALT_CFG_PWM_FREQ_HZ
+#define BASALT_CFG_PWM_FREQ_HZ 1000
+#endif
+#ifndef BASALT_CFG_PWM_DUTY_RES_BITS
+#define BASALT_CFG_PWM_DUTY_RES_BITS 10
+#endif
 #ifndef BASALT_CFG_TP4056_STATUS_PINS_ACTIVE_LOW
 #define BASALT_CFG_TP4056_STATUS_PINS_ACTIVE_LOW 1
 #endif
@@ -251,6 +324,25 @@
 #endif
 #ifndef BASALT_CFG_TP4056_CE_ACTIVE_HIGH
 #define BASALT_CFG_TP4056_CE_ACTIVE_HIGH 1
+#endif
+#ifndef BASALT_CFG_RMT_RESOLUTION_HZ
+#define BASALT_CFG_RMT_RESOLUTION_HZ 1000000
+#endif
+#ifndef BASALT_CFG_RMT_ENABLE_TX_CHANNEL
+#ifdef BASALT_CFG_RMT_ENABLE_TX
+#define BASALT_CFG_RMT_ENABLE_TX_CHANNEL BASALT_CFG_RMT_ENABLE_TX
+#endif
+#endif
+#ifndef BASALT_CFG_RMT_ENABLE_TX_CHANNEL
+#define BASALT_CFG_RMT_ENABLE_TX_CHANNEL 1
+#endif
+#ifndef BASALT_CFG_RMT_ENABLE_RX_CHANNEL
+#ifdef BASALT_CFG_RMT_ENABLE_RX
+#define BASALT_CFG_RMT_ENABLE_RX_CHANNEL BASALT_CFG_RMT_ENABLE_RX
+#endif
+#endif
+#ifndef BASALT_CFG_RMT_ENABLE_RX_CHANNEL
+#define BASALT_CFG_RMT_ENABLE_RX_CHANNEL 0
 #endif
 #ifndef BASALT_CFG_IMU_DRIVER
 #ifdef BASALT_IMU_DRIVER
@@ -273,6 +365,21 @@
 #endif
 #ifndef BASALT_CFG_DHT_SENSOR_TYPE
 #define BASALT_CFG_DHT_SENSOR_TYPE "auto"
+#endif
+#ifndef BASALT_CFG_I2S_SAMPLE_RATE
+#define BASALT_CFG_I2S_SAMPLE_RATE 16000
+#endif
+#ifndef BASALT_CFG_I2S_BITS_PER_SAMPLE
+#define BASALT_CFG_I2S_BITS_PER_SAMPLE 16
+#endif
+#ifndef BASALT_CFG_I2S_MODE
+#define BASALT_CFG_I2S_MODE "rx"
+#endif
+#ifndef BASALT_CFG_MIC_SOURCE
+#define BASALT_CFG_MIC_SOURCE "adc"
+#endif
+#ifndef BASALT_CFG_MIC_SAMPLE_RATE
+#define BASALT_CFG_MIC_SAMPLE_RATE 16000
 #endif
 #ifndef BASALT_CFG_MCP23017_ADDRESS
 #define BASALT_CFG_MCP23017_ADDRESS "0x20"
@@ -409,12 +516,18 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"dht22", "dht22 [status|read [pin] [auto|dht22|dht11]]", "DHT22/DHT11-compatible single-wire probe and read"},
     {"bme280", "bme280 [status|probe|read]", "BME280 probe/status/raw-read over configured I2C pins"},
     {"ads1115", "ads1115 [status|probe|read [0-3]]", "ADS1115 probe/status and single-ended raw/mV read"},
+    {"i2c", "i2c [status|scan [start_hex] [end_hex]|read <addr_hex> <reg_hex> [len]]", "I2C bus diagnostics (HAL probe and register read)"},
+    {"uart", "uart [status|loopback [payload] [timeout_ms]]", "UART diagnostics (HAL-backed self loopback on configured TX/RX pins)"},
+    {"pwm", "pwm [status|start [duty_pct] [freq_hz]|duty <0-100>|freq <hz>|stop]", "PWM diagnostics (HAL-backed output control on pwm_out pin)"},
+    {"i2s", "i2s [status|loopback <on_us> <off_us> <count> [window_ms]]", "I2S pin/runtime diagnostics (peripheral DMA loopback)"},
+    {"mic", "mic [status|read [window_ms]]", "Microphone diagnostics (ADC source metadata + GPIO-level signal sampler)"},
     {"mcp23017", "mcp23017 [status|probe|scan|test|read <reg>|write <reg> <val>|pinmode <0-15> <in|out>|pinwrite <0-15> <0|1>|pinread <0-15>]", "MCP23017 I2C GPIO-expander diagnostics"},
     {"tp4056", "tp4056 [status|on|off]", "TP4056 charger status and optional CE control"},
     {"mcp2544fd", "mcp2544fd [status|on|off|standby]", "MCP2544FD CAN transceiver control pins"},
     {"mcp2515", "mcp2515 [status|probe|reset|read <reg>|write <reg> <val>|tx <id> <hex>|rx]", "MCP2515 SPI/CAN diagnostics (reg + tx/rx bring-up)"},
     {"uln2003", "uln2003 [status|off|test|step <steps> [delay_ms]]", "ULN2003 stepper driver control"},
     {"l298n", "l298n [status|stop|test|speed <0-100>|a <fwd|rev|stop|speed <0-100>>|b <fwd|rev|stop|speed <0-100>>]", "L298N dual H-bridge motor control"},
+    {"rmt", "rmt [status|pulse <on_us> <off_us> [count]|capture [window_ms]|loopback <on_us> <off_us> <count> [window_ms]]", "RMT diagnostics (basic TX + RX edge timing capture)"},
     {"wifi", "wifi [status|scan|connect|reconnect|disconnect]", "Wi-Fi station tools"},
     {"bluetooth", "bluetooth [status|on|off|scan [seconds]]", "Bluetooth diagnostics and BLE scan tools"},
     {"can", "can [status|up|down|send <id> <hex>|recv [timeout_ms]]", "TWAI/CAN diagnostics and frame TX/RX"},
@@ -455,7 +568,7 @@ static bool bsh_help_cmd_hidden_tiny(const char *name) {
         "ls", "cat", "cd", "mkdir", "cp", "mv", "rm",
         "apps_dev", "led_test", "devcheck", "edit",
         "run_dev", "kill", "applet",
-        "install", "remove", "logs", "imu", "dht22", "bme280", "ads1115", "mcp23017", "tp4056", "mcp2544fd", "mcp2515", "uln2003", "l298n", "wifi", "bluetooth", "can"
+        "install", "remove", "logs", "imu", "dht22", "bme280", "ads1115", "i2c", "uart", "pwm", "i2s", "mic", "mcp23017", "tp4056", "mcp2544fd", "mcp2515", "uln2003", "l298n", "rmt", "wifi", "bluetooth", "can"
     };
     for (size_t i = 0; i < sizeof(k_hidden) / sizeof(k_hidden[0]); ++i) {
         if (strcmp(name, k_hidden[i]) == 0) return true;
@@ -1658,13 +1771,17 @@ static const char *bsh_enabled_str(int enabled) {
 static void bsh_cmd_drivers(void) {
     basalt_printf("drivers.core:\n");
     basalt_printf("  gpio: %s\n", bsh_enabled_str(BASALT_ENABLE_GPIO));
+    basalt_printf("  uart: %s\n", bsh_enabled_str(BASALT_ENABLE_UART));
     basalt_printf("  i2c: %s\n", bsh_enabled_str(BASALT_ENABLE_I2C));
     basalt_printf("  spi: %s\n", bsh_enabled_str(BASALT_ENABLE_SPI));
     basalt_printf("  adc: %s\n", bsh_enabled_str(BASALT_ENABLE_ADC));
+    basalt_printf("  pwm: %s\n", bsh_enabled_str(BASALT_ENABLE_PWM));
+    basalt_printf("  i2s: %s\n", bsh_enabled_str(BASALT_ENABLE_I2S));
     basalt_printf("  tft: %s (%s)\n", bsh_enabled_str(BASALT_ENABLE_TFT), tft_console_is_ready() ? "runtime ready" : "runtime not ready");
     basalt_printf("  wifi: %s\n", bsh_enabled_str(BASALT_ENABLE_WIFI));
     basalt_printf("  bluetooth: %s\n", bsh_enabled_str(BASALT_ENABLE_BLUETOOTH));
     basalt_printf("  twai: %s\n", bsh_enabled_str(BASALT_ENABLE_TWAI));
+    basalt_printf("  rmt: %s\n", bsh_enabled_str(BASALT_ENABLE_RMT));
 
     basalt_printf("drivers.experimental:\n");
 #if BASALT_ENABLE_DISPLAY_SSD1306
@@ -1706,12 +1823,9 @@ static void bsh_cmd_drivers(void) {
     basalt_printf("  mcp23017: disabled\n");
 #endif
 #if BASALT_ENABLE_MIC
-    basalt_printf("  mic: enabled (stub only; runtime driver not implemented yet)\n");
-#ifdef BASALT_PIN_MIC_IN
-    basalt_printf("    pin: GPIO%d\n", BASALT_PIN_MIC_IN);
-#else
-    basalt_printf("    pin: not bound (define BASALT_PIN_MIC_IN in board config)\n");
-#endif
+    basalt_printf("  mic: enabled (shell API: mic status/read)\n");
+    basalt_printf("    cfg: source=%s sample_rate=%ld\n", BASALT_CFG_MIC_SOURCE, (long)BASALT_CFG_MIC_SAMPLE_RATE);
+    basalt_printf("    pins: mic_in=%d i2s_din=%d\n", BASALT_PIN_MIC_IN, BASALT_PIN_I2S_DIN);
 #else
     basalt_printf("  mic: disabled\n");
 #endif
@@ -1739,6 +1853,16 @@ static void bsh_cmd_drivers(void) {
     basalt_printf("  l298n: enabled (shell API: l298n status/stop/test/speed/a/b)\n");
 #else
     basalt_printf("  l298n: disabled\n");
+#endif
+#if BASALT_ENABLE_RMT
+    basalt_printf("  rmt: enabled (shell API: rmt status/pulse/capture/loopback)\n");
+    basalt_printf("    pins: tx=%d rx=%d\n", BASALT_PIN_RMT_TX, BASALT_PIN_RMT_RX);
+    basalt_printf("    cfg: resolution_hz=%ld tx=%d rx=%d\n",
+                  (long)BASALT_CFG_RMT_RESOLUTION_HZ,
+                  (int)BASALT_CFG_RMT_ENABLE_TX_CHANNEL,
+                  (int)BASALT_CFG_RMT_ENABLE_RX_CHANNEL);
+#else
+    basalt_printf("  rmt: disabled\n");
 #endif
     basalt_printf("hint: these are configuration gates today; runtime implementations are incremental.\n");
 }
@@ -3952,6 +4076,913 @@ static void bsh_cmd_l298n(const char *sub, const char *arg1, const char *arg2) {
 #endif
 #endif
 
+#if BASALT_ENABLE_I2S || BASALT_ENABLE_MIC || BASALT_ENABLE_RMT || BASALT_ENABLE_UART || BASALT_ENABLE_I2C || BASALT_ENABLE_PWM
+static bool bsh_parse_u32(const char *s, uint32_t *out) {
+    if (!s || !s[0] || !out) return false;
+    char *end = NULL;
+    long v = strtol(s, &end, 10);
+    if (end == s || (end && *end != '\0') || v < 0) return false;
+    *out = (uint32_t)v;
+    return true;
+}
+
+static const char *bsh_errno_text(int rc) {
+    if (rc >= 0) return "ok";
+    return strerror(-rc);
+}
+#endif
+
+#if BASALT_ENABLE_I2C
+static hal_i2c_t s_i2c_diag_hal;
+static bool s_i2c_diag_ready = false;
+
+static bool bsh_parse_u8_any(const char *s, uint8_t *out) {
+    if (!s || !s[0] || !out) return false;
+    char *end = NULL;
+    long v = strtol(s, &end, 0);
+    if (end == s || (end && *end != '\0') || v < 0 || v > 255) return false;
+    *out = (uint8_t)v;
+    return true;
+}
+
+static bool bsh_i2c_diag_ensure(char *err, size_t err_len) {
+    if (BASALT_PIN_I2C_SDA < 0 || BASALT_PIN_I2C_SCL < 0) {
+        snprintf(err, err_len, "i2c_sda/i2c_scl pins must be configured");
+        return false;
+    }
+    if (s_i2c_diag_ready) return true;
+    int rc = hal_i2c_init(&s_i2c_diag_hal,
+                          BASALT_CFG_I2C_BUS,
+                          BASALT_CFG_I2C_FREQ_HZ,
+                          BASALT_PIN_I2C_SDA,
+                          BASALT_PIN_I2C_SCL);
+    if (rc != 0) {
+        snprintf(err, err_len, "hal_i2c_init failed (%s)", bsh_errno_text(rc));
+        return false;
+    }
+    s_i2c_diag_ready = true;
+    return true;
+}
+
+static void bsh_cmd_i2c(const char *sub, const char *arg1, const char *arg2) {
+    if (!sub || strcmp(sub, "status") == 0) {
+        basalt_printf("i2c.enabled: yes\n");
+        basalt_printf("i2c.cfg.bus: %ld\n", (long)BASALT_CFG_I2C_BUS);
+        basalt_printf("i2c.cfg.freq_hz: %ld\n", (long)BASALT_CFG_I2C_FREQ_HZ);
+        basalt_printf("i2c.pin.sda: %d\n", BASALT_PIN_I2C_SDA);
+        basalt_printf("i2c.pin.scl: %d\n", BASALT_PIN_I2C_SCL);
+        basalt_printf("i2c.runtime.ready: %s\n", s_i2c_diag_ready ? "yes" : "no");
+        return;
+    }
+
+    if (strcmp(sub, "scan") == 0) {
+        uint8_t start = 0x03;
+        uint8_t end = 0x77;
+        if (arg1 && arg1[0] && !bsh_parse_u8_any(arg1, &start)) {
+            basalt_printf("i2c scan: invalid start address '%s'\n", arg1);
+            return;
+        }
+        if (arg2 && arg2[0] && !bsh_parse_u8_any(arg2, &end)) {
+            basalt_printf("i2c scan: invalid end address '%s'\n", arg2);
+            return;
+        }
+        if (start > end || end > 0x77) {
+            basalt_printf("i2c scan: range must be 0x00..0x77 and start<=end\n");
+            return;
+        }
+
+        char err[96];
+        if (!bsh_i2c_diag_ensure(err, sizeof(err))) {
+            basalt_printf("i2c scan: %s\n", err);
+            return;
+        }
+
+        int found = 0;
+        basalt_printf("i2c scan: bus=%ld sda=%d scl=%d range=0x%02X..0x%02X\n",
+                      (long)BASALT_CFG_I2C_BUS, BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL, start, end);
+        for (uint8_t addr = start; addr <= end; ++addr) {
+            int rc = hal_i2c_probe(&s_i2c_diag_hal, addr, 20);
+            if (rc == 0) {
+                basalt_printf("i2c scan: found 0x%02X\n", addr);
+                found++;
+            }
+        }
+        basalt_printf("i2c scan: found=%d done\n", found);
+        return;
+    }
+
+    if (strcmp(sub, "read") == 0) {
+        uint8_t addr = 0;
+        uint8_t reg = 0;
+        uint32_t len = 1;
+        char *arg3 = strtok(NULL, " \t\r\n");
+
+        if (!bsh_parse_u8_any(arg1, &addr) || !bsh_parse_u8_any(arg2, &reg)) {
+            basalt_printf("usage: i2c read <addr_hex> <reg_hex> [len]\n");
+            return;
+        }
+        if (arg3 && arg3[0] && !bsh_parse_u32(arg3, &len)) {
+            basalt_printf("i2c read: invalid len '%s'\n", arg3);
+            return;
+        }
+        if (len == 0 || len > 32) {
+            basalt_printf("i2c read: len must be 1..32\n");
+            return;
+        }
+
+        char err[96];
+        if (!bsh_i2c_diag_ensure(err, sizeof(err))) {
+            basalt_printf("i2c read: %s\n", err);
+            return;
+        }
+
+        uint8_t buf[32] = {0};
+        int rc = hal_i2c_write_read(&s_i2c_diag_hal, addr, &reg, 1, buf, len, 50);
+        if (rc < 0) {
+            basalt_printf("i2c read: addr=0x%02X reg=0x%02X failed (%s)\n",
+                          addr, reg, bsh_errno_text(rc));
+            return;
+        }
+        basalt_printf("i2c read: addr=0x%02X reg=0x%02X len=%lu data=",
+                      addr, reg, (unsigned long)len);
+        for (uint32_t i = 0; i < len; ++i) {
+            basalt_printf("%s%02X", (i == 0) ? "" : " ", buf[i]);
+        }
+        basalt_printf("\n");
+        return;
+    }
+
+    basalt_printf("usage: i2c [status|scan [start_hex] [end_hex]|read <addr_hex> <reg_hex> [len]]\n");
+}
+#else
+static void bsh_cmd_i2c(const char *sub, const char *arg1, const char *arg2) {
+    (void)sub;
+    (void)arg1;
+    (void)arg2;
+    basalt_printf("i2c: unavailable (enable i2c driver)\n");
+}
+#endif
+
+#if BASALT_ENABLE_UART
+static int bsh_uart_loopback_port(void) {
+    int p = (int)BASALT_CFG_UART_UART_NUM;
+#if defined(CONFIG_ESP_CONSOLE_UART_NUM)
+    // Avoid clobbering the active console UART during diagnostics.
+    if (p == (int)CONFIG_ESP_CONSOLE_UART_NUM) return 1;
+#endif
+    return p;
+}
+
+static hal_uart_data_bits_t bsh_uart_data_bits_from_cfg(void) {
+    switch ((int)BASALT_CFG_UART_UART_DATA_BITS) {
+        case 5: return HAL_UART_DATA_BITS_5;
+        case 6: return HAL_UART_DATA_BITS_6;
+        case 7: return HAL_UART_DATA_BITS_7;
+        default: return HAL_UART_DATA_BITS_8;
+    }
+}
+
+static hal_uart_stop_bits_t bsh_uart_stop_bits_from_cfg(void) {
+    return ((int)BASALT_CFG_UART_UART_STOP_BITS == 2) ? HAL_UART_STOP_BITS_2 : HAL_UART_STOP_BITS_1;
+}
+
+static hal_uart_parity_t bsh_uart_parity_from_cfg(void) {
+    const char *p = BASALT_CFG_UART_UART_PARITY;
+    if (strcmp(p, "even") == 0) return HAL_UART_PARITY_EVEN;
+    if (strcmp(p, "odd") == 0) return HAL_UART_PARITY_ODD;
+    return HAL_UART_PARITY_NONE;
+}
+
+static void bsh_cmd_uart(const char *sub, const char *arg1, const char *arg2) {
+    if (!sub || strcmp(sub, "status") == 0) {
+        basalt_printf("uart.enabled: yes\n");
+        basalt_printf("uart.cfg.port: %ld\n", (long)BASALT_CFG_UART_UART_NUM);
+        basalt_printf("uart.cfg.baudrate: %ld\n", (long)BASALT_CFG_UART_UART_BAUDRATE);
+        basalt_printf("uart.cfg.data_bits: %ld\n", (long)BASALT_CFG_UART_UART_DATA_BITS);
+        basalt_printf("uart.cfg.stop_bits: %ld\n", (long)BASALT_CFG_UART_UART_STOP_BITS);
+        basalt_printf("uart.cfg.parity: %s\n", BASALT_CFG_UART_UART_PARITY);
+        basalt_printf("uart.pin.tx: %d\n", BASALT_PIN_UART_TX);
+        basalt_printf("uart.pin.rx: %d\n", BASALT_PIN_UART_RX);
+        basalt_printf("uart.runtime.loopback_port: %d\n", bsh_uart_loopback_port());
+        basalt_printf("uart.runtime.note: loopback requires TX<->RX jumper on configured pins\n");
+        return;
+    }
+
+    if (strcmp(sub, "loopback") == 0) {
+        const char *payload = (arg1 && arg1[0]) ? arg1 : "BASALT_UART_LOOPBACK";
+        uint32_t timeout_ms = 400;
+        if (arg2 && arg2[0]) {
+            if (!bsh_parse_u32(arg2, &timeout_ms)) {
+                basalt_printf("uart loopback: invalid timeout_ms '%s'\n", arg2);
+                return;
+            }
+            if (timeout_ms < 50 || timeout_ms > 5000) {
+                basalt_printf("uart loopback: timeout_ms must be 50..5000\n");
+                return;
+            }
+        }
+        size_t payload_len = strlen(payload);
+        if (payload_len == 0 || payload_len > 96) {
+            basalt_printf("uart loopback: payload length must be 1..96\n");
+            return;
+        }
+        if (BASALT_PIN_UART_TX < 0 || BASALT_PIN_UART_RX < 0) {
+            basalt_printf("uart loopback: uart_tx/uart_rx pins must be configured\n");
+            return;
+        }
+
+        hal_uart_t u = {0};
+        hal_uart_config_t cfg = hal_uart_config_default((uint32_t)BASALT_CFG_UART_UART_BAUDRATE);
+        cfg.data_bits = bsh_uart_data_bits_from_cfg();
+        cfg.stop_bits = bsh_uart_stop_bits_from_cfg();
+        cfg.parity = bsh_uart_parity_from_cfg();
+        cfg.flow = HAL_UART_FLOW_NONE;
+        cfg.tx_pin = BASALT_PIN_UART_TX;
+        cfg.rx_pin = BASALT_PIN_UART_RX;
+        cfg.rts_pin = -1;
+        cfg.cts_pin = -1;
+
+        const int loopback_port = bsh_uart_loopback_port();
+        int rc = hal_uart_init_ex(&u, loopback_port, &cfg);
+        if (rc != 0) {
+            basalt_printf("uart loopback: init failed (%s)\n", bsh_errno_text(rc));
+            return;
+        }
+
+        uint8_t rx[128] = {0};
+        size_t got = 0;
+        bool deinit_needed = true;
+
+        (void)hal_uart_flush(&u);
+        while (got < sizeof(rx)) {
+            size_t avail = 0;
+            rc = hal_uart_available(&u, &avail);
+            if (rc != 0 || avail == 0) break;
+            size_t step = avail;
+            if (step > sizeof(rx) - got) step = sizeof(rx) - got;
+            int rd = hal_uart_recv(&u, rx + got, step, 0);
+            if (rd <= 0) break;
+            got += (size_t)rd;
+        }
+        got = 0;
+
+        int wr = hal_uart_send(&u, (const uint8_t *)payload, payload_len, timeout_ms);
+        if (wr < 0) {
+            basalt_printf("uart loopback: send failed (%s)\n", bsh_errno_text(wr));
+            goto done;
+        }
+
+        uint64_t t0 = esp_timer_get_time();
+        while (got < payload_len) {
+            uint64_t elapsed_ms = (esp_timer_get_time() - t0) / 1000ULL;
+            if (elapsed_ms >= timeout_ms) break;
+            uint32_t remain_ms = timeout_ms - (uint32_t)elapsed_ms;
+            if (remain_ms == 0) break;
+            size_t need = payload_len - got;
+            int rd = hal_uart_recv(&u, rx + got, need, (remain_ms > 20U) ? 20U : remain_ms);
+            if (rd < 0) {
+                basalt_printf("uart loopback: recv failed (%s)\n", bsh_errno_text(rd));
+                goto done;
+            }
+            if (rd == 0) continue;
+            got += (size_t)rd;
+        }
+
+        if (got != payload_len) {
+            basalt_printf("uart loopback: timeout waiting for echo (sent=%u recv=%u)\n",
+                          (unsigned)payload_len, (unsigned)got);
+            goto done;
+        }
+
+        if (memcmp(payload, rx, payload_len) != 0) {
+            basalt_printf("uart loopback: echo mismatch\n");
+            goto done;
+        }
+
+        basalt_printf("uart loopback: port=%d tx=%d rx=%d baud=%ld payload=\"%s\" bytes=%u pass\n",
+                      loopback_port,
+                      BASALT_PIN_UART_TX,
+                      BASALT_PIN_UART_RX,
+                      (long)BASALT_CFG_UART_UART_BAUDRATE,
+                      payload,
+                      (unsigned)payload_len);
+
+done:
+        if (deinit_needed) (void)hal_uart_deinit(&u);
+        return;
+    }
+
+    basalt_printf("usage: uart [status|loopback [payload] [timeout_ms]]\n");
+}
+#else
+static void bsh_cmd_uart(const char *sub, const char *arg1, const char *arg2) {
+    (void)sub;
+    (void)arg1;
+    (void)arg2;
+    basalt_printf("uart: unavailable (enable uart driver)\n");
+}
+#endif
+
+#if BASALT_ENABLE_PWM
+static hal_pwm_t s_pwm_diag_hal;
+static bool s_pwm_diag_ready = false;
+static bool s_pwm_diag_started = false;
+static float s_pwm_diag_duty_pct = 0.0f;
+static uint32_t s_pwm_diag_freq_hz = BASALT_CFG_PWM_FREQ_HZ;
+
+static bool bsh_pwm_diag_ensure(char *err, size_t err_len) {
+    if (BASALT_PIN_PWM_OUT < 0) {
+        snprintf(err, err_len, "pwm_out pin must be configured");
+        return false;
+    }
+    if (s_pwm_diag_ready) return true;
+    int rc = hal_pwm_init(&s_pwm_diag_hal,
+                          0,
+                          BASALT_PIN_PWM_OUT,
+                          BASALT_CFG_PWM_FREQ_HZ,
+                          BASALT_CFG_PWM_DUTY_RES_BITS);
+    if (rc != 0) {
+        snprintf(err, err_len, "hal_pwm_init failed (%s)", bsh_errno_text(rc));
+        return false;
+    }
+    s_pwm_diag_ready = true;
+    s_pwm_diag_started = false;
+    s_pwm_diag_duty_pct = 0.0f;
+    s_pwm_diag_freq_hz = BASALT_CFG_PWM_FREQ_HZ;
+    return true;
+}
+
+static void bsh_cmd_pwm(const char *sub, const char *arg1, const char *arg2) {
+    if (!sub || strcmp(sub, "status") == 0) {
+        basalt_printf("pwm.enabled: yes\n");
+        basalt_printf("pwm.pin.out: %d\n", BASALT_PIN_PWM_OUT);
+        basalt_printf("pwm.cfg.freq_hz: %ld\n", (long)BASALT_CFG_PWM_FREQ_HZ);
+        basalt_printf("pwm.cfg.resolution_bits: %ld\n", (long)BASALT_CFG_PWM_DUTY_RES_BITS);
+        basalt_printf("pwm.runtime.ready: %s\n", s_pwm_diag_ready ? "yes" : "no");
+        basalt_printf("pwm.runtime.started: %s\n", s_pwm_diag_started ? "yes" : "no");
+        basalt_printf("pwm.runtime.freq_hz: %lu\n", (unsigned long)s_pwm_diag_freq_hz);
+        basalt_printf("pwm.runtime.duty_pct: %.1f\n", (double)s_pwm_diag_duty_pct);
+        return;
+    }
+
+    if (strcmp(sub, "start") == 0) {
+        float duty_pct = s_pwm_diag_duty_pct;
+        uint32_t freq_hz = s_pwm_diag_freq_hz;
+        if (arg1 && arg1[0]) duty_pct = (float)strtod(arg1, NULL);
+        if (arg2 && arg2[0] && !bsh_parse_u32(arg2, &freq_hz)) {
+            basalt_printf("pwm start: invalid freq_hz '%s'\n", arg2);
+            return;
+        }
+        if (duty_pct < 0.0f || duty_pct > 100.0f) {
+            basalt_printf("pwm start: duty_pct must be 0..100\n");
+            return;
+        }
+        if (freq_hz < 1 || freq_hz > 1000000) {
+            basalt_printf("pwm start: freq_hz must be 1..1000000\n");
+            return;
+        }
+
+        char err[96];
+        if (!bsh_pwm_diag_ensure(err, sizeof(err))) {
+            basalt_printf("pwm start: %s\n", err);
+            return;
+        }
+        int rc = 0;
+        if (!s_pwm_diag_ready || freq_hz != s_pwm_diag_freq_hz) {
+            rc = hal_pwm_set_freq(&s_pwm_diag_hal, freq_hz);
+            if (rc != 0) {
+                basalt_printf("pwm start: set freq failed (%s)\n", bsh_errno_text(rc));
+                return;
+            }
+        }
+        rc = hal_pwm_set_duty_percent(&s_pwm_diag_hal, duty_pct);
+        if (rc != 0) {
+            basalt_printf("pwm start: set duty failed (%s)\n", bsh_errno_text(rc));
+            return;
+        }
+        rc = hal_pwm_start(&s_pwm_diag_hal);
+        if (rc != 0) {
+            basalt_printf("pwm start: start failed (%s)\n", bsh_errno_text(rc));
+            return;
+        }
+        s_pwm_diag_started = true;
+        s_pwm_diag_duty_pct = duty_pct;
+        s_pwm_diag_freq_hz = freq_hz;
+        basalt_printf("pwm start: pin=%d duty=%.1f%% freq_hz=%lu done\n",
+                      BASALT_PIN_PWM_OUT, (double)duty_pct, (unsigned long)freq_hz);
+        return;
+    }
+
+    if (strcmp(sub, "duty") == 0) {
+        if (!arg1 || !arg1[0]) {
+            basalt_printf("usage: pwm duty <0-100>\n");
+            return;
+        }
+        float duty_pct = (float)strtod(arg1, NULL);
+        if (duty_pct < 0.0f || duty_pct > 100.0f) {
+            basalt_printf("pwm duty: duty_pct must be 0..100\n");
+            return;
+        }
+        char err[96];
+        if (!bsh_pwm_diag_ensure(err, sizeof(err))) {
+            basalt_printf("pwm duty: %s\n", err);
+            return;
+        }
+        int rc = hal_pwm_set_duty_percent(&s_pwm_diag_hal, duty_pct);
+        if (rc != 0) {
+            basalt_printf("pwm duty: set duty failed (%s)\n", bsh_errno_text(rc));
+            return;
+        }
+        s_pwm_diag_duty_pct = duty_pct;
+        basalt_printf("pwm duty: %.1f%%\n", (double)duty_pct);
+        return;
+    }
+
+    if (strcmp(sub, "freq") == 0) {
+        uint32_t freq_hz = 0;
+        if (!arg1 || !arg1[0] || !bsh_parse_u32(arg1, &freq_hz)) {
+            basalt_printf("usage: pwm freq <hz>\n");
+            return;
+        }
+        if (freq_hz < 1 || freq_hz > 1000000) {
+            basalt_printf("pwm freq: hz must be 1..1000000\n");
+            return;
+        }
+        char err[96];
+        if (!bsh_pwm_diag_ensure(err, sizeof(err))) {
+            basalt_printf("pwm freq: %s\n", err);
+            return;
+        }
+        int rc = hal_pwm_set_freq(&s_pwm_diag_hal, freq_hz);
+        if (rc != 0) {
+            basalt_printf("pwm freq: set freq failed (%s)\n", bsh_errno_text(rc));
+            return;
+        }
+        s_pwm_diag_freq_hz = freq_hz;
+        basalt_printf("pwm freq: %lu\n", (unsigned long)freq_hz);
+        return;
+    }
+
+    if (strcmp(sub, "stop") == 0) {
+        if (!s_pwm_diag_ready) {
+            basalt_printf("pwm stop: already stopped\n");
+            return;
+        }
+        int rc = hal_pwm_stop(&s_pwm_diag_hal);
+        if (rc != 0) {
+            basalt_printf("pwm stop: failed (%s)\n", bsh_errno_text(rc));
+            return;
+        }
+        s_pwm_diag_started = false;
+        s_pwm_diag_duty_pct = 0.0f;
+        basalt_printf("pwm stop: done\n");
+        return;
+    }
+
+    basalt_printf("usage: pwm [status|start [duty_pct] [freq_hz]|duty <0-100>|freq <hz>|stop]\n");
+}
+#else
+static void bsh_cmd_pwm(const char *sub, const char *arg1, const char *arg2) {
+    (void)sub;
+    (void)arg1;
+    (void)arg2;
+    basalt_printf("pwm: unavailable (enable pwm driver)\n");
+}
+#endif
+
+#if BASALT_ENABLE_I2S
+static hal_i2s_t s_i2s_diag_hal;
+static bool s_i2s_diag_ready = false;
+
+static bool bsh_i2s_diag_ensure(char *err, size_t err_len) {
+    if (BASALT_PIN_I2S_BCLK < 0 || BASALT_PIN_I2S_WS < 0 || BASALT_PIN_I2S_DOUT < 0 || BASALT_PIN_I2S_DIN < 0) {
+        snprintf(err, err_len, "i2s pins bclk/ws/dout/din must be configured");
+        return false;
+    }
+    if (s_i2s_diag_ready) return true;
+    int rc = hal_i2s_diag_init(&s_i2s_diag_hal,
+                               BASALT_PIN_I2S_BCLK,
+                               BASALT_PIN_I2S_WS,
+                               BASALT_PIN_I2S_DOUT,
+                               BASALT_PIN_I2S_DIN,
+                               BASALT_CFG_I2S_SAMPLE_RATE,
+                               BASALT_CFG_I2S_BITS_PER_SAMPLE);
+    if (rc != 0) {
+        snprintf(err, err_len, "hal_i2s_diag_init failed (%s)", bsh_errno_text(rc));
+        return false;
+    }
+    s_i2s_diag_ready = true;
+    return true;
+}
+
+static void bsh_cmd_i2s(const char *sub, const char *arg1, const char *arg2, const char *arg3) {
+    int tx_ready = 0;
+    int rx_ready = 0;
+    if (s_i2s_diag_ready) (void)hal_i2s_diag_get_ready(&s_i2s_diag_hal, &tx_ready, &rx_ready);
+
+    if (!sub || strcmp(sub, "status") == 0) {
+        int active_sr = 0;
+        int active_bits = 0;
+        if (s_i2s_diag_ready) (void)hal_i2s_diag_get_stats(&s_i2s_diag_hal, &active_sr, &active_bits);
+        basalt_printf("i2s.enabled: yes\n");
+        basalt_printf("i2s.cfg.sample_rate_hz: %ld\n", (long)BASALT_CFG_I2S_SAMPLE_RATE);
+        basalt_printf("i2s.cfg.bits_per_sample: %ld\n", (long)BASALT_CFG_I2S_BITS_PER_SAMPLE);
+        basalt_printf("i2s.cfg.mode: %s\n", BASALT_CFG_I2S_MODE);
+        basalt_printf("i2s.pins: bclk=%d ws=%d din=%d dout=%d\n",
+                      BASALT_PIN_I2S_BCLK, BASALT_PIN_I2S_WS, BASALT_PIN_I2S_DIN, BASALT_PIN_I2S_DOUT);
+        basalt_printf("i2s.runtime.loopback_tx_ready: %s\n", tx_ready ? "yes" : "no");
+        basalt_printf("i2s.runtime.loopback_rx_ready: %s\n", rx_ready ? "yes" : "no");
+        if (active_sr > 0 && active_bits > 0) {
+            basalt_printf("i2s.runtime.active_sample_rate_hz: %d\n", active_sr);
+            basalt_printf("i2s.runtime.active_bits_per_sample: %d\n", active_bits);
+        }
+        basalt_printf("i2s.runtime.note: HAL-backed I2S peripheral DMA loopback (wire DOUT to DIN)\n");
+        return;
+    }
+
+    if (strcmp(sub, "loopback") == 0) {
+        uint32_t on_us = 0, off_us = 0, count = 0, window_ms = 250;
+        if (!bsh_parse_u32(arg1, &on_us) || !bsh_parse_u32(arg2, &off_us) || !bsh_parse_u32(arg3, &count)) {
+            basalt_printf("usage: i2s loopback <on_us> <off_us> <count> [window_ms]\n");
+            return;
+        }
+        if (count == 0 || count > 10000) {
+            basalt_printf("i2s loopback: count must be 1..10000\n");
+            return;
+        }
+        char *arg4 = strtok(NULL, " \t\r\n");
+        if (arg4 && arg4[0] && !bsh_parse_u32(arg4, &window_ms)) {
+            basalt_printf("i2s loopback: invalid window_ms '%s'\n", arg4);
+            return;
+        }
+        if (window_ms < 10 || window_ms > 10000) {
+            basalt_printf("i2s loopback: window_ms must be 10..10000\n");
+            return;
+        }
+
+        char err[96];
+        if (!bsh_i2s_diag_ensure(err, sizeof(err))) {
+            basalt_printf("i2s loopback: %s\n", err);
+            return;
+        }
+        hal_i2s_diag_capture_t cap = {0};
+        int rc = hal_i2s_diag_loopback(&s_i2s_diag_hal, on_us, off_us, count, window_ms, 25, &cap);
+        if (rc != 0) {
+            basalt_printf("i2s loopback: HAL failed (%s)\n", bsh_errno_text(rc));
+            return;
+        }
+
+        basalt_printf("i2s loopback: dout=%d din=%d on_us=%lu off_us=%lu count=%lu window_ms=%lu\n",
+                      BASALT_PIN_I2S_DOUT, BASALT_PIN_I2S_DIN,
+                      (unsigned long)on_us, (unsigned long)off_us,
+                      (unsigned long)count, (unsigned long)window_ms);
+        for (uint32_t i = 0; i < cap.edges; ++i) {
+            basalt_printf("i2s loopback: level=%u dur_us=%lu\n",
+                          (unsigned)cap.levels[i], (unsigned long)cap.durations_us[i]);
+        }
+        basalt_printf("i2s loopback: level=%u dur_us=%lu (tail)\n",
+                      (unsigned)cap.levels[cap.edges], (unsigned long)cap.durations_us[cap.edges]);
+        basalt_printf("i2s loopback: emitted=%lu edges=%lu done\n",
+                      (unsigned long)count, (unsigned long)cap.edges);
+        return;
+    }
+
+    basalt_printf("usage: i2s [status|loopback <on_us> <off_us> <count> [window_ms]]\n");
+}
+#else
+static void bsh_cmd_i2s(const char *sub, const char *arg1, const char *arg2, const char *arg3) {
+    (void)sub;
+    (void)arg1;
+    (void)arg2;
+    (void)arg3;
+    basalt_printf("i2s: unavailable (enable i2s+gpio drivers)\n");
+}
+#endif
+
+#if BASALT_ENABLE_MIC
+static bool s_mic_sampler_gpio_ready = false;
+static hal_adc_t s_mic_adc_hal;
+static bool s_mic_adc_ready = false;
+
+static bool bsh_mic_gpio_ensure(char *err, size_t err_len) {
+    int pin = BASALT_PIN_I2S_DIN;
+    if (pin < 0) {
+        snprintf(err, err_len, "i2s_din pin is not configured");
+        return false;
+    }
+    if (s_mic_sampler_gpio_ready) return true;
+    esp_err_t ret = gpio_reset_pin((gpio_num_t)pin);
+    if (ret != ESP_OK) {
+        snprintf(err, err_len, "gpio_reset_pin(%d) failed: %s", pin, esp_err_to_name(ret));
+        return false;
+    }
+    ret = gpio_set_direction((gpio_num_t)pin, GPIO_MODE_INPUT);
+    if (ret != ESP_OK) {
+        snprintf(err, err_len, "gpio_set_direction(%d) failed: %s", pin, esp_err_to_name(ret));
+        return false;
+    }
+    s_mic_sampler_gpio_ready = true;
+    return true;
+}
+
+static bool bsh_mic_adc_ensure(int pin, char *err, size_t err_len) {
+    if (pin < 0) {
+        snprintf(err, err_len, "mic_in pin is not configured");
+        return false;
+    }
+    if (s_mic_adc_ready) return true;
+    int rc = hal_adc_init_pin(&s_mic_adc_hal, pin, HAL_ADC_ATTEN_DB_11, 12);
+    if (rc != 0) {
+        snprintf(err, err_len, "hal_adc_init_pin(%d) failed (%s)", pin, bsh_errno_text(rc));
+        return false;
+    }
+    s_mic_adc_ready = true;
+    return true;
+}
+
+static void bsh_cmd_mic(const char *sub, const char *arg1) {
+    const bool source_i2s = (strcmp(BASALT_CFG_MIC_SOURCE, "i2s") == 0);
+    int pin = source_i2s ? BASALT_PIN_I2S_DIN : BASALT_PIN_MIC_IN;
+    if (!sub || strcmp(sub, "status") == 0) {
+        basalt_printf("mic.enabled: yes\n");
+        basalt_printf("mic.cfg.source: %s\n", BASALT_CFG_MIC_SOURCE);
+        basalt_printf("mic.cfg.sample_rate_hz: %ld\n", (long)BASALT_CFG_MIC_SAMPLE_RATE);
+        basalt_printf("mic.pin.sample: %d\n", pin);
+        if (source_i2s) {
+            basalt_printf("mic.runtime.sampler_ready: %s\n", s_mic_sampler_gpio_ready ? "yes" : "no");
+            basalt_printf("mic.mode: i2s (HAL-backed GPIO DIN edge sampler)\n");
+        } else {
+            basalt_printf("mic.runtime.adc_ready: %s\n", s_mic_adc_ready ? "yes" : "no");
+            basalt_printf("mic.mode: adc (HAL ADC oneshot sampler)\n");
+        }
+        return;
+    }
+
+    if (strcmp(sub, "read") == 0) {
+        uint32_t window_ms = 500;
+        if (arg1 && arg1[0] && !bsh_parse_u32(arg1, &window_ms)) {
+            basalt_printf("mic read: invalid window_ms '%s'\n", arg1);
+            return;
+        }
+        if (window_ms < 20 || window_ms > 10000) {
+            basalt_printf("mic read: window_ms must be 20..10000\n");
+            return;
+        }
+
+        char err[96];
+        if (source_i2s) {
+            if (!bsh_mic_gpio_ensure(err, sizeof(err))) {
+                basalt_printf("mic read: %s\n", err);
+                return;
+            }
+            int64_t start_us = esp_timer_get_time();
+            int64_t end_us = start_us + ((int64_t)window_ms * 1000LL);
+            int last_level = gpio_get_level((gpio_num_t)pin) ? 1 : 0;
+            int64_t last_edge_us = start_us;
+            uint32_t edges = 0;
+
+            while (esp_timer_get_time() < end_us && edges < 64) {
+                int level = gpio_get_level((gpio_num_t)pin) ? 1 : 0;
+                int64_t now_us = esp_timer_get_time();
+                if (level != last_level) {
+                    int64_t dur_us = now_us - last_edge_us;
+                    basalt_printf("mic read: level=%d dur_us=%lld\n", last_level, (long long)dur_us);
+                    last_level = level;
+                    last_edge_us = now_us;
+                    edges++;
+                }
+                esp_rom_delay_us(25);
+            }
+            int64_t done_us = esp_timer_get_time();
+            basalt_printf("mic read: source=%s pin=%d window_ms=%lu\n",
+                          BASALT_CFG_MIC_SOURCE, pin, (unsigned long)window_ms);
+            if (done_us > last_edge_us) {
+                basalt_printf("mic read: level=%d dur_us=%lld (tail)\n",
+                              last_level, (long long)(done_us - last_edge_us));
+            }
+            basalt_printf("mic read: edges=%lu done\n", (unsigned long)edges);
+            return;
+        }
+
+        if (!bsh_mic_adc_ensure(pin, err, sizeof(err))) {
+            basalt_printf("mic read: %s\n", err);
+            return;
+        }
+        int64_t start_us = esp_timer_get_time();
+        int64_t end_us = start_us + ((int64_t)window_ms * 1000LL);
+        uint32_t samples = 0;
+        int raw = 0;
+        int raw_min = 0x7fffffff;
+        int raw_max = -0x7fffffff;
+        int64_t raw_sum = 0;
+        while (esp_timer_get_time() < end_us) {
+            int rc = hal_adc_read_raw(&s_mic_adc_hal, &raw);
+            if (rc != 0) {
+                basalt_printf("mic read: hal_adc_read_raw failed (%s)\n", bsh_errno_text(rc));
+                return;
+            }
+            if (raw < raw_min) raw_min = raw;
+            if (raw > raw_max) raw_max = raw;
+            raw_sum += raw;
+            samples++;
+            esp_rom_delay_us(200);
+        }
+        int avg = samples ? (int)(raw_sum / (int64_t)samples) : 0;
+        int avg_mv = (avg * 3300) / 4095;
+        basalt_printf("mic read: source=adc pin=%d window_ms=%lu\n", pin, (unsigned long)window_ms);
+        basalt_printf("mic read: samples=%lu raw_min=%d raw_max=%d raw_avg=%d raw_pp=%d avg_mv=%d\n",
+                      (unsigned long)samples, raw_min, raw_max, avg, (raw_max - raw_min), avg_mv);
+        return;
+    }
+
+    basalt_printf("usage: mic [status|read [window_ms]]\n");
+}
+#else
+static void bsh_cmd_mic(const char *sub, const char *arg1) {
+    (void)sub;
+    (void)arg1;
+    basalt_printf("mic: unavailable (enable mic driver)\n");
+}
+#endif
+
+#if BASALT_ENABLE_RMT
+static hal_rmt_t s_rmt_hal;
+static bool s_rmt_hal_ready = false;
+static bool s_rmt_tx_gpio_ready = false;
+static bool s_rmt_rx_gpio_ready = false;
+
+static bool bsh_rmt_ensure(bool need_tx, bool need_rx, char *err, size_t err_len) {
+    if (need_tx && !BASALT_CFG_RMT_ENABLE_TX_CHANNEL) {
+        snprintf(err, err_len, "TX channel disabled by config");
+        return false;
+    }
+    if (need_rx && !BASALT_CFG_RMT_ENABLE_RX_CHANNEL) {
+        snprintf(err, err_len, "RX channel disabled by config");
+        return false;
+    }
+    if (need_tx && BASALT_PIN_RMT_TX < 0) {
+        snprintf(err, err_len, "TX pin is not configured");
+        return false;
+    }
+    if (need_rx && BASALT_PIN_RMT_RX < 0) {
+        snprintf(err, err_len, "RX pin is not configured");
+        return false;
+    }
+    if (!s_rmt_hal_ready) {
+        int rc = hal_rmt_init(&s_rmt_hal,
+                              BASALT_PIN_RMT_TX,
+                              BASALT_PIN_RMT_RX,
+                              BASALT_CFG_RMT_RESOLUTION_HZ,
+                              BASALT_CFG_RMT_ENABLE_TX_CHANNEL,
+                              BASALT_CFG_RMT_ENABLE_RX_CHANNEL);
+        if (rc != 0) {
+            snprintf(err, err_len, "hal_rmt_init failed (%s)", bsh_errno_text(rc));
+            return false;
+        }
+        s_rmt_hal_ready = true;
+    }
+    int tx = 0, rx = 0;
+    (void)hal_rmt_get_ready(&s_rmt_hal, &tx, &rx);
+    s_rmt_tx_gpio_ready = (tx != 0);
+    s_rmt_rx_gpio_ready = (rx != 0);
+    return true;
+}
+
+static void bsh_cmd_rmt(const char *sub, const char *arg1, const char *arg2, const char *arg3) {
+    if (!sub || strcmp(sub, "status") == 0) {
+        int tx = 0, rx = 0;
+        if (s_rmt_hal_ready) (void)hal_rmt_get_ready(&s_rmt_hal, &tx, &rx);
+        basalt_printf("rmt.enabled: yes\n");
+        basalt_printf("rmt.cfg.resolution_hz: %ld\n", (long)BASALT_CFG_RMT_RESOLUTION_HZ);
+        basalt_printf("rmt.cfg.enable_tx: %d\n", (int)BASALT_CFG_RMT_ENABLE_TX_CHANNEL);
+        basalt_printf("rmt.cfg.enable_rx: %d\n", (int)BASALT_CFG_RMT_ENABLE_RX_CHANNEL);
+        basalt_printf("rmt.pin.tx: %d\n", BASALT_PIN_RMT_TX);
+        basalt_printf("rmt.pin.rx: %d\n", BASALT_PIN_RMT_RX);
+        basalt_printf("rmt.runtime.tx_ready: %s\n", tx ? "yes" : "no");
+        basalt_printf("rmt.runtime.rx_ready: %s\n", rx ? "yes" : "no");
+        return;
+    }
+
+    if (strcmp(sub, "pulse") == 0) {
+        uint32_t on_us = 0, off_us = 0, count = 1;
+        if (!bsh_parse_u32(arg1, &on_us) || !bsh_parse_u32(arg2, &off_us)) {
+            basalt_printf("usage: rmt pulse <on_us> <off_us> [count]\n");
+            return;
+        }
+        if (arg3 && arg3[0] && !bsh_parse_u32(arg3, &count)) {
+            basalt_printf("rmt pulse: invalid count '%s'\n", arg3);
+            return;
+        }
+        if (count == 0 || count > 10000) {
+            basalt_printf("rmt pulse: count must be 1..10000\n");
+            return;
+        }
+        char err[96];
+        if (!bsh_rmt_ensure(true, false, err, sizeof(err))) {
+            basalt_printf("rmt pulse: %s\n", err);
+            return;
+        }
+        int rc = hal_rmt_pulse(&s_rmt_hal, on_us, off_us, count);
+        if (rc != 0) {
+            basalt_printf("rmt pulse: HAL failed (%s)\n", bsh_errno_text(rc));
+            return;
+        }
+        basalt_printf("rmt pulse: tx=%d on_us=%lu off_us=%lu count=%lu done\n",
+                      BASALT_PIN_RMT_TX, (unsigned long)on_us, (unsigned long)off_us, (unsigned long)count);
+        return;
+    }
+
+    if (strcmp(sub, "capture") == 0) {
+        uint32_t window_ms = 250;
+        if (arg1 && arg1[0] && !bsh_parse_u32(arg1, &window_ms)) {
+            basalt_printf("rmt capture: invalid window_ms '%s'\n", arg1);
+            return;
+        }
+        if (window_ms < 10 || window_ms > 10000) {
+            basalt_printf("rmt capture: window_ms must be 10..10000\n");
+            return;
+        }
+        char err[96];
+        if (!bsh_rmt_ensure(false, true, err, sizeof(err))) {
+            basalt_printf("rmt capture: %s\n", err);
+            return;
+        }
+        hal_rmt_capture_t cap = {0};
+        int rc = hal_rmt_capture(&s_rmt_hal, window_ms, 25, &cap);
+        if (rc != 0) {
+            basalt_printf("rmt capture: HAL failed (%s)\n", bsh_errno_text(rc));
+            return;
+        }
+        basalt_printf("rmt capture: pin=%d window_ms=%lu start_level=%d\n",
+                      BASALT_PIN_RMT_RX, (unsigned long)window_ms, cap.start_level);
+        for (uint32_t i = 0; i < cap.edges; ++i) {
+            basalt_printf("rmt capture: level=%u dur_us=%lu\n",
+                          (unsigned)cap.levels[i], (unsigned long)cap.durations_us[i]);
+        }
+        basalt_printf("rmt capture: level=%u dur_us=%lu (tail)\n",
+                      (unsigned)cap.levels[cap.edges], (unsigned long)cap.durations_us[cap.edges]);
+        basalt_printf("rmt capture: edges=%lu done\n", (unsigned long)cap.edges);
+        return;
+    }
+
+    if (strcmp(sub, "loopback") == 0) {
+        uint32_t on_us = 0, off_us = 0, count = 0, window_ms = 250;
+        if (!bsh_parse_u32(arg1, &on_us) || !bsh_parse_u32(arg2, &off_us) || !bsh_parse_u32(arg3, &count)) {
+            basalt_printf("usage: rmt loopback <on_us> <off_us> <count> [window_ms]\n");
+            return;
+        }
+        if (count == 0 || count > 10000) {
+            basalt_printf("rmt loopback: count must be 1..10000\n");
+            return;
+        }
+        char *arg4 = strtok(NULL, " \t\r\n");
+        if (arg4 && arg4[0] && !bsh_parse_u32(arg4, &window_ms)) {
+            basalt_printf("rmt loopback: invalid window_ms '%s'\n", arg4);
+            return;
+        }
+        if (window_ms < 10 || window_ms > 10000) {
+            basalt_printf("rmt loopback: window_ms must be 10..10000\n");
+            return;
+        }
+
+        char err[96];
+        if (!bsh_rmt_ensure(true, true, err, sizeof(err))) {
+            basalt_printf("rmt loopback: %s\n", err);
+            return;
+        }
+        hal_rmt_capture_t cap = {0};
+        int rc = hal_rmt_loopback(&s_rmt_hal, on_us, off_us, count, window_ms, 25, &cap);
+        if (rc != 0) {
+            basalt_printf("rmt loopback: HAL failed (%s)\n", bsh_errno_text(rc));
+            return;
+        }
+        basalt_printf("rmt loopback: tx=%d rx=%d on_us=%lu off_us=%lu count=%lu window_ms=%lu\n",
+                      BASALT_PIN_RMT_TX, BASALT_PIN_RMT_RX,
+                      (unsigned long)on_us, (unsigned long)off_us,
+                      (unsigned long)count, (unsigned long)window_ms);
+        for (uint32_t i = 0; i < cap.edges; ++i) {
+            basalt_printf("rmt loopback: level=%u dur_us=%lu\n",
+                          (unsigned)cap.levels[i], (unsigned long)cap.durations_us[i]);
+        }
+        basalt_printf("rmt loopback: level=%u dur_us=%lu (tail)\n",
+                      (unsigned)cap.levels[cap.edges], (unsigned long)cap.durations_us[cap.edges]);
+        basalt_printf("rmt loopback: emitted=%lu edges=%lu done\n",
+                      (unsigned long)count, (unsigned long)cap.edges);
+        return;
+    }
+
+    basalt_printf("usage: rmt [status|pulse <on_us> <off_us> [count]|capture [window_ms]|loopback <on_us> <off_us> <count> [window_ms]]\n");
+}
+#else
+static void bsh_cmd_rmt(const char *sub, const char *arg1, const char *arg2, const char *arg3) {
+    (void)sub;
+    (void)arg1;
+    (void)arg2;
+    (void)arg3;
+    basalt_printf("rmt: unavailable (enable rmt+gpio+timer drivers)\n");
+}
+#endif
+
 static void bsh_cmd_install(const char *src, const char *name) {
     if (!src || !src[0]) {
         basalt_printf("install: missing source path\n");
@@ -4992,7 +6023,7 @@ static bool bsh_tiny_is_blocked(const char *cmd) {
         "ls", "cat", "cd", "mkdir", "cp", "mv", "rm",
         "apps_dev", "led_test", "devcheck", "edit",
         "run_dev", "kill", "applet", "applets",
-        "install", "remove", "logs", "imu", "dht22", "ads1115", "mcp23017", "tp4056", "mcp2544fd", "uln2003", "l298n", "wifi", "bluetooth", "bt", "can"
+        "install", "remove", "logs", "imu", "dht22", "ads1115", "i2c", "uart", "pwm", "i2s", "mic", "mcp23017", "tp4056", "mcp2544fd", "uln2003", "l298n", "rmt", "wifi", "bluetooth", "bt", "can"
     };
     for (size_t i = 0; i < sizeof(k_blocked) / sizeof(k_blocked[0]); ++i) {
         if (strcmp(cmd, k_blocked[i]) == 0) return true;
@@ -5330,6 +6361,51 @@ static void bsh_handle_line(char *line) {
 #else
         basalt_printf("ads1115: disabled in this shell level\n");
 #endif
+    } else if (strcmp(cmd, "i2s") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        char *arg1 = strtok(NULL, " \t\r\n");
+        char *arg2 = strtok(NULL, " \t\r\n");
+        char *arg3 = strtok(NULL, " \t\r\n");
+        bsh_cmd_i2s(sub, arg1, arg2, arg3);
+#else
+        basalt_printf("i2s: disabled in this shell level\n");
+#endif
+    } else if (strcmp(cmd, "i2c") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        char *arg1 = strtok(NULL, " \t\r\n");
+        char *arg2 = strtok(NULL, " \t\r\n");
+        bsh_cmd_i2c(sub, arg1, arg2);
+#else
+        basalt_printf("i2c: disabled in this shell level\n");
+#endif
+    } else if (strcmp(cmd, "uart") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        char *arg1 = strtok(NULL, " \t\r\n");
+        char *arg2 = strtok(NULL, " \t\r\n");
+        bsh_cmd_uart(sub, arg1, arg2);
+#else
+        basalt_printf("uart: disabled in this shell level\n");
+#endif
+    } else if (strcmp(cmd, "pwm") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        char *arg1 = strtok(NULL, " \t\r\n");
+        char *arg2 = strtok(NULL, " \t\r\n");
+        bsh_cmd_pwm(sub, arg1, arg2);
+#else
+        basalt_printf("pwm: disabled in this shell level\n");
+#endif
+    } else if (strcmp(cmd, "mic") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        char *arg1 = strtok(NULL, " \t\r\n");
+        bsh_cmd_mic(sub, arg1);
+#else
+        basalt_printf("mic: disabled in this shell level\n");
+#endif
     } else if (strcmp(cmd, "mcp23017") == 0) {
 #if BASALT_SHELL_LEVEL >= 3
         char *sub = strtok(NULL, " \t\r\n");
@@ -5398,6 +6474,16 @@ static void bsh_handle_line(char *line) {
         bsh_cmd_l298n(sub, arg1, arg2);
 #else
         basalt_printf("l298n: disabled in this shell level\n");
+#endif
+    } else if (strcmp(cmd, "rmt") == 0) {
+#if BASALT_SHELL_LEVEL >= 3
+        char *sub = strtok(NULL, " \t\r\n");
+        char *arg1 = strtok(NULL, " \t\r\n");
+        char *arg2 = strtok(NULL, " \t\r\n");
+        char *arg3 = strtok(NULL, " \t\r\n");
+        bsh_cmd_rmt(sub, arg1, arg2, arg3);
+#else
+        basalt_printf("rmt: disabled in this shell level\n");
 #endif
     } else if (strcmp(cmd, "wifi") == 0) {
 #if BASALT_SHELL_LEVEL >= 3
@@ -5643,7 +6729,7 @@ static void basalt_sd_init(void) {
 }
 
 static void basalt_log_driver_boot_summary(void) {
-#if BASALT_ENABLE_DISPLAY_SSD1306 || BASALT_ENABLE_RTC || BASALT_ENABLE_IMU || BASALT_ENABLE_DHT22 || BASALT_ENABLE_BME280 || BASALT_ENABLE_ADS1115 || BASALT_ENABLE_MCP23017 || BASALT_ENABLE_MIC || BASALT_ENABLE_TP4056 || BASALT_ENABLE_TWAI || BASALT_ENABLE_MCP2544FD || BASALT_ENABLE_ULN2003 || BASALT_ENABLE_L298N
+#if BASALT_ENABLE_DISPLAY_SSD1306 || BASALT_ENABLE_RTC || BASALT_ENABLE_IMU || BASALT_ENABLE_DHT22 || BASALT_ENABLE_BME280 || BASALT_ENABLE_ADS1115 || BASALT_ENABLE_I2S || BASALT_ENABLE_MCP23017 || BASALT_ENABLE_MIC || BASALT_ENABLE_TP4056 || BASALT_ENABLE_TWAI || BASALT_ENABLE_MCP2544FD || BASALT_ENABLE_ULN2003 || BASALT_ENABLE_L298N || BASALT_ENABLE_RMT
     ESP_LOGW(TAG, "Experimental drivers enabled; some are config-only stubs in this build.");
 #endif
 #if BASALT_ENABLE_DISPLAY_SSD1306
@@ -5661,6 +6747,12 @@ static void basalt_log_driver_boot_summary(void) {
 #if BASALT_ENABLE_ADS1115
     ESP_LOGI(TAG, "ads1115 enabled: shell API available (ads1115 status/probe/read).");
 #endif
+#if BASALT_ENABLE_UART
+    ESP_LOGI(TAG, "uart enabled: shell API available (uart status/loopback).");
+#endif
+#if BASALT_ENABLE_I2S
+    ESP_LOGI(TAG, "i2s enabled: shell API available (i2s status/loopback).");
+#endif
 #if BASALT_ENABLE_MCP23017
     ESP_LOGI(TAG, "mcp23017 enabled: shell API available (mcp23017 status/probe/scan/test/read/write/pinmode/pinwrite/pinread).");
 #endif
@@ -5668,7 +6760,7 @@ static void basalt_log_driver_boot_summary(void) {
     ESP_LOGI(TAG, "dht22 enabled: shell API available (dht22 status/read [pin] [auto|dht22|dht11]).");
 #endif
 #if BASALT_ENABLE_MIC
-    ESP_LOGW(TAG, "mic enabled: runtime driver not implemented yet.");
+    ESP_LOGI(TAG, "mic enabled: shell API available (mic status/read).");
 #endif
 #if BASALT_ENABLE_TP4056
     ESP_LOGI(TAG, "tp4056 enabled: shell API available (tp4056 status/on/off).");
@@ -5684,6 +6776,9 @@ static void basalt_log_driver_boot_summary(void) {
 #endif
 #if BASALT_ENABLE_L298N
     ESP_LOGI(TAG, "l298n enabled: shell API available (l298n status/stop/test/speed/a/b).");
+#endif
+#if BASALT_ENABLE_RMT
+    ESP_LOGI(TAG, "rmt enabled: shell API available (rmt status/pulse/capture/loopback).");
 #endif
 }
 

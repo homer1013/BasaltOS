@@ -4,13 +4,26 @@ All notable changes to this project are documented in this file.
 
 ## Unreleased
 
+### Added
+- Placeholder for next development cycle.
+
+## v0.1.1 - 2026-02-13
+
+### Added
+- ESP32 HAL adapter coverage for `adc`, `i2s`, `rmt`, and new `pwm` implementation, with shared IDF target routing through `basalt_hal/ports/esp32`.
+- New shell diagnostics:
+  - `i2c status|scan|read`
+  - `pwm status|start|duty|freq|stop`
+- ESP32-C6 HAL bench smoke expansion for `i2c`, `pwm`, `uart`, `rmt`, and `mic` runtime checks.
+- New configurator validation smoke coverage for mode-aware pin rules.
+
 ### Changed
-- ESP32-C3 SuperMini board defaults now use I2C `SDA=GPIO8`, `SCL=GPIO9` for bench-aligned SSD1306 workflows.
-- Shell console path on ESP32-C3 hardened for USB-Serial/JTAG interactive use.
+- UART module config schema now supports explicit mode selection (`tx_rx`, `tx`, `rx`) for clearer generation and validation behavior.
+- Configurator pin validation now enforces mode-aware UART pin requirements and guards against invalid shared TX/RX pin assignments in `tx_rx` mode.
+- Driver status inventory in shell now reports expanded foundation drivers including `pwm`, `i2s`, `rmt`, `mic`, and UART diagnostics.
 
 ### Fixed
-- SSD1306 demo app (`spiffs/apps/ssd1306_shapes/main.py`) no longer relies on `%` string formatting unsupported by current MicroPython operator set.
-- SSD1306 validation flow now verified on both `128x64` and `128x32` panels (`0x3C`) with render confirmation.
+- PWM shell startup flow now avoids unnecessary frequency reprogramming on already-matched runtime frequency, preventing false start failures on ESP32-C6 bench runs.
 
 ## v0.1.0 - 2026-02-09
 
@@ -49,4 +62,3 @@ All notable changes to this project are documented in this file.
 ### Fixed
 - AVR SSD1306 custom splash C/C++ linkage build break in generated projects.
 - Multiple configurator/runtime edge cases around board capability gating and serial/web flashing flow.
-

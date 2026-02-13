@@ -763,6 +763,42 @@
         "sensors",
         "advanced"
       ]
+    },
+    {
+      "id": "esp32_c6_rmt_loopback",
+      "name": "ESP32-C6 RMT Loopback",
+      "description": "ESP32-C6 bench profile for RMT TX/RX loopback validation on jumper-linked GPIO2->GPIO3.",
+      "icon": "\ud83e\uddea",
+      "platforms": [
+        "esp32"
+      ],
+      "recommended_boards": [
+        "esp32-c6"
+      ],
+      "enabled_drivers": [
+        "gpio",
+        "uart",
+        "timer",
+        "rmt",
+        "fs_spiffs",
+        "shell_full"
+      ],
+      "applets": [
+        "system_info"
+      ],
+      "driver_config": {
+        "rmt": {
+          "enable_tx": true,
+          "enable_rx": true,
+          "resolution_hz": 1000000
+        }
+      },
+      "tags": [
+        "esp32-c6",
+        "rmt",
+        "bench",
+        "loopback"
+      ]
     }
   ]
 }

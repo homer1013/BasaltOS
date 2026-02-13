@@ -4488,6 +4488,35 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             });
         }
 
+        function getModuleOptionValue(moduleId, optionId) {
+            const configured = moduleConfigs[moduleId]?.[optionId];
+            if (configured !== undefined) return configured;
+            const module = modules.find(m => m.id === moduleId);
+            if (!module || !Array.isArray(module.configuration_options)) return undefined;
+            const opt = module.configuration_options.find(o => String(o.id) === String(optionId));
+            return opt ? opt.default : undefined;
+        }
+
+        function ensureMicSourceDependency() {
+            const mic = modules.find(m => m.id === 'mic');
+            if (!mic || !mic.enabled) return;
+            const source = String(getModuleOptionValue('mic', 'source') ?? 'adc').toLowerCase();
+            const depId = source === 'i2s' ? 'i2s' : 'adc';
+            const depModule = modules.find(m => m.id === depId);
+            if (!depModule || depModule.enabled) return;
+            depModule.enabled = true;
+            moduleStates[depId] = true;
+            const depCard = document.getElementById(`module-card-${depId}`);
+            const caps = new Set(selectedBoard?.capabilities || []);
+            if (depCard) {
+                depCard.classList.add('enabled');
+                const checkbox = depCard.querySelector('input[type="checkbox"]');
+                const depAllowed = moduleAllowed(depModule, caps);
+                syncModuleCardAccessibility(depModule, depCard, checkbox, true, depAllowed);
+            }
+            notify(`Enabled "${depModule.name}" because mic source is set to "${source}".`, 'info');
+        }
+
         function toggleModuleOptions(moduleId, buttonEl) {
             const optionsPanel = document.getElementById(`options-${moduleId}`);
             const btn = buttonEl;
@@ -4550,6 +4579,9 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     const raw = el.value;
                     const num = Number(raw);
                     moduleConfigs[moduleId][optionId] = Number.isFinite(num) && String(raw) === String(num) ? num : raw;
+                    if (moduleId === 'mic' && optionId === 'source') {
+                        ensureMicSourceDependency();
+                    }
                     updateConditionalOptionVisibility(moduleId);
                     updateValidation();
                 });
@@ -4640,6 +4672,9 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                         showWarning(`Driver "${module.name}" conflicts with "${conflictModule.name}".`);
                     }
                 });
+                if (module.id === 'mic') {
+                    ensureMicSourceDependency();
+                }
             }
 
             refreshModuleSectionCounts();
@@ -5470,6 +5505,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             if (module.id === 'fs_spiffs') return true; // internal storage
             if (module.id === 'fs_sd') return caps.has('sd_card');
             if (module.id === 'psram') return caps.has('psram');
+            if (module.id === 'mic') return caps.has('adc') || caps.has('i2s');
             // Generic transport-backed driver allowance.
             const depends = Array.isArray(module.depends) ? module.depends : [];
             if (depends.includes('i2c')) return caps.has('i2c');
@@ -6095,6 +6131,19 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                     }
                 });
             });
+
+            const mic = modules.find(m => m.id === 'mic');
+            if (mic && mic.enabled) {
+                const source = String(getModuleOptionValue('mic', 'source') ?? 'adc').toLowerCase();
+                const depId = source === 'i2s' ? 'i2s' : 'adc';
+                const depModule = modules.find(m => m.id === depId);
+                if (!depModule || !depModule.enabled) {
+                    issues.push({
+                        type: 'error',
+                        message: `Driver "Microphone Input" with source "${source}" requires "${depId}" to be enabled`
+                    });
+                }
+            }
 
             if (includePins) {
                 const pinResult = checkPinConflicts();

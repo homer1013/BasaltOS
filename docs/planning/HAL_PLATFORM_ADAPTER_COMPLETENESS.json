@@ -35,12 +35,10 @@
         "m5stack_core2",
         "m5stickc_plus2"
       ],
-      "present_count": 3,
-      "missing_count": 6,
+      "present_count": 5,
+      "missing_count": 4,
       "missing_primitives": [
-        "adc",
         "fs",
-        "pwm",
         "spi",
         "sys",
         "timer"

@@ -40,15 +40,26 @@
   ],
   "pin_requirements": {
     "uart_tx": {
-      "required": true,
+      "required": false,
       "description": "UART Transmit"
     },
     "uart_rx": {
-      "required": true,
+      "required": false,
       "description": "UART Receive"
     }
   },
   "configuration_options": [
+    {
+      "id": "mode",
+      "name": "UART Mode",
+      "type": "select",
+      "options": [
+        "tx_rx",
+        "tx",
+        "rx"
+      ],
+      "default": "tx_rx"
+    },
     {
       "id": "uart_num",
       "name": "UART Port Number",

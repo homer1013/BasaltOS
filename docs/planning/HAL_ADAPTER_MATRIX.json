@@ -24,9 +24,7 @@
       {
         "port": "esp32",
         "missing": [
-          "adc",
           "fs",
-          "pwm",
           "spi",
           "sys",
           "timer"
@@ -38,17 +36,17 @@
     {
       "port": "esp32",
       "status": "partial",
-      "present_count": 3,
-      "missing_count": 6,
+      "present_count": 5,
+      "missing_count": 4,
       "present": [
+        "adc",
         "gpio",
         "i2c",
+        "pwm",
         "uart"
       ],
       "missing": [
-        "adc",
         "fs",
-        "pwm",
         "spi",
         "sys",
         "timer"

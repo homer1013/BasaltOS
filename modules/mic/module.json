@@ -14,9 +14,7 @@
   "provides": [
     "audio_in"
   ],
-  "depends": [
-    "adc"
-  ],
+  "depends": [],
   "conflicts": [],
   "defines": [
     "BASALT_ENABLE_MIC"
@@ -26,8 +24,8 @@
   ],
   "pin_requirements": {
     "mic_in": {
-      "required": true,
-      "description": "Microphone analog input pin"
+      "required": false,
+      "description": "Microphone analog input pin (required when source=adc)"
     }
   },
   "configuration_options": [

@@ -32,8 +32,9 @@ you can get to a first success with BasaltOS.
 
 ## Current Stable Release
 
-- Stable baseline: `v0.1.0`
-- Release/tag link: https://github.com/homer1013/BasaltOS/releases/tag/v0.1.0
+- Status (v0.1.1): synced
+- Stable baseline: `v0.1.1`
+- Release/tag link: https://github.com/homer1013/BasaltOS/releases/tag/v0.1.1
 
 ---
 

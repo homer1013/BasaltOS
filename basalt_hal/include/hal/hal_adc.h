@@ -21,6 +21,11 @@ int hal_adc_init(hal_adc_t *adc,
                  hal_adc_atten_t atten,
                  int width_bits);
 
+int hal_adc_init_pin(hal_adc_t *adc,
+                     int gpio_num,
+                     hal_adc_atten_t atten,
+                     int width_bits);
+
 int hal_adc_deinit(hal_adc_t *adc);
 
 int hal_adc_set_atten(hal_adc_t *adc, hal_adc_atten_t atten);

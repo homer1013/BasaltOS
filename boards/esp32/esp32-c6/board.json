@@ -44,8 +44,8 @@
     "i2s_ws": 23,
     "i2s_din": 1,
     "i2s_dout": 3,
-    "rmt_tx": 4,
-    "rmt_rx": 5,
+    "rmt_tx": 2,
+    "rmt_rx": 3,
     "tft_mosi": 7,
     "tft_miso": 2,
     "tft_sclk": 6,
@@ -57,6 +57,7 @@
     "tp4056_done": 19,
     "tp4056_ce": 3,
     "adc_in": 1,
+    "mic_in": 1,
     "pwm_out": 3,
     "led": 8,
     "button": 9
@@ -211,6 +212,8 @@
     "rmt_tx": {
       "description": "RMT transmit baseline pin",
       "alternatives": [
+        2,
+        3,
         4,
         5,
         8,
@@ -221,6 +224,8 @@
     "rmt_rx": {
       "description": "RMT receive baseline pin",
       "alternatives": [
+        3,
+        2,
         5,
         4,
         9,
@@ -331,6 +336,16 @@
     },
     "adc_in": {
       "description": "Generic ADC input baseline pin",
+      "alternatives": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "type": "input"
+    },
+    "mic_in": {
+      "description": "Microphone analog input baseline pin",
       "alternatives": [
         1,
         2,

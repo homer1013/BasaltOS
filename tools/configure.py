@@ -959,33 +959,80 @@ def emit_sdkconfig_defaults(
     out_path.write_text("\n".join(out_lines).rstrip() + "\n", encoding="utf-8")
 
 
-def append_driver_config_macros(out_path: Path, driver_config: Optional[dict]) -> None:
-    if not driver_config or not isinstance(driver_config, dict):
-        return
+def _append_driver_macro(lines: List[str], module_id: str, key: str, val) -> None:
+    macro = f"BASALT_CFG_{slug_to_macro(str(module_id))}_{slug_to_macro(str(key))}"
+    if isinstance(val, bool):
+        lines.append(f"#define {macro} {1 if val else 0}")
+    elif isinstance(val, int):
+        lines.append(f"#define {macro} {val}")
+    elif isinstance(val, float) and int(val) == val:
+        lines.append(f"#define {macro} {int(val)}")
+    elif isinstance(val, float):
+        lines.append(f"#define {macro} {val}")
+    else:
+        sval = str(val).replace("\\", "\\\\").replace("\"", "\\\"")
+        lines.append(f"#define {macro} \"{sval}\"")
+    # Backward-compat aliases for older runtime macro names.
+    if str(module_id).strip().lower() == "rmt":
+        kk = str(key).strip().lower()
+        if kk == "enable_tx":
+            lines.append(f"#define BASALT_CFG_RMT_ENABLE_TX_CHANNEL {1 if bool(val) else 0}")
+        elif kk == "enable_rx":
+            lines.append(f"#define BASALT_CFG_RMT_ENABLE_RX_CHANNEL {1 if bool(val) else 0}")
+
+
+def append_driver_config_macros(
+    out_path: Path,
+    modules: Dict[str, Module],
+    enabled_modules: List[str],
+    driver_config: Optional[dict],
+) -> None:
+    config = driver_config if isinstance(driver_config, dict) else {}
     def _skip_cfg_key(key: str) -> bool:
         k = str(key).strip().lower()
         return k.endswith("_name") or k.endswith("_content_b64")
 
     lines: List[str] = []
     lines.append("")
-    lines.append("/* Driver configuration options */")
-    for module_id, options in driver_config.items():
+    lines.append("/* Driver configuration options (defaults + overrides) */")
+    emitted = set()
+
+    # Emit schema-backed defaults for all enabled modules, then override with
+    # values from driver_config when present.
+    for module_id in enabled_modules:
+        mod = modules.get(module_id)
+        if not mod or not isinstance(mod.raw, dict):
+            continue
+        opts = mod.raw.get("configuration_options")
+        if not isinstance(opts, list):
+            continue
+        for opt in opts:
+            if not isinstance(opt, dict):
+                continue
+            key = opt.get("id")
+            if not isinstance(key, str):
+                continue
+            if _skip_cfg_key(str(key)):
+                continue
+            val = _driver_cfg_value(config, module_id, key, _module_option_default(mod, key, None))
+            if val is None:
+                continue
+            _append_driver_macro(lines, module_id, key, val)
+            emitted.add((norm_slug(module_id), norm_slug(key)))
+
+    # Emit user-provided keys that are not part of a module schema.
+    for module_id, options in config.items():
         if not isinstance(options, dict):
             continue
         for key, val in options.items():
             if _skip_cfg_key(str(key)):
                 continue
-            macro = f"BASALT_CFG_{slug_to_macro(str(module_id))}_{slug_to_macro(str(key))}"
-            if isinstance(val, bool):
-                lines.append(f"#define {macro} {1 if val else 0}")
-            elif isinstance(val, int):
-                lines.append(f"#define {macro} {val}")
-            elif isinstance(val, float) and int(val) == val:
-                lines.append(f"#define {macro} {int(val)}")
-            elif isinstance(val, float):
-                lines.append(f"#define {macro} {val}")
-            else:
-                lines.append(f"#define {macro} \"{val}\"")
+            nk = (norm_slug(module_id), norm_slug(key))
+            if nk in emitted:
+                continue
+            _append_driver_macro(lines, module_id, key, val)
+            emitted.add(nk)
+
     if lines:
         with out_path.open("a", encoding="utf-8") as f:
             f.write("\n".join(lines) + "\n")
@@ -1019,6 +1066,59 @@ def _driver_option_allows_value(opt: dict, value) -> bool:
 
     # Unknown option type: do not hard-fail here.
     return True
+
+
+def _module_option_default(mod: Optional[Module], key: str, fallback=None):
+    if not mod or not isinstance(mod.raw, dict):
+        return fallback
+    opts = mod.raw.get("configuration_options")
+    if not isinstance(opts, list):
+        return fallback
+    wanted = norm_slug(key)
+    for opt in opts:
+        if not isinstance(opt, dict):
+            continue
+        if norm_slug(str(opt.get("id") or "")) != wanted:
+            continue
+        if "default" in opt:
+            return opt.get("default")
+    return fallback
+
+
+def _driver_cfg_value(driver_config: Optional[dict], module_id: str, key: str, fallback=None):
+    if not isinstance(driver_config, dict):
+        return fallback
+    mod_cfg = driver_config.get(module_id)
+    if not isinstance(mod_cfg, dict):
+        return fallback
+    for k, v in mod_cfg.items():
+        if norm_slug(str(k)) == norm_slug(key):
+            return v
+    return fallback
+
+
+def _pin_is_bound(value) -> bool:
+    if isinstance(value, int):
+        return value >= 0
+    if isinstance(value, str):
+        return len(value.strip()) > 0
+    return False
+
+
+def _pin_matches_allowed(board_data: Optional[dict], pin_name: str, value) -> bool:
+    if not isinstance(board_data, dict):
+        return True
+    defs = board_data.get("pin_definitions")
+    if not isinstance(defs, dict):
+        return True
+    meta = defs.get(pin_name)
+    if not isinstance(meta, dict):
+        return True
+    alts = meta.get("alternatives")
+    if not isinstance(alts, list) or not alts:
+        return True
+    # Keep comparison permissive across number/string encodings.
+    return any(value == a or str(value) == str(a) for a in alts)
 
 
 def validate_driver_config(
@@ -1064,6 +1164,18 @@ def validate_driver_config(
             if not _driver_option_allows_value(opt_map[k], val):
                 errors.append(f"driver_config.{module_id}.{key}: invalid value '{val}'")
 
+        if module_id == "mic":
+            source_val = options.get("source")
+            if source_val is None and "source" in opt_map:
+                source_val = opt_map["source"].get("default")
+            source = norm_slug(str(source_val or "adc"))
+            if source == "i2s":
+                if "i2s" not in enabled:
+                    errors.append("driver_config.mic.source=i2s requires enabling module 'i2s'")
+            else:
+                if "adc" not in enabled:
+                    errors.append("driver_config.mic.source=adc requires enabling module 'adc'")
+
     return errors
 
 
@@ -1071,6 +1183,7 @@ def validate_required_module_pins(
     modules: Dict[str, Module],
     enabled_modules: List[str],
     board_data: Optional[dict],
+    driver_config: Optional[dict],
 ) -> List[str]:
     errors: List[str] = []
     if not board_data or not isinstance(board_data, dict):
@@ -1103,6 +1216,121 @@ def validate_required_module_pins(
                 is_valid = len(value.strip()) > 0
             if not is_valid:
                 errors.append(f"module '{mid}' requires pin '{pin_name}' to be bound (got {value})")
+                continue
+            if not _pin_matches_allowed(board_data, pin_name, value):
+                errors.append(
+                    f"module '{mid}' pin '{pin_name}' uses '{value}', outside board pin_definitions alternatives"
+                )
+
+    enabled = set(enabled_modules)
+
+    if "i2s" in enabled:
+        mode = norm_slug(str(_driver_cfg_value(
+            driver_config,
+            "i2s",
+            "mode",
+            _module_option_default(modules.get("i2s"), "mode", "rx"),
+        ) or "rx"))
+        need_din = mode in {"rx", "tx_rx"}
+        need_dout = mode in {"tx", "tx_rx"}
+
+        for pin_name in ("i2s_bclk", "i2s_ws"):
+            v = pins.get(pin_name)
+            if not _pin_is_bound(v):
+                errors.append(f"module 'i2s' requires pin '{pin_name}' to be bound")
+            elif not _pin_matches_allowed(board_data, pin_name, v):
+                errors.append(
+                    f"module 'i2s' pin '{pin_name}' uses '{v}', outside board pin_definitions alternatives"
+                )
+        if need_din:
+            v = pins.get("i2s_din")
+            if not _pin_is_bound(v):
+                errors.append("module 'i2s' mode requires pin 'i2s_din' to be bound")
+            elif not _pin_matches_allowed(board_data, "i2s_din", v):
+                errors.append("module 'i2s' pin 'i2s_din' is outside board pin_definitions alternatives")
+        if need_dout:
+            v = pins.get("i2s_dout")
+            if not _pin_is_bound(v):
+                errors.append("module 'i2s' mode requires pin 'i2s_dout' to be bound")
+            elif not _pin_matches_allowed(board_data, "i2s_dout", v):
+                errors.append("module 'i2s' pin 'i2s_dout' is outside board pin_definitions alternatives")
+
+    if "rmt" in enabled:
+        tx_default = _module_option_default(modules.get("rmt"), "enable_tx", True)
+        rx_default = _module_option_default(modules.get("rmt"), "enable_rx", False)
+        tx_enabled = bool(_driver_cfg_value(driver_config, "rmt", "enable_tx", tx_default))
+        rx_enabled = bool(_driver_cfg_value(driver_config, "rmt", "enable_rx", rx_default))
+
+        if tx_enabled:
+            v = pins.get("rmt_tx")
+            if not _pin_is_bound(v):
+                errors.append("module 'rmt' requires pin 'rmt_tx' when enable_tx=true")
+            elif not _pin_matches_allowed(board_data, "rmt_tx", v):
+                errors.append("module 'rmt' pin 'rmt_tx' is outside board pin_definitions alternatives")
+        if rx_enabled:
+            v = pins.get("rmt_rx")
+            if not _pin_is_bound(v):
+                errors.append("module 'rmt' requires pin 'rmt_rx' when enable_rx=true")
+            elif not _pin_matches_allowed(board_data, "rmt_rx", v):
+                errors.append("module 'rmt' pin 'rmt_rx' is outside board pin_definitions alternatives")
+
+    if "mic" in enabled:
+        source = norm_slug(str(_driver_cfg_value(
+            driver_config,
+            "mic",
+            "source",
+            _module_option_default(modules.get("mic"), "source", "adc"),
+        ) or "adc"))
+        if source == "i2s":
+            v = pins.get("i2s_din")
+            if not _pin_is_bound(v):
+                errors.append("module 'mic' source=i2s requires pin 'i2s_din' to be bound")
+            elif not _pin_matches_allowed(board_data, "i2s_din", v):
+                errors.append("module 'mic' source=i2s pin 'i2s_din' is outside board pin_definitions alternatives")
+        else:
+            v = pins.get("mic_in")
+            if not _pin_is_bound(v):
+                errors.append("module 'mic' source=adc requires pin 'mic_in' to be bound")
+            else:
+                mic_ok = _pin_matches_allowed(board_data, "mic_in", v)
+                adc_ok = _pin_matches_allowed(board_data, "adc_in", v)
+                if not mic_ok and not adc_ok:
+                    errors.append(
+                        "module 'mic' source=adc pin 'mic_in' is outside board pin_definitions alternatives"
+                    )
+
+    if "adc" in enabled and "adc_in" in pins:
+        v = pins.get("adc_in")
+        if _pin_is_bound(v) and not _pin_matches_allowed(board_data, "adc_in", v):
+            errors.append("module 'adc' pin 'adc_in' is outside board pin_definitions alternatives")
+
+    if "uart" in enabled:
+        mode = norm_slug(str(_driver_cfg_value(
+            driver_config,
+            "uart",
+            "mode",
+            _module_option_default(modules.get("uart"), "mode", "tx_rx"),
+        ) or "tx_rx"))
+        need_tx = mode in {"tx", "tx_rx"}
+        need_rx = mode in {"rx", "tx_rx"}
+
+        tx_v = pins.get("uart_tx")
+        rx_v = pins.get("uart_rx")
+
+        if need_tx:
+            if not _pin_is_bound(tx_v):
+                errors.append("module 'uart' mode requires pin 'uart_tx' to be bound")
+            elif not _pin_matches_allowed(board_data, "uart_tx", tx_v):
+                errors.append("module 'uart' pin 'uart_tx' is outside board pin_definitions alternatives")
+
+        if need_rx:
+            if not _pin_is_bound(rx_v):
+                errors.append("module 'uart' mode requires pin 'uart_rx' to be bound")
+            elif not _pin_matches_allowed(board_data, "uart_rx", rx_v):
+                errors.append("module 'uart' pin 'uart_rx' is outside board pin_definitions alternatives")
+
+        if need_tx and need_rx and _pin_is_bound(tx_v) and _pin_is_bound(rx_v) and str(tx_v) == str(rx_v):
+            errors.append("module 'uart' requires distinct pins for uart_tx and uart_rx in mode=tx_rx")
     return errors
 
 
@@ -1581,7 +1809,7 @@ def main() -> int:
         # If user passed --board without finding a profile, still set the macro (best-effort)
         board_define_name = args.board
 
-    pin_errors = validate_required_module_pins(modules, enabled_list, board_data)
+    pin_errors = validate_required_module_pins(modules, enabled_list, board_data, driver_config)
     if pin_errors:
         for msg in pin_errors:
             eprint(f"[configure] ERROR: {msg}")
@@ -1623,7 +1851,7 @@ def main() -> int:
         enabled_modules=enabled_list,
         modules=modules,
     )
-    append_driver_config_macros(basalt_h, driver_config)
+    append_driver_config_macros(basalt_h, modules, enabled_list, driver_config)
     append_applet_macros(basalt_h, selected_applets)
     append_market_app_macros(basalt_h, selected_market_apps)
     write_applets_json(applets_j, platform, board_id, selected_applets)
