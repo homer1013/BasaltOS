@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "status_taxonomy": {
+    "complete": "All tracked HAL primitives exist for the adapter port.",
+    "partial": "One or more tracked HAL primitives are missing; gaps must be explicit and tracked.",
+    "missing": "No tracked HAL primitives exist for the adapter port."
+  },
+  "no_silent_fallback_policy": {
+    "enabled": true,
+    "description": "Any port with status != complete must be explicitly listed and reviewed in planning."
+  },
+  "allowed_status_values": [
+    "complete",
+    "partial",
+    "missing"
+  ],
+  "acknowledged_partial_ports": [
+    "esp32"
+  ],
+  "acknowledged_missing_ports": []
+}

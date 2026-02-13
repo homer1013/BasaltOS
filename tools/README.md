@@ -262,6 +262,12 @@ HAL adapter matrix drift smoke:
 bash tools/tests/hal_adapter_matrix_drift_smoke.sh
 ```
 
+HAL contract policy smoke:
+
+```bash
+bash tools/tests/hal_contract_policy_smoke.sh
+```
+
 
 ## PlatformIO Phase-1 Bootstrap
 
