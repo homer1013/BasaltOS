@@ -1,0 +1,87 @@
+{
+  "id": "i2s",
+  "name": "I2S Audio Bus",
+  "description": "Inter-IC Sound bus support for digital audio input/output peripherals.",
+  "platforms": [
+    "esp32"
+  ],
+  "provides": [
+    "i2s",
+    "audio_bus"
+  ],
+  "depends": [
+    "gpio"
+  ],
+  "conflicts": [],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_I2S"
+  ],
+  "default_enabled": false,
+  "pins": [
+    "i2s_bclk",
+    "i2s_ws",
+    "i2s_din",
+    "i2s_dout"
+  ],
+  "pin_requirements": {
+    "i2s_bclk": {
+      "required": true,
+      "description": "Bit clock (BCLK / SCK)"
+    },
+    "i2s_ws": {
+      "required": true,
+      "description": "Word select / LRCLK"
+    },
+    "i2s_din": {
+      "required": false,
+      "description": "Serial data input (microphone / RX)"
+    },
+    "i2s_dout": {
+      "required": false,
+      "description": "Serial data output (DAC / TX)"
+    }
+  },
+  "configuration_options": [
+    {
+      "id": "sample_rate",
+      "name": "Sample Rate (Hz)",
+      "type": "select",
+      "options": [
+        8000,
+        16000,
+        22050,
+        32000,
+        44100,
+        48000
+      ],
+      "default": 16000
+    },
+    {
+      "id": "bits_per_sample",
+      "name": "Bits Per Sample",
+      "type": "select",
+      "options": [
+        16,
+        24,
+        32
+      ],
+      "default": 16
+    },
+    {
+      "id": "mode",
+      "name": "I2S Direction",
+      "type": "select",
+      "options": [
+        "rx",
+        "tx",
+        "tx_rx"
+      ],
+      "default": "rx"
+    }
+  ],
+  "notes": [
+    "Use with digital MEMS microphones, DACs, and codecs.",
+    "For ESP32-class chips, verify GPIO matrix routing for selected pins."
+  ]
+}

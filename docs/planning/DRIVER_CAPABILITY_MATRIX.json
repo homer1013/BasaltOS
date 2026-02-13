@@ -1,11 +1,11 @@
 {
   "version": "1.0.0",
   "generator": "tools/generate_driver_capability_matrix.py",
-  "row_count": 1155,
+  "row_count": 1190,
   "summary": {
     "status_counts": {
-      "SUPPORTED": 922,
-      "UNSUPPORTED": 222,
+      "SUPPORTED": 923,
+      "UNSUPPORTED": 256,
       "CAPABILITY_ONLY": 11
     },
     "platform_summary": {
@@ -13,61 +13,61 @@
         "boards": 2,
         "SUPPORTED": 48,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 16
+        "UNSUPPORTED": 18
       },
       "atsam": {
         "boards": 3,
         "SUPPORTED": 76,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 23
+        "UNSUPPORTED": 26
       },
       "avr": {
         "boards": 2,
         "SUPPORTED": 50,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 14
+        "UNSUPPORTED": 16
       },
       "esp32": {
         "boards": 12,
-        "SUPPORTED": 347,
+        "SUPPORTED": 348,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 49
+        "UNSUPPORTED": 60
       },
       "linux-sbc": {
         "boards": 1,
         "SUPPORTED": 25,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 6
+        "UNSUPPORTED": 7
       },
       "pic16": {
         "boards": 2,
         "SUPPORTED": 50,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 14
+        "UNSUPPORTED": 16
       },
       "renesas_ra": {
         "boards": 3,
         "SUPPORTED": 75,
         "CAPABILITY_ONLY": 2,
-        "UNSUPPORTED": 22
+        "UNSUPPORTED": 25
       },
       "renesas_rx": {
         "boards": 2,
         "SUPPORTED": 50,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 16
+        "UNSUPPORTED": 18
       },
       "rp2040": {
         "boards": 5,
         "SUPPORTED": 126,
         "CAPABILITY_ONLY": 1,
-        "UNSUPPORTED": 38
+        "UNSUPPORTED": 43
       },
       "stm32": {
         "boards": 3,
         "SUPPORTED": 75,
         "CAPABILITY_ONLY": 0,
-        "UNSUPPORTED": 24
+        "UNSUPPORTED": 27
       }
     },
     "module_coverage": [
@@ -202,6 +202,10 @@
       {
         "module_id": "psram",
         "supported_boards": 3
+      },
+      {
+        "module_id": "i2s",
+        "supported_boards": 1
       }
     ]
   },
@@ -210,6 +214,160 @@
     "platform_count": 10,
     "platforms": {
       "atmega": {
+        "unsupported_or_gap_rows": 20,
+        "top_module_gaps": [
+          {
+            "module_id": "bluetooth",
+            "count": 2
+          },
+          {
+            "module_id": "eeprom",
+            "count": 2
+          },
+          {
+            "module_id": "i2s",
+            "count": 2
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 2
+          },
+          {
+            "module_id": "mic",
+            "count": 2
+          },
+          {
+            "module_id": "psram",
+            "count": 2
+          },
+          {
+            "module_id": "tft",
+            "count": 2
+          },
+          {
+            "module_id": "tp4056",
+            "count": 2
+          },
+          {
+            "module_id": "twai",
+            "count": 2
+          },
+          {
+            "module_id": "wifi",
+            "count": 2
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:i2s",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 2
+          },
+          {
+            "reason": "module_platform_mismatch",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:tft",
+            "count": 2
+          },
+          {
+            "reason": "not_allowed:tp4056",
+            "count": 2
+          }
+        ]
+      },
+      "atsam": {
+        "unsupported_or_gap_rows": 26,
+        "top_module_gaps": [
+          {
+            "module_id": "bluetooth",
+            "count": 3
+          },
+          {
+            "module_id": "eeprom",
+            "count": 3
+          },
+          {
+            "module_id": "i2s",
+            "count": 3
+          },
+          {
+            "module_id": "mcp2544fd",
+            "count": 3
+          },
+          {
+            "module_id": "psram",
+            "count": 3
+          },
+          {
+            "module_id": "tft",
+            "count": 3
+          },
+          {
+            "module_id": "twai",
+            "count": 3
+          },
+          {
+            "module_id": "wifi",
+            "count": 3
+          },
+          {
+            "module_id": "tp4056",
+            "count": 2
+          }
+        ],
+        "top_reasons": [
+          {
+            "reason": "not_allowed:bluetooth",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:eeprom",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:i2s",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:mcp2544fd",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:psram",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:tft",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:twai",
+            "count": 3
+          },
+          {
+            "reason": "not_allowed:wifi",
+            "count": 3
+          }
+        ]
+      },
+      "avr": {
         "unsupported_or_gap_rows": 18,
         "top_module_gaps": [
           {
@@ -217,7 +375,7 @@
             "count": 2
           },
           {
-            "module_id": "eeprom",
+            "module_id": "i2s",
             "count": 2
           },
           {
@@ -255,7 +413,7 @@
             "count": 2
           },
           {
-            "reason": "not_allowed:eeprom",
+            "reason": "not_allowed:i2s",
             "count": 2
           },
           {
@@ -280,157 +438,19 @@
           },
           {
             "reason": "not_allowed:twai",
-            "count": 2
-          }
-        ]
-      },
-      "atsam": {
-        "unsupported_or_gap_rows": 23,
-        "top_module_gaps": [
-          {
-            "module_id": "bluetooth",
-            "count": 3
-          },
-          {
-            "module_id": "eeprom",
-            "count": 3
-          },
-          {
-            "module_id": "mcp2544fd",
-            "count": 3
-          },
-          {
-            "module_id": "psram",
-            "count": 3
-          },
-          {
-            "module_id": "tft",
-            "count": 3
-          },
-          {
-            "module_id": "twai",
-            "count": 3
-          },
-          {
-            "module_id": "wifi",
-            "count": 3
-          },
-          {
-            "module_id": "tp4056",
-            "count": 2
-          }
-        ],
-        "top_reasons": [
-          {
-            "reason": "not_allowed:bluetooth",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:eeprom",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:mcp2544fd",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:psram",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:tft",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:twai",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:wifi",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:tp4056",
-            "count": 2
-          }
-        ]
-      },
-      "avr": {
-        "unsupported_or_gap_rows": 16,
-        "top_module_gaps": [
-          {
-            "module_id": "bluetooth",
-            "count": 2
-          },
-          {
-            "module_id": "mcp2544fd",
-            "count": 2
-          },
-          {
-            "module_id": "mic",
-            "count": 2
-          },
-          {
-            "module_id": "psram",
-            "count": 2
-          },
-          {
-            "module_id": "tft",
-            "count": 2
-          },
-          {
-            "module_id": "tp4056",
-            "count": 2
-          },
-          {
-            "module_id": "twai",
-            "count": 2
-          },
-          {
-            "module_id": "wifi",
-            "count": 2
-          }
-        ],
-        "top_reasons": [
-          {
-            "reason": "not_allowed:bluetooth",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:mcp2544fd",
-            "count": 2
-          },
-          {
-            "reason": "module_platform_mismatch",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:psram",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:tft",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:tp4056",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:twai",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:wifi",
             "count": 2
           }
         ]
       },
       "esp32": {
-        "unsupported_or_gap_rows": 49,
+        "unsupported_or_gap_rows": 60,
         "top_module_gaps": [
           {
             "module_id": "eeprom",
+            "count": 11
+          },
+          {
+            "module_id": "i2s",
             "count": 11
           },
           {
@@ -457,6 +477,10 @@
         "top_reasons": [
           {
             "reason": "not_allowed:eeprom",
+            "count": 11
+          },
+          {
+            "reason": "not_allowed:i2s",
             "count": 11
           },
           {
@@ -482,7 +506,7 @@
         ]
       },
       "linux-sbc": {
-        "unsupported_or_gap_rows": 8,
+        "unsupported_or_gap_rows": 9,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -490,6 +514,10 @@
           },
           {
             "module_id": "eeprom",
+            "count": 1
+          },
+          {
+            "module_id": "i2s",
             "count": 1
           },
           {
@@ -527,6 +555,10 @@
             "count": 1
           },
           {
+            "reason": "not_allowed:i2s",
+            "count": 1
+          },
+          {
             "reason": "not_allowed:mcp2544fd",
             "count": 1
           },
@@ -549,10 +581,14 @@
         ]
       },
       "pic16": {
-        "unsupported_or_gap_rows": 16,
+        "unsupported_or_gap_rows": 18,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
+            "count": 2
+          },
+          {
+            "module_id": "i2s",
             "count": 2
           },
           {
@@ -590,6 +626,10 @@
             "count": 2
           },
           {
+            "reason": "not_allowed:i2s",
+            "count": 2
+          },
+          {
             "reason": "not_allowed:mcp2544fd",
             "count": 2
           },
@@ -612,15 +652,11 @@
           {
             "reason": "not_allowed:twai",
             "count": 2
-          },
-          {
-            "reason": "not_allowed:wifi",
-            "count": 2
           }
         ]
       },
       "renesas_ra": {
-        "unsupported_or_gap_rows": 24,
+        "unsupported_or_gap_rows": 27,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -628,6 +664,10 @@
           },
           {
             "module_id": "eeprom",
+            "count": 3
+          },
+          {
+            "module_id": "i2s",
             "count": 3
           },
           {
@@ -661,6 +701,10 @@
             "count": 3
           },
           {
+            "reason": "not_allowed:i2s",
+            "count": 3
+          },
+          {
             "reason": "not_allowed:mcp2544fd",
             "count": 3
           },
@@ -682,16 +726,12 @@
           },
           {
             "reason": "not_allowed:bluetooth",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:wifi",
             "count": 2
           }
         ]
       },
       "renesas_rx": {
-        "unsupported_or_gap_rows": 16,
+        "unsupported_or_gap_rows": 18,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -699,6 +739,10 @@
           },
           {
             "module_id": "eeprom",
+            "count": 2
+          },
+          {
+            "module_id": "i2s",
             "count": 2
           },
           {
@@ -736,6 +780,10 @@
             "count": 2
           },
           {
+            "reason": "not_allowed:i2s",
+            "count": 2
+          },
+          {
             "reason": "not_allowed:mcp2544fd",
             "count": 2
           },
@@ -753,16 +801,12 @@
           },
           {
             "reason": "not_allowed:twai",
-            "count": 2
-          },
-          {
-            "reason": "not_allowed:wifi",
             "count": 2
           }
         ]
       },
       "rp2040": {
-        "unsupported_or_gap_rows": 39,
+        "unsupported_or_gap_rows": 44,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -770,6 +814,10 @@
           },
           {
             "module_id": "eeprom",
+            "count": 5
+          },
+          {
+            "module_id": "i2s",
             "count": 5
           },
           {
@@ -807,6 +855,10 @@
             "count": 5
           },
           {
+            "reason": "not_allowed:i2s",
+            "count": 5
+          },
+          {
             "reason": "not_allowed:mcp2544fd",
             "count": 5
           },
@@ -824,16 +876,12 @@
           },
           {
             "reason": "not_allowed:wifi",
-            "count": 4
-          },
-          {
-            "reason": "not_allowed:tp4056",
             "count": 4
           }
         ]
       },
       "stm32": {
-        "unsupported_or_gap_rows": 24,
+        "unsupported_or_gap_rows": 27,
         "top_module_gaps": [
           {
             "module_id": "bluetooth",
@@ -841,6 +889,10 @@
           },
           {
             "module_id": "eeprom",
+            "count": 3
+          },
+          {
+            "module_id": "i2s",
             "count": 3
           },
           {
@@ -878,6 +930,10 @@
             "count": 3
           },
           {
+            "reason": "not_allowed:i2s",
+            "count": 3
+          },
+          {
             "reason": "not_allowed:mcp2544fd",
             "count": 3
           },
@@ -895,10 +951,6 @@
           },
           {
             "reason": "not_allowed:twai",
-            "count": 3
-          },
-          {
-            "reason": "not_allowed:wifi",
             "count": 3
           }
         ]
@@ -916,28 +968,154 @@
       "actionable_top_modules_by_platform": {}
     },
     "advanced_policy_summary": {
-      "not_allowed_row_count": 222,
+      "not_allowed_row_count": 256,
       "bucket_counts": {
-        "intentional": 222
-      },
-      "label_counts": {
-        "intentional_wireless_capability_gate": 41,
-        "intentional_advanced_peripheral_opt_in": 181
-      },
-      "actionable_top_modules_by_platform": {}
-    },
-    "foundation_focus_summary": {
-      "gap_row_count": 233,
-      "bucket_counts": {
-        "intentional": 233
+        "intentional": 222,
+        "actionable": 34
       },
       "label_counts": {
         "intentional_wireless_capability_gate": 41,
         "intentional_advanced_peripheral_opt_in": 181,
+        "actionable_capability_scope_review": 34
+      },
+      "actionable_top_modules_by_platform": {
+        "atmega": [
+          {
+            "module_id": "i2s",
+            "count": 2
+          }
+        ],
+        "atsam": [
+          {
+            "module_id": "i2s",
+            "count": 3
+          }
+        ],
+        "avr": [
+          {
+            "module_id": "i2s",
+            "count": 2
+          }
+        ],
+        "esp32": [
+          {
+            "module_id": "i2s",
+            "count": 11
+          }
+        ],
+        "linux-sbc": [
+          {
+            "module_id": "i2s",
+            "count": 1
+          }
+        ],
+        "pic16": [
+          {
+            "module_id": "i2s",
+            "count": 2
+          }
+        ],
+        "renesas_ra": [
+          {
+            "module_id": "i2s",
+            "count": 3
+          }
+        ],
+        "renesas_rx": [
+          {
+            "module_id": "i2s",
+            "count": 2
+          }
+        ],
+        "rp2040": [
+          {
+            "module_id": "i2s",
+            "count": 5
+          }
+        ],
+        "stm32": [
+          {
+            "module_id": "i2s",
+            "count": 3
+          }
+        ]
+      }
+    },
+    "foundation_focus_summary": {
+      "gap_row_count": 267,
+      "bucket_counts": {
+        "intentional": 233,
+        "actionable": 34
+      },
+      "label_counts": {
+        "intentional_wireless_capability_gate": 41,
+        "intentional_advanced_peripheral_opt_in": 181,
+        "actionable_capability_scope_review": 34,
         "intentional_8bit_mic_scope": 6,
         "intentional_wireless_scope": 5
       },
-      "actionable_top_modules_by_platform": {}
+      "actionable_top_modules_by_platform": {
+        "atmega": [
+          {
+            "module_id": "i2s",
+            "count": 2
+          }
+        ],
+        "atsam": [
+          {
+            "module_id": "i2s",
+            "count": 3
+          }
+        ],
+        "avr": [
+          {
+            "module_id": "i2s",
+            "count": 2
+          }
+        ],
+        "esp32": [
+          {
+            "module_id": "i2s",
+            "count": 11
+          }
+        ],
+        "linux-sbc": [
+          {
+            "module_id": "i2s",
+            "count": 1
+          }
+        ],
+        "pic16": [
+          {
+            "module_id": "i2s",
+            "count": 2
+          }
+        ],
+        "renesas_ra": [
+          {
+            "module_id": "i2s",
+            "count": 3
+          }
+        ],
+        "renesas_rx": [
+          {
+            "module_id": "i2s",
+            "count": 2
+          }
+        ],
+        "rp2040": [
+          {
+            "module_id": "i2s",
+            "count": 5
+          }
+        ],
+        "stm32": [
+          {
+            "module_id": "i2s",
+            "count": 3
+          }
+        ]
+      }
     }
   },
   "rows": [
@@ -1114,6 +1292,20 @@
       "board_dir": "arduino_nano_v3",
       "board_id": "arduino_nano_v3",
       "board_name": "Arduino Nano V3 (ATmega328P)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "atmega",
+      "board_dir": "arduino_nano_v3",
+      "board_id": "arduino_nano_v3",
+      "board_name": "Arduino Nano V3 (ATmega328P)",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -1576,6 +1768,20 @@
       "board_dir": "arduino_uno_r3",
       "board_id": "arduino_uno_r3",
       "board_name": "Arduino Uno R3",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "atmega",
+      "board_dir": "arduino_uno_r3",
+      "board_id": "arduino_uno_r3",
+      "board_name": "Arduino Uno R3",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -2038,6 +2244,20 @@
       "board_dir": "adafruit_circuit_playground_express",
       "board_id": "adafruit_circuit_playground_express",
       "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "atsam",
+      "board_dir": "adafruit_circuit_playground_express",
+      "board_id": "adafruit_circuit_playground_express",
+      "board_name": "Adafruit Circuit Playground Express (ATSAMD21)",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -2494,6 +2714,20 @@
       "resolve_with_allow": "yes",
       "status": "SUPPORTED",
       "reason": "-"
+    },
+    {
+      "platform": "atsam",
+      "board_dir": "arduino_zero",
+      "board_id": "arduino_zero",
+      "board_name": "Arduino Zero (SAMD21G18)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
     },
     {
       "platform": "atsam",
@@ -2962,6 +3196,20 @@
       "board_dir": "seeeduino_xiao_samd21",
       "board_id": "seeeduino_xiao_samd21",
       "board_name": "Seeeduino XIAO (SAMD21)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "atsam",
+      "board_dir": "seeeduino_xiao_samd21",
+      "board_id": "seeeduino_xiao_samd21",
+      "board_name": "Seeeduino XIAO (SAMD21)",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -3418,6 +3666,20 @@
       "resolve_with_allow": "yes",
       "status": "SUPPORTED",
       "reason": "-"
+    },
+    {
+      "platform": "avr",
+      "board_dir": "arduino_pro_micro_5v_usbc",
+      "board_id": "arduino_pro_micro_5v_usbc",
+      "board_name": "Arduino Pro Micro 5V (USB-C)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
     },
     {
       "platform": "avr",
@@ -3886,6 +4148,20 @@
       "board_dir": "mega2560",
       "board_id": "mega2560",
       "board_name": "Arduino Mega 2560 (Generic)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "avr",
+      "board_dir": "mega2560",
+      "board_id": "mega2560",
+      "board_name": "Arduino Mega 2560 (Generic)",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -4348,6 +4624,20 @@
       "board_dir": "cyd_3248s035r",
       "board_id": "cyd",
       "board_name": "CYD ESP32-3248S035R",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "cyd_3248s035r",
+      "board_id": "cyd",
+      "board_name": "CYD ESP32-3248S035R",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -4804,6 +5094,20 @@
       "resolve_with_allow": "yes",
       "status": "SUPPORTED",
       "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "dfrobot_beetle_esp32_c3",
+      "board_id": "dfrobot_beetle_esp32_c3",
+      "board_name": "DFRobot Beetle ESP32-C3",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
     },
     {
       "platform": "esp32",
@@ -5272,6 +5576,20 @@
       "board_dir": "dfrobot_firebeetle_esp32",
       "board_id": "dfrobot_firebeetle_esp32",
       "board_name": "DFRobot FireBeetle ESP32",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "dfrobot_firebeetle_esp32",
+      "board_id": "dfrobot_firebeetle_esp32",
+      "board_name": "DFRobot FireBeetle ESP32",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -5734,6 +6052,20 @@
       "board_dir": "elecrow_crowpanel_esp32",
       "board_id": "elecrow_crowpanel_esp32",
       "board_name": "Elecrow CrowPanel ESP32",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "elecrow_crowpanel_esp32",
+      "board_id": "elecrow_crowpanel_esp32",
+      "board_name": "Elecrow CrowPanel ESP32",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -6196,6 +6528,20 @@
       "board_dir": "elecrow_crowpanel_esp32_s3",
       "board_id": "elecrow_crowpanel_esp32_s3",
       "board_name": "Elecrow CrowPanel ESP32-S3",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "elecrow_crowpanel_esp32_s3",
+      "board_id": "elecrow_crowpanel_esp32_s3",
+      "board_name": "Elecrow CrowPanel ESP32-S3",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -6652,6 +6998,20 @@
       "resolve_with_allow": "yes",
       "status": "SUPPORTED",
       "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-c3-supermini",
+      "board_id": "esp32-c3-supermini",
+      "board_name": "ESP32-C3 SuperMini (Generic)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
     },
     {
       "platform": "esp32",
@@ -7120,6 +7480,20 @@
       "board_dir": "esp32-c6",
       "board_id": "esp32-c6",
       "board_name": "ESP32-C6 DevKit (Baseline)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "yes",
+      "resolve_with_allow": "yes",
+      "status": "SUPPORTED",
+      "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-c6",
+      "board_id": "esp32-c6",
+      "board_name": "ESP32-C6 DevKit (Baseline)",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -7576,6 +7950,20 @@
       "resolve_with_allow": "yes",
       "status": "SUPPORTED",
       "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-cam",
+      "board_id": "esp32-cam",
+      "board_name": "ESP32-CAM (AI-Thinker baseline)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
     },
     {
       "platform": "esp32",
@@ -8044,6 +8432,20 @@
       "board_dir": "esp32-devkitc_v4",
       "board_id": "esp32-devkitc_v4",
       "board_name": "ESP32-DevKitC V4 (Generic)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32-devkitc_v4",
+      "board_id": "esp32-devkitc_v4",
+      "board_name": "ESP32-DevKitC V4 (Generic)",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -8500,6 +8902,20 @@
       "resolve_with_allow": "yes",
       "status": "SUPPORTED",
       "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "esp32s3_devkitc_1",
+      "board_id": "esp32s3_devkitc_1",
+      "board_name": "ESP32-S3-DevKitC-1 (Template)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
     },
     {
       "platform": "esp32",
@@ -8968,6 +9384,20 @@
       "board_dir": "m5stack_core2",
       "board_id": "m5stack_core2",
       "board_name": "M5Stack Core2 (Baseline)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "m5stack_core2",
+      "board_id": "m5stack_core2",
+      "board_name": "M5Stack Core2 (Baseline)",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -9424,6 +9854,20 @@
       "resolve_with_allow": "yes",
       "status": "SUPPORTED",
       "reason": "-"
+    },
+    {
+      "platform": "esp32",
+      "board_dir": "m5stickc_plus2",
+      "board_id": "m5stickc_plus2",
+      "board_name": "M5StickC Plus2 (ESP32-PICO-V3-02)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "yes",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
     },
     {
       "platform": "esp32",
@@ -9892,6 +10336,20 @@
       "board_dir": "raspberry_pi_4b",
       "board_id": "raspberry_pi_4b",
       "board_name": "Raspberry Pi 4 Model B",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "linux-sbc",
+      "board_dir": "raspberry_pi_4b",
+      "board_id": "raspberry_pi_4b",
+      "board_name": "Raspberry Pi 4 Model B",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -10354,6 +10812,20 @@
       "board_dir": "curiosity_nano_pic16f13145",
       "board_id": "curiosity_nano_pic16f13145",
       "board_name": "Curiosity Nano PIC16F13145",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "pic16",
+      "board_dir": "curiosity_nano_pic16f13145",
+      "board_id": "curiosity_nano_pic16f13145",
+      "board_name": "Curiosity Nano PIC16F13145",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -10816,6 +11288,20 @@
       "board_dir": "pic16f873_minimal",
       "board_id": "pic16f873-minimal",
       "board_name": "PIC16F873 Minimal (Generic)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "pic16",
+      "board_dir": "pic16f873_minimal",
+      "board_id": "pic16f873-minimal",
+      "board_name": "PIC16F873 Minimal (Generic)",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -11278,6 +11764,20 @@
       "board_dir": "arduino_uno_r4_minima",
       "board_id": "arduino_uno_r4_minima",
       "board_name": "Arduino Uno R4 Minima (RA4M1)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "renesas_ra",
+      "board_dir": "arduino_uno_r4_minima",
+      "board_id": "arduino_uno_r4_minima",
+      "board_name": "Arduino Uno R4 Minima (RA4M1)",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -11740,6 +12240,20 @@
       "board_dir": "arduino_uno_r4_wifi",
       "board_id": "arduino_uno_r4_wifi",
       "board_name": "Arduino Uno R4 WiFi (RA4M1)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "renesas_ra",
+      "board_dir": "arduino_uno_r4_wifi",
+      "board_id": "arduino_uno_r4_wifi",
+      "board_name": "Arduino Uno R4 WiFi (RA4M1)",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -12202,6 +12716,20 @@
       "board_dir": "ek_ra4m1",
       "board_id": "ek_ra4m1",
       "board_name": "Renesas EK-RA4M1",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "renesas_ra",
+      "board_dir": "ek_ra4m1",
+      "board_id": "ek_ra4m1",
+      "board_name": "Renesas EK-RA4M1",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -12664,6 +13192,20 @@
       "board_dir": "rx65n_envision_kit",
       "board_id": "rx65n_envision_kit",
       "board_name": "Renesas RX65N Envision Kit",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "renesas_rx",
+      "board_dir": "rx65n_envision_kit",
+      "board_id": "rx65n_envision_kit",
+      "board_name": "Renesas RX65N Envision Kit",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -13126,6 +13668,20 @@
       "board_dir": "rx72n_envision_kit",
       "board_id": "rx72n_envision_kit",
       "board_name": "Renesas RX72N Envision Kit",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "renesas_rx",
+      "board_dir": "rx72n_envision_kit",
+      "board_id": "rx72n_envision_kit",
+      "board_name": "Renesas RX72N Envision Kit",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -13588,6 +14144,20 @@
       "board_dir": "adafruit_feather_rp2040",
       "board_id": "adafruit_feather_rp2040",
       "board_name": "Adafruit Feather RP2040",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "rp2040",
+      "board_dir": "adafruit_feather_rp2040",
+      "board_id": "adafruit_feather_rp2040",
+      "board_name": "Adafruit Feather RP2040",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -14044,6 +14614,20 @@
       "resolve_with_allow": "yes",
       "status": "SUPPORTED",
       "reason": "-"
+    },
+    {
+      "platform": "rp2040",
+      "board_dir": "raspberry_pi_pico",
+      "board_id": "raspberry_pi_pico",
+      "board_name": "Raspberry Pi Pico (RP2040)",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
     },
     {
       "platform": "rp2040",
@@ -14506,6 +15090,20 @@
       "resolve_with_allow": "yes",
       "status": "SUPPORTED",
       "reason": "-"
+    },
+    {
+      "platform": "rp2040",
+      "board_dir": "raspberry_pi_pico_w",
+      "board_id": "raspberry_pi_pico_w",
+      "board_name": "Raspberry Pi Pico W",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
     },
     {
       "platform": "rp2040",
@@ -14974,6 +15572,20 @@
       "board_dir": "seeed_xiao_rp2040",
       "board_id": "seeed_xiao_rp2040",
       "board_name": "Seeed Studio XIAO RP2040",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "rp2040",
+      "board_dir": "seeed_xiao_rp2040",
+      "board_id": "seeed_xiao_rp2040",
+      "board_name": "Seeed Studio XIAO RP2040",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -15436,6 +16048,20 @@
       "board_dir": "sparkfun_thing_plus_rp2040",
       "board_id": "sparkfun_thing_plus_rp2040",
       "board_name": "SparkFun Thing Plus RP2040",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "rp2040",
+      "board_dir": "sparkfun_thing_plus_rp2040",
+      "board_id": "sparkfun_thing_plus_rp2040",
+      "board_name": "SparkFun Thing Plus RP2040",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -15898,6 +16524,20 @@
       "board_dir": "blackpill_f411ce",
       "board_id": "blackpill_f411ce",
       "board_name": "STM32 Black Pill F411CE",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "stm32",
+      "board_dir": "blackpill_f411ce",
+      "board_id": "blackpill_f411ce",
+      "board_name": "STM32 Black Pill F411CE",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -16360,6 +17000,20 @@
       "board_dir": "nucleo_f401re",
       "board_id": "nucleo_f401re",
       "board_name": "ST Nucleo-F401RE",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
+    },
+    {
+      "platform": "stm32",
+      "board_dir": "nucleo_f401re",
+      "board_id": "nucleo_f401re",
+      "board_name": "ST Nucleo-F401RE",
       "module_id": "imu",
       "module_name": "IMU Sensor",
       "module_platforms": "esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",
@@ -16816,6 +17470,20 @@
       "resolve_with_allow": "yes",
       "status": "SUPPORTED",
       "reason": "-"
+    },
+    {
+      "platform": "stm32",
+      "board_dir": "nucleo_f446re",
+      "board_id": "nucleo_f446re",
+      "board_name": "ST Nucleo-F446RE",
+      "module_id": "i2s",
+      "module_name": "I2S Audio Bus",
+      "module_platforms": "esp32",
+      "module_platform_match": "no",
+      "allow_contains_module": "no",
+      "resolve_with_allow": "no",
+      "status": "UNSUPPORTED",
+      "reason": "not_allowed:i2s"
     },
     {
       "platform": "stm32",

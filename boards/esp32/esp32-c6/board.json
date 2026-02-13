@@ -17,6 +17,7 @@
     "gpio",
     "adc",
     "pwm",
+    "i2s",
     "timer",
     "twai",
     "tft",
@@ -38,6 +39,10 @@
     "spi_miso": 2,
     "spi_sclk": 6,
     "spi_cs": 10,
+    "i2s_bclk": 22,
+    "i2s_ws": 23,
+    "i2s_din": 1,
+    "i2s_dout": 3,
     "tft_mosi": 7,
     "tft_miso": 2,
     "tft_sclk": 6,
@@ -157,6 +162,46 @@
         9,
         4,
         5
+      ],
+      "type": "output"
+    },
+    "i2s_bclk": {
+      "description": "I2S bit clock baseline pin",
+      "alternatives": [
+        22,
+        6,
+        7,
+        10
+      ],
+      "type": "output"
+    },
+    "i2s_ws": {
+      "description": "I2S word-select / LRCLK baseline pin",
+      "alternatives": [
+        23,
+        7,
+        6,
+        11
+      ],
+      "type": "output"
+    },
+    "i2s_din": {
+      "description": "I2S data-in baseline pin (microphone RX)",
+      "alternatives": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "type": "input"
+    },
+    "i2s_dout": {
+      "description": "I2S data-out baseline pin (DAC TX)",
+      "alternatives": [
+        3,
+        4,
+        5,
+        8
       ],
       "type": "output"
     },

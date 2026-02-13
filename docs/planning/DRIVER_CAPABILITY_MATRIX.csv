@@ -11,6 +11,7 @@ atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),fs_spiffs,SP
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_nano_v3,arduino_nano_v3,Arduino Nano V3 (ATmega328P),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -44,6 +45,7 @@ atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,fs_spiffs,SPIFFS Filesystem,
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 atmega,arduino_uno_r3,arduino_uno_r3,Arduino Uno R3,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -77,6 +79,7 @@ atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Ad
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,adafruit_circuit_playground_express,adafruit_circuit_playground_express,Adafruit Circuit Playground Express (ATSAMD21),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -110,6 +113,7 @@ atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),fs_spiffs,SPIFFS Filesy
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,arduino_zero,arduino_zero,Arduino Zero (SAMD21G18),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -143,6 +147,7 @@ atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),fs_spi
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 atsam,seeeduino_xiao_samd21,seeeduino_xiao_samd21,Seeeduino XIAO (SAMD21),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -176,6 +181,7 @@ avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (US
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,arduino_pro_micro_5v_usbc,arduino_pro_micro_5v_usbc,Arduino Pro Micro 5V (USB-C),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -209,6 +215,7 @@ avr,mega2560,mega2560,Arduino Mega 2560 (Generic),fs_spiffs,SPIFFS Filesystem,,y
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+avr,mega2560,mega2560,Arduino Mega 2560 (Generic),i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 avr,mega2560,mega2560,Arduino Mega 2560 (Generic),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -242,6 +249,7 @@ esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,fs_spiffs,SPIFFS Filesystem,,yes,yes
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,cyd_3248s035r,cyd,CYD ESP32-3248S035R,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -275,6 +283,7 @@ esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,fs
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_beetle_esp32_c3,dfrobot_beetle_esp32_c3,DFRobot Beetle ESP32-C3,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -308,6 +317,7 @@ esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,dfrobot_firebeetle_esp32,dfrobot_firebeetle_esp32,DFRobot FireBeetle ESP32,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -341,6 +351,7 @@ esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,fs
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32,elecrow_crowpanel_esp32,Elecrow CrowPanel ESP32,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -374,6 +385,7 @@ esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ES
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,elecrow_crowpanel_esp32_s3,elecrow_crowpanel_esp32_s3,Elecrow CrowPanel ESP32-S3,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -407,6 +419,7 @@ esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),fs_spif
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c3-supermini,esp32-c3-supermini,ESP32-C3 SuperMini (Generic),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -440,6 +453,7 @@ esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),fs_spiffs,SPIFFS Filesystem,,
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),i2s,I2S Audio Bus,esp32,yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-c6,esp32-c6,ESP32-C6 DevKit (Baseline),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -473,6 +487,7 @@ esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),fs_spiffs,SPIFFS Files
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-cam,esp32-cam,ESP32-CAM (AI-Thinker baseline),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -506,6 +521,7 @@ esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),fs_spiffs,SPI
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32-devkitc_v4,esp32-devkitc_v4,ESP32-DevKitC V4 (Generic),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -539,6 +555,7 @@ esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),fs_spiff
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,esp32s3_devkitc_1,esp32s3_devkitc_1,ESP32-S3-DevKitC-1 (Template),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -572,6 +589,7 @@ esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),fs_spiffs,SPIFFS File
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stack_core2,m5stack_core2,M5Stack Core2 (Baseline),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -605,6 +623,7 @@ esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),fs_spiffs,
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),i2s,I2S Audio Bus,esp32,yes,no,no,UNSUPPORTED,not_allowed:i2s
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 esp32,m5stickc_plus2,m5stickc_plus2,M5StickC Plus2 (ESP32-PICO-V3-02),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -638,6 +657,7 @@ linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,fs_spiffs,SPIFF
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 linux-sbc,raspberry_pi_4b,raspberry_pi_4b,Raspberry Pi 4 Model B,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -671,6 +691,7 @@ pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,curiosity_nano_pic16f13145,curiosity_nano_pic16f13145,Curiosity Nano PIC16F13145,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -704,6 +725,7 @@ pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),fs_spiffs,
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 pic16,pic16f873_minimal,pic16f873-minimal,PIC16F873 Minimal (Generic),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -737,6 +759,7 @@ renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_minima,arduino_uno_r4_minima,Arduino Uno R4 Minima (RA4M1),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -770,6 +793,7 @@ renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),f
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,arduino_uno_r4_wifi,arduino_uno_r4_wifi,Arduino Uno R4 WiFi (RA4M1),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -803,6 +827,7 @@ renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,fs_spiffs,SPIFFS Filesystem,,yes,y
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_ra,ek_ra4m1,ek_ra4m1,Renesas EK-RA4M1,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -836,6 +861,7 @@ renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,fs_s
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx65n_envision_kit,rx65n_envision_kit,Renesas RX65N Envision Kit,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -869,6 +895,7 @@ renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,fs_s
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 renesas_rx,rx72n_envision_kit,rx72n_envision_kit,Renesas RX72N Envision Kit,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -902,6 +929,7 @@ rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,f
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,adafruit_feather_rp2040,adafruit_feather_rp2040,Adafruit Feather RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -935,6 +963,7 @@ rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),fs_spiffs,
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico,raspberry_pi_pico,Raspberry Pi Pico (RP2040),mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -968,6 +997,7 @@ rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,fs_spiffs,SPI
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,raspberry_pi_pico_w,raspberry_pi_pico_w,Raspberry Pi Pico W,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -1001,6 +1031,7 @@ rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,fs_spiffs,SP
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,seeed_xiao_rp2040,seeed_xiao_rp2040,Seeed Studio XIAO RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -1034,6 +1065,7 @@ rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 rp2040,sparkfun_thing_plus_rp2040,sparkfun_thing_plus_rp2040,SparkFun Thing Plus RP2040,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -1067,6 +1099,7 @@ stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,fs_spiffs,SPIFFS
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,blackpill_f411ce,blackpill_f411ce,STM32 Black Pill F411CE,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -1100,6 +1133,7 @@ stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,fs_spiffs,SPIFFS Filesystem,,
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f401re,nucleo_f401re,ST Nucleo-F401RE,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
@@ -1133,6 +1167,7 @@ stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,fs_spiffs,SPIFFS Filesystem,,
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,gpio,GPIO,"esp32,stm32,rp2040,avr,pic,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,hp4067,HP4067 / 74HC4067 Mux,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,i2c,I2C Core,,yes,yes,yes,SUPPORTED,-
+stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,i2s,I2S Audio Bus,esp32,no,no,no,UNSUPPORTED,not_allowed:i2s
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,imu,IMU Sensor,"esp32,stm32,rp2040,avr,pic16,atsam,renesas_ra,renesas_rx,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,l298n,L298N H-Bridge Driver,"esp32,stm32,rp2040,avr,atmega,atsam,renesas_ra,renesas_rx,pic16,linux-sbc",yes,yes,yes,SUPPORTED,-
 stm32,nucleo_f446re,nucleo_f446re,ST Nucleo-F446RE,mcp23017,MCP23017 I/O Expander,"esp32,stm32,rp2040,linux-sbc,avr,pic16,atsam,renesas_ra,renesas_rx",yes,yes,yes,SUPPORTED,-

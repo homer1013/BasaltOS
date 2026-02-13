@@ -7,8 +7,8 @@
     "adapter_completeness": "docs/planning/HAL_PLATFORM_ADAPTER_COMPLETENESS.json"
   },
   "summary": {
-    "modules_total": 33,
-    "modules_with_dependencies": 24,
+    "modules_total": 34,
+    "modules_with_dependencies": 25,
     "unique_dependencies": 7,
     "hal_dependencies": 6,
     "non_hal_dependencies": 1,
@@ -35,6 +35,13 @@
     },
     {
       "module_id": "hp4067",
+      "dependency": "gpio",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "i2s",
       "dependency": "gpio",
       "dependency_type": "hal_primitive",
       "risk": "none",
@@ -392,6 +399,24 @@
       "path": "modules/i2c/module.json",
       "depends": [],
       "analysis": [],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "i2s",
+      "name": "I2S Audio Bus",
+      "path": "modules/i2s/module.json",
+      "depends": [
+        "gpio"
+      ],
+      "analysis": [
+        {
+          "dependency": "gpio",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
       "has_unmapped_dependency": false,
       "has_coverage_gap": false
     },
