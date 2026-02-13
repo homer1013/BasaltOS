@@ -199,6 +199,12 @@ Board taxonomy schema smoke (id/value/index consistency):
 bash tools/tests/board_taxonomy_schema_smoke.sh
 ```
 
+Board taxonomy API contract smoke:
+
+```bash
+bash tools/tests/board_taxonomy_api_contract_smoke.sh
+```
+
 Board intake scaffold smoke:
 
 ```bash

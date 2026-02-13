@@ -65,6 +65,9 @@ Board picker behavior:
 - Filter/search state is persisted to URL query params for quick reload/share during local dev.
 - Optional picker perf telemetry panel: add `?debug_perf=1` to the configurator URL.
 
+Board taxonomy/options API request/response contract examples:
+- `docs/BOARD_TAXONOMY_API_CONTRACT.md`
+
 ## Expected Outputs
 
 Generation writes config artifacts such as:
