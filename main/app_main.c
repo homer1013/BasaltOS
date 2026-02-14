@@ -6345,11 +6345,19 @@ static void bsh_handle_line(char *line) {
         const char *last_result = runtime_dispatch_last_result();
         const char *last_runtime = runtime_dispatch_last_runtime();
         basalt_printf("runtime.ready: %s\n", runtime_dispatch_is_ready() ? "yes" : "no");
+        basalt_printf("runtime.ready.python: %s\n", runtime_dispatch_is_ready_for(BASALT_RUNTIME_PYTHON) ? "yes" : "no");
+        basalt_printf("runtime.ready.lua: %s\n", runtime_dispatch_is_ready_for(BASALT_RUNTIME_LUA) ? "yes" : "no");
+        basalt_printf("runtime.ready_detail.python: %s\n", runtime_dispatch_ready_detail_for(BASALT_RUNTIME_PYTHON));
+        basalt_printf("runtime.ready_detail.lua: %s\n", runtime_dispatch_ready_detail_for(BASALT_RUNTIME_LUA));
         basalt_printf("runtime.running: %s\n", runtime_dispatch_is_running() ? "yes" : "no");
         basalt_printf("runtime.last_runtime: %s\n", last_runtime ? last_runtime : "(none)");
         basalt_printf("runtime.app: %s\n", current ? current : "(none)");
         basalt_printf("runtime.last_result: %s\n", last_result ? last_result : "(none)");
         basalt_printf("runtime.last_error: %s\n", last_err ? last_err : "(none)");
+        if (last_runtime && strcmp(last_runtime, "lua") == 0 && last_result &&
+            strcmp(last_result, "guardrail-blocked") == 0) {
+            basalt_printf("runtime.guardrail_hint: check Lua script size and free heap thresholds\n");
+        }
         basalt_printf("runtime.history_persistence: RAM-only (clears on reboot)\n");
         basalt_printf("system.heap_free: %u\n", (unsigned)esp_get_free_heap_size());
         basalt_printf("system.cpu_hz: %u\n", (unsigned)esp_clk_cpu_freq());

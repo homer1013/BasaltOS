@@ -106,3 +106,11 @@ Required dispatch API:
   - available 8-bit heap must be >= `32 KiB` before run/start
 - Guardrail failures use explicit diagnostics and `last_result = "guardrail-blocked"` so shell
   status remains actionable while VM integration is still in progress.
+
+## Shell Runtime Status (Current Status)
+
+- `logs` output now reports per-runtime readiness and detail lines:
+  - `runtime.ready.python`, `runtime.ready.lua`
+  - `runtime.ready_detail.python`, `runtime.ready_detail.lua`
+- Guardrail-triggered Lua failures provide an extra shell hint line:
+  - `runtime.guardrail_hint: check Lua script size and free heap thresholds`

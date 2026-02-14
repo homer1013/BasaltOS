@@ -16,6 +16,8 @@ bool runtime_dispatch_start_file(basalt_runtime_kind_t kind, const char *path, c
 bool runtime_dispatch_stop(bool force, char *err_buf, size_t err_len);
 bool runtime_dispatch_is_running(void);
 bool runtime_dispatch_is_ready(void);
+bool runtime_dispatch_is_ready_for(basalt_runtime_kind_t kind);
+const char *runtime_dispatch_ready_detail_for(basalt_runtime_kind_t kind);
 const char *runtime_dispatch_current_app(void);
 const char *runtime_dispatch_last_error(void);
 const char *runtime_dispatch_last_result(void);

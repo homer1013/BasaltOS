@@ -119,6 +119,25 @@ bool runtime_dispatch_is_ready(void) {
     return mpy_runtime_is_ready() || lua_runtime_is_ready();
 }
 
+bool runtime_dispatch_is_ready_for(basalt_runtime_kind_t kind) {
+    if (kind == BASALT_RUNTIME_LUA) return lua_runtime_is_ready();
+    if (kind == BASALT_RUNTIME_PYTHON) return mpy_runtime_is_ready();
+    return false;
+}
+
+const char *runtime_dispatch_ready_detail_for(basalt_runtime_kind_t kind) {
+    if (runtime_dispatch_is_ready_for(kind)) return "ready";
+    if (kind == BASALT_RUNTIME_LUA) {
+        const char *e = lua_runtime_last_error();
+        return (e && e[0]) ? e : "not ready";
+    }
+    if (kind == BASALT_RUNTIME_PYTHON) {
+        const char *e = mpy_runtime_last_error();
+        return (e && e[0]) ? e : "not ready";
+    }
+    return "unknown runtime";
+}
+
 const char *runtime_dispatch_current_app(void) {
     if (s_dispatch_last_runtime == BASALT_RUNTIME_LUA) {
         const char *lua_app = lua_runtime_current_app();
