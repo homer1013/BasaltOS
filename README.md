@@ -6,55 +6,160 @@ BasaltOS is a lightweight, portable embedded OS / application platform aimed at 
 
 The long-term goal is an “Android-light” experience on microcontrollers: a friendly shell, installable apps, stable APIs, and a configuration system that scales from quick prototypes to real products.
 
+Apache 2.0 Licensed.
+
 Copyright © 2026 Homer Morrill
 
 ---
 
-## Welcome
+## Why BasaltOS?
 
-You do not need to be an embedded engineer to try this project.
+Traditional embedded development ties applications tightly to specific boards and SDKs.
 
-If you can:
-- plug in a board
-- copy/paste terminal commands
-- read a serial console
+BasaltOS separates:
 
-you can get to a first success with BasaltOS.
+Platform -> Board -> Drivers -> Apps
 
-## Choose Your Path
+You configure once.
+You build anywhere.
 
-- I just want to get something running fast:
-  use `docs/ESP32_FIRST_SUCCESS_10_MIN.md`
-- I want a guided setup flow:
-  run `python tools/configure.py --wizard`
-- I want API/app development details:
-  read `docs/third-party-app-dev.md` and `docs/api-basalt.md`
+BasaltOS generates board-aware configuration, feature flags, and SDK defaults so the same app logic can move between ESP32, RP2040, STM32, AVR, PIC, and more.
+
+## What Makes It Different?
+
+- Board taxonomy system (Manufacturer -> Architecture -> Family -> Silicon -> Board)
+- CLI + Web configuration generator
+- Integrated MicroPython runtime
+- Shell (`bsh`) over UART + TFT
+- Filesystem-backed installable app model
+- Hardware abstraction layer (HAL)
+- Multi-target backend groundwork
+
+BasaltOS bridges the gap between:
+- Arduino-style firmware
+- FreeRTOS-style embedded systems
+- Linux-style application platforms
+
+## Quick Start (10 Minutes)
+
+1. Open: `docs/ESP32_FIRST_SUCCESS_10_MIN.md`
+2. Plug in your board
+3. Run the commands
+4. Open the serial console
+
+If it fails, open an issue with:
+- board name
+- OS
+- full error output
 
 ## Current Stable Release
 
-- Status (v0.1.1): synced
-- Stable baseline: `v0.1.1`
-- Release/tag link: https://github.com/homer1013/BasaltOS/releases/tag/v0.1.1
+`v0.1.1`  
+https://github.com/homer1013/BasaltOS/releases/tag/v0.1.1
 
----
+## Config Flow
 
-## Start Here (New to GitHub or Embedded)
+User Selects:
+Platform -> Board -> Drivers -> Features
 
-If this is your first time using a GitHub project, start with these 3 steps:
+           v
 
-1. Open the quickstart guide: `docs/ESP32_FIRST_SUCCESS_10_MIN.md`
-2. Follow the copy/paste terminal commands exactly in order
-3. If anything fails, open an issue and include:
-   - your board name
-   - your operating system
-   - the full error text
+`tools/configure.py`  
+or  
+Web Configurator
 
-## Quick Glossary
+           v
 
-- Platform: chip family/toolchain group (example: `esp32`)
-- Board: your exact hardware profile (example: ESP32-C3 SuperMini)
-- Driver: feature gate for hardware support (I2C, TFT, GPIO, etc.)
-- Applet/App: runnable code selected in config or loaded to the device
+Generates:
+- `basalt_config.h`
+- `basalt.features.json`
+- `sdkconfig.defaults`
+
+           v
+
+Build System  
+           v
+Firmware Image
+
+## Architecture Diagram
+
+![BasaltOS Architecture](docs/basaltos-architecture.svg)
+
+## Why Not Arduino, FreeRTOS, or Zephyr?
+
+BasaltOS does not replace these platforms.  
+It occupies a different layer in the embedded ecosystem.
+
+### Why Not Arduino?
+
+Arduino is fantastic for:
+- Quick prototypes
+- Learning embedded basics
+- Simple hardware sketches
+
+But Arduino typically:
+- Couples applications tightly to board-specific APIs
+- Encourages monolithic firmware structure
+- Has no built-in app lifecycle or installable app model
+- Lacks a structured multi-board configuration abstraction
+
+BasaltOS instead focuses on:
+- Separating Platform -> Board -> Drivers -> Apps
+- Structured configuration generation
+- Installable / runnable app concepts
+- A portable hardware abstraction layer
+
+Arduino is firmware-first.  
+BasaltOS is platform-first.
+
+### Why Not FreeRTOS?
+
+FreeRTOS provides:
+- A lightweight real-time scheduler
+- Deterministic task management
+- Excellent low-level control
+
+But FreeRTOS is:
+- A kernel, not a full application platform
+- SDK-dependent (ESP-IDF, STM32Cube, etc.)
+- Lacking board taxonomy and feature configuration layers
+- Not focused on app install/remove workflows
+
+BasaltOS can run on top of environments that use FreeRTOS internally.
+
+FreeRTOS manages tasks.  
+BasaltOS manages systems.
+
+### Why Not Zephyr?
+
+Zephyr offers:
+- Industrial-grade RTOS
+- Extensive hardware support
+- Strong community and vendor backing
+- Devicetree-based configuration
+
+But Zephyr is:
+- Complex to onboard for newcomers
+- Primarily C-centric
+- Geared toward production firmware and certification paths
+- Not focused on installable app ecosystems or shell-driven workflows
+
+BasaltOS emphasizes:
+- Approachability
+- Clear board taxonomy
+- Installable app model
+- Integrated MicroPython runtime
+- Simpler mental model for experimentation and education
+
+Zephyr is production infrastructure.  
+BasaltOS is an application platform.
+
+| Platform | Focus                                  |
+| -------- | -------------------------------------- |
+| Arduino  | Fast firmware prototyping              |
+| FreeRTOS | Real-time task scheduling              |
+| Zephyr   | Industrial RTOS ecosystem              |
+| BasaltOS | Portable embedded application platform |
 
 ---
 

@@ -6199,7 +6199,7 @@ static void bsh_handle_line(char *line) {
                 app_entry_path_flat(rpath, script, sizeof(script), &kind);
             } else {
                 // SPIFFS flat layout: treat as app prefix
-                app_entry_path_flat(rpath, script, sizeof(script), NULL);
+                app_entry_path_flat(rpath, script, sizeof(script), &kind);
                 if (!path_is_file(script)) {
                     snprintf(script, sizeof(script), "%s", rpath);
                     kind = runtime_from_script_extension(script);
@@ -6244,7 +6244,7 @@ static void bsh_handle_line(char *line) {
             if (path_is_dir(rpath)) {
                 app_entry_path_flat(rpath, script, sizeof(script), &kind);
             } else {
-                app_entry_path_flat(rpath, script, sizeof(script), NULL);
+                app_entry_path_flat(rpath, script, sizeof(script), &kind);
                 if (!path_is_file(script)) {
                     snprintf(script, sizeof(script), "%s", rpath);
                     kind = runtime_from_script_extension(script);
@@ -6260,7 +6260,7 @@ static void bsh_handle_line(char *line) {
                     if (path_is_dir(rpath_sd)) {
                         app_entry_path_flat(rpath_sd, script, sizeof(script), &kind);
                     } else {
-                        app_entry_path_flat(rpath_sd, script, sizeof(script), NULL);
+                        app_entry_path_flat(rpath_sd, script, sizeof(script), &kind);
                         if (!path_is_file(script)) {
                             snprintf(script, sizeof(script), "%s", rpath_sd);
                             kind = runtime_from_script_extension(script);
@@ -6276,7 +6276,7 @@ static void bsh_handle_line(char *line) {
                         if (path_is_dir(match)) {
                             app_entry_path_flat(match, script, sizeof(script), &kind);
                         } else {
-                            app_entry_path_flat(match, script, sizeof(script), NULL);
+                            app_entry_path_flat(match, script, sizeof(script), &kind);
                             if (!path_is_file(script)) {
                                 snprintf(script, sizeof(script), "%s", match);
                                 kind = runtime_from_script_extension(script);

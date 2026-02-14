@@ -1,0 +1,124 @@
+<svg viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Drop shadows for depth -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Arrow marker -->
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <polygon points="0 0, 8 4, 0 8" fill="#4a5568"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1000" height="800" fill="#e8e8e8"/>
+  
+  <!-- Title -->
+  <text x="500" y="50" text-anchor="middle" font-family="'SF Pro Display', 'Segoe UI', system-ui, sans-serif" font-size="36" font-weight="700" fill="#1a202c" letter-spacing="-0.5">
+    BasaltOS Architecture
+  </text>
+  
+  <!-- Applications Layer -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="95" width="600" height="75" rx="6" fill="#667eea" stroke="#5568d3" stroke-width="2"/>
+    <text x="500" y="127" text-anchor="middle" font-family="'SF Pro Display', system-ui, sans-serif" font-size="24" font-weight="600" fill="white">
+      Applications
+    </text>
+    <text x="500" y="152" text-anchor="middle" font-family="'SF Mono', 'Consolas', monospace" font-size="15" fill="white" opacity="0.95">
+      C apps · MicroPython apps · Dev apps
+    </text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="500" y1="170" x2="500" y2="195" stroke="#4a5568" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Basalt Shell Layer -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="195" width="600" height="75" rx="6" fill="#f56565" stroke="#e53e3e" stroke-width="2"/>
+    <text x="500" y="227" text-anchor="middle" font-family="'SF Pro Display', system-ui, sans-serif" font-size="24" font-weight="600" fill="white">
+      Basalt Shell (bsh)
+    </text>
+    <text x="500" y="252" text-anchor="middle" font-family="'SF Mono', 'Consolas', monospace" font-size="15" fill="white" opacity="0.95">
+      App Lifecycle · System Services
+    </text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="500" y1="270" x2="500" y2="295" stroke="#4a5568" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- BasaltOS Core Runtime Layer -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="295" width="600" height="75" rx="6" fill="#4299e1" stroke="#3182ce" stroke-width="2"/>
+    <text x="500" y="327" text-anchor="middle" font-family="'SF Pro Display', system-ui, sans-serif" font-size="24" font-weight="600" fill="white">
+      BasaltOS Core Runtime
+    </text>
+    <text x="500" y="352" text-anchor="middle" font-family="'SF Mono', 'Consolas', monospace" font-size="15" fill="white" opacity="0.95">
+      Scheduler · FS · Config · Feature Gates
+    </text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="500" y1="370" x2="500" y2="395" stroke="#4a5568" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Hardware Abstraction Layer -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="395" width="600" height="75" rx="6" fill="#3da169" stroke="#2d8f5a" stroke-width="2"/>
+    <text x="500" y="427" text-anchor="middle" font-family="'SF Pro Display', system-ui, sans-serif" font-size="24" font-weight="600" fill="white">
+      Hardware Abstraction Layer
+    </text>
+    <text x="500" y="452" text-anchor="middle" font-family="'SF Mono', 'Consolas', monospace" font-size="15" fill="white" opacity="0.95">
+      GPIO · I2C · SPI · UART · Drivers
+    </text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="500" y1="470" x2="500" y2="495" stroke="#4a5568" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Board Definitions Layer -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="495" width="600" height="75" rx="6" fill="#ed8936" stroke="#dd6b20" stroke-width="2"/>
+    <text x="500" y="527" text-anchor="middle" font-family="'SF Pro Display', system-ui, sans-serif" font-size="24" font-weight="600" fill="white">
+      Board Definitions
+    </text>
+    <text x="500" y="552" text-anchor="middle" font-family="'SF Mono', 'Consolas', monospace" font-size="15" fill="white" opacity="0.95">
+      Pin Maps · Memory Layout · Peripheral Config
+    </text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="500" y1="570" x2="500" y2="595" stroke="#4a5568" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Platform Layer -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="595" width="600" height="75" rx="6" fill="#9f7aea" stroke="#805ad5" stroke-width="2"/>
+    <text x="500" y="627" text-anchor="middle" font-family="'SF Pro Display', system-ui, sans-serif" font-size="24" font-weight="600" fill="white">
+      Platform Layer
+    </text>
+    <text x="500" y="652" text-anchor="middle" font-family="'SF Mono', 'Consolas', monospace" font-size="15" fill="white" opacity="0.95">
+      ESP-IDF · STM32 HAL · RP2040 SDK · etc.
+    </text>
+  </g>
+  
+  <!-- Arrow -->
+  <line x1="500" y1="670" x2="500" y2="705" stroke="#4a5568" stroke-width="3" marker-end="url(#arrow)"/>
+  
+  <!-- Microcontroller Layer -->
+  <g filter="url(#shadow)">
+    <rect x="200" y="705" width="600" height="75" rx="6" fill="#2d3748" stroke="#1a202c" stroke-width="2"/>
+    <text x="500" y="737" text-anchor="middle" font-family="'SF Pro Display', system-ui, sans-serif" font-size="24" font-weight="600" fill="white">
+      Microcontroller
+    </text>
+    <text x="500" y="762" text-anchor="middle" font-family="'SF Mono', 'Consolas', monospace" font-size="15" fill="white" opacity="0.95">
+      ESP32 · STM32 · RP2040 · nRF52 · etc.
+    </text>
+  </g>
+</svg>

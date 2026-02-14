@@ -5,15 +5,10 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#if defined(__has_include)
-#if __has_include("lua_embed.h")
-#include "lua_embed.h"
-#define BASALT_HAS_LUA_EMBED 1
-#else
-#define BASALT_HAS_LUA_EMBED 0
-#endif
-#else
-#define BASALT_HAS_LUA_EMBED 0
+#if BASALT_HAS_LUA_EMBED
+void lua_embed_init(void);
+void lua_embed_deinit(void);
+bool lua_embed_is_ready(void);
 #endif
 
 #include "esp_heap_caps.h"
