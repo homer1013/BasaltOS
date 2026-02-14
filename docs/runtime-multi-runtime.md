@@ -84,3 +84,16 @@ Required dispatch API:
   - `last_error`
 - In this phase, Lua runtime execution intentionally returns a clear \"not integrated\" failure.
 - Runtime dispatch is wired to call `lua_runtime` APIs for `runtime=lua` paths.
+
+## Lua Binding Contract (Current Status)
+
+- The Lua embed component now exposes a minimal binding contract in:
+  - `runtime/lua/lua_embed/include/basalt_lua_bindings.h`
+- Current binding surface:
+  - `system.log(msg)`
+  - `gpio.mode(pin, mode)` where mode is `0=input`, `1=output`, `2=open_drain`
+  - `gpio.write(pin, value)`
+  - `gpio.read(pin)`
+  - `timer.sleep_ms(ms)`
+- Contract implementation currently routes through HAL-oriented wrappers and is intended as
+  a stable foundation for upcoming VM integration slices.

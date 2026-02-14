@@ -1,6 +1,10 @@
 idf_component_register(
     SRCS
+        "basalt_lua_bindings.c"
         "lua_runtime_stub.c"
     INCLUDE_DIRS
         "include"
+    REQUIRES
+        basalt_hal
+        freertos
 )

@@ -4,6 +4,17 @@
 #include <stdio.h>
 #include <string.h>
 
+#if defined(__has_include)
+#if __has_include("lua_embed.h")
+#include "lua_embed.h"
+#define BASALT_HAS_LUA_EMBED 1
+#else
+#define BASALT_HAS_LUA_EMBED 0
+#endif
+#else
+#define BASALT_HAS_LUA_EMBED 0
+#endif
+
 static bool s_lua_ready = false;
 static bool s_lua_running = false;
 static char s_lua_current_app[128] = {0};
@@ -42,8 +53,22 @@ static bool lua_fail_with(char *err_buf, size_t err_len, const char *fmt, ...) {
 }
 
 void lua_runtime_init(void) {
-    // Lua VM integration lands in follow-on slices; keep lifecycle API stable now.
+    s_lua_running = false;
+#if BASALT_HAS_LUA_EMBED
+    lua_embed_init();
+    s_lua_ready = lua_embed_is_ready();
+    if (s_lua_ready) {
+        lua_set_last_error(NULL);
+        lua_set_last_result("ready");
+    } else {
+        lua_set_last_error("lua runtime bindings unavailable");
+        lua_set_last_result("unavailable");
+    }
+#else
     s_lua_ready = false;
+    lua_set_last_error("lua runtime component not built");
+    lua_set_last_result("unavailable");
+#endif
 }
 
 bool lua_runtime_is_ready(void) {
@@ -51,8 +76,16 @@ bool lua_runtime_is_ready(void) {
 }
 
 bool lua_runtime_run_file(const char *path, char *err_buf, size_t err_len) {
-    (void)path;
-    return lua_fail_with(err_buf, err_len, "lua runtime is not integrated in this build yet");
+    if (!path || !path[0]) {
+        return lua_fail_with(err_buf, err_len, "missing script path");
+    }
+    if (!s_lua_ready) {
+        lua_runtime_init();
+    }
+    if (!s_lua_ready) {
+        return lua_fail_with(err_buf, err_len, "lua runtime is not ready");
+    }
+    return lua_fail_with(err_buf, err_len, "lua vm execution is not integrated in this build yet");
 }
 
 bool lua_runtime_start_file(const char *path, char *err_buf, size_t err_len) {
@@ -62,10 +95,15 @@ bool lua_runtime_start_file(const char *path, char *err_buf, size_t err_len) {
     if (s_lua_running) {
         return lua_fail_with(err_buf, err_len, "app already running");
     }
-    lua_runtime_init();
+    if (!s_lua_ready) {
+        lua_runtime_init();
+    }
+    if (!s_lua_ready) {
+        return lua_fail_with(err_buf, err_len, "lua runtime is not ready");
+    }
     snprintf(s_lua_current_app, sizeof(s_lua_current_app), "%s", path);
     s_lua_running = false;
-    return lua_fail_with(err_buf, err_len, "lua runtime is not integrated in this build yet");
+    return lua_fail_with(err_buf, err_len, "lua vm execution is not integrated in this build yet");
 }
 
 bool lua_runtime_stop(bool force, char *err_buf, size_t err_len) {
