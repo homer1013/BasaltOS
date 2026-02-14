@@ -114,3 +114,11 @@ Required dispatch API:
   - `runtime.ready_detail.python`, `runtime.ready_detail.lua`
 - Guardrail-triggered Lua failures provide an extra shell hint line:
   - `runtime.guardrail_hint: check Lua script size and free heap thresholds`
+
+## Lua Samples and Parity Fixtures (Current Status)
+
+- Added foundation sample apps:
+  - `apps/lua_hello.app`
+  - `apps/lua_blink.app`
+- Added tooling parity smoke to verify runtime metadata and packaged-zip parity:
+  - `tools/tests/lua_examples_parity_smoke.sh`

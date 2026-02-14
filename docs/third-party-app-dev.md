@@ -64,6 +64,11 @@ Supported runtime values:
 - `python` (default, alias: `micropython`)
 - `lua`
 
+Reference sample apps:
+- `apps/demo.app` (python)
+- `apps/lua_hello.app` (lua)
+- `apps/lua_blink.app` (lua)
+
 Entrypoint conventions:
 - if `runtime = "python"` and `entry` is omitted, default is `main.py`
 - if `runtime = "lua"` and `entry` is omitted, default is `main.lua`
