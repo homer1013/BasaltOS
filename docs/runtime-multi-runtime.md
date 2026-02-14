@@ -62,3 +62,10 @@ Required dispatch API:
 2. Implement `lua_runtime` API parity with Python lifecycle semantics.
 3. Add minimal Lua bindings (`system`, `gpio`, `timer`) and sample apps.
 4. Add CI + bench validation lanes for runtime selection and execution.
+
+## Build Graph Gate (Current)
+
+- CMake option: `BASALT_ENABLE_LUA_RUNTIME` (default `OFF`)
+- When enabled, build includes component:
+  - `runtime/lua/lua_embed`
+- This first slice only adds component topology and stub lifecycle API (`lua_embed_*`).
