@@ -7,6 +7,9 @@ cd "$ROOT"
 # shellcheck source=/dev/null
 source tools/env.sh
 
+# Ensure generated config headers exist in clean CI checkouts.
+python3 tools/configure.py --platform esp32 --board esp32-c6 --outdir config/generated >/dev/null
+
 bash tools/tests/app_runtime_manifest_smoke.sh
 bash tools/tests/lua_bindings_contract_smoke.sh
 bash tools/tests/lua_runtime_guardrails_smoke.sh
