@@ -112,3 +112,17 @@ jobs:
 
           BASALT_UI_URL=http://127.0.0.1:5000 node tools/e2e/local_mode_nav_guard.js
           BASALT_UI_URL=http://127.0.0.1:5000 node tools/e2e/smoke_configurator.js
+
+  lua-runtime-smoke:
+    runs-on: ubuntu-latest
+    container: espressif/idf:release-v5.5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lua runtime CI smoke lane
+        run: |
+          set -euo pipefail
+          chmod +x tools/tests/lua_runtime_ci_smoke.sh
+          bash tools/tests/lua_runtime_ci_smoke.sh

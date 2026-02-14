@@ -122,3 +122,20 @@ Required dispatch API:
   - `apps/lua_blink.app`
 - Added tooling parity smoke to verify runtime metadata and packaged-zip parity:
   - `tools/tests/lua_examples_parity_smoke.sh`
+
+## Lua CI Lane (Current Status)
+
+- Added dedicated CI smoke script:
+  - `tools/tests/lua_runtime_ci_smoke.sh`
+- Coverage includes:
+  - runtime/tooling smokes (`manifest`, `bindings`, `guardrails`, `logs`, `samples`)
+  - ESP32-C6 default build and Lua-enabled build (`BASALT_ENABLE_LUA_RUNTIME=ON`)
+- GitHub Actions job:
+  - `.github/workflows/configurator-ci.yml` -> `lua-runtime-smoke`
+
+## ESP32-C6 Bench Plan (Current Status)
+
+- Added first Lua bench smoke script:
+  - `tools/tests/esp32c6_lua_bench_smoke.sh`
+- Added bench validation doc:
+  - `docs/LUA_RUNTIME_ESP32C6_BENCH_VALIDATION.md`

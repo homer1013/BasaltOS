@@ -1,0 +1,4 @@
+name = "Lua Blink"
+version = "0.1.0"
+runtime = "lua"
+entry = "main.lua"
