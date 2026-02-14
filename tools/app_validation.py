@@ -36,8 +36,27 @@ def parse_app_toml(app_toml: Path) -> Dict[str, Any]:
     return data
 
 
-def _validate_entry(app_root: Path, manifest: Dict[str, Any]) -> str:
-    raw_entry = str(manifest.get("entry") or "main.py").strip()
+def _normalize_runtime(raw_runtime: Any) -> str:
+    runtime = str(raw_runtime or "python").strip().lower()
+    if runtime == "micropython":
+        runtime = "python"
+    if runtime not in {"python", "lua"}:
+        raise ValueError(f"unsupported runtime '{runtime}' (supported: python, lua)")
+    return runtime
+
+
+def _default_entry_for_runtime(runtime: str) -> str:
+    return "main.lua" if runtime == "lua" else "main.py"
+
+
+def _validate_entry(app_root: Path, manifest: Dict[str, Any], runtime: str, has_manifest: bool) -> str:
+    raw_entry = str(manifest.get("entry") or "").strip()
+    if not raw_entry:
+        raw_entry = _default_entry_for_runtime(runtime)
+        if not has_manifest and runtime == "python":
+            # Backward-compatible fallback for apps without app.toml.
+            if not (app_root / raw_entry).is_file() and (app_root / "main.lua").is_file():
+                raw_entry = "main.lua"
     if not raw_entry:
         raise ValueError("app.toml entry must not be empty")
     entry = Path(raw_entry)
@@ -55,8 +74,10 @@ def validate_app_dir(app_root: Path, *, check_py_syntax: bool = False) -> Dict[s
         raise ValueError(f"app directory not found: {app_root}")
 
     app_toml = app_root / "app.toml"
-    manifest = parse_app_toml(app_toml) if app_toml.exists() else {}
-    entry = _validate_entry(app_root, manifest if app_toml.exists() else {})
+    has_manifest = app_toml.exists()
+    manifest = parse_app_toml(app_toml) if has_manifest else {}
+    runtime = _normalize_runtime(manifest.get("runtime", "python"))
+    entry = _validate_entry(app_root, manifest if has_manifest else {}, runtime, has_manifest)
 
     if check_py_syntax:
         import py_compile
@@ -85,6 +106,7 @@ def validate_app_dir(app_root: Path, *, check_py_syntax: bool = False) -> Dict[s
         "author": author,
         "description": description,
         "entry": entry,
+        "runtime": runtime,
         "has_app_toml": app_toml.exists(),
         "file_count": file_count,
     }

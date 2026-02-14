@@ -46,7 +46,7 @@ App space is:
 ```
 /apps/<app_name>/
   app.toml      (optional)
-  main.py       (required if app.toml missing)
+  main.py|main.lua   (required if app.toml missing)
 ```
 
 ### app.toml (optional)
@@ -57,9 +57,17 @@ Example:
 name = "Blink"
 version = "0.1.0"
 entry = "main.py"
+runtime = "python"
 ```
 
-If `app.toml` is missing, `main.py` is used.
+Supported runtime values:
+- `python` (default, alias: `micropython`)
+- `lua`
+
+Entrypoint conventions:
+- if `runtime = "python"` and `entry` is omitted, default is `main.py`
+- if `runtime = "lua"` and `entry` is omitted, default is `main.lua`
+- if `app.toml` is missing, loader defaults to `main.py` and falls back to `main.lua` if present
 
 ## Basalt MicroPython APIs
 

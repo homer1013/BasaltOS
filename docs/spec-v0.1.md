@@ -50,6 +50,8 @@ audio = false
 net = false
 ```
 
+`runtime` may be `python` or `lua` (`python` default).
+
 ## CLI (bsh)
 Core commands:
 - help, ls, cd, cat, edit

@@ -54,6 +54,7 @@ def main() -> int:
         print(f"path: {payload['path']}")
         print(f"name: {meta.get('name')}")
         print(f"version: {meta.get('version')}")
+        print(f"runtime: {meta.get('runtime')}")
         print(f"entry: {meta.get('entry')}")
         print(f"files: {meta.get('file_count')}")
         print(f"app.toml: {'yes' if meta.get('has_app_toml') else 'no'}")

@@ -54,6 +54,11 @@ Set a display title for app.toml:
 python tools/new_app.py blink_rgb --title "Blink RGB"
 ```
 
+Create a Lua app skeleton:
+```
+python tools/new_app.py blink_lua --runtime lua
+```
+
 ## validate_app.py
 
 Validate an app folder:
