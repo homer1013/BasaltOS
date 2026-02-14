@@ -2,6 +2,9 @@
 
 Basalt OS will embed MicroPython as the first app runtime.
 
+For multi-runtime architecture boundaries and Lua-planning scope, see:
+- `docs/runtime-multi-runtime.md`
+
 ## Approach
 - Build MicroPython as a component under `runtime/python/`.
 - Expose Basalt APIs as MicroPython modules (C bindings).

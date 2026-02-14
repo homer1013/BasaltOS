@@ -1,0 +1,64 @@
+# Multi-Runtime Architecture Contract (Foundation)
+
+This document defines the foundation contract for supporting multiple app runtimes in BasaltOS_Main, starting with:
+
+- `python` (MicroPython, existing)
+- `lua` (planned alternative runtime)
+
+## Goals (Foundation Slice)
+
+1. Keep current Python runtime behavior stable.
+2. Add a runtime dispatch boundary so app launch paths are not hardwired to one runtime.
+3. Standardize runtime lifecycle semantics across runtimes:
+   - `start`
+   - `stop`
+   - `is_running`
+   - `is_ready`
+   - `last_result`
+   - `last_error`
+4. Drive runtime selection from app metadata (`app.toml`) with sane defaults.
+
+## Non-Goals (This Slice)
+
+1. Full Lua VM integration and production-grade bindings.
+2. Full API parity between Python `basalt.*` and Lua modules.
+3. Cross-platform Lua enablement beyond initial ESP32-focused bring-up path.
+4. Performance tuning and hardening beyond initial guardrails.
+
+## Runtime Selection Contract
+
+- `app.toml` may specify `runtime = "python"` or `runtime = "lua"`.
+- Missing/invalid runtime defaults to `python` for backward compatibility.
+- Direct script execution without `app.toml` uses extension inference:
+  - `.py` -> `python`
+  - `.lua` -> `lua`
+  - otherwise default `python`
+
+## Dispatch Boundary
+
+Shell and autorun flows must call a runtime-dispatch layer, not runtime-specific code directly.
+
+Required dispatch API:
+
+- `runtime_dispatch_start_file(kind, path, err, err_len)`
+- `runtime_dispatch_stop(force, err, err_len)`
+- `runtime_dispatch_is_running()`
+- `runtime_dispatch_is_ready()`
+- `runtime_dispatch_current_app()`
+- `runtime_dispatch_last_result()`
+- `runtime_dispatch_last_error()`
+- `runtime_dispatch_last_runtime()`
+
+## Behavior Requirements
+
+1. A single app task remains the baseline execution model.
+2. Unsupported runtime selection must fail with a clear, actionable error.
+3. Shell `logs` output must report runtime identity and latest result/error in a stable format.
+4. Runtime integration must not break existing Python app workflows.
+
+## Planned Next Slices
+
+1. Add Lua component skeleton and build gating.
+2. Implement `lua_runtime` API parity with Python lifecycle semantics.
+3. Add minimal Lua bindings (`system`, `gpio`, `timer`) and sample apps.
+4. Add CI + bench validation lanes for runtime selection and execution.

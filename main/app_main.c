@@ -56,7 +56,7 @@
 #include "hal/hal_uart.h"
 
 #include "tft_console.h"
-#include "mpy_runtime.h"
+#include "runtime_dispatch.h"
 
 #define BASALT_PROMPT "basalt> "
 #define BASALT_INPUT_MAX 128
@@ -634,6 +634,13 @@ static const char *path_basename(const char *path) {
     return slash ? slash + 1 : path;
 }
 
+static bool path_has_extension(const char *path) {
+    if (!path || !path[0]) return false;
+    const char *base = path_basename(path);
+    const char *dot = strrchr(base, '.');
+    return dot && dot != base && dot[1] != '\0';
+}
+
 static size_t normalize_name_key(const char *in, char *out, size_t out_len) {
     if (!in || !out || out_len == 0) return 0;
     size_t n = 0;
@@ -721,31 +728,50 @@ static bool parse_entry_from_toml(const char *toml_path, char *out, size_t out_l
     return toml_get_value(toml_path, "entry", out, out_len);
 }
 
-static bool app_entry_path_flat(const char *app_prefix, char *out, size_t out_len) {
+static basalt_runtime_kind_t parse_runtime_from_toml(const char *toml_path) {
+    char runtime[32] = {0};
+    if (!toml_get_value(toml_path, "runtime", runtime, sizeof(runtime))) return BASALT_RUNTIME_PYTHON;
+    basalt_runtime_kind_t kind = runtime_kind_from_string(runtime);
+    return (kind == BASALT_RUNTIME_UNKNOWN) ? BASALT_RUNTIME_PYTHON : kind;
+}
+
+static bool app_entry_path_flat(const char *app_prefix, char *out, size_t out_len, basalt_runtime_kind_t *runtime_kind) {
     char toml[128];
     snprintf(toml, sizeof(toml), "%s/app.toml", app_prefix);
     char entry[64] = "main.py";
     parse_entry_from_toml(toml, entry, sizeof(entry));
+    if (runtime_kind) *runtime_kind = parse_runtime_from_toml(toml);
     snprintf(out, out_len, "%s/%s", app_prefix, entry);
     return true;
 }
 
-static bool resolve_named_app_script(const char *app_name, char *out, size_t out_len) {
+static basalt_runtime_kind_t runtime_from_script_extension(const char *path) {
+    if (!path) return BASALT_RUNTIME_PYTHON;
+    const char *ext = strrchr(path, '.');
+    if (!ext) return BASALT_RUNTIME_PYTHON;
+    if (strcmp(ext, ".lua") == 0) return BASALT_RUNTIME_LUA;
+    return BASALT_RUNTIME_PYTHON;
+}
+
+static bool resolve_named_app_script(const char *app_name, char *out, size_t out_len, basalt_runtime_kind_t *runtime_kind) {
     if (!app_name || !app_name[0] || strchr(app_name, '/')) return false;
 
     char app_prefix[128];
     snprintf(app_prefix, sizeof(app_prefix), BASALT_APPS_ROOT "/%s", app_name);
 
     char script[256];
-    app_entry_path_flat(app_prefix, script, sizeof(script));
+    basalt_runtime_kind_t kind = BASALT_RUNTIME_PYTHON;
+    app_entry_path_flat(app_prefix, script, sizeof(script), &kind);
     if (path_is_file(script)) {
         snprintf(out, out_len, "%s", script);
+        if (runtime_kind) *runtime_kind = kind;
         return true;
     }
 
     snprintf(script, sizeof(script), "%s/main.py", app_prefix);
     if (path_is_file(script)) {
         snprintf(out, out_len, "%s", script);
+        if (runtime_kind) *runtime_kind = BASALT_RUNTIME_PYTHON;
         return true;
     }
 
@@ -771,6 +797,7 @@ static bool resolve_named_app_script(const char *app_name, char *out, size_t out
 
         if (strcmp(name + prefix_len, "main.py") == 0) {
             snprintf(out, out_len, "%s", full);
+            if (runtime_kind) *runtime_kind = BASALT_RUNTIME_PYTHON;
             closedir(dir);
             return true;
         }
@@ -782,6 +809,7 @@ static bool resolve_named_app_script(const char *app_name, char *out, size_t out
 
     if (first_py[0]) {
         snprintf(out, out_len, "%s", first_py);
+        if (runtime_kind) *runtime_kind = BASALT_RUNTIME_PYTHON;
         return true;
     }
     return false;
@@ -6005,14 +6033,15 @@ static void bsh_cmd_applet_run(const char *name) {
         return;
     }
     char script[256];
-    if (!resolve_named_app_script(name, script, sizeof(script))) {
+    basalt_runtime_kind_t kind = BASALT_RUNTIME_PYTHON;
+    if (!resolve_named_app_script(name, script, sizeof(script), &kind)) {
         basalt_printf("applet run: no entry script in /apps/%s\n", name);
         return;
     }
 
     char err[128];
-    basalt_printf("applet run: launching %s\n", script);
-    if (!mpy_runtime_start_file(script, err, sizeof(err))) {
+    basalt_printf("applet run: launching %s (%s)\n", script, runtime_kind_name(kind));
+    if (!runtime_dispatch_start_file(kind, script, err, sizeof(err))) {
         basalt_printf("applet run: %s\n", err);
     }
 }
@@ -6142,16 +6171,17 @@ static void bsh_handle_line(char *line) {
             basalt_printf("run: missing required argument <app|script>\n");
             bsh_print_usage("run");
         } else {
-            const bool is_name = !path_is_absolute(arg) && !strchr(arg, '/') && !strstr(arg, ".py");
+            const bool is_name = !path_is_absolute(arg) && !strchr(arg, '/') && !path_has_extension(arg);
             if (is_name) {
                 char script[256];
-                if (!resolve_named_app_script(arg, script, sizeof(script))) {
+                basalt_runtime_kind_t kind = BASALT_RUNTIME_PYTHON;
+                if (!resolve_named_app_script(arg, script, sizeof(script), &kind)) {
                     basalt_printf("run: no entry script in /apps/%s\n", arg);
                     return;
                 }
                 char err[128];
-                basalt_printf("run: launching %s\n", script);
-                if (!mpy_runtime_start_file(script, err, sizeof(err))) {
+                basalt_printf("run: launching %s (%s)\n", script, runtime_kind_name(kind));
+                if (!runtime_dispatch_start_file(kind, script, err, sizeof(err))) {
                     basalt_printf("run: %s\n", err);
                 }
                 return;
@@ -6164,13 +6194,15 @@ static void bsh_handle_line(char *line) {
                 return;
             }
             char script[128];
+            basalt_runtime_kind_t kind = BASALT_RUNTIME_PYTHON;
             if (path_is_dir(rpath)) {
-                app_entry_path_flat(rpath, script, sizeof(script));
+                app_entry_path_flat(rpath, script, sizeof(script), &kind);
             } else {
                 // SPIFFS flat layout: treat as app prefix
-                app_entry_path_flat(rpath, script, sizeof(script));
+                app_entry_path_flat(rpath, script, sizeof(script), NULL);
                 if (!path_is_file(script)) {
                     snprintf(script, sizeof(script), "%s", rpath);
+                    kind = runtime_from_script_extension(script);
                 }
             }
             if (!path_is_file(script)) {
@@ -6178,8 +6210,8 @@ static void bsh_handle_line(char *line) {
                 return;
             }
             char err[128];
-            basalt_printf("run: launching %s\n", script);
-            if (!mpy_runtime_start_file(script, err, sizeof(err))) {
+            basalt_printf("run: launching %s (%s)\n", script, runtime_kind_name(kind));
+            if (!runtime_dispatch_start_file(kind, script, err, sizeof(err))) {
                 basalt_printf("run: %s\n", err);
             }
         }
@@ -6189,7 +6221,7 @@ static void bsh_handle_line(char *line) {
             basalt_printf("run_dev: missing required argument <app|script>\n");
             bsh_print_usage("run_dev");
         } else {
-            const bool is_name = !path_is_absolute(arg) && !strchr(arg, '/') && !strstr(arg, ".py");
+            const bool is_name = !path_is_absolute(arg) && !strchr(arg, '/') && !path_has_extension(arg);
             char vpath[128];
             if (path_is_absolute(arg)) {
                 resolve_virtual_path(arg, vpath, sizeof(vpath));
@@ -6208,12 +6240,14 @@ static void bsh_handle_line(char *line) {
                 return;
             }
             char script[128];
+            basalt_runtime_kind_t kind = BASALT_RUNTIME_PYTHON;
             if (path_is_dir(rpath)) {
-                app_entry_path_flat(rpath, script, sizeof(script));
+                app_entry_path_flat(rpath, script, sizeof(script), &kind);
             } else {
-                app_entry_path_flat(rpath, script, sizeof(script));
+                app_entry_path_flat(rpath, script, sizeof(script), NULL);
                 if (!path_is_file(script)) {
                     snprintf(script, sizeof(script), "%s", rpath);
+                    kind = runtime_from_script_extension(script);
                 }
             }
             bool tried_sd = false;
@@ -6224,11 +6258,12 @@ static void bsh_handle_line(char *line) {
                 if (map_virtual_to_real(vpath_sd, rpath_sd, sizeof(rpath_sd))) {
                     tried_sd = true;
                     if (path_is_dir(rpath_sd)) {
-                        app_entry_path_flat(rpath_sd, script, sizeof(script));
+                        app_entry_path_flat(rpath_sd, script, sizeof(script), &kind);
                     } else {
-                        app_entry_path_flat(rpath_sd, script, sizeof(script));
+                        app_entry_path_flat(rpath_sd, script, sizeof(script), NULL);
                         if (!path_is_file(script)) {
                             snprintf(script, sizeof(script), "%s", rpath_sd);
+                            kind = runtime_from_script_extension(script);
                         }
                     }
                 }
@@ -6239,11 +6274,12 @@ static void bsh_handle_line(char *line) {
                     char match[128];
                     if (resolve_dev_app_in_dir(rpath_sd_root, arg, match, sizeof(match))) {
                         if (path_is_dir(match)) {
-                            app_entry_path_flat(match, script, sizeof(script));
+                            app_entry_path_flat(match, script, sizeof(script), &kind);
                         } else {
-                            app_entry_path_flat(match, script, sizeof(script));
+                            app_entry_path_flat(match, script, sizeof(script), NULL);
                             if (!path_is_file(script)) {
                                 snprintf(script, sizeof(script), "%s", match);
+                                kind = runtime_from_script_extension(script);
                             }
                         }
                         tried_sd = true;
@@ -6259,20 +6295,20 @@ static void bsh_handle_line(char *line) {
                 return;
             }
             char err[128];
-            if (!mpy_runtime_start_file(script, err, sizeof(err))) {
+            if (!runtime_dispatch_start_file(kind, script, err, sizeof(err))) {
                 basalt_printf("run_dev: %s\n", err);
             }
         }
     } else if (strcmp(cmd, "stop") == 0) {
         char err[128];
-        if (!mpy_runtime_stop(false, err, sizeof(err))) {
+        if (!runtime_dispatch_stop(false, err, sizeof(err))) {
             basalt_printf("stop: %s\n", err);
         } else {
             basalt_printf("stopped\n");
         }
     } else if (strcmp(cmd, "kill") == 0) {
         char err[128];
-        if (!mpy_runtime_stop(true, err, sizeof(err))) {
+        if (!runtime_dispatch_stop(true, err, sizeof(err))) {
             basalt_printf("kill: %s\n", err);
         } else {
             basalt_printf("killed\n");
@@ -6304,11 +6340,13 @@ static void bsh_handle_line(char *line) {
 #endif
     } else if (strcmp(cmd, "logs") == 0) {
 #if BASALT_SHELL_LEVEL >= 3
-        const char *current = mpy_runtime_current_app();
-        const char *last_err = mpy_runtime_last_error();
-        const char *last_result = mpy_runtime_last_result();
-        basalt_printf("runtime.ready: %s\n", mpy_runtime_is_ready() ? "yes" : "no");
-        basalt_printf("runtime.running: %s\n", mpy_runtime_is_running() ? "yes" : "no");
+        const char *current = runtime_dispatch_current_app();
+        const char *last_err = runtime_dispatch_last_error();
+        const char *last_result = runtime_dispatch_last_result();
+        const char *last_runtime = runtime_dispatch_last_runtime();
+        basalt_printf("runtime.ready: %s\n", runtime_dispatch_is_ready() ? "yes" : "no");
+        basalt_printf("runtime.running: %s\n", runtime_dispatch_is_running() ? "yes" : "no");
+        basalt_printf("runtime.last_runtime: %s\n", last_runtime ? last_runtime : "(none)");
         basalt_printf("runtime.app: %s\n", current ? current : "(none)");
         basalt_printf("runtime.last_result: %s\n", last_result ? last_result : "(none)");
         basalt_printf("runtime.last_error: %s\n", last_err ? last_err : "(none)");
@@ -6785,12 +6823,13 @@ static void basalt_log_driver_boot_summary(void) {
 static void basalt_autorun_market_apps(void) {
 #if defined(BASALT_MARKET_APP_ENABLED_FLAPPY_BIRD) && BASALT_MARKET_APP_ENABLED_FLAPPY_BIRD
     char script[256];
-    if (!resolve_named_app_script("flappy_bird", script, sizeof(script))) {
+    basalt_runtime_kind_t kind = BASALT_RUNTIME_PYTHON;
+    if (!resolve_named_app_script("flappy_bird", script, sizeof(script), &kind)) {
         ESP_LOGW(TAG, "autorun flappy_bird skipped: app entry not found");
     } else {
         char err[128] = {0};
-        ESP_LOGI(TAG, "autorun: launching %s", script);
-        if (!mpy_runtime_start_file(script, err, sizeof(err))) {
+        ESP_LOGI(TAG, "autorun: launching %s (%s)", script, runtime_kind_name(kind));
+        if (!runtime_dispatch_start_file(kind, script, err, sizeof(err))) {
             ESP_LOGE(TAG, "autorun flappy_bird failed: %s", err[0] ? err : "unknown error");
         }
     }
