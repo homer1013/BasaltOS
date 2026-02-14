@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "lua_runtime.h"
 #include "mpy_runtime.h"
 
 static char s_dispatch_last_error[128] = {0};
@@ -65,11 +66,16 @@ bool runtime_dispatch_start_file(basalt_runtime_kind_t kind, const char *path, c
     }
 
     if (kind == BASALT_RUNTIME_LUA) {
-        const char *msg = "lua runtime is not integrated in this build yet";
-        if (err_buf && err_len) snprintf(err_buf, err_len, "%s", msg);
-        dispatch_set_error(msg);
-        dispatch_set_result("failed");
-        return false;
+        bool ok = lua_runtime_start_file(path, err_buf, err_len);
+        if (!ok) {
+            const char *e = lua_runtime_last_error();
+            dispatch_set_error(e ? e : "lua runtime start failed");
+            dispatch_set_result("failed");
+            return false;
+        }
+        dispatch_set_error(NULL);
+        dispatch_set_result("running");
+        return true;
     }
 
     {
@@ -82,13 +88,23 @@ bool runtime_dispatch_start_file(basalt_runtime_kind_t kind, const char *path, c
 }
 
 bool runtime_dispatch_stop(bool force, char *err_buf, size_t err_len) {
-    // Current implementation supports Python runtime task lifecycle.
-    bool ok = mpy_runtime_stop(force, err_buf, err_len);
-    if (!ok) {
-        const char *e = mpy_runtime_last_error();
-        dispatch_set_error(e ? e : "runtime stop failed");
-        dispatch_set_result("failed");
-        return false;
+    bool ok = false;
+    if (s_dispatch_last_runtime == BASALT_RUNTIME_LUA) {
+        ok = lua_runtime_stop(force, err_buf, err_len);
+        if (!ok) {
+            const char *e = lua_runtime_last_error();
+            dispatch_set_error(e ? e : "runtime stop failed");
+            dispatch_set_result("failed");
+            return false;
+        }
+    } else {
+        ok = mpy_runtime_stop(force, err_buf, err_len);
+        if (!ok) {
+            const char *e = mpy_runtime_last_error();
+            dispatch_set_error(e ? e : "runtime stop failed");
+            dispatch_set_result("failed");
+            return false;
+        }
     }
     dispatch_set_error(NULL);
     dispatch_set_result(force ? "killed-by-user" : "stopped-by-user");
@@ -96,25 +112,39 @@ bool runtime_dispatch_stop(bool force, char *err_buf, size_t err_len) {
 }
 
 bool runtime_dispatch_is_running(void) {
-    return mpy_runtime_is_running();
+    return mpy_runtime_is_running() || lua_runtime_is_running();
 }
 
 bool runtime_dispatch_is_ready(void) {
-    return mpy_runtime_is_ready();
+    return mpy_runtime_is_ready() || lua_runtime_is_ready();
 }
 
 const char *runtime_dispatch_current_app(void) {
+    if (s_dispatch_last_runtime == BASALT_RUNTIME_LUA) {
+        const char *lua_app = lua_runtime_current_app();
+        if (lua_app) return lua_app;
+    }
     return mpy_runtime_current_app();
 }
 
 const char *runtime_dispatch_last_error(void) {
-    const char *runtime_err = mpy_runtime_last_error();
+    const char *runtime_err = NULL;
+    if (s_dispatch_last_runtime == BASALT_RUNTIME_LUA) {
+        runtime_err = lua_runtime_last_error();
+    } else {
+        runtime_err = mpy_runtime_last_error();
+    }
     if (runtime_err && runtime_err[0]) return runtime_err;
     return s_dispatch_last_error[0] ? s_dispatch_last_error : NULL;
 }
 
 const char *runtime_dispatch_last_result(void) {
-    const char *runtime_result = mpy_runtime_last_result();
+    const char *runtime_result = NULL;
+    if (s_dispatch_last_runtime == BASALT_RUNTIME_LUA) {
+        runtime_result = lua_runtime_last_result();
+    } else {
+        runtime_result = mpy_runtime_last_result();
+    }
     if (runtime_result && runtime_result[0] && strcmp(runtime_result, "never-run") != 0) return runtime_result;
     return s_dispatch_last_result;
 }

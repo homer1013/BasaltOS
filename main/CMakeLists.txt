@@ -4,6 +4,7 @@ idf_component_register(
         "smoke_test.c"
         "tft_console.c"
         "mpy_runtime.c"
+        "lua_runtime.c"
         "runtime_dispatch.c"
     INCLUDE_DIRS "."
     REQUIRES nvs_flash spiffs console micropython_embed basalt_hal

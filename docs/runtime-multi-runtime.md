@@ -69,3 +69,18 @@ Required dispatch API:
 - When enabled, build includes component:
   - `runtime/lua/lua_embed`
 - This first slice only adds component topology and stub lifecycle API (`lua_embed_*`).
+
+## Lua Runtime API Parity (Current Status)
+
+- `lua_runtime` lifecycle interface now exists in `main/` and mirrors Python runtime surface:
+  - `init`
+  - `is_ready`
+  - `run_file`
+  - `start_file`
+  - `stop`
+  - `is_running`
+  - `current_app`
+  - `last_result`
+  - `last_error`
+- In this phase, Lua runtime execution intentionally returns a clear \"not integrated\" failure.
+- Runtime dispatch is wired to call `lua_runtime` APIs for `runtime=lua` paths.
