@@ -116,6 +116,9 @@ jobs:
   lua-runtime-smoke:
     runs-on: ubuntu-latest
     container: espressif/idf:release-v5.5
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout
