@@ -4,19 +4,29 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 
+grepq() {
+  local pattern="$1"
+  local file="$2"
+  if command -v rg >/dev/null 2>&1; then
+    rg -q "$pattern" "$file"
+  else
+    grep -q "$pattern" "$file"
+  fi
+}
+
 test -f runtime/lua/lua_embed/include/basalt_lua_bindings.h
 test -f runtime/lua/lua_embed/basalt_lua_bindings.c
 
-rg -q "system_log" runtime/lua/lua_embed/include/basalt_lua_bindings.h
-rg -q "gpio_mode" runtime/lua/lua_embed/include/basalt_lua_bindings.h
-rg -q "timer_sleep_ms" runtime/lua/lua_embed/include/basalt_lua_bindings.h
+grepq "system_log" runtime/lua/lua_embed/include/basalt_lua_bindings.h
+grepq "gpio_mode" runtime/lua/lua_embed/include/basalt_lua_bindings.h
+grepq "timer_sleep_ms" runtime/lua/lua_embed/include/basalt_lua_bindings.h
 
-rg -q "hal_gpio_set_mode" runtime/lua/lua_embed/basalt_lua_bindings.c
-rg -q "hal_gpio_write" runtime/lua/lua_embed/basalt_lua_bindings.c
-rg -q "hal_gpio_read" runtime/lua/lua_embed/basalt_lua_bindings.c
-rg -q "vTaskDelay" runtime/lua/lua_embed/basalt_lua_bindings.c
+grepq "hal_gpio_set_mode" runtime/lua/lua_embed/basalt_lua_bindings.c
+grepq "hal_gpio_write" runtime/lua/lua_embed/basalt_lua_bindings.c
+grepq "hal_gpio_read" runtime/lua/lua_embed/basalt_lua_bindings.c
+grepq "vTaskDelay" runtime/lua/lua_embed/basalt_lua_bindings.c
 
-rg -q "lua_embed_init" main/lua_runtime.c
-rg -q "lua runtime is not ready" main/lua_runtime.c
+grepq "lua_embed_init" main/lua_runtime.c
+grepq "lua runtime is not ready" main/lua_runtime.c
 
 echo "PASS: lua bindings contract smoke checks"
