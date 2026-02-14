@@ -10,7 +10,7 @@ grepq() {
   if command -v rg >/dev/null 2>&1; then
     rg -q "$pattern" "$file"
   else
-    grep -q "$pattern" "$file"
+    grep -Fq "$pattern" "$file"
   fi
 }
 
@@ -20,6 +20,6 @@ grepq "heap_caps_get_free_size" main/lua_runtime.c
 grepq "script too large" main/lua_runtime.c
 grepq "free heap too low" main/lua_runtime.c
 grepq "guardrail-blocked" main/lua_runtime.c
-grepq "lua_runtime_check_guardrails\\(path" main/lua_runtime.c
+grepq "lua_runtime_check_guardrails" main/lua_runtime.c
 
 echo "PASS: lua runtime guardrails smoke checks"

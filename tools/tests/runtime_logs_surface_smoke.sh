@@ -10,7 +10,7 @@ grepq() {
   if command -v rg >/dev/null 2>&1; then
     rg -q "$pattern" "$file"
   else
-    grep -q "$pattern" "$file"
+    grep -Fq "$pattern" "$file"
   fi
 }
 
