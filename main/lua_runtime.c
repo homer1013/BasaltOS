@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #if defined(__has_include)
 #if __has_include("lua_embed.h")
@@ -14,6 +15,11 @@
 #else
 #define BASALT_HAS_LUA_EMBED 0
 #endif
+
+#include "esp_heap_caps.h"
+
+#define BASALT_LUA_MAX_SCRIPT_BYTES (64u * 1024u)
+#define BASALT_LUA_MIN_FREE_HEAP_BYTES (32u * 1024u)
 
 static bool s_lua_ready = false;
 static bool s_lua_running = false;
@@ -52,6 +58,47 @@ static bool lua_fail_with(char *err_buf, size_t err_len, const char *fmt, ...) {
     return false;
 }
 
+static bool lua_guardrail_fail_with(char *err_buf, size_t err_len, const char *fmt, ...) {
+    char msg[128];
+    va_list ap;
+    va_start(ap, fmt);
+    vsnprintf(msg, sizeof(msg), fmt, ap);
+    va_end(ap);
+
+    lua_set_last_error(msg);
+    lua_set_last_result("guardrail-blocked");
+    if (err_buf && err_len) {
+        snprintf(err_buf, err_len, "%s", msg);
+    }
+    return false;
+}
+
+static bool lua_runtime_check_guardrails(const char *path, char *err_buf, size_t err_len) {
+    struct stat st;
+    if (stat(path, &st) != 0) {
+        return lua_guardrail_fail_with(err_buf, err_len, "script not found: %s", path);
+    }
+    if (st.st_size <= 0) {
+        return lua_guardrail_fail_with(err_buf, err_len, "script is empty: %s", path);
+    }
+    if ((uint64_t)st.st_size > BASALT_LUA_MAX_SCRIPT_BYTES) {
+        return lua_guardrail_fail_with(
+            err_buf, err_len,
+            "script too large (%lu > %u bytes)",
+            (unsigned long)st.st_size, BASALT_LUA_MAX_SCRIPT_BYTES);
+    }
+
+    size_t free_heap = heap_caps_get_free_size(MALLOC_CAP_8BIT);
+    if (free_heap < BASALT_LUA_MIN_FREE_HEAP_BYTES) {
+        return lua_guardrail_fail_with(
+            err_buf, err_len,
+            "free heap too low (%u < %u bytes)",
+            (unsigned)free_heap, BASALT_LUA_MIN_FREE_HEAP_BYTES);
+    }
+
+    return true;
+}
+
 void lua_runtime_init(void) {
     s_lua_running = false;
 #if BASALT_HAS_LUA_EMBED
@@ -85,6 +132,9 @@ bool lua_runtime_run_file(const char *path, char *err_buf, size_t err_len) {
     if (!s_lua_ready) {
         return lua_fail_with(err_buf, err_len, "lua runtime is not ready");
     }
+    if (!lua_runtime_check_guardrails(path, err_buf, err_len)) {
+        return false;
+    }
     return lua_fail_with(err_buf, err_len, "lua vm execution is not integrated in this build yet");
 }
 
@@ -100,6 +150,9 @@ bool lua_runtime_start_file(const char *path, char *err_buf, size_t err_len) {
     }
     if (!s_lua_ready) {
         return lua_fail_with(err_buf, err_len, "lua runtime is not ready");
+    }
+    if (!lua_runtime_check_guardrails(path, err_buf, err_len)) {
+        return false;
     }
     snprintf(s_lua_current_app, sizeof(s_lua_current_app), "%s", path);
     s_lua_running = false;

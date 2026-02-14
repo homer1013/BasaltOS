@@ -97,3 +97,12 @@ Required dispatch API:
   - `timer.sleep_ms(ms)`
 - Contract implementation currently routes through HAL-oriented wrappers and is intended as
   a stable foundation for upcoming VM integration slices.
+
+## Lua Guardrails (Current Status)
+
+- Initial pre-execution guardrails are now enforced in `main/lua_runtime.c`:
+  - script must exist and be non-empty
+  - script size must be <= `64 KiB` (foundation default)
+  - available 8-bit heap must be >= `32 KiB` before run/start
+- Guardrail failures use explicit diagnostics and `last_result = "guardrail-blocked"` so shell
+  status remains actionable while VM integration is still in progress.
