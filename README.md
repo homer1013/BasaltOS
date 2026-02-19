@@ -29,7 +29,7 @@ BasaltOS generates board-aware configuration, feature flags, and SDK defaults so
 
 - Board taxonomy system (Manufacturer -> Architecture -> Family -> Silicon -> Board)
 - CLI + Web configuration generator
-- Integrated MicroPython runtime
+- Multi-runtime architecture (MicroPython + Lua track)
 - Shell (`bsh`) over UART + TFT
 - Filesystem-backed installable app model
 - Hardware abstraction layer (HAL)
@@ -148,7 +148,7 @@ BasaltOS emphasizes:
 - Approachability
 - Clear board taxonomy
 - Installable app model
-- Integrated MicroPython runtime
+- Multi-runtime design (not single-language locked)
 - Simpler mental model for experimentation and education
 
 Zephyr is production infrastructure.  
@@ -179,10 +179,12 @@ What’s working today:
   - install/run/remove concepts
   - “store-only zip” packaging tools (`tools/pack_app.py`)
   - dev app workflow under `dev/apps_dev` with shell execution via `run_dev`
-- **Embedded MicroPython runtime**
-  - MicroPython is integrated as a submodule/runtime
-  - `basalt.*` APIs exist and are expanding
-  - UI API now includes draw + touch primitives used by apps like `paint`
+- **Runtime architecture (multi-runtime)**
+  - BasaltOS runtime dispatch supports per-app runtime selection (for example: `python`, `lua`, `native`)
+  - MicroPython runtime is integrated today with expanding `basalt.*` APIs
+  - Lua runtime path is active with component scaffolding, bindings contracts, guardrails, CI lane, and sample/parity fixtures
+  - Lua VM/runtime integration is intentionally staged and still in progress for production execution
+  - UI API currently includes draw + touch primitives used by apps like `paint` in MicroPython
 - **Configuration system (CLI + Web)**
   - **Boards + Drivers + Platforms** model
   - CLI wizard: `python tools/configure.py --wizard`
@@ -444,7 +446,7 @@ Mid-term:
 Long-term:
 - Stable SDK feel
 - Signed packages and permissions
-- Multiple runtimes
+- Full Lua runtime integration + parity with MicroPython-facing Basalt APIs
 - Hosted configurator + broader target support
 
 ---

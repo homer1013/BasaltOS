@@ -145,6 +145,9 @@ jobs:
       - name: Set up Python deps
         run: |
           set -euo pipefail
+          if ! python -m pip --version >/dev/null 2>&1; then
+            python -m ensurepip --upgrade
+          fi
           python -m pip install --upgrade pip
           python -m pip install flask flask-cors
 
