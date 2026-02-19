@@ -127,72 +127,12 @@ Firmware Image
 
 ## Why Not Arduino, FreeRTOS, or Zephyr?
 
-BasaltOS does not replace these platforms.  
-It occupies a different layer in the embedded ecosystem.
+BasaltOS does not replace these platforms. It fills a different layer.
 
-### Why Not Arduino?
-
-Arduino is fantastic for:
-- Quick prototypes
-- Learning embedded basics
-- Simple hardware sketches
-
-But Arduino typically:
-- Couples applications tightly to board-specific APIs
-- Encourages monolithic firmware structure
-- Has no built-in app lifecycle or installable app model
-- Lacks a structured multi-board configuration abstraction
-
-BasaltOS instead focuses on:
-- Separating Platform -> Board -> Drivers -> Apps
-- Structured configuration generation
-- Installable / runnable app concepts
-- A portable hardware abstraction layer
-
-Arduino is firmware-first.  
-BasaltOS is platform-first.
-
-### Why Not FreeRTOS?
-
-FreeRTOS provides:
-- A lightweight real-time scheduler
-- Deterministic task management
-- Excellent low-level control
-
-But FreeRTOS is:
-- A kernel, not a full application platform
-- SDK-dependent (ESP-IDF, STM32Cube, etc.)
-- Lacking board taxonomy and feature configuration layers
-- Not focused on app install/remove workflows
-
-BasaltOS can run on top of environments that use FreeRTOS internally.
-
-FreeRTOS manages tasks.  
-BasaltOS manages systems.
-
-### Why Not Zephyr?
-
-Zephyr offers:
-- Industrial-grade RTOS
-- Extensive hardware support
-- Strong community and vendor backing
-- Devicetree-based configuration
-
-But Zephyr is:
-- Complex to onboard for newcomers
-- Primarily C-centric
-- Geared toward production firmware and certification paths
-- Not focused on installable app ecosystems or shell-driven workflows
-
-BasaltOS emphasizes:
-- Approachability
-- Clear board taxonomy
-- Installable app model
-- Multi-runtime design (not single-language locked)
-- Simpler mental model for experimentation and education
-
-Zephyr is production infrastructure.  
-BasaltOS is an application platform.
+- **Arduino**: great for single-board sketches and quick firmware prototypes
+- **FreeRTOS**: great RTOS kernel and task scheduling foundation
+- **Zephyr**: great production-grade RTOS ecosystem
+- **BasaltOS**: board-aware config + installable app workflow + shell/runtime UX across targets
 
 | Platform | Focus                                  |
 | -------- | -------------------------------------- |

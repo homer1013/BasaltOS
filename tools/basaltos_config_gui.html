@@ -1813,6 +1813,7 @@
                             <input type="checkbox" id="show-enabled-only"> Show enabled only
                         </label>
                         <div class="module-layout-controls">
+                            <button class="btn-mini" id="btn-board-defaults" type="button">Use Board Recommended Defaults</button>
                             <button class="btn-mini" id="btn-optimize-size" type="button">Optimize For Size</button>
                             <button class="btn-mini" id="btn-expand-modules" type="button">Expand All</button>
                             <button class="btn-mini" id="btn-collapse-modules" type="button">Collapse All</button>
@@ -2003,6 +2004,16 @@
                     </div>
 
                     <div id="generate-output" class="inline-output"></div>
+                    <div class="validation-panel" id="final-step-actions" style="margin-top:14px;">
+                        <div class="validation-item info">
+                            <span class="validation-icon">🧭</span>
+                            <div><strong>Next:</strong> Generate files, then build from repo root with ESP-IDF.</div>
+                        </div>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+                            <button class="btn btn-secondary" id="btn-copy-idf-build" type="button" style="padding:8px 12px; font-size:13px;">Copy ESP-IDF Build Commands</button>
+                            <button class="btn btn-secondary" id="btn-open-first-success" type="button" style="padding:8px 12px; font-size:13px;">Open 10-Min First Success Guide</button>
+                        </div>
+                    </div>
 
                     <div id="web-flasher-panel" class="web-flasher-panel" style="display:none;">
                         <h3>ESP32 Web Flasher</h3>
@@ -5055,6 +5066,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             if (currentStep === FINAL_STEP) {
                 renderReviewChecklist();
             }
+            updateFinalActionState();
             updateStepGuidance();
         }
 
@@ -6682,6 +6694,27 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             `).join('');
         }
 
+        function hasBlockingErrors({ includePins = true } = {}) {
+            return buildValidationIssues({ includePins }).some(i => i.type === 'error');
+        }
+
+        function updateFinalActionState() {
+            const btnGenerate = document.getElementById('btn-generate');
+            const btnGenerateBuild = document.getElementById('btn-generate-build');
+            const blocking = selectedBoard ? hasBlockingErrors({ includePins: isAdvancedPinConfigOpen() }) : true;
+            const reason = !selectedBoard
+                ? 'Select a board first.'
+                : 'Fix blocking validation errors before generating.';
+            if (btnGenerate) {
+                btnGenerate.disabled = blocking;
+                btnGenerate.title = blocking ? reason : '';
+            }
+            if (btnGenerateBuild) {
+                btnGenerateBuild.disabled = blocking;
+                btnGenerateBuild.title = blocking ? reason : '';
+            }
+        }
+
         function getCurrentStepReadiness(step = currentStep) {
             if (step === 1) {
                 if (!selectedBoard) {
@@ -6745,8 +6778,10 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 4: 'Generate'
             };
             const readiness = getCurrentStepReadiness(currentStep);
+            const finalBlocked = currentStep === FINAL_STEP && hasBlockingErrors({ includePins: isAdvancedPinConfigOpen() });
             hint.classList.toggle('error', !readiness.ready);
-            hint.innerHTML = `<strong>Step ${currentStep} - ${labels[currentStep] || 'Flow'}:</strong>&nbsp;${readiness.reason}`;
+            const msg = finalBlocked ? 'Fix blocking validation errors before generating files.' : readiness.reason;
+            hint.innerHTML = `<strong>Step ${currentStep} - ${labels[currentStep] || 'Flow'}:</strong>&nbsp;${msg}`;
             if (currentStep < FINAL_STEP) {
                 btnNext.disabled = !readiness.ready;
                 btnNext.title = readiness.ready ? '' : readiness.reason;
@@ -6858,6 +6893,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 refreshWebFlasher({ silent: true });
                 refreshAvrFlasher({ silent: true });
                 refreshSerialTerminalVisibility();
+                updateFinalActionState();
             } else {
                 refreshSerialTerminalVisibility();
             }
@@ -7079,6 +7115,18 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             if (topHomeBtn) topHomeBtn.addEventListener('click', () => showLanding());
             const btnOptimizeSize = document.getElementById('btn-optimize-size');
             if (btnOptimizeSize) btnOptimizeSize.addEventListener('click', optimizeForSize);
+            const btnBoardDefaults = document.getElementById('btn-board-defaults');
+            if (btnBoardDefaults) {
+                btnBoardDefaults.addEventListener('click', () => {
+                    if (!selectedBoard) {
+                        notify('Select a board first.', 'warning');
+                        return;
+                    }
+                    applyBoardAndTemplateDefaults(selectedBoard, null);
+                    notify('Board recommended defaults applied.', 'success');
+                    updateValidation();
+                });
+            }
             const driverTabWrap = document.getElementById('driver-tabs');
             if (driverTabWrap) {
                 driverTabWrap.querySelectorAll('[data-driver-view]').forEach(btn => {
@@ -7255,12 +7303,34 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             document.getElementById('btn-generate').onclick = generateFiles;
             const btnGenerateBuild = document.getElementById('btn-generate-build');
             if (btnGenerateBuild) btnGenerateBuild.onclick = generateAndBuildEsp32;
+            const btnCopyIdfBuild = document.getElementById('btn-copy-idf-build');
+            if (btnCopyIdfBuild) {
+                btnCopyIdfBuild.onclick = async () => {
+                    const text = [
+                        'SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build set-target <target>',
+                        'SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build'
+                    ].join('\n');
+                    try {
+                        await navigator.clipboard.writeText(text);
+                        notify('ESP-IDF build commands copied.', 'success');
+                    } catch (_) {
+                        notify('Could not access clipboard. Copy from README quick start.', 'warning');
+                    }
+                };
+            }
+            const btnOpenFirstSuccess = document.getElementById('btn-open-first-success');
+            if (btnOpenFirstSuccess) {
+                btnOpenFirstSuccess.onclick = () => {
+                    window.open('/docs/ESP32_FIRST_SUCCESS_10_MIN.md', '_blank', 'noopener');
+                };
+            }
             const expandBtn = document.getElementById('btn-expand-modules');
             if (expandBtn) expandBtn.onclick = () => setAllModuleSections(true);
             const collapseBtn = document.getElementById('btn-collapse-modules');
             if (collapseBtn) collapseBtn.onclick = () => setAllModuleSections(false);
             renderStatusChips();
             renderBuildHealthBar();
+            updateFinalActionState();
         }
 
         // Initialize on load
