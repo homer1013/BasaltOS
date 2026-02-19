@@ -56,7 +56,8 @@
 #endif
 #define BASALT_TFT_ENABLE (BASALT_ENABLE_TFT ? 1 : 0)
 
-#define BASALT_TFT_HOST   SPI3_HOST
+// Use SPI2 as baseline TFT host across ESP32 targets in current IDF toolchains.
+#define BASALT_TFT_HOST SPI2_HOST
 #ifdef BASALT_PIN_TFT_MOSI
     #define BASALT_TFT_MOSI BASALT_PIN_TFT_MOSI
 #else
