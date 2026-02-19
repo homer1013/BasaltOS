@@ -16,6 +16,7 @@ runtime/python/embed_build/
 # Temp
 /tmp/
 .basaltos-local/
+/jira/
 
 # Python
 __pycache__/
