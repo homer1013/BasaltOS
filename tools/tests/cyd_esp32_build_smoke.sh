@@ -23,10 +23,14 @@ python3 tools/configure.py \
 
 idf.py -B build fullclean >"$OUT/fullclean.log" 2>&1 || true
 SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults \
+idf.py -B build set-target esp32 >"$OUT/set_target.log" 2>&1
+SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults \
 idf.py -D SDKCONFIG=config/generated/sdkconfig -B build build >"$OUT/build.log" 2>&1 || {
   echo "FAIL: CYD ESP32 build failed"
   echo "--- configure.log ---"
   cat "$OUT/configure.log"
+  echo "--- set_target.log ---"
+  cat "$OUT/set_target.log"
   echo "--- build.log ---"
   cat "$OUT/build.log"
   exit 1
