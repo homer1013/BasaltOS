@@ -15,6 +15,7 @@ root = Path(".").resolve()
 apps = [
     root / "apps" / "lua_hello.app",
     root / "apps" / "lua_blink.app",
+    root / "apps" / "lua_fs_demo.app",
     root / "apps" / "demo.app",
 ]
 

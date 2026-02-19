@@ -1,6 +1,0 @@
-name = "sd_probe"
-version = "0.1.0"
-entry = "main.py"
-kind = "applet"
-managed_by = "basalt_configurator"
-source = "builtin"

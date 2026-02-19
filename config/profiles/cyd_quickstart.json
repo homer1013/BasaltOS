@@ -1,0 +1,14 @@
+{
+  "id": "cyd_quickstart",
+  "name": "CYD ESP32 Quickstart",
+  "description": "First-success profile for CYD ESP32-3248S035R with display stack.",
+  "platform": "esp32",
+  "board": "cyd_3248s035r",
+  "enabled_drivers": ["gpio", "uart", "i2c", "spi", "tft", "fs_spiffs", "fs_sd", "shell_full"],
+  "applets": ["system_info", "tft_hello", "sd_probe"],
+  "market_apps": ["paint"],
+  "driver_config": {},
+  "clock": {},
+  "fuses": {},
+  "upload": {}
+}

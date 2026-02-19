@@ -1,0 +1,14 @@
+{
+  "id": "esp32_c6_quickstart",
+  "name": "ESP32-C6 Quickstart",
+  "description": "First-success profile for ESP32-C6 DevKit baseline.",
+  "platform": "esp32",
+  "board": "esp32-c6",
+  "enabled_drivers": ["gpio", "uart", "i2c", "spi", "fs_spiffs", "shell_full"],
+  "applets": ["system_info", "fs_smoke"],
+  "market_apps": [],
+  "driver_config": {},
+  "clock": {},
+  "fuses": {},
+  "upload": {}
+}

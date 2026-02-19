@@ -1,0 +1,23 @@
+{
+  "id": "mega2560_quickstart",
+  "name": "Mega2560 Quickstart",
+  "description": "First-success profile for Arduino Mega 2560 baseline.",
+  "platform": "avr",
+  "board": "mega2560",
+  "enabled_drivers": ["gpio", "uart", "spi", "i2c", "timer", "eeprom", "shell_tiny"],
+  "applets": ["system_info"],
+  "market_apps": [],
+  "driver_config": {
+    "uart": {
+      "uart_num": 0,
+      "uart_baudrate": 115200
+    }
+  },
+  "clock": {
+    "freq_hz": 16000000
+  },
+  "fuses": {},
+  "upload": {
+    "method": "bootloader"
+  }
+}

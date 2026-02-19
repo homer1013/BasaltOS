@@ -87,16 +87,58 @@ static int binding_timer_sleep_ms(uint32_t ms) {
     return 0;
 }
 
+static int binding_fs_write_text(const char *path, const char *text) {
+    if (!path || !text) {
+        return -EINVAL;
+    }
+    FILE *fp = fopen(path, "w");
+    if (!fp) {
+        return -errno;
+    }
+    int rc = fputs(text, fp);
+    int cerr = fclose(fp);
+    if (rc < 0) {
+        return -EIO;
+    }
+    if (cerr != 0) {
+        return -EIO;
+    }
+    return 0;
+}
+
+static int binding_fs_read_text(const char *path, char *out, size_t out_len) {
+    if (!path || !out || out_len == 0) {
+        return -EINVAL;
+    }
+    FILE *fp = fopen(path, "r");
+    if (!fp) {
+        return -errno;
+    }
+    size_t n = fread(out, 1, out_len - 1, fp);
+    out[n] = '\0';
+    int ferr = ferror(fp);
+    int cerr = fclose(fp);
+    if (ferr != 0) {
+        return -EIO;
+    }
+    if (cerr != 0) {
+        return -EIO;
+    }
+    return 0;
+}
+
 static const basalt_lua_bindings_api_t s_api = {
     .system_log = binding_system_log,
     .gpio_mode = binding_gpio_mode,
     .gpio_write = binding_gpio_write,
     .gpio_read = binding_gpio_read,
     .timer_sleep_ms = binding_timer_sleep_ms,
+    .fs_write_text = binding_fs_write_text,
+    .fs_read_text = binding_fs_read_text,
 };
 
 void basalt_lua_bindings_init(void) {
-    snprintf(s_summary, sizeof(s_summary), "system.log gpio.mode/write/read timer.sleep_ms");
+    snprintf(s_summary, sizeof(s_summary), "system.log gpio.mode/write/read timer.sleep_ms fs.write_text/read_text");
     s_ready = true;
 }
 

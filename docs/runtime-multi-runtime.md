@@ -95,6 +95,8 @@ Required dispatch API:
   - `gpio.write(pin, value)`
   - `gpio.read(pin)`
   - `timer.sleep_ms(ms)`
+  - `fs.write_text(path, text)` (foundation helper)
+  - `fs.read_text(path)` (foundation helper)
 - Contract implementation currently routes through HAL-oriented wrappers and is intended as
   a stable foundation for upcoming VM integration slices.
 
@@ -120,6 +122,7 @@ Required dispatch API:
 - Added foundation sample apps:
   - `apps/lua_hello.app`
   - `apps/lua_blink.app`
+  - `apps/lua_fs_demo.app`
 - Added tooling parity smoke to verify runtime metadata and packaged-zip parity:
   - `tools/tests/lua_examples_parity_smoke.sh`
 

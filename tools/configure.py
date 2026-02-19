@@ -75,6 +75,24 @@ class ProjectTemplate:
     raw: dict
 
 
+@dataclass(frozen=True)
+class ConfigProfile:
+    id: str
+    name: str
+    description: str
+    platform: str
+    board: str
+    enabled_drivers: Tuple[str, ...]
+    applets: Tuple[str, ...]
+    market_apps: Tuple[str, ...]
+    driver_config: dict
+    clock: dict
+    fuses: dict
+    upload: dict
+    path: Path
+    raw: dict
+
+
 # -----------------------------
 # Helpers
 # -----------------------------
@@ -240,6 +258,46 @@ def board_taxonomy(board: BoardProfile) -> Dict[str, str]:
     }
 
 
+RUNTIME_STATUS_HINTS: Dict[str, Tuple[str, str]] = {
+    "gpio": ("ready", "Core GPIO runtime path is active."),
+    "uart": ("ready", "Shell/serial workflow uses UART at runtime."),
+    "spi": ("ready", "SPI runtime bus access is available."),
+    "i2c": ("ready", "I2C runtime path is used by scan/sensor flows."),
+    "fs_spiffs": ("ready", "SPIFFS runtime mount path is active."),
+    "fs_sd": ("partial", "Runtime support depends on board wiring/driver config."),
+    "wifi": ("partial", "Shell/runtime commands exist; board/network setup required."),
+    "bluetooth": ("partial", "Runtime hooks exist; board/setup dependent."),
+    "rtc": ("partial", "MicroPython API is available; hardware validation varies."),
+    "display_ssd1306": ("partial", "Basic runtime API exists; hardware-specific tuning may be needed."),
+    "imu": ("config-only", "Currently a configuration/diagnostic gate."),
+    "dht22": ("config-only", "Currently a configuration/diagnostic gate."),
+    "mic": ("config-only", "Currently a configuration/diagnostic gate."),
+}
+
+
+def driver_runtime_status(module: Module) -> Tuple[str, str]:
+    hint = RUNTIME_STATUS_HINTS.get(module.id)
+    if hint:
+        return hint
+    runtime = module.runtime or {}
+    if runtime:
+        return ("partial", "Runtime metadata exists; implementation maturity varies by platform.")
+    return ("config-only", "No runtime metadata declared; treat as configuration-time feature.")
+
+
+def emit_runtime_readiness(enabled_list: List[str], modules: Dict[str, Module]) -> None:
+    if not enabled_list:
+        print("[configure] Runtime readiness: (no drivers enabled)")
+        return
+    print("[configure] Runtime readiness:")
+    for mid in enabled_list:
+        mod = modules.get(mid)
+        if not mod:
+            continue
+        state, detail = driver_runtime_status(mod)
+        print(f"  - {mid:16s} [{state}] {detail}")
+
+
 def read_json_file(path: Path, default: Any) -> Any:
     try:
         if path.exists():
@@ -383,12 +441,14 @@ def run_doctor(root: Path, platform: Optional[str], board: Optional[str]) -> int
         else:
             fail("boards", "no boards found")
 
+    resolved_board: Optional[BoardProfile] = None
     if board and platform:
         try:
             b, _allow = select_board_noninteractive(boards, platform, board)
             if b is None:
                 fail("board", f"board '{board}' not resolved under platform '{platform}'")
             else:
+                resolved_board = b
                 ok("board", f"resolved to {b.platform}/{b.board_dir} (id='{b.id}')")
         except Exception as ex:
             fail("board", str(ex))
@@ -421,6 +481,22 @@ def run_doctor(root: Path, platform: Optional[str], board: Optional[str]) -> int
         ok("avr toolchain", f"arduino-cli found at {arduino_cli}")
     else:
         warn("avr toolchain", "arduino-cli not found in PATH")
+
+    print("")
+    print("[doctor] Suggested next commands:")
+    if resolved_board:
+        print(f"  python tools/configure.py --platform {resolved_board.platform} --board {resolved_board.board_dir} --quickstart")
+    elif platform and board:
+        print(f"  python tools/configure.py --platform {platform} --board {board} --quickstart")
+    elif platform:
+        print(f"  python tools/configure.py --list-boards --platform {platform}")
+        print(f"  python tools/configure.py --platform {platform} --quickstart <board>")
+    else:
+        print("  python tools/configure.py --list-boards")
+        print("  python tools/configure.py --quickstart esp32-c6")
+    print("  python tools/configure.py --wizard")
+    print("  python tools/configure.py --doctor --platform esp32 --board esp32-c6")
+    print("  SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build")
 
     print("")
     if fail_count == 0:
@@ -721,6 +797,19 @@ def select_board_noninteractive(
     raise ConfigError(msg)
 
 
+def select_board_any_platform(boards: List[BoardProfile], board_arg: str) -> Optional[BoardProfile]:
+    query = str(board_arg or "").strip()
+    if not query:
+        return None
+    by_dir = [b for b in boards if b.board_dir == query]
+    if len(by_dir) == 1:
+        return by_dir[0]
+    by_id = [b for b in boards if b.id == query]
+    if len(by_id) == 1:
+        return by_id[0]
+    return None
+
+
 def wizard_select_platform(root: Path) -> Optional[str]:
     boards_root = root / "boards"
     if not boards_root.exists():
@@ -870,6 +959,84 @@ def known_applet_ids(root: Path) -> Set[str]:
             if slug:
                 known.add(slug)
     return known
+
+
+def discover_profiles(root: Path) -> Dict[str, ConfigProfile]:
+    out: Dict[str, ConfigProfile] = {}
+    profile_dir = root / "config" / "profiles"
+    if not profile_dir.exists():
+        return out
+    for path in sorted(profile_dir.glob("*.json")):
+        data = read_json_file(path, {})
+        if not isinstance(data, dict):
+            continue
+        pid = norm_slug(data.get("id") or path.stem)
+        if not pid:
+            continue
+        out[pid] = ConfigProfile(
+            id=pid,
+            name=str(data.get("name") or pid).strip(),
+            description=str(data.get("description") or "").strip(),
+            platform=str(data.get("platform") or "").strip(),
+            board=str(data.get("board") or data.get("board_id") or "").strip(),
+            enabled_drivers=tuple(norm_slug(x) for x in (data.get("enabled_drivers") or []) if norm_slug(x)),
+            applets=tuple(norm_slug(x) for x in (data.get("applets") or []) if norm_slug(x)),
+            market_apps=tuple(norm_slug(x) for x in (data.get("market_apps") or []) if norm_slug(x)),
+            driver_config=dict(data.get("driver_config") or {}) if isinstance(data.get("driver_config"), dict) else {},
+            clock=dict(data.get("clock") or {}) if isinstance(data.get("clock"), dict) else {},
+            fuses=dict(data.get("fuses") or {}) if isinstance(data.get("fuses"), dict) else {},
+            upload=dict(data.get("upload") or {}) if isinstance(data.get("upload"), dict) else {},
+            path=path,
+            raw=data,
+        )
+    return out
+
+
+def resolve_profile_ref(root: Path, ref: str, profiles: Dict[str, ConfigProfile]) -> Optional[ConfigProfile]:
+    if not ref:
+        return None
+    rid = norm_slug(ref)
+    if rid and rid in profiles:
+        return profiles[rid]
+    p = Path(ref).expanduser()
+    if not p.is_absolute():
+        p = (Path.cwd() / p).resolve()
+    if p.exists() and p.is_file():
+        data = read_json_file(p, {})
+        if not isinstance(data, dict):
+            return None
+        pid = norm_slug(data.get("id") or p.stem)
+        if not pid:
+            pid = norm_slug(p.stem)
+        return ConfigProfile(
+            id=pid or "profile",
+            name=str(data.get("name") or pid or p.stem).strip(),
+            description=str(data.get("description") or "").strip(),
+            platform=str(data.get("platform") or "").strip(),
+            board=str(data.get("board") or data.get("board_id") or "").strip(),
+            enabled_drivers=tuple(norm_slug(x) for x in (data.get("enabled_drivers") or []) if norm_slug(x)),
+            applets=tuple(norm_slug(x) for x in (data.get("applets") or []) if norm_slug(x)),
+            market_apps=tuple(norm_slug(x) for x in (data.get("market_apps") or []) if norm_slug(x)),
+            driver_config=dict(data.get("driver_config") or {}) if isinstance(data.get("driver_config"), dict) else {},
+            clock=dict(data.get("clock") or {}) if isinstance(data.get("clock"), dict) else {},
+            fuses=dict(data.get("fuses") or {}) if isinstance(data.get("fuses"), dict) else {},
+            upload=dict(data.get("upload") or {}) if isinstance(data.get("upload"), dict) else {},
+            path=p,
+            raw=data,
+        )
+    return None
+
+
+def profile_save_path(root: Path, dest: str) -> Path:
+    candidate = Path(dest).expanduser()
+    if any(sep in dest for sep in ("/", "\\")) or candidate.suffix.lower() == ".json":
+        if not candidate.is_absolute():
+            candidate = (Path.cwd() / candidate).resolve()
+        if candidate.suffix.lower() != ".json":
+            candidate = candidate.with_suffix(".json")
+        return candidate
+    out = root / "config" / "profiles" / f"{norm_slug(dest)}.json"
+    return out.resolve()
 
 
 # -----------------------------
@@ -1944,10 +2111,15 @@ def main() -> int:
     ap.add_argument("--disable-drivers", default=None, help="comma-separated driver ids to disable (applied after enable/deps)")
     ap.add_argument("--wizard", action="store_true", help="interactive: choose platform, board, drivers, apps")
     ap.add_argument("--doctor", action="store_true", help="run preflight checks for toolchain, boards, and serial ports")
+    ap.add_argument("--quickstart", default=None, help="fast path: use profile id/path OR board id/dir with recommended defaults")
     ap.add_argument("--list-modules", action="store_true", help="list available drivers (legacy flag)")
     ap.add_argument("--list-drivers", action="store_true", help="list available drivers")
+    ap.add_argument("--list-runtime-status", action="store_true", help="list driver runtime readiness and notes")
     ap.add_argument("--list-boards", action="store_true", help="list available boards (filtered by --platform if set)")
     ap.add_argument("--list-templates", action="store_true", help="list available project templates")
+    ap.add_argument("--list-profiles", action="store_true", help="list quickstart profiles from config/profiles")
+    ap.add_argument("--profile-load", default=None, help="load config profile from id (config/profiles) or JSON path")
+    ap.add_argument("--profile-save", default=None, help="save resolved config as profile id or JSON path")
     ap.add_argument("--template", default=None, help="template id from config/templates/project_templates.json")
     ap.add_argument("--applets", default=None, help="comma-separated applet ids")
     ap.add_argument("--market-apps", default=None, help="comma-separated market app ids")
@@ -1976,6 +2148,14 @@ def main() -> int:
 
     boards = discover_boards(root, args.platform)
     templates = discover_templates(root)
+    profiles = discover_profiles(root)
+
+    if args.list_runtime_status:
+        for mid in sorted(modules.keys()):
+            m = modules[mid]
+            state, detail = driver_runtime_status(m)
+            print(f"{mid:16s}  {state:11s}  {detail}")
+        return 0
 
     if args.list_modules or args.list_drivers:
         for mid in sorted(modules.keys()):
@@ -1984,7 +2164,8 @@ def main() -> int:
             conf = ",".join(m.conflicts) if m.conflicts else ""
             prov = ",".join(m.provides) if m.provides else ""
             defs = ",".join(m.defines) if m.defines else ""
-            print(f"{mid}\n  name: {m.name}\n  provides: {prov}\n  depends: {deps}\n  conflicts: {conf}\n  defines: {defs}\n")
+            state, detail = driver_runtime_status(m)
+            print(f"{mid}\n  name: {m.name}\n  provides: {prov}\n  depends: {deps}\n  conflicts: {conf}\n  defines: {defs}\n  runtime_status: {state}\n  runtime_note: {detail}\n")
         return 0
 
     if args.list_boards:
@@ -2015,6 +2196,15 @@ def main() -> int:
             print(f"{t.id}\n  name: {t.name}\n  platforms: {plats}\n  drivers: {','.join(t.enabled_drivers)}\n  applets: {','.join(t.applets)}\n  market_apps: {','.join(t.market_apps)}\n")
         return 0
 
+    if args.list_profiles:
+        if not profiles:
+            print("(no profiles found)")
+            return 0
+        for pid in sorted(profiles.keys()):
+            p = profiles[pid]
+            print(f"{p.id}\n  name: {p.name}\n  platform: {p.platform}\n  board: {p.board}\n  drivers: {','.join(p.enabled_drivers)}\n  applets: {','.join(p.applets)}\n  market_apps: {','.join(p.market_apps)}\n  path: {safe_rel(root, p.path)}\n")
+        return 0
+
     board_profile: Optional[BoardProfile] = None
     allow: Optional[Set[str]] = None
     platform: Optional[str] = args.platform
@@ -2023,10 +2213,117 @@ def main() -> int:
     selected_applets: List[str] = [norm_slug(x) for x in norm_list_csv(args.applets) if norm_slug(x)]
     selected_market_apps: List[str] = [norm_slug(x) for x in norm_list_csv(args.market_apps) if norm_slug(x)]
     selected_template: Optional[ProjectTemplate] = None
+    selected_profile: Optional[ConfigProfile] = None
     driver_config: dict = {}
     avr_clock: dict = {}
     avr_fuses: dict = {}
     avr_upload: dict = {}
+
+    if args.profile_load:
+        selected_profile = resolve_profile_ref(root, args.profile_load, profiles)
+        if not selected_profile:
+            eprint(f"[configure] ERROR: profile '{args.profile_load}' not found.")
+            eprint("[configure] TIP: run: python tools/configure.py --list-profiles")
+            return 3
+        print(f"[configure] Loaded profile: {selected_profile.id} ({safe_rel(root, selected_profile.path)})")
+        if selected_profile.platform:
+            platform = selected_profile.platform
+        requested.update(set(selected_profile.enabled_drivers))
+        selected_applets = sorted(dict.fromkeys([norm_slug(x) for x in selected_profile.applets if norm_slug(x)]))
+        selected_market_apps = sorted(dict.fromkeys([norm_slug(x) for x in selected_profile.market_apps if norm_slug(x)]))
+        driver_config.update(dict(selected_profile.driver_config))
+        avr_clock.update(dict(selected_profile.clock))
+        avr_fuses.update(dict(selected_profile.fuses))
+        avr_upload.update(dict(selected_profile.upload))
+        if selected_profile.platform and selected_profile.board:
+            all_boards = discover_boards(root, selected_profile.platform)
+            try:
+                board_profile, allow = select_board_noninteractive(all_boards, selected_profile.platform, selected_profile.board)
+            except ConfigError as ex:
+                eprint(f"[configure] ERROR: profile board resolution failed: {ex}")
+                return 3
+            if board_profile:
+                platform = board_profile.platform
+                allow = board_capabilities(board_profile.data)
+
+    if args.quickstart:
+        if not selected_profile:
+            quick_profile = resolve_profile_ref(root, args.quickstart, profiles)
+            if quick_profile:
+                selected_profile = quick_profile
+                print(f"[configure] Quickstart profile selected: {quick_profile.id}")
+                if quick_profile.platform:
+                    platform = quick_profile.platform
+                requested.update(set(quick_profile.enabled_drivers))
+                if not selected_applets:
+                    selected_applets = sorted(dict.fromkeys([norm_slug(x) for x in quick_profile.applets if norm_slug(x)]))
+                if not selected_market_apps:
+                    selected_market_apps = sorted(dict.fromkeys([norm_slug(x) for x in quick_profile.market_apps if norm_slug(x)]))
+                if not driver_config:
+                    driver_config = dict(quick_profile.driver_config)
+                if not avr_clock:
+                    avr_clock = dict(quick_profile.clock)
+                if not avr_fuses:
+                    avr_fuses = dict(quick_profile.fuses)
+                if not avr_upload:
+                    avr_upload = dict(quick_profile.upload)
+                if quick_profile.platform and quick_profile.board:
+                    all_boards = discover_boards(root, quick_profile.platform)
+                    try:
+                        board_profile, allow = select_board_noninteractive(all_boards, quick_profile.platform, quick_profile.board)
+                    except ConfigError as ex:
+                        eprint(f"[configure] ERROR: quickstart profile board resolution failed: {ex}")
+                        return 3
+                    if board_profile:
+                        platform = board_profile.platform
+                        allow = board_capabilities(board_profile.data)
+
+        if not board_profile:
+            quick_ref = str(args.quickstart).strip()
+            quick_platform = platform or args.platform
+            if args.board and quick_ref.lower() in {"1", "true", "yes", "on"}:
+                quick_ref = str(args.board).strip()
+            if quick_platform and quick_ref:
+                candidate_boards = discover_boards(root, quick_platform)
+                try:
+                    board_profile, allow = select_board_noninteractive(candidate_boards, quick_platform, quick_ref)
+                except ConfigError:
+                    board_profile = None
+            elif quick_ref:
+                all_boards = discover_boards(root, None)
+                board_profile = select_board_any_platform(all_boards, quick_ref)
+                if board_profile:
+                    platform = board_profile.platform
+                    allow = board_capabilities(board_profile.data)
+
+        if not board_profile and args.platform and args.board:
+            try:
+                board_profile, allow = select_board_noninteractive(discover_boards(root, args.platform), args.platform, args.board)
+            except ConfigError as ex:
+                eprint(f"[configure] ERROR: quickstart board resolution failed: {ex}")
+                return 3
+
+        if not board_profile:
+            eprint("[configure] ERROR: --quickstart requires a resolvable board/profile.")
+            eprint("[configure] TIP: python tools/configure.py --list-profiles")
+            eprint("[configure] TIP: python tools/configure.py --list-boards --platform esp32")
+            return 3
+
+        platform = board_profile.platform
+        allow = board_capabilities(board_profile.data)
+        requested.update(default_drivers_for_board(board_profile))
+        if not selected_applets:
+            defaults = ((board_profile.data or {}).get("defaults") or {}).get("applets") or []
+            selected_applets = [norm_slug(x) for x in defaults if norm_slug(x)]
+            if not selected_applets:
+                for aid in ("system_info", "fs_smoke"):
+                    if aid in known_applet_ids(root):
+                        selected_applets.append(aid)
+        if not selected_market_apps:
+            defaults = ((board_profile.data or {}).get("defaults") or {}).get("market_apps") or []
+            selected_market_apps = [norm_slug(x) for x in defaults if norm_slug(x)]
+        print(f"[configure] Quickstart board: {board_profile.platform}/{board_profile.board_dir}")
+        print(f"[configure] Quickstart defaults applied: {', '.join(sorted(requested)) if requested else '(none)'}")
 
     if args.wizard:
         platform, board_profile, requested, selected_applets, selected_market_apps, avr_clock, avr_bundle, template_id, driver_config, confirmed = run_wizard(root, modules, templates)
@@ -2266,6 +2563,7 @@ def main() -> int:
         print(f"[configure] Enabled drivers: {', '.join(enabled_list)}")
     else:
         print("[configure] Enabled drivers: (none)")
+    emit_runtime_readiness(enabled_list, modules)
     if board_profile:
         defaults_hint = sorted(default_drivers_for_board(board_profile))
         if defaults_hint:
@@ -2277,6 +2575,27 @@ def main() -> int:
     if avr_clock or avr_fuses or avr_upload:
         print(f"[configure] AVR overrides: clock={avr_clock or {}}, fuses={avr_fuses or {}}, upload={avr_upload or {}}")
     print("")
+
+    if args.profile_save:
+        save_path = profile_save_path(root, args.profile_save)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
+        profile_payload = {
+            "id": norm_slug(save_path.stem),
+            "name": norm_slug(save_path.stem),
+            "description": "Saved from tools/configure.py",
+            "platform": platform or "",
+            "board": board_profile.board_dir if board_profile else (args.board or ""),
+            "enabled_drivers": enabled_list,
+            "applets": selected_applets,
+            "market_apps": selected_market_apps,
+            "driver_config": driver_config,
+            "clock": avr_clock,
+            "fuses": avr_fuses,
+            "upload": avr_upload,
+        }
+        save_path.write_text(json.dumps(profile_payload, indent=2) + "\n", encoding="utf-8")
+        print(f"[configure] Saved profile: {safe_rel(root, save_path)}")
+        print("")
 
     # Warn if sdkconfig has stale PSRAM/flash settings for the selected board.
     if board_profile:

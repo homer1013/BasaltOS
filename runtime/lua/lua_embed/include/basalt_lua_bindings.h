@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,6 +14,8 @@ typedef struct {
     int (*gpio_write)(int pin, int value);
     int (*gpio_read)(int pin, int *value);
     int (*timer_sleep_ms)(uint32_t ms);
+    int (*fs_write_text)(const char *path, const char *text);
+    int (*fs_read_text)(const char *path, char *out, size_t out_len);
 } basalt_lua_bindings_api_t;
 
 void basalt_lua_bindings_init(void);

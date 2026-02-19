@@ -40,6 +40,14 @@
 ## Configurator flow notes
 
 - CLI wizard (`python tools/configure.py --wizard`) is the canonical flow contract.
+- CLI quickstart (`python tools/configure.py --quickstart <profile-or-board>`) provides first-success presets.
+- Profile commands:
+  - `python tools/configure.py --list-profiles`
+  - `python tools/configure.py --profile-load <id-or-json-path>`
+  - `python tools/configure.py --profile-save <id-or-json-path>`
+- Runtime readiness surface:
+  - `python tools/configure.py --list-runtime-status`
+  - generated runs print runtime readiness per enabled driver
 - Local web configurator mirrors the wizard step model and board taxonomy filters.
 - Runtime options (applets/market apps) are explicit in step 3.
 - Pin mapping is optional/advanced; default board pins are used unless overridden.
@@ -163,6 +171,18 @@ CYD generate + ESP32 build smoke (guards partition/SPIFFS regressions):
 
 ```bash
 bash tools/tests/cyd_esp32_build_smoke.sh
+```
+
+CLI quickstart/profile smoke:
+
+```bash
+bash tools/tests/configure_quickstart_profile_smoke.sh
+```
+
+Runtime readiness listing smoke:
+
+```bash
+bash tools/tests/configure_runtime_status_smoke.sh
 ```
 
 Local-mode UI/API guard test (market/profile hidden + market API disabled):

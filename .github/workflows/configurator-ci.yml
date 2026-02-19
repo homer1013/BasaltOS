@@ -71,6 +71,9 @@ jobs:
           bash tools/tests/driver_capability_matrix_drift_smoke.sh
           bash tools/tests/board_catalog_drift_smoke.sh
           bash tools/tests/board_taxonomy_fields_smoke.sh
+          bash tools/tests/configure_quickstart_profile_smoke.sh
+          bash tools/tests/configure_runtime_status_smoke.sh
+          bash tools/tests/hal_runtime_contract_smoke.sh
 
       - name: Upload S2 CLI acceptance artifacts
         if: always()

@@ -13,13 +13,18 @@ Choose one path and get to first boot fast:
 1. **CLI Wizard path (recommended for deterministic setup)**
    - `python tools/configure.py --wizard`
    - Follow 4 steps: board -> drivers -> runtime options -> generate
-2. **Web Configurator path (same flow, easier UX)**
+2. **CLI Quickstart path (fastest path to first success)**
+   - `python tools/configure.py --quickstart esp32_c6_quickstart`
+   - Or target a board directly: `python tools/configure.py --platform esp32 --quickstart esp32-c6`
+3. **Web Configurator path (same flow, easier UX)**
    - `python tools/basaltos_config_server.py`
    - Open `http://localhost:5000`
    - Follow the same 4-step flow as CLI wizard
 
 For complete ESP32 bring-up commands, use:
 - `docs/ESP32_FIRST_SUCCESS_10_MIN.md`
+- `docs/CLI_FOUNDATION_QUICKSTART.md`
+- `docs/HERO_BOARD_QUICKSTARTS.md`
 
 ## Runtime Model (Important)
 
@@ -30,6 +35,13 @@ BasaltOS is a **multi-runtime platform**, not a single-language wrapper.
 - **Native/C path**: core platform services and HAL remain native-first
 
 This means BasaltOS runtime decisions are architecture-level, not “MicroPython only”.
+
+Runtime visibility commands:
+- `python tools/configure.py --list-runtime-status`
+- `python tools/configure.py --doctor --platform esp32 --board esp32-c6`
+
+Stable API contract reference:
+- `docs/API_STABLE_V1.md`
 
 Apache 2.0 Licensed.
 
@@ -74,6 +86,12 @@ Both configurators are intended to behave the same way:
    - Summary, validation report, preview output, and build/flash next steps
 
 The web configurator should be a better-looking, easier-to-scan version of the CLI wizard, not a different product flow.
+
+Quickstart/profile commands:
+- `python tools/configure.py --list-profiles`
+- `python tools/configure.py --quickstart cyd_quickstart`
+- `python tools/configure.py --profile-save my_demo_profile`
+- `python tools/configure.py --profile-load my_demo_profile`
 
 BasaltOS bridges the gap between:
 - Arduino-style firmware
