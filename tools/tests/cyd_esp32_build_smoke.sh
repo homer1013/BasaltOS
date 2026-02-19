@@ -23,7 +23,14 @@ python3 tools/configure.py \
 
 idf.py -B build fullclean >"$OUT/fullclean.log" 2>&1 || true
 SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults \
-idf.py -D SDKCONFIG=config/generated/sdkconfig -B build build >"$OUT/build.log" 2>&1
+idf.py -D SDKCONFIG=config/generated/sdkconfig -B build build >"$OUT/build.log" 2>&1 || {
+  echo "FAIL: CYD ESP32 build failed"
+  echo "--- configure.log ---"
+  cat "$OUT/configure.log"
+  echo "--- build.log ---"
+  cat "$OUT/build.log"
+  exit 1
+}
 
 if rg -n "Failed to create SPIFFS image for partition 'storage'" "$OUT/build.log" >/dev/null 2>&1; then
   echo "FAIL: SPIFFS storage partition generation error regressed"
