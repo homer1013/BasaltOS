@@ -153,8 +153,7 @@ jobs:
               python -m ensurepip --upgrade
             fi
           fi
-          python -m pip install --upgrade pip
-          python -m pip install flask flask-cors
+          python -m pip install --break-system-packages flask flask-cors
 
       - name: CYD generate + ESP32 build smoke
         run: |
