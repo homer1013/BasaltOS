@@ -934,11 +934,42 @@
 
         .action-buttons {
             display: flex;
+            align-items: center;
+            justify-content: space-between;
             gap: 15px;
-            justify-content: flex-end;
             margin-top: 30px;
             padding-top: 20px;
             border-top: 2px solid #e2e8f0;
+        }
+
+        .step-guidance {
+            flex: 1;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #334155;
+            font-size: 13px;
+            min-height: 46px;
+            display: flex;
+            align-items: center;
+        }
+
+        .step-guidance strong {
+            color: #0f172a;
+        }
+
+        .step-guidance.error {
+            background: #fff5f5;
+            border-color: #fed7d7;
+            color: #9b2c2c;
+        }
+
+        .action-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -1589,6 +1620,16 @@
                 grid-template-columns: 1fr;
             }
 
+            .action-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .action-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
         }
     </style>
 </head>
@@ -1947,6 +1988,12 @@
                             <!-- Populated by JavaScript -->
                         </div>
                     </div>
+                    <div style="margin-top: 20px;">
+                        <h3>Release Readiness Checklist</h3>
+                        <div class="validation-panel" id="review-checklist">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
 
                     <div style="margin-top: 30px;">
                         <h3>Preview: basalt_config.h</h3>
@@ -2043,10 +2090,15 @@
 
                 <!-- Action Buttons -->
                 <div class="action-buttons">
-                    <button class="btn btn-secondary" id="btn-prev" style="display: none;">← Previous</button>
-                    <button class="btn btn-primary" id="btn-next">Next →</button>
-                    <button class="btn btn-primary" id="btn-generate-build" style="display: none;">Generate + Build ESP32</button>
-                    <button class="btn btn-success" id="btn-generate" style="display: none;">Generate Files</button>
+                    <div id="step-guidance" class="step-guidance" role="status" aria-live="polite">
+                        <strong>Step 1:</strong>&nbsp;Select a board to begin.
+                    </div>
+                    <div class="action-controls">
+                        <button class="btn btn-secondary" id="btn-prev" style="display: none;">← Previous</button>
+                        <button class="btn btn-primary" id="btn-next">Next →</button>
+                        <button class="btn btn-primary" id="btn-generate-build" style="display: none;">Generate + Build ESP32</button>
+                        <button class="btn btn-success" id="btn-generate" style="display: none;">Generate Files</button>
+                    </div>
         </div>
         </div>
         </div>
@@ -3429,6 +3481,7 @@
             if (!selectedBoard) {
                 const html = '<div class="memory-note">Select a board to view memory estimates.</div>';
                 allPanels.forEach(p => { p.innerHTML = html; });
+                updateStepGuidance();
                 return;
             }
 
@@ -3449,6 +3502,7 @@
                 ${memoryRowHtml('RAM', usage.ram, caps.ram, 'ram')}
             `;
             allPanels.forEach(p => { p.innerHTML = html; });
+            updateStepGuidance();
         }
 
         function updateTopProfileChip() {
@@ -4998,6 +5052,10 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             updateMemoryEstimatePanels();
             renderStatusChips();
             renderBuildHealthBar();
+            if (currentStep === FINAL_STEP) {
+                renderReviewChecklist();
+            }
+            updateStepGuidance();
         }
 
         function showWarning(message) {
@@ -5745,6 +5803,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             updateMemoryEstimatePanels();
             renderHardwarePath();
             persistFilterStateToUrl();
+            updateStepGuidance();
         }
 
         function moduleAllowed(module, caps) {
@@ -6623,6 +6682,80 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             `).join('');
         }
 
+        function getCurrentStepReadiness(step = currentStep) {
+            if (step === 1) {
+                if (!selectedBoard) {
+                    return { ready: false, reason: 'Select a board to continue to Drivers.' };
+                }
+                return { ready: true, reason: `Board selected: ${selectedBoard.name}` };
+            }
+            if (step === 2) {
+                const issues = buildValidationIssues({ includePins: false });
+                const errors = issues.filter(i => i.type === 'error');
+                if (errors.length > 0) {
+                    return { ready: false, reason: 'Resolve driver dependency/conflict errors before continuing.' };
+                }
+                return { ready: true, reason: 'Driver set is valid. Continue to Runtime Options.' };
+            }
+            if (step === 3) {
+                const issues = buildValidationIssues({ includePins: isAdvancedPinConfigOpen() });
+                const errors = issues.filter(i => i.type === 'error');
+                if (errors.length > 0) {
+                    return { ready: false, reason: 'Resolve runtime or pin errors before review/generate.' };
+                }
+                return { ready: true, reason: 'Runtime options look good. Continue to Generate.' };
+            }
+            return { ready: true, reason: 'Review output and generate files.' };
+        }
+
+        function renderReviewChecklist() {
+            const wrap = document.getElementById('review-checklist');
+            if (!wrap) return;
+            const issues = buildValidationIssues({ includePins: isAdvancedPinConfigOpen() });
+            const errors = issues.filter(i => i.type === 'error');
+            const warnings = issues.filter(i => i.type === 'warning');
+            const enabledDriverCount = modules.filter(m => m.enabled).length;
+            const starterCount = applets.filter(a => appletStates[a]).length;
+            const marketCount = marketApps.filter(a => marketAppStates[a]).length;
+
+            const item = (ok, label, detail) => `
+                <div class="validation-item ${ok ? 'info' : 'warning'}">
+                    <span class="validation-icon">${ok ? '✅' : '⚠️'}</span>
+                    <div><strong>${label}</strong> ${detail ? `- ${detail}` : ''}</div>
+                </div>
+            `;
+
+            wrap.innerHTML = [
+                item(Boolean(selectedBoard), 'Board selected', selectedBoard ? selectedBoard.name : 'No board selected'),
+                item(enabledDriverCount > 0, 'Drivers selected', `${enabledDriverCount} enabled`),
+                item(errors.length === 0, 'Blocking errors', errors.length === 0 ? 'None' : `${errors.length} error(s) must be fixed`),
+                item(warnings.length === 0, 'Warnings', warnings.length === 0 ? 'None' : `${warnings.length} warning(s), review before shipping`),
+                item(true, 'Runtime app set', `${starterCount} starter app(s), ${marketCount} market app(s)`)
+            ].join('');
+        }
+
+        function updateStepGuidance() {
+            const hint = document.getElementById('step-guidance');
+            const btnNext = document.getElementById('btn-next');
+            if (!hint || !btnNext) return;
+            const labels = {
+                1: 'Platform & Board',
+                2: 'Drivers',
+                3: 'Runtime Options',
+                4: 'Generate'
+            };
+            const readiness = getCurrentStepReadiness(currentStep);
+            hint.classList.toggle('error', !readiness.ready);
+            hint.innerHTML = `<strong>Step ${currentStep} - ${labels[currentStep] || 'Flow'}:</strong>&nbsp;${readiness.reason}`;
+            if (currentStep < FINAL_STEP) {
+                btnNext.disabled = !readiness.ready;
+                btnNext.title = readiness.ready ? '' : readiness.reason;
+            } else {
+                btnNext.disabled = false;
+                btnNext.title = '';
+            }
+        }
+
         function collectCurrentConfigPayload() {
             const enabled_drivers = modules.filter(m => m.enabled).map(m => m.id);
             const driver_config = collectModuleConfigFromUI();
@@ -6721,6 +6854,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 renderSelectedAppsVisibility();
             } else if (currentStep === FINAL_STEP) {
                 generateConfigPreview();
+                renderReviewChecklist();
                 refreshWebFlasher({ silent: true });
                 refreshAvrFlasher({ silent: true });
                 refreshSerialTerminalVisibility();
@@ -6728,13 +6862,19 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 refreshSerialTerminalVisibility();
             }
             renderBuildHealthBar();
+            updateStepGuidance();
         }
 
         function nextStep() {
-            if (currentStep < FINAL_STEP) {
-                currentStep++;
-                updateWizardSteps();
+            if (currentStep >= FINAL_STEP) return;
+            const readiness = getCurrentStepReadiness(currentStep);
+            if (!readiness.ready) {
+                notify(readiness.reason, 'warning');
+                updateStepGuidance();
+                return;
             }
+            currentStep++;
+            updateWizardSteps();
         }
 
         function prevStep() {

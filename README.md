@@ -6,6 +6,31 @@ BasaltOS is a lightweight, portable embedded OS / application platform aimed at 
 
 The long-term goal is an “Android-light” experience on microcontrollers: a friendly shell, installable apps, stable APIs, and a configuration system that scales from quick prototypes to real products.
 
+## Start Here
+
+Choose one path and get to first boot fast:
+
+1. **CLI Wizard path (recommended for deterministic setup)**
+   - `python tools/configure.py --wizard`
+   - Follow 4 steps: board -> drivers -> runtime options -> generate
+2. **Web Configurator path (same flow, easier UX)**
+   - `python tools/basaltos_config_server.py`
+   - Open `http://localhost:5000`
+   - Follow the same 4-step flow as CLI wizard
+
+For complete ESP32 bring-up commands, use:
+- `docs/ESP32_FIRST_SUCCESS_10_MIN.md`
+
+## Runtime Model (Important)
+
+BasaltOS is a **multi-runtime platform**, not a single-language wrapper.
+
+- **MicroPython**: integrated and active today for runtime app execution
+- **Lua track**: active integration path (bindings contracts, guardrails, CI lane, sample fixtures), with VM/runtime bring-up still being completed
+- **Native/C path**: core platform services and HAL remain native-first
+
+This means BasaltOS runtime decisions are architecture-level, not “MicroPython only”.
+
 Apache 2.0 Licensed.
 
 Copyright © 2026 Homer Morrill
@@ -34,6 +59,21 @@ BasaltOS generates board-aware configuration, feature flags, and SDK defaults so
 - Filesystem-backed installable app model
 - Hardware abstraction layer (HAL)
 - Multi-target backend groundwork
+
+## Configurator UX Contract
+
+Both configurators are intended to behave the same way:
+
+1. **Platform & Board**
+   - Taxonomy filters, board search, and board capability context
+2. **Drivers**
+   - Essential/advanced/experimental visibility + validation feedback
+3. **Runtime Options**
+   - Starter applets + market apps, with optional advanced pin overrides
+4. **Generate**
+   - Summary, validation report, preview output, and build/flash next steps
+
+The web configurator should be a better-looking, easier-to-scan version of the CLI wizard, not a different product flow.
 
 BasaltOS bridges the gap between:
 - Arduino-style firmware
