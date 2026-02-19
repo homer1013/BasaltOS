@@ -1655,19 +1655,19 @@
         <div class="wizard-steps">
             <div class="step active" data-step="1">
                 <div class="step-number">1</div>
-                <div>Platform & Board</div>
+                <div class="step-title">Platform & Board</div>
             </div>
             <div class="step" data-step="2">
                 <div class="step-number">2</div>
-                <div>Drivers</div>
+                <div class="step-title">Drivers</div>
             </div>
             <div class="step" data-step="3">
                 <div class="step-number">3</div>
-                <div>Pin Configuration</div>
+                <div class="step-title">Runtime Options</div>
             </div>
             <div class="step" data-step="4">
                 <div class="step-number">4</div>
-                <div>Generate</div>
+                <div class="step-title">Generate</div>
             </div>
         </div>
 
@@ -1763,7 +1763,7 @@
                 <div id="step-2" class="content-section">
                     <h2 style="margin-bottom: 20px;">Select Drivers</h2>
                     <div class="alert alert-info">
-                        Enable or disable drivers based on your application needs. Pin assignments will be configured in the next step.
+                        Enable or disable drivers based on your application needs. Runtime options are configured in the next step.
                     </div>
 
                     <div class="module-filters">
@@ -1808,42 +1808,61 @@
 
                     <h3 style="margin-top: 30px;">Selected Apps</h3>
                     <div class="alert alert-info">
-                        App selection is managed by templates/board defaults in local mode. This panel shows what will be included in the current build.
+                        This panel shows current runtime app selections. Edit them in Step 3 (Runtime Options).
                     </div>
                     <div id="selected-apps-visibility" class="validation-panel"></div>
                 </div>
 
                 <!-- Step 3: Pin Configuration -->
                 <div id="step-3" class="content-section">
-                    <h2 style="margin-bottom: 20px;">Pin Configuration</h2>
+                    <h2 style="margin-bottom: 20px;">Runtime Options</h2>
                     <div class="alert alert-info">
-                        Configure pin assignments for enabled drivers. Default values are provided based on your board.
+                        Choose starter applets and market apps for this build. Pin mapping is available below as an optional advanced section.
                     </div>
                     <div id="memory-step3-panel" class="memory-panel"></div>
 
-                    <div class="validation-panel" id="pin-validation">
-                        <!-- Pin conflict warnings appear here -->
+                    <div class="pin-config">
+                        <h3>Starter Applets</h3>
+                        <div class="validation-panel" id="runtime-applets-list">
+                            <!-- Populated by JavaScript -->
+                        </div>
                     </div>
 
-                    <div class="pin-config">
-                        <h3>Pin Assignments</h3>
-                        <table class="pin-table" id="pin-table">
-                            <thead>
-                                <tr>
-                                    <th>Driver</th>
-                                    <th>Signal</th>
-                                    <th>Pin</th>
-                                    <th>Alternative Pins</th>
-                                </tr>
-                            </thead>
-                            <tbody id="pin-table-body">
-                                <!-- Populated by JavaScript -->
-                            </tbody>
-                        </table>
+                    <div class="pin-config" style="margin-top: 18px;">
+                        <h3>Market Apps</h3>
+                        <div class="validation-panel" id="runtime-market-apps-list">
+                            <!-- Populated by JavaScript -->
+                        </div>
                     </div>
+
+                    <details id="advanced-pin-config" class="plain-help" style="margin-top:16px;">
+                        <summary>Advanced: Pin Configuration (Optional)</summary>
+                        <div class="alert alert-info" style="margin-top: 10px;">
+                            Optional override layer for board pin defaults. Leave untouched unless you need custom wiring.
+                        </div>
+                        <div class="validation-panel" id="pin-validation">
+                            <!-- Pin conflict warnings appear here -->
+                        </div>
+                        <div class="pin-config">
+                            <h3>Pin Assignments</h3>
+                            <table class="pin-table" id="pin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Driver</th>
+                                        <th>Signal</th>
+                                        <th>Pin</th>
+                                        <th>Alternative Pins</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pin-table-body">
+                                    <!-- Populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
 
                     <div id="avr-config-panel" class="validation-panel" style="display:none; margin-top:16px;">
-                        <h3 style="margin-bottom:10px;">AVR Target Options</h3>
+                        <h3 style="margin-bottom:10px;">AVR Runtime Overrides (Optional)</h3>
                         <div class="alert alert-info" style="margin-bottom:10px;">
                             AVR clock and fuse values can brick or destabilize a board if misconfigured.
                         </div>
@@ -2262,7 +2281,7 @@
             if (!panel || !install || !statusEl) return;
 
             const isEsp32 = selectedPlatform === 'esp32';
-            const canShow = currentStep === 4 && isEsp32;
+            const canShow = currentStep === FINAL_STEP && isEsp32;
             panel.style.display = canShow ? 'block' : 'none';
             if (!canShow) return;
             initEspWebInstallEvents();
@@ -2513,7 +2532,7 @@
         function refreshSerialTerminalVisibility() {
             const panel = document.getElementById('serial-terminal-panel');
             if (!panel) return;
-            const canShow = currentStep === 4 && (selectedPlatform === 'esp32' || selectedPlatform === 'avr');
+            const canShow = currentStep === FINAL_STEP && (selectedPlatform === 'esp32' || selectedPlatform === 'avr');
             panel.style.display = canShow ? 'block' : 'none';
         }
 
@@ -2754,7 +2773,7 @@
         async function refreshAvrFlasher({ silent = false } = {}) {
             const panel = document.getElementById('avr-flasher-panel');
             if (!panel) return;
-            const canShow = currentStep === 4 && avrTargetSelected();
+            const canShow = currentStep === FINAL_STEP && avrTargetSelected();
             panel.style.display = canShow ? 'block' : 'none';
             if (!canShow) return;
 
@@ -3132,6 +3151,54 @@
             });
         }
 
+        function normalizeDriverId(raw) {
+            const value = String(raw || '').trim().toLowerCase().replace(/-/g, '_');
+            const aliases = {
+                shell_mini: 'shell_tiny',
+                fs: 'fs_spiffs'
+            };
+            return aliases[value] || value;
+        }
+
+        function boardDefaultDriverIds(board) {
+            if (!board) return [];
+            const fromBoard = Array.isArray(board?.defaults?.modules) ? board.defaults.modules : [];
+            const normalizedBoard = fromBoard.map(normalizeDriverId).filter(Boolean);
+            if (normalizedBoard.length > 0) {
+                return Array.from(new Set(normalizedBoard));
+            }
+
+            const defaults = new Set();
+            const caps = new Set(Array.isArray(board.capabilities) ? board.capabilities.map(x => String(x)) : []);
+            const targetId = String(board?.target_profile || '').toLowerCase();
+            const plat = String(board?.platform || selectedPlatform || '').toLowerCase();
+            const isAvrLike = plat === 'avr' || plat === 'atmega' || ['mega2560', 'atmega328p', 'atmega32u4'].includes(targetId);
+
+            if (caps.has('spi')) defaults.add('spi');
+            if (caps.has('uart')) defaults.add('uart');
+            if (caps.has('tft')) defaults.add('tft');
+            defaults.add('fs_spiffs');
+            if (caps.has('psram')) defaults.add('psram');
+            if (caps.has('uart')) defaults.add(isAvrLike ? 'shell_tiny' : 'shell_full');
+            return Array.from(defaults);
+        }
+
+        function applyBoardAndTemplateDefaults(board, template = null) {
+            const selected = new Set(boardDefaultDriverIds(board));
+            if (template && typeof template === 'object') {
+                templateEnabledDrivers(template).forEach(id => {
+                    const norm = normalizeDriverId(id);
+                    if (norm) selected.add(norm);
+                });
+            }
+
+            modules.forEach(module => {
+                const enabled = selected.has(module.id);
+                module.enabled = enabled;
+                moduleStates[module.id] = enabled;
+            });
+        }
+
         const MEMORY_BASE_COST = {
             esp32: { prog: 420 * 1024, ram: 64 * 1024, data: 64 * 1024 },
             avr: { prog: 5 * 1024, ram: 384, data: 0 },
@@ -3418,7 +3485,7 @@
             const shell = document.getElementById('configurator-shell');
             if (landing) landing.style.display = 'none';
             if (shell) shell.style.display = 'block';
-            if (typeof step === 'number' && step >= 1 && step <= 4) {
+            if (typeof step === 'number' && step >= 1 && step <= FINAL_STEP) {
                 currentStep = step;
             }
             updateWizardSteps();
@@ -3458,6 +3525,73 @@
                 </div>
             `;
             updateMemoryEstimatePanels();
+        }
+
+        function renderRuntimeOptionsPanel() {
+            const appletWrap = document.getElementById('runtime-applets-list');
+            const marketWrap = document.getElementById('runtime-market-apps-list');
+            if (!appletWrap || !marketWrap) return;
+            if (!selectedBoard) {
+                appletWrap.innerHTML = '<div class="validation-item info"><span class="validation-icon">ℹ️</span><div>Select a board to configure runtime options.</div></div>';
+                marketWrap.innerHTML = '<div class="validation-item info"><span class="validation-icon">ℹ️</span><div>Select a board to configure runtime options.</div></div>';
+                return;
+            }
+
+            const starter = availableAppletsForBoard(selectedBoard);
+            if (starter.length === 0) {
+                appletWrap.innerHTML = '<div class="validation-item info"><span class="validation-icon">ℹ️</span><div>No starter applets available for this board.</div></div>';
+            } else {
+                appletWrap.innerHTML = starter.map((id) => {
+                    const meta = getAppletMeta(id);
+                    const checked = !!appletStates[id];
+                    return `
+                        <label style="display:flex; gap:8px; align-items:flex-start; padding:8px 0; border-bottom:1px solid #e2e8f0;">
+                            <input type="checkbox" data-runtime-applet="${id}" ${checked ? 'checked' : ''}>
+                            <span><strong>${meta.icon || '🧩'} ${meta.name}</strong><br><span style="font-size:12px; color:#64748b;">${meta.description || ''}</span></span>
+                        </label>
+                    `;
+                }).join('');
+            }
+
+            const market = availableMarketAppsForBoard(selectedBoard);
+            if (market.length === 0) {
+                marketWrap.innerHTML = '<div class="validation-item info"><span class="validation-icon">ℹ️</span><div>No market apps available for this board/platform in local mode.</div></div>';
+            } else {
+                marketWrap.innerHTML = market.map((item) => {
+                    const checked = !!marketAppStates[item.id];
+                    const desc = String(item.description || item.summary || '').trim();
+                    return `
+                        <label style="display:flex; gap:8px; align-items:flex-start; padding:8px 0; border-bottom:1px solid #e2e8f0;">
+                            <input type="checkbox" data-runtime-market="${item.id}" ${checked ? 'checked' : ''}>
+                            <span><strong>🛒 ${item.id}</strong><br><span style="font-size:12px; color:#64748b;">${desc || 'Catalog app'}</span></span>
+                        </label>
+                    `;
+                }).join('');
+            }
+
+            appletWrap.querySelectorAll('input[data-runtime-applet]').forEach((input) => {
+                input.addEventListener('change', () => {
+                    const id = input.getAttribute('data-runtime-applet');
+                    if (!id) return;
+                    appletStates[id] = !!input.checked;
+                    renderSelectedAppsVisibility();
+                    updateValidation();
+                });
+            });
+            marketWrap.querySelectorAll('input[data-runtime-market]').forEach((input) => {
+                input.addEventListener('change', () => {
+                    const id = input.getAttribute('data-runtime-market');
+                    if (!id) return;
+                    marketAppStates[id] = !!input.checked;
+                    renderSelectedAppsVisibility();
+                    updateValidation();
+                });
+            });
+        }
+
+        function isAdvancedPinConfigOpen() {
+            const advanced = document.getElementById('advanced-pin-config');
+            return !!(advanced && advanced.open);
         }
 
         const PLATFORM_MANUFACTURER = {
@@ -3826,7 +3960,12 @@
                     ...all.map(b => boardTaxonomy(b).manufacturer)
                 ])).sort((a, b) => a.localeCompare(b)));
             if (selectedManufacturer && !manufacturers.includes(selectedManufacturer)) selectedManufacturer = '';
-            setSelectOptions(manuSel, manufacturers, 'All manufacturers', taxonomyOptions?.counts?.manufacturer || null);
+            setSelectOptions(
+                manuSel,
+                manufacturers,
+                getBoardFilterDef('manufacturer').all_label || 'All manufacturers',
+                taxonomyOptions?.counts?.manufacturer || null
+            );
             if (!selectedManufacturer && manufacturers.length === 1) selectedManufacturer = manufacturers[0];
             if (selectedManufacturer) manuSel.value = selectedManufacturer;
 
@@ -3835,7 +3974,12 @@
                 ? taxonomyOptions.architecture
                 : Array.from(new Set(byManu.map(b => boardTaxonomy(b).architecture))).sort((a, b) => a.localeCompare(b)));
             if (selectedArchitecture && !architectures.includes(selectedArchitecture)) selectedArchitecture = '';
-            setSelectOptions(archSel, architectures, 'All architectures', taxonomyOptions?.counts?.architecture || null);
+            setSelectOptions(
+                archSel,
+                architectures,
+                getBoardFilterDef('architecture').all_label || 'All architectures',
+                taxonomyOptions?.counts?.architecture || null
+            );
             if (!selectedArchitecture && architectures.length === 1) selectedArchitecture = architectures[0];
             if (selectedArchitecture && architectures.includes(selectedArchitecture)) archSel.value = selectedArchitecture;
             else selectedArchitecture = '';
@@ -3845,7 +3989,12 @@
                 ? taxonomyOptions.family
                 : Array.from(new Set(byArch.map(b => boardTaxonomy(b).family))).sort((a, b) => a.localeCompare(b)));
             if (selectedFamily && !families.includes(selectedFamily)) selectedFamily = '';
-            setSelectOptions(famSel, families, 'All families', taxonomyOptions?.counts?.family || null);
+            setSelectOptions(
+                famSel,
+                families,
+                getBoardFilterDef('family').all_label || 'All families',
+                taxonomyOptions?.counts?.family || null
+            );
             if (!selectedFamily && families.length === 1) selectedFamily = families[0];
             if (selectedFamily && families.includes(selectedFamily)) famSel.value = selectedFamily;
             else selectedFamily = '';
@@ -3855,7 +4004,12 @@
                 ? taxonomyOptions.silicon
                 : Array.from(new Set(byFam.map(b => boardTaxonomy(b).silicon))).sort((a, b) => a.localeCompare(b)));
             if (selectedSilicon && !silicons.includes(selectedSilicon)) selectedSilicon = '';
-            setSelectOptions(silSel, silicons, 'All processors', taxonomyOptions?.counts?.silicon || null);
+            setSelectOptions(
+                silSel,
+                silicons,
+                getBoardFilterDef('silicon').all_label || 'All processors',
+                taxonomyOptions?.counts?.silicon || null
+            );
             if (!selectedSilicon && silicons.length === 1) selectedSilicon = silicons[0];
             if (selectedSilicon && silicons.includes(selectedSilicon)) silSel.value = selectedSilicon;
             else selectedSilicon = '';
@@ -4365,14 +4519,9 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             const template = projectTemplates.find(t => t.id === templateId);
             if (!template) return;
             activeTemplateId = templateId;
-            const enabledDrivers = templateEnabledDrivers(template);
             const driverConfig = templateDriverConfig(template);
 
-            modules.forEach(module => {
-                const shouldEnable = enabledDrivers.includes(module.id);
-                module.enabled = shouldEnable;
-                moduleStates[module.id] = shouldEnable;
-            });
+            applyBoardAndTemplateDefaults(selectedBoard, template);
 
             if (driverConfig && Object.keys(driverConfig).length > 0) {
                 Object.entries(driverConfig).forEach(([moduleId, config]) => {
@@ -4398,6 +4547,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
             populateModuleGrid();
             renderSelectedAppsVisibility();
+            renderRuntimeOptionsPanel();
             updateValidation();
         }
 
@@ -4915,6 +5065,136 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         }
         
 
+        const DEFAULT_WIZARD_STEPS = [
+            { id: 'platform_board', title: 'Platform & Board' },
+            { id: 'drivers', title: 'Drivers' },
+            { id: 'runtime_options', title: 'Runtime Options' },
+            { id: 'generate', title: 'Generate' }
+        ];
+        const DEFAULT_BOARD_FILTER_SCHEMA = [
+            { id: 'manufacturer', title: 'Manufacturer', all_label: 'All manufacturers' },
+            { id: 'architecture', title: 'Architecture', all_label: 'All architectures' },
+            { id: 'family', title: 'Family', all_label: 'All families' },
+            { id: 'silicon', title: 'Processor / Silicon', all_label: 'All processors' }
+        ];
+        let wizardSteps = [...DEFAULT_WIZARD_STEPS];
+        let boardFilterSchema = [...DEFAULT_BOARD_FILTER_SCHEMA];
+        let FINAL_STEP = wizardSteps.length;
+
+        function getBoardFilterDef(id) {
+            return boardFilterSchema.find((item) => item.id === id)
+                || DEFAULT_BOARD_FILTER_SCHEMA.find((item) => item.id === id)
+                || { id, title: id, all_label: 'All' };
+        }
+
+        function getWizardSections() {
+            const sections = [];
+            for (let idx = 1; idx <= 12; idx++) {
+                const section = document.getElementById(`step-${idx}`);
+                if (!section) break;
+                sections.push(section);
+            }
+            return sections;
+        }
+
+        function renderWizardStepContainer() {
+            const wrap = document.querySelector('.wizard-steps');
+            if (!wrap) return;
+            const sectionCount = getWizardSections().length;
+            const visibleCount = Math.max(1, Math.min(wizardSteps.length, sectionCount || wizardSteps.length));
+            FINAL_STEP = visibleCount;
+            if (currentStep > FINAL_STEP) currentStep = FINAL_STEP;
+
+            const html = [];
+            for (let i = 0; i < visibleCount; i++) {
+                const step = wizardSteps[i] || {};
+                const title = String(step.title || `Step ${i + 1}`);
+                html.push(
+                    `<div class="step" data-step="${i + 1}">` +
+                    `<div class="step-number">${i + 1}</div>` +
+                    `<div class="step-title">${title}</div>` +
+                    `</div>`
+                );
+            }
+            wrap.innerHTML = html.join('');
+            wrap.querySelectorAll('.step').forEach((stepEl) => {
+                stepEl.addEventListener('click', () => {
+                    const target = Number(stepEl.dataset.step || '1');
+                    if (target >= 1 && target <= FINAL_STEP) {
+                        currentStep = target;
+                        updateWizardSteps();
+                    }
+                });
+            });
+        }
+
+        function applyBoardFilterSchema(filters) {
+            if (!Array.isArray(filters) || filters.length === 0) return;
+            const normalized = filters
+                .filter(Boolean)
+                .map((f, idx) => ({
+                    id: String(f.id || `filter_${idx + 1}`),
+                    title: String(f.title || `Filter ${idx + 1}`),
+                    all_label: String(f.all_label || 'All')
+                }))
+                .filter((f) => ['manufacturer', 'architecture', 'family', 'silicon'].includes(f.id));
+            if (!normalized.length) return;
+            boardFilterSchema = normalized;
+
+            const labelMap = {
+                manufacturer: 'manufacturer-select',
+                architecture: 'architecture-select',
+                family: 'family-select',
+                silicon: 'silicon-select'
+            };
+            Object.entries(labelMap).forEach(([id, selectId]) => {
+                const labelEl = document.querySelector(`label[for="${selectId}"]`);
+                if (labelEl) labelEl.textContent = getBoardFilterDef(id).title;
+            });
+        }
+
+        function applyWizardSchema(steps) {
+            if (!Array.isArray(steps) || steps.length === 0) return;
+            const normalized = steps
+                .filter(Boolean)
+                .map((step, idx) => ({
+                    id: String(step.id || `step_${idx + 1}`),
+                    title: String(step.title || `Step ${idx + 1}`)
+                }));
+            if (!normalized.length) return;
+
+            wizardSteps = normalized;
+            renderWizardStepContainer();
+        }
+
+        async function loadWizardSchema() {
+            try {
+                const payload = await apiFetchJson('/api/wizard/steps');
+                if (payload?.success && Array.isArray(payload.steps)) {
+                    applyWizardSchema(payload.steps);
+                } else {
+                    applyWizardSchema(DEFAULT_WIZARD_STEPS);
+                }
+            } catch (err) {
+                console.warn('Failed to load wizard schema:', err);
+                applyWizardSchema(DEFAULT_WIZARD_STEPS);
+            }
+        }
+
+        async function loadBoardFilterSchema() {
+            try {
+                const payload = await apiFetchJson('/api/wizard/board-filters');
+                if (payload?.success && Array.isArray(payload.filters)) {
+                    applyBoardFilterSchema(payload.filters);
+                } else {
+                    applyBoardFilterSchema(DEFAULT_BOARD_FILTER_SCHEMA);
+                }
+            } catch (err) {
+                console.warn('Failed to load board filter schema:', err);
+                applyBoardFilterSchema(DEFAULT_BOARD_FILTER_SCHEMA);
+            }
+        }
+
         // State
         let currentStep = 1;
         let selectedPlatform = '';
@@ -4942,6 +5222,8 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         // Initialize
         async function init() {
             loadFilterStateFromUrl();
+            await loadWizardSchema();
+            await loadBoardFilterSchema();
             initBoardPerfPanel();
             const ok = await loadFromApi();
             await populatePlatformSelect();
@@ -4971,6 +5253,8 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             applyLocalScopeMode();
             showLanding();
             renderSelectedAppsVisibility();
+            renderRuntimeOptionsPanel();
+            bindAdvancedPinConfigToggle();
             attachEventListeners();
             const flasherBtn = document.getElementById('btn-refresh-flasher');
             if (flasherBtn) {
@@ -5423,14 +5707,8 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             const targetName = targetId && targets[targetId] ? targets[targetId].name : (targetId || '—');
             document.getElementById('spec-target').textContent = targetName;
             
-            // Start with no drivers selected by default; templates are the explicit preselection path.
-            if (activeTemplateId) {
-                const t = projectTemplates.find(x => x.id === activeTemplateId);
-                const selected = new Set(templateEnabledDrivers(t || {}));
-                modules.forEach(m => { m.enabled = selected.has(m.id); });
-            } else {
-                modules.forEach(m => { m.enabled = false; });
-            }
+            const activeTemplate = activeTemplateId ? projectTemplates.find(x => x.id === activeTemplateId) : null;
+            applyBoardAndTemplateDefaults(board, activeTemplate || null);
             
             const availableApplets = availableAppletsForBoard(board);
             appletStates = {};
@@ -5455,6 +5733,11 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
 
             populateModuleGrid();
             renderSelectedAppsVisibility();
+            renderRuntimeOptionsPanel();
+            const advancedPin = document.getElementById('advanced-pin-config');
+            if (advancedPin && advancedPin.open) {
+                populatePinTable();
+            }
             clearInlineOutput();
             refreshWebFlasher({ silent: true });
             refreshAvrFlasher({ silent: true });
@@ -5462,23 +5745,6 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             updateMemoryEstimatePanels();
             renderHardwarePath();
             persistFilterStateToUrl();
-        }
-
-        function autoEnableByBoardCapabilities(board) {
-            const caps = new Set(board.capabilities || []);
-            const targetId = String(board?.target_profile || '').toLowerCase();
-            const isAvrLike = selectedPlatform === 'avr' || selectedPlatform === 'atmega' || ['mega2560', 'atmega328p', 'atmega32u4'].includes(targetId);
-            const enable = (id) => {
-                const mod = modules.find(m => m.id === id);
-                if (mod) mod.enabled = true;
-            };
-            if (caps.has('spi')) enable('spi');
-            if (caps.has('uart')) enable('uart');
-            if (caps.has('tft')) enable('tft');
-            // Default to SPIFFS for internal storage
-            enable('fs_spiffs');
-            if (caps.has('psram')) enable('psram');
-            if (caps.has('uart')) enable(isAvrLike ? 'shell_tiny' : 'shell_full');
         }
 
         function moduleAllowed(module, caps) {
@@ -5550,7 +5816,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         }
 
         function getBuildHealthState() {
-            const issues = buildValidationIssues({ includePins: true });
+            const issues = buildValidationIssues({ includePins: isAdvancedPinConfigOpen() });
             const errors = issues.filter(i => i.type === 'error').length;
             const warnings = issues.filter(i => i.type === 'warning').length;
             const enabledCount = modules.filter(m => m.enabled).length;
@@ -5576,8 +5842,11 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             const wrap = document.getElementById('status-chips');
             if (!wrap) return;
             const health = getBuildHealthState();
-            const pin = checkPinConflicts();
-            const pinErrors = Array.isArray(pin?.errors) ? pin.errors.length : 0;
+            let pinErrors = 0;
+            if (isAdvancedPinConfigOpen()) {
+                const pin = checkPinConflicts();
+                pinErrors = Array.isArray(pin?.errors) ? pin.errors.length : 0;
+            }
             const chips = [];
             if (!selectedBoard) {
                 chips.push({ cls: 'warn', text: 'Needs board selection' });
@@ -6044,7 +6313,10 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         async function generateConfigPreview() {
             const previewEl = document.getElementById('config-preview');
             renderValidationReport();
-            const ledInput = document.querySelector('#pin-table-body input[data-pin="led"]');
+            const advancedPinConfig = document.getElementById('advanced-pin-config');
+            const ledInput = (advancedPinConfig && advancedPinConfig.open)
+                ? document.querySelector('#pin-table-body input[data-pin="led"]')
+                : null;
             const ledPin = ledInput ? String(ledInput.value || '').trim() : (selectedBoard?.pins?.led ?? 'n/a');
 
             // Summary
@@ -6330,7 +6602,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 return;
             }
 
-            const issues = buildValidationIssues({ includePins: true });
+            const issues = buildValidationIssues({ includePins: isAdvancedPinConfigOpen() });
             if (issues.length === 0) {
                 reportEl.innerHTML = `
                     <div class="validation-item info">
@@ -6357,17 +6629,20 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             const enabled_applets = applets.filter(a => appletStates[a]);
             const market_apps = marketApps.filter(a => marketAppStates[a]);
             const custom_pins = {};
-            document.querySelectorAll('#pin-table-body input[data-pin]').forEach(input => {
-                const key = input.dataset.pin;
-                const raw = (input.value || '').trim();
-                if (!raw) return;
-                if (input.dataset.pinType === 'number') {
-                    const val = parseInt(raw, 10);
-                    if (!Number.isNaN(val)) custom_pins[key] = val;
-                } else {
-                    custom_pins[key] = raw;
-                }
-            });
+            const advancedPinConfig = document.getElementById('advanced-pin-config');
+            if (advancedPinConfig && advancedPinConfig.open) {
+                document.querySelectorAll('#pin-table-body input[data-pin]').forEach(input => {
+                    const key = input.dataset.pin;
+                    const raw = (input.value || '').trim();
+                    if (!raw) return;
+                    if (input.dataset.pinType === 'number') {
+                        const val = parseInt(raw, 10);
+                        if (!Number.isNaN(val)) custom_pins[key] = val;
+                    } else {
+                        custom_pins[key] = raw;
+                    }
+                });
+            }
             if (avrTargetSelected()) {
                 readAvrSettingsFromUi();
             }
@@ -6388,8 +6663,23 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             };
         }
 
+        function bindAdvancedPinConfigToggle() {
+            const advanced = document.getElementById('advanced-pin-config');
+            if (!advanced || advanced.dataset.bound === '1') return;
+            advanced.dataset.bound = '1';
+            advanced.addEventListener('toggle', () => {
+                if (advanced.open) {
+                    populatePinTable();
+                    checkPinConflicts();
+                }
+            });
+        }
+
         function updateWizardSteps() {
-            document.querySelectorAll('.step').forEach((step, index) => {
+            if (currentStep < 1) currentStep = 1;
+            if (currentStep > FINAL_STEP) currentStep = FINAL_STEP;
+
+            document.querySelectorAll('.wizard-steps .step').forEach((step, index) => {
                 step.classList.remove('active', 'completed');
                 if (index + 1 === currentStep) {
                     step.classList.add('active');
@@ -6399,35 +6689,37 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             });
             
             // Show/hide content sections
-            document.querySelectorAll('.content-section').forEach((section, index) => {
+            getWizardSections().forEach((section, index) => {
                 section.classList.remove('active');
-                if (index + 1 === currentStep) {
+                const visible = index + 1 <= FINAL_STEP;
+                section.style.display = visible ? '' : 'none';
+                if (visible && index + 1 === currentStep) {
                     section.classList.add('active');
                 }
             });
             
             // Update buttons
             document.getElementById('btn-prev').style.display = currentStep > 1 ? 'block' : 'none';
-            document.getElementById('btn-next').style.display = currentStep < 4 ? 'block' : 'none';
-            document.getElementById('btn-generate').style.display = currentStep === 4 ? 'block' : 'none';
+            document.getElementById('btn-next').style.display = currentStep < FINAL_STEP ? 'block' : 'none';
+            document.getElementById('btn-generate').style.display = currentStep === FINAL_STEP ? 'block' : 'none';
             const btnGenerateBuild = document.getElementById('btn-generate-build');
             if (btnGenerateBuild) {
-                btnGenerateBuild.style.display = (currentStep === 4 && selectedPlatform === 'esp32') ? 'block' : 'none';
+                btnGenerateBuild.style.display = (currentStep === FINAL_STEP && selectedPlatform === 'esp32') ? 'block' : 'none';
             }
             
             // Populate data for current step
             if (currentStep === 3) {
                 syncModuleStatesFromUI();
-                if (selectedBoard && modules.every(m => !m.enabled)) {
-                    autoEnableByBoardCapabilities(selectedBoard);
-                    populateModuleGrid();
-                }
-                populatePinTable();
+                renderRuntimeOptionsPanel();
                 applyAvrSettingsToUi();
+                const advanced = document.getElementById('advanced-pin-config');
+                if (advanced && advanced.open) {
+                    populatePinTable();
+                }
             } else if (currentStep === 2) {
                 updateValidation();
                 renderSelectedAppsVisibility();
-            } else if (currentStep === 4) {
+            } else if (currentStep === FINAL_STEP) {
                 generateConfigPreview();
                 refreshWebFlasher({ silent: true });
                 refreshAvrFlasher({ silent: true });
@@ -6439,7 +6731,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         }
 
         function nextStep() {
-            if (currentStep < 4) {
+            if (currentStep < FINAL_STEP) {
                 currentStep++;
                 updateWizardSteps();
             }

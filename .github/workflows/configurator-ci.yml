@@ -90,6 +90,7 @@ jobs:
         run: |
           set -euo pipefail
           bash tools/tests/configurator_api_smoke.sh
+          bash tools/tests/cyd_config_parity_smoke.sh
 
       - name: Configurator E2E local-mode guard + smoke
         run: |
@@ -129,3 +130,26 @@ jobs:
           set -euo pipefail
           chmod +x tools/tests/lua_runtime_ci_smoke.sh
           bash tools/tests/lua_runtime_ci_smoke.sh
+
+  cyd-esp32-build-smoke:
+    runs-on: ubuntu-latest
+    container: espressif/idf:release-v5.5
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python deps
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install flask flask-cors
+
+      - name: CYD generate + ESP32 build smoke
+        run: |
+          set -euo pipefail
+          chmod +x tools/tests/cyd_esp32_build_smoke.sh
+          bash tools/tests/cyd_esp32_build_smoke.sh

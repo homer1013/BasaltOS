@@ -37,6 +37,15 @@
 - `release_sync_check.py` – validate release/tag/changelog alignment across BasaltOS repos
 - `release_sync_update.py` – update release sync status rows in one command
 
+## Configurator flow notes
+
+- CLI wizard (`python tools/configure.py --wizard`) is the canonical flow contract.
+- Local web configurator mirrors the wizard step model and board taxonomy filters.
+- Runtime options (applets/market apps) are explicit in step 3.
+- Pin mapping is optional/advanced; default board pins are used unless overridden.
+
+ESP-IDF build commands should run from repo root (`BasaltOS_Main`), not `tools/`.
+
 ## new_app.py
 
 Create a new app under `apps/`:
@@ -142,6 +151,18 @@ Configurator API smoke test:
 
 ```bash
 bash tools/tests/configurator_api_smoke.sh
+```
+
+CYD CLI/API parity smoke (web generate output must match CLI output files):
+
+```bash
+bash tools/tests/cyd_config_parity_smoke.sh
+```
+
+CYD generate + ESP32 build smoke (guards partition/SPIFFS regressions):
+
+```bash
+bash tools/tests/cyd_esp32_build_smoke.sh
 ```
 
 Local-mode UI/API guard test (market/profile hidden + market API disabled):

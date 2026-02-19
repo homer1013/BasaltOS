@@ -22,7 +22,10 @@ from __future__ import annotations
 
 import argparse
 import difflib
+import glob
 import json
+import os
+import shutil
 import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -305,6 +308,193 @@ def prompt_optional_choice(title: str, options: List[str], all_label: str) -> Op
 
 
 # -----------------------------
+# Doctor/preflight checks
+# -----------------------------
+
+def _doctor_line(status: str, title: str, detail: str) -> None:
+    print(f"[doctor] {status:5s} {title}: {detail}")
+
+
+def _detect_serial_ports() -> List[str]:
+    if os.name == "nt":
+        # Do not probe COM ports directly; expose a practical default range.
+        return [f"COM{i}" for i in range(1, 33)]
+    found: Set[str] = set()
+    for pat in ("/dev/ttyUSB*", "/dev/ttyACM*", "/dev/cu.usb*", "/dev/cu.SLAB*", "/dev/tty.usb*"):
+        for p in glob.glob(pat):
+            found.add(p)
+    return sorted(found)
+
+
+def run_doctor(root: Path, platform: Optional[str], board: Optional[str]) -> int:
+    print("")
+    print("BasaltOS Configure Doctor")
+    print("=========================")
+    print(f"[doctor] repo root: {root}")
+
+    fail_count = 0
+    warn_count = 0
+
+    def ok(title: str, detail: str) -> None:
+        _doctor_line("OK", title, detail)
+
+    def warn(title: str, detail: str) -> None:
+        nonlocal warn_count
+        warn_count += 1
+        _doctor_line("WARN", title, detail)
+
+    def fail(title: str, detail: str) -> None:
+        nonlocal fail_count
+        fail_count += 1
+        _doctor_line("FAIL", title, detail)
+
+    py_ok = sys.version_info >= (3, 9)
+    if py_ok:
+        ok("python", f"{sys.version.split()[0]}")
+    else:
+        fail("python", f"{sys.version.split()[0]} (require >= 3.9)")
+
+    required_paths = [
+        ("boards", root / "boards"),
+        ("modules", root / "modules"),
+        ("tools", root / "tools"),
+        ("config/templates", root / "config" / "templates"),
+    ]
+    for label, p in required_paths:
+        if p.exists():
+            ok("path", f"{label} exists ({safe_rel(root, p)})")
+        else:
+            fail("path", f"{label} missing ({safe_rel(root, p)})")
+
+    try:
+        mods = discover_modules(root / "modules")
+        ok("drivers", f"discovered {len(mods)} modules")
+    except Exception as ex:
+        fail("drivers", f"module discovery failed: {ex}")
+        mods = {}
+
+    boards = discover_boards(root, platform)
+    if boards:
+        scope = platform if platform else "all platforms"
+        ok("boards", f"discovered {len(boards)} board profiles ({scope})")
+    else:
+        if platform:
+            fail("boards", f"no boards found for platform '{platform}'")
+        else:
+            fail("boards", "no boards found")
+
+    if board and platform:
+        try:
+            b, _allow = select_board_noninteractive(boards, platform, board)
+            if b is None:
+                fail("board", f"board '{board}' not resolved under platform '{platform}'")
+            else:
+                ok("board", f"resolved to {b.platform}/{b.board_dir} (id='{b.id}')")
+        except Exception as ex:
+            fail("board", str(ex))
+    elif board and not platform:
+        warn("board", "--board provided without --platform; skipping board resolution")
+
+    ports = _detect_serial_ports()
+    if ports:
+        ok("serial", f"detected {len(ports)} serial port candidate(s); first={ports[0]}")
+    else:
+        warn("serial", "no serial ports detected (/dev/ttyUSB*, /dev/ttyACM*, etc.)")
+
+    idf_py = shutil.which("idf.py")
+    if idf_py:
+        ok("esp32 toolchain", f"idf.py found at {idf_py}")
+    else:
+        warn("esp32 toolchain", "idf.py not found in PATH (source tools/env.sh for ESP-IDF builds)")
+
+    idf_path = os.environ.get("IDF_PATH", "").strip()
+    if idf_path:
+        if Path(idf_path).exists():
+            ok("IDF_PATH", idf_path)
+        else:
+            warn("IDF_PATH", f"set but path does not exist: {idf_path}")
+    else:
+        warn("IDF_PATH", "not set")
+
+    arduino_cli = shutil.which("arduino-cli")
+    if arduino_cli:
+        ok("avr toolchain", f"arduino-cli found at {arduino_cli}")
+    else:
+        warn("avr toolchain", "arduino-cli not found in PATH")
+
+    print("")
+    if fail_count == 0:
+        print(f"[doctor] Summary: PASS ({warn_count} warning(s))")
+        return 0
+    print(f"[doctor] Summary: FAIL ({fail_count} failure(s), {warn_count} warning(s))")
+    return 10
+
+
+# -----------------------------
+# Shared wizard step schema
+# -----------------------------
+
+WIZARD_STEP_SCHEMA: Tuple[Dict[str, str], ...] = (
+    {
+        "id": "platform_board",
+        "title": "Platform & Board",
+        "description": "Select hardware target using taxonomy filters and board picker.",
+    },
+    {
+        "id": "drivers",
+        "title": "Drivers",
+        "description": "Enable drivers, apply defaults, and validate dependency/conflict rules.",
+    },
+    {
+        "id": "runtime_options",
+        "title": "Runtime Options",
+        "description": "Choose applets, market apps, and optional AVR-specific settings.",
+    },
+    {
+        "id": "generate",
+        "title": "Generate",
+        "description": "Write deterministic config outputs and print next-step instructions.",
+    },
+)
+
+
+WIZARD_BOARD_FILTER_SCHEMA: Tuple[Dict[str, str], ...] = (
+    {
+        "id": "manufacturer",
+        "title": "Manufacturer",
+        "taxonomy_key": "manufacturer",
+        "all_label": "(all manufacturers)",
+    },
+    {
+        "id": "architecture",
+        "title": "Architecture",
+        "taxonomy_key": "architecture",
+        "all_label": "(all architectures)",
+    },
+    {
+        "id": "family",
+        "title": "Family",
+        "taxonomy_key": "family",
+        "all_label": "(all families)",
+    },
+    {
+        "id": "silicon",
+        "title": "Processor / Silicon",
+        "taxonomy_key": "silicon",
+        "all_label": "(all processors)",
+    },
+)
+
+
+def get_wizard_step_schema() -> List[Dict[str, str]]:
+    return [dict(step) for step in WIZARD_STEP_SCHEMA]
+
+
+def get_wizard_board_filter_schema() -> List[Dict[str, str]]:
+    return [dict(step) for step in WIZARD_BOARD_FILTER_SCHEMA]
+
+
+# -----------------------------
 # Load modules
 # -----------------------------
 
@@ -554,22 +744,21 @@ def wizard_select_board_hierarchy(boards: List[BoardProfile]) -> Optional[BoardP
     print("Tip: choose '(all ...)' at any step to keep filtering broad.")
 
     tx_pairs = [(b, board_taxonomy(b)) for b in boards]
-    manufacturers = sorted({tx["manufacturer"] for _, tx in tx_pairs})
-    selected_manufacturer = prompt_optional_choice("Manufacturer", manufacturers, "(all manufacturers)")
+    filtered_pairs = tx_pairs
+    for step in get_wizard_board_filter_schema():
+        key = step.get("taxonomy_key", "")
+        if key not in {"manufacturer", "architecture", "family", "silicon"}:
+            continue
+        options = sorted({tx[key] for _, tx in filtered_pairs})
+        selected = prompt_optional_choice(
+            str(step.get("title") or key.title()),
+            options,
+            str(step.get("all_label") or "(all)"),
+        )
+        if selected:
+            filtered_pairs = [pair for pair in filtered_pairs if pair[1][key] == selected]
 
-    by_manufacturer = [pair for pair in tx_pairs if not selected_manufacturer or pair[1]["manufacturer"] == selected_manufacturer]
-    architectures = sorted({tx["architecture"] for _, tx in by_manufacturer})
-    selected_architecture = prompt_optional_choice("Architecture", architectures, "(all architectures)")
-
-    by_architecture = [pair for pair in by_manufacturer if not selected_architecture or pair[1]["architecture"] == selected_architecture]
-    families = sorted({tx["family"] for _, tx in by_architecture})
-    selected_family = prompt_optional_choice("Family", families, "(all families)")
-
-    by_family = [pair for pair in by_architecture if not selected_family or pair[1]["family"] == selected_family]
-    silicons = sorted({tx["silicon"] for _, tx in by_family})
-    selected_silicon = prompt_optional_choice("Processor / Silicon", silicons, "(all processors)")
-
-    filtered = [b for b, tx in by_family if not selected_silicon or tx["silicon"] == selected_silicon]
+    filtered = [b for b, _ in filtered_pairs]
     if not filtered:
         print("[wizard] No boards match selected taxonomy filters.")
         return None
@@ -577,17 +766,26 @@ def wizard_select_board_hierarchy(boards: List[BoardProfile]) -> Optional[BoardP
     display: List[str] = []
     index: Dict[str, BoardProfile] = {}
     for b in sorted(filtered, key=lambda x: (x.platform, x.board_dir)):
-        caps = b.data.get("capabilities", [])
-        caps_s = ",".join(caps) if isinstance(caps, list) else ""
-        tx = board_taxonomy(b)
-        line = f"{b.name} [{b.platform}/{b.board_dir}] ({tx['manufacturer']} • {tx['architecture']} • {tx['family']} • {tx['silicon']}; caps=[{caps_s}])"
+        line = f"{b.name} [{b.platform}/{b.board_dir}]"
         display.append(line)
         index[line] = b
 
-    choice = prompt_choice("Select board", display, allow_empty=True)
-    if choice is None:
-        return None
-    return index[choice]
+    while True:
+        choice = prompt_choice("Select board", display, allow_empty=True)
+        if choice is None:
+            return None
+        selected = index[choice]
+        tx = board_taxonomy(selected)
+        caps = selected.data.get("capabilities", [])
+        caps_s = ", ".join(caps) if isinstance(caps, list) else ""
+        print("")
+        print("[wizard] Selected board details")
+        print(f"  name: {selected.name}")
+        print(f"  path: {selected.platform}/{selected.board_dir}")
+        print(f"  taxonomy: {tx['manufacturer']} / {tx['architecture']} / {tx['family']} / {tx['silicon']}")
+        print(f"  capabilities ({len(caps) if isinstance(caps, list) else 0}): {caps_s or '(none)'}")
+        if prompt_yes_no("Use this board?", default=True):
+            return selected
 
 
 # -----------------------------
@@ -1428,34 +1626,167 @@ def wizard_select_modules(modules: Dict[str, Module], allowed: Optional[Set[str]
     if allowed is not None:
         candidates = [m for m in candidates if m in allowed]
     default_set = {d for d in (defaults or set()) if d in candidates}
+    selected = set(default_set)
 
     print("")
     print("Select drivers to enable")
     print("------------------------")
-    print("Enter comma-separated ids (e.g., spi,uart,tft)")
-    print("Press Enter to keep defaults shown with [x].")
-    print("Dependencies will be added automatically.")
-    print("Conflicts will be rejected.")
-    print("")
+    print("Toggle by number or driver id (e.g., 1 4 7 or spi uart tft)")
+    print("Commands: c=continue, d=defaults, n=none, a=all, i <n>=details")
+    print("Dependencies are auto-added after this step; conflicts are validated.")
+    while True:
+        print("")
+        print(f"Selected: {len(selected)}/{len(candidates)}")
+        for i, mid in enumerate(candidates, start=1):
+            m = modules[mid]
+            marker = "[x]" if mid in selected else "[ ]"
+            print(f"  {i:2d}) {marker} {mid:12s} : {m.name}")
+        raw = input("Action [c]: ").strip()
+        if not raw or norm_slug(raw) in {"c", "continue", "done"}:
+            return selected
+        raw_norm = norm_slug(raw)
+        if raw_norm in {"d", "default", "defaults"}:
+            selected = set(default_set)
+            continue
+        if raw_norm in {"n", "none", "off"}:
+            selected = set()
+            continue
+        if raw_norm in {"a", "all"}:
+            selected = set(candidates)
+            continue
+        if raw_norm.startswith("i_") or raw_norm.startswith("info_"):
+            parts = [p for p in raw.replace(",", " ").split() if p]
+            if len(parts) != 2 or not parts[1].isdigit():
+                print("Use: i <number>")
+                continue
+            idx = int(parts[1])
+            if idx < 1 or idx > len(candidates):
+                print(f"Invalid driver index. Enter 1..{len(candidates)}.")
+                continue
+            mid = candidates[idx - 1]
+            m = modules[mid]
+            dep = ", ".join(m.depends) if m.depends else "(none)"
+            conf = ", ".join(m.conflicts) if m.conflicts else "(none)"
+            desc = m.description.strip() or "(no description)"
+            print("")
+            print(f"[driver] {mid}")
+            print(f"  name: {m.name}")
+            print(f"  depends: {dep}")
+            print(f"  conflicts: {conf}")
+            print(f"  description: {desc}")
+            continue
 
-    for mid in candidates:
-        m = modules[mid]
-        dep = f" deps=[{','.join(m.depends)}]" if m.depends else ""
-        conf = f" conflicts=[{','.join(m.conflicts)}]" if m.conflicts else ""
-        marker = "[x]" if mid in default_set else "[ ]"
-        print(f"  {marker} {mid:12s} : {m.name}{dep}{conf}")
-        if m.description.strip():
-            print(f"      {m.description.strip()}")
+        tokens = [t.strip() for t in raw.replace(",", " ").split() if t.strip()]
+        unknown: List[str] = []
+        for tok in tokens:
+            if tok.isdigit():
+                idx = int(tok)
+                if idx < 1 or idx > len(candidates):
+                    unknown.append(tok)
+                    continue
+                mid = candidates[idx - 1]
+            else:
+                mid = norm_slug(tok)
+                if mid not in candidates:
+                    unknown.append(tok)
+                    continue
+            if mid in selected:
+                selected.remove(mid)
+            else:
+                selected.add(mid)
+        if unknown:
+            print(f"Unknown selection(s): {', '.join(unknown)}")
 
-    print("")
-    default_csv = ",".join(sorted(default_set))
-    choice = input(f"Enable drivers (comma separated) [{default_csv}]: ").strip()
-    if not choice:
-        return set(default_set)
-    if norm_slug(choice) in {"none", "off"}:
-        return set()
-    selected = normalize_driver_aliases(norm_list_csv(choice))
-    return set([x for x in selected if x])
+
+def wizard_review_and_confirm(
+    root: Path,
+    modules: Dict[str, Module],
+    templates: Dict[str, ProjectTemplate],
+    platform: Optional[str],
+    board_profile: Optional[BoardProfile],
+    requested: Set[str],
+    applets: List[str],
+    market_apps: List[str],
+    avr_clock: dict,
+    avr_config: dict,
+    template_id: Optional[str],
+    driver_config: dict,
+) -> Tuple[Optional[str], Optional[BoardProfile], Set[str], List[str], List[str], dict, dict, Optional[str], dict, bool]:
+    while True:
+        print("")
+        print("Review Configuration")
+        print("--------------------")
+        board_label = f"{board_profile.name} [{board_profile.platform}/{board_profile.board_dir}]" if board_profile else "(none)"
+        print(f"  1) Board: {board_label}")
+        print(f"  2) Template: {template_id or '(none)'}")
+        print(f"  3) Drivers: {', '.join(sorted(requested)) if requested else '(none)'}")
+        print(f"  4) Applets: {', '.join(applets) if applets else '(none)'}")
+        print(f"  5) Market apps: {', '.join(market_apps) if market_apps else '(none)'}")
+        if platform in {"avr", "atmega"}:
+            print(f"  6) AVR overrides: clock={avr_clock or {}}, upload={avr_config.get('upload', {})}, fuses={avr_config.get('fuses', {})}")
+        print("")
+        print("Actions: c=confirm and generate, q=cancel, 1..6=edit field")
+        action = input("Action [c]: ").strip().lower()
+        if not action or action in {"c", "confirm", "generate"}:
+            return platform, board_profile, requested, applets, market_apps, avr_clock, avr_config, template_id, driver_config, True
+        if action in {"q", "quit", "cancel"}:
+            return platform, board_profile, requested, applets, market_apps, avr_clock, avr_config, template_id, driver_config, False
+        if action == "1":
+            boards = discover_boards(root, None)
+            picked = wizard_select_board_hierarchy(boards)
+            if picked is not None:
+                board_profile = picked
+                platform = board_profile.platform
+                allow = board_capabilities(board_profile.data)
+                if template_id and template_id in templates and not template_allowed_for_platform(templates[template_id], platform):
+                    print(f"[wizard] template '{template_id}' is not supported on platform '{platform}'. Clearing template.")
+                    template_id = None
+                    driver_config = {}
+                defaults = default_drivers_for_board(board_profile)
+                if template_id and template_id in templates:
+                    defaults.update({norm_slug(x) for x in templates[template_id].enabled_drivers if norm_slug(x)})
+                requested = wizard_select_modules(modules, allow, defaults=defaults)
+                available_market = sorted(discover_market_app_ids(root, platform))
+                market_apps = [x for x in market_apps if x in available_market]
+                if platform not in {"avr", "atmega"}:
+                    avr_clock = {}
+                    avr_config = {"fuses": {}, "upload": {}}
+            continue
+        if action == "2":
+            selected_template: Optional[ProjectTemplate] = None
+            if prompt_yes_no("Apply a project template?", default=bool(template_id)):
+                selected_template = wizard_select_template(templates, platform)
+            if selected_template:
+                template_id = selected_template.id
+                driver_config = dict(selected_template.driver_config)
+            else:
+                template_id = None
+                driver_config = {}
+            allow = board_capabilities(board_profile.data) if board_profile else None
+            defaults = default_drivers_for_board(board_profile)
+            if template_id and template_id in templates:
+                defaults.update({norm_slug(x) for x in templates[template_id].enabled_drivers if norm_slug(x)})
+            requested = wizard_select_modules(modules, allow, defaults=defaults)
+            continue
+        if action == "3":
+            allow = board_capabilities(board_profile.data) if board_profile else None
+            requested = wizard_select_modules(modules, allow, defaults=requested)
+            continue
+        if action == "4":
+            available_applets = sorted(known_applet_ids(root))
+            applets = wizard_select_apps("Select applets", available_applets, applets)
+            continue
+        if action == "5":
+            available_market_apps = sorted(discover_market_app_ids(root, platform))
+            market_apps = wizard_select_apps("Select market apps", available_market_apps, market_apps)
+            continue
+        if action == "6" and platform in {"avr", "atmega"}:
+            try:
+                avr_clock, avr_config = wizard_select_avr_settings(board_profile)
+            except Exception as ex:
+                print(f"[wizard] AVR settings ignored due to invalid value: {ex}")
+            continue
+        print("Unknown action. Use c, q, or one of the edit numbers shown.")
 
 
 def wizard_select_template(
@@ -1527,21 +1858,25 @@ def run_wizard(
     root: Path,
     modules: Dict[str, Module],
     templates: Dict[str, ProjectTemplate],
-) -> Tuple[Optional[str], Optional[BoardProfile], Set[str], List[str], List[str], dict, dict, Optional[str], dict]:
+) -> Tuple[Optional[str], Optional[BoardProfile], Set[str], List[str], List[str], dict, dict, Optional[str], dict, bool]:
     """
     Returns (platform, board_profile, requested_modules)
     """
     print("")
     print("BasaltOS Configure Wizard")
     print("=========================")
+    steps = get_wizard_step_schema()
+    step_total = len(steps)
 
     # Match web configurator flow: board-first via taxonomy filters.
     # Platform is derived from selected board.
+    print(f"[wizard] Step 1/{step_total}: {steps[0]['title']}")
     boards = discover_boards(root, None)
     board_profile: Optional[BoardProfile] = wizard_select_board_hierarchy(boards)
     platform: Optional[str] = board_profile.platform if board_profile else None
     allow: Optional[Set[str]] = board_capabilities(board_profile.data) if board_profile else None
 
+    print(f"[wizard] Step 2/{step_total}: {steps[1]['title']}")
     template = None
     if prompt_yes_no("Apply a project template?", default=False):
         template = wizard_select_template(templates, platform)
@@ -1553,6 +1888,7 @@ def run_wizard(
         requested_defaults.update({norm_slug(x) for x in template.enabled_drivers if norm_slug(x)})
     requested = wizard_select_modules(modules, allow, defaults=requested_defaults)
 
+    print(f"[wizard] Step 3/{step_total}: {steps[2]['title']}")
     available_applets = sorted(known_applet_ids(root))
     default_applets = [norm_slug(x) for x in (template.applets if template else ()) if norm_slug(x)]
     applets = wizard_select_apps("Select applets", available_applets, default_applets)
@@ -1573,7 +1909,21 @@ def run_wizard(
 
     template_id = template.id if template else None
     driver_config = dict(template.driver_config) if template else {}
-    return platform, board_profile, requested, applets, market_apps, avr_clock, avr_config, template_id, driver_config
+    print(f"[wizard] Step 4/{step_total}: Review & Generate")
+    return wizard_review_and_confirm(
+        root=root,
+        modules=modules,
+        templates=templates,
+        platform=platform,
+        board_profile=board_profile,
+        requested=requested,
+        applets=applets,
+        market_apps=market_apps,
+        avr_clock=avr_clock,
+        avr_config=avr_config,
+        template_id=template_id,
+        driver_config=driver_config,
+    )
 
 
 # -----------------------------
@@ -1593,6 +1943,7 @@ def main() -> int:
     ap.add_argument("--disable", default=None, help="comma-separated driver ids to disable (legacy alias)")
     ap.add_argument("--disable-drivers", default=None, help="comma-separated driver ids to disable (applied after enable/deps)")
     ap.add_argument("--wizard", action="store_true", help="interactive: choose platform, board, drivers, apps")
+    ap.add_argument("--doctor", action="store_true", help="run preflight checks for toolchain, boards, and serial ports")
     ap.add_argument("--list-modules", action="store_true", help="list available drivers (legacy flag)")
     ap.add_argument("--list-drivers", action="store_true", help="list available drivers")
     ap.add_argument("--list-boards", action="store_true", help="list available boards (filtered by --platform if set)")
@@ -1613,6 +1964,9 @@ def main() -> int:
     ap.add_argument("--upload-port", default=None, help="AVR: serial/USB port")
     ap.add_argument("--outdir", default=str(gen_dir), help="output directory (default: config/generated)")
     args = ap.parse_args()
+
+    if args.doctor:
+        return run_doctor(root, args.platform, args.board)
 
     try:
         modules = discover_modules(modules_dir)
@@ -1675,7 +2029,10 @@ def main() -> int:
     avr_upload: dict = {}
 
     if args.wizard:
-        platform, board_profile, requested, selected_applets, selected_market_apps, avr_clock, avr_bundle, template_id, driver_config = run_wizard(root, modules, templates)
+        platform, board_profile, requested, selected_applets, selected_market_apps, avr_clock, avr_bundle, template_id, driver_config, confirmed = run_wizard(root, modules, templates)
+        if not confirmed:
+            print("[wizard] Cancelled. No files were generated.")
+            return 0
         allow = board_capabilities(board_profile.data) if board_profile else None
         avr_fuses = dict(avr_bundle.get("fuses", {}))
         avr_upload = dict(avr_bundle.get("upload", {}))
@@ -1881,11 +2238,11 @@ def main() -> int:
 
     print("")
     print("[configure] Generated:")
-    print(f"  - {basalt_h.relative_to(root)}")
-    print(f"  - {features_j.relative_to(root)}")
-    print(f"  - {sdk_defaults.relative_to(root)}")
-    print(f"  - {applets_j.relative_to(root)}")
-    print(f"  - {config_j.relative_to(root)}")
+    print(f"  - {safe_rel(root, basalt_h)}")
+    print(f"  - {safe_rel(root, features_j)}")
+    print(f"  - {safe_rel(root, sdk_defaults)}")
+    print(f"  - {safe_rel(root, applets_j)}")
+    print(f"  - {safe_rel(root, config_j)}")
     if board_profile:
         print(f"[configure] Board profile: {safe_rel(root, board_profile.path)}")
 

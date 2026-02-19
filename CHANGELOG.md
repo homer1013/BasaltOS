@@ -5,7 +5,19 @@ All notable changes to this project are documented in this file.
 ## Unreleased
 
 ### Added
-- Placeholder for next development cycle.
+- Shared wizard schema contract endpoints for local configurator: `GET /api/wizard/steps` and `GET /api/wizard/board-filters`.
+- New CYD smoke tests:
+  - `tools/tests/cyd_config_parity_smoke.sh` (CLI vs API output parity gate)
+  - `tools/tests/cyd_esp32_build_smoke.sh` (generate + ESP32 build path)
+
+### Changed
+- Local web configurator wizard step container is schema-driven (step labels/count from shared contract), removing hardcoded 4-step control assumptions.
+- Board taxonomy filter labels and "all" option text are now sourced from shared board-filter schema for CLI/web parity.
+- Configurator API generation now aligns with CLI serializers for applet JSON shape, macro emission, slug ordering, and config payload structure.
+
+### Fixed
+- `tools/configure.py` no longer crashes when `--outdir` is outside repository root.
+- ESP32 build no longer fails when partition table omits `storage`; SPIFFS image generation is now conditionally skipped.
 
 ## v0.1.1 - 2026-02-13
 

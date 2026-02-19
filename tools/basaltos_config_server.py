@@ -15,6 +15,7 @@ import os
 import re
 import glob
 import hashlib
+import shlex
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
@@ -119,6 +120,17 @@ class ConfigGenerator:
         if not isinstance(raw, list):
             return []
         return [str(x).strip() for x in raw if str(x).strip()]
+
+    @staticmethod
+    def _normalize_slug_list(values: Any) -> List[str]:
+        if not isinstance(values, list):
+            return []
+        out: List[str] = []
+        for item in values:
+            slug = cfg.norm_slug(str(item))
+            if slug:
+                out.append(slug)
+        return sorted(dict.fromkeys(out))
 
     @staticmethod
     def _driver_config_from_config(config_data: dict) -> dict:
@@ -1030,55 +1042,6 @@ print("[uart_echo] done")
         return data
 
 
-    def _append_driver_config_macros(self, out_path: Path, driver_config: dict | None) -> None:
-        if not driver_config or not isinstance(driver_config, dict):
-            return
-
-        lines: List[str] = []
-        lines.append("")
-        lines.append("/* Driver configuration options */")
-        for module_id, options in driver_config.items():
-            if not isinstance(options, dict):
-                continue
-            for key, val in options.items():
-                macro = f"BASALT_CFG_{cfg.slug_to_macro(str(module_id))}_{cfg.slug_to_macro(str(key))}"
-                if isinstance(val, bool):
-                    lines.append(f"#define {macro} {1 if val else 0}")
-                elif isinstance(val, (int, float)) and int(val) == val:
-                    lines.append(f"#define {macro} {int(val)}")
-                elif isinstance(val, (int, float)):
-                    lines.append(f"#define {macro} {val}")
-                else:
-                    lines.append(f"#define {macro} \"{val}\"")
-
-        out_path.write_text(out_path.read_text(encoding="utf-8") + "\n".join(lines) + "\n", encoding="utf-8")
-
-    def _append_applet_macros(self, out_path: Path, applets: List[str] | None) -> None:
-        selected = [str(a).strip() for a in (applets or []) if str(a).strip()]
-        csv_val = ",".join(selected).replace("\\", "\\\\").replace('"', '\\"')
-        lines: List[str] = []
-        lines.append("")
-        lines.append("/* Applet selection */")
-        lines.append(f"#define BASALT_APPLET_COUNT {len(selected)}")
-        lines.append(f"#define BASALT_APPLETS_CSV \"{csv_val}\"")
-        for aid in selected:
-            macro = f"BASALT_APPLET_ENABLED_{cfg.slug_to_macro(aid)}"
-            lines.append(f"#define {macro} 1")
-        out_path.write_text(out_path.read_text(encoding="utf-8") + "\n".join(lines) + "\n", encoding="utf-8")
-
-    def _append_market_app_macros(self, out_path: Path, market_apps: List[str] | None) -> None:
-        selected = [str(a).strip() for a in (market_apps or []) if str(a).strip()]
-        csv_val = ",".join(selected).replace("\\", "\\\\").replace('"', '\\"')
-        lines: List[str] = []
-        lines.append("")
-        lines.append("/* Market app selection */")
-        lines.append(f"#define BASALT_MARKET_APP_COUNT {len(selected)}")
-        lines.append(f"#define BASALT_MARKET_APPS_CSV \"{csv_val}\"")
-        for aid in selected:
-            macro = f"BASALT_MARKET_APP_ENABLED_{cfg.slug_to_macro(aid)}"
-            lines.append(f"#define {macro} 1")
-        out_path.write_text(out_path.read_text(encoding="utf-8") + "\n".join(lines) + "\n", encoding="utf-8")
-
     def _write_applets_json(
         self,
         out_path: Path,
@@ -1086,14 +1049,12 @@ print("[uart_echo] done")
         board_id: str | None,
         applets: List[str] | None,
     ) -> None:
-        selected = [str(a).strip() for a in (applets or []) if str(a).strip()]
-        payload = {
-            "platform": platform,
-            "board_id": board_id,
-            "applets": selected,
-            "count": len(selected),
-        }
-        out_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+        cfg.write_applets_json(
+            out_path=out_path,
+            platform=platform,
+            board_id=board_id,
+            applets=self._normalize_slug_list(applets),
+        )
 
 
     def generate_basalt_config_h(
@@ -1120,6 +1081,8 @@ print("[uart_echo] done")
 
         with tempfile.TemporaryDirectory() as td:
             out_path = Path(td) / "basalt_config.h"
+            selected_applets = self._normalize_slug_list(applets)
+            selected_market_apps = self._normalize_slug_list(market_apps)
             cfg.emit_basalt_config_h(
                 out_path=out_path,
                 enabled_modules=enabled_list,
@@ -1128,9 +1091,9 @@ print("[uart_echo] done")
                 board_define_name=board_define_name,
                 board_data=board_data,
             )
-            self._append_driver_config_macros(out_path, driver_config)
-            self._append_applet_macros(out_path, applets)
-            self._append_market_app_macros(out_path, market_apps)
+            cfg.append_driver_config_macros(out_path, modules, enabled_list, driver_config if isinstance(driver_config, dict) else {})
+            cfg.append_applet_macros(out_path, selected_applets)
+            cfg.append_market_app_macros(out_path, selected_market_apps)
             return out_path.read_text(encoding="utf-8")
 
 
@@ -1268,7 +1231,8 @@ print("[uart_echo] done")
         market_apps = config_data.get("market_apps") or []
         if not applets and board_profile:
             applets = ((board_profile.data or {}).get("defaults") or {}).get("applets", [])
-        applets = applets or []
+        applets = self._normalize_slug_list(applets)
+        market_apps = self._normalize_slug_list(market_apps)
 
         board_define_name = board_profile.id if board_profile else config_data.get("board_id")
         board_id = board_profile.id if board_profile else config_data.get("board_id")
@@ -1295,9 +1259,9 @@ print("[uart_echo] done")
             board_define_name=board_define_name,
             board_data=board_data,
         )
-        self._append_driver_config_macros(basalt_h, module_config)
-        self._append_applet_macros(basalt_h, applets)
-        self._append_market_app_macros(basalt_h, market_apps)
+        cfg.append_driver_config_macros(basalt_h, modules, enabled_list, module_config)
+        cfg.append_applet_macros(basalt_h, applets)
+        cfg.append_market_app_macros(basalt_h, market_apps)
         cfg.emit_features_json(
             out_path=features_j,
             enabled_modules=enabled_list,
@@ -1315,14 +1279,22 @@ print("[uart_echo] done")
             modules=modules,
         )
 
-        payload = dict(config_data)
-        payload["enabled_drivers"] = enabled_list
-        payload["driver_config"] = module_config
+        payload = {
+            "generated_utc": self._utc_iso_now(),
+            "platform": platform or "",
+            "board_id": board_id or "",
+            "board_dir": board_dir or "",
+            "target_profile": board_profile.target if board_profile else "",
+            "enabled_drivers": enabled_list,
+            "resolved_drivers": enabled_list,
+            "driver_config": module_config,
+            "applets": applets,
+            "market_apps": market_apps,
+            "clock": {},
+            "fuses": {},
+            "upload": {},
+        }
         payload = self._with_legacy_driver_keys(payload)
-        payload["resolved_modules"] = enabled_list
-        payload["resolved_drivers"] = enabled_list
-        payload["applets"] = applets
-        payload["market_apps"] = market_apps
         config_json.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
         self._write_applets_json(applets_json, platform, selected_board_id, applets)
 
@@ -1394,6 +1366,68 @@ def _esp32_flash_status() -> dict:
         "build_dir": str(BUILD_DIR),
         "build_version": str(newest_mtime_ns) if newest_mtime_ns else "",
     }
+
+
+def _generated_idf_target() -> str:
+    sdkconfig_path = CONFIG_OUTPUT_DIR / "sdkconfig"
+    if sdkconfig_path.exists():
+        text = sdkconfig_path.read_text(encoding="utf-8", errors="replace")
+        m = re.search(r'^CONFIG_IDF_TARGET="([^"]+)"$', text, flags=re.MULTILINE)
+        if m and m.group(1).strip():
+            return m.group(1).strip()
+    return "esp32"
+
+
+def _looks_like_target_mismatch(output: str) -> bool:
+    txt = (output or "").lower()
+    return (
+        "project sdkconfig" in txt
+        and "contains" in txt
+        and "generated for target" in txt
+    )
+
+
+def _run_esp32_idf(action: str, port: str | None = None) -> tuple[subprocess.CompletedProcess, str, bool]:
+    sdk_cmd = "SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults "
+    base = f"idf.py -D SDKCONFIG=config/generated/sdkconfig -B build"
+    if port:
+        base += f" -p {shlex.quote(port)}"
+    cmd = f"source tools/env.sh && {sdk_cmd}{base} {action}"
+
+    proc = subprocess.run(
+        ["bash", "-lc", cmd],
+        cwd=str(BASALTOS_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=420,
+        check=False,
+    )
+    combined = ((proc.stdout or "") + "\n" + (proc.stderr or "")).strip()
+    if proc.returncode == 0 or not _looks_like_target_mismatch(combined):
+        return proc, combined, False
+
+    target = _generated_idf_target()
+    recover_cmd = (
+        "source tools/env.sh && "
+        "idf.py -B build fullclean && "
+        f"idf.py -B build set-target {shlex.quote(target)} && "
+        f"{sdk_cmd}{base} {action}"
+    )
+    retry = subprocess.run(
+        ["bash", "-lc", recover_cmd],
+        cwd=str(BASALTOS_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=420,
+        check=False,
+    )
+    retry_output = ((retry.stdout or "") + "\n" + (retry.stderr or "")).strip()
+    merged = (
+        combined
+        + "\n\n[auto-recovery] detected target mismatch; executed fullclean + set-target + retry.\n\n"
+        + retry_output
+    ).strip()
+    return retry, merged, True
 
 
 def _serial_ports_status() -> dict:
@@ -1904,6 +1938,32 @@ def get_targets():
     return jsonify(list(config_gen.targets.values()))
 
 
+@app.route('/api/wizard/steps', methods=['GET'])
+def get_wizard_steps():
+    """Return shared wizard step schema from tools/configure.py."""
+    try:
+        return jsonify({
+            "success": True,
+            "steps": cfg.get_wizard_step_schema(),
+            "source": "tools/configure.py",
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Failed to load wizard schema: {e}"}), 500
+
+
+@app.route('/api/wizard/board-filters', methods=['GET'])
+def get_wizard_board_filters():
+    """Return shared board-filter schema used by wizard flows."""
+    try:
+        return jsonify({
+            "success": True,
+            "filters": cfg.get_wizard_board_filter_schema(),
+            "source": "tools/configure.py",
+        })
+    except Exception as e:
+        return jsonify({"success": False, "error": f"Failed to load board filter schema: {e}"}), 500
+
+
 @app.route('/api/drivers', methods=['GET'])
 @app.route('/api/modules', methods=['GET'])
 def get_modules():
@@ -2160,33 +2220,22 @@ def flash_esp32_local():
     if not Path(port).exists():
         return jsonify({"success": False, "error": f"Serial port not found: {port}"}), 404
 
-    cmd = (
-        "source tools/env.sh && "
-        "SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults "
-        f"idf.py -D SDKCONFIG=config/generated/sdkconfig -p {port} -B build flash"
-    )
     try:
-        proc = subprocess.run(
-            ["bash", "-lc", cmd],
-            cwd=str(BASALTOS_ROOT),
-            capture_output=True,
-            text=True,
-            timeout=420,
-            check=False,
-        )
-        combined = ((proc.stdout or "") + "\n" + (proc.stderr or "")).strip()
+        proc, combined, recovered = _run_esp32_idf("flash", port=port)
         tail = "\n".join(combined.splitlines()[-220:])
         if proc.returncode == 0:
             return jsonify({
                 "success": True,
                 "port": port,
                 "returncode": proc.returncode,
+                "auto_recovery": recovered,
                 "output": tail,
             })
         return jsonify({
             "success": False,
             "port": port,
             "returncode": proc.returncode,
+            "auto_recovery": recovered,
             "error": "Local flash failed.",
             "output": tail,
         }), 500
@@ -2197,31 +2246,20 @@ def flash_esp32_local():
 @app.route('/api/build/esp32', methods=['POST'])
 def build_esp32():
     """Build ESP32 firmware using current generated configuration."""
-    cmd = (
-        "source tools/env.sh && "
-        "SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults "
-        "idf.py -D SDKCONFIG=config/generated/sdkconfig -B build build"
-    )
     try:
-        proc = subprocess.run(
-            ["bash", "-lc", cmd],
-            cwd=str(BASALTOS_ROOT),
-            capture_output=True,
-            text=True,
-            timeout=420,
-            check=False,
-        )
-        combined = ((proc.stdout or "") + "\n" + (proc.stderr or "")).strip()
+        proc, combined, recovered = _run_esp32_idf("build")
         tail = "\n".join(combined.splitlines()[-240:])
         if proc.returncode == 0:
             return jsonify({
                 "success": True,
                 "returncode": proc.returncode,
+                "auto_recovery": recovered,
                 "output": tail,
             })
         return jsonify({
             "success": False,
             "returncode": proc.returncode,
+            "auto_recovery": recovered,
             "error": "ESP32 build failed.",
             "output": tail,
         }), 500

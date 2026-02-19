@@ -188,11 +188,22 @@ What’s working today:
   - CLI wizard: `python tools/configure.py --wizard`
   - CLI wizard now starts board-first with taxonomy filters:
     - Manufacturer -> Architecture -> Family -> Processor/Silicon -> Board
+  - CLI wizard now includes:
+    - compact board picker with board-detail confirmation
+    - interactive driver toggle flow (number/id + details)
+    - final review/edit/confirm gate before generation
   - Local web configurator: `python tools/basaltos_config_server.py`
+  - Web configurator now mirrors wizard flow more strictly:
+    - board defaults match CLI driver-default behavior
+    - explicit Runtime Options step (starter applets + market apps)
+    - pin mapping moved to optional Advanced section
   - generated outputs:
     - `config/generated/basalt_config.h`
     - `config/generated/basalt.features.json`
     - `config/generated/sdkconfig.defaults`
+  - ESP-IDF build from repo root (`BasaltOS_Main`), not from `tools/`:
+    - `SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build set-target <target>`
+    - `SDKCONFIG_DEFAULTS=config/generated/sdkconfig.defaults idf.py -B build build`
 - **Multi-target backend groundwork**
   - runtime-capable flow for ESP32/IDF boards
   - generated-firmware profile flow started for constrained targets (PIC/AVR direction)

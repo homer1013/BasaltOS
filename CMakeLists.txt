@@ -35,5 +35,20 @@ idf_build_set_property(
     APPEND
 )
 
-# Generate SPIFFS image from ./spiffs and flash into "storage" partition
-spiffs_create_partition_image(storage spiffs FLASH_IN_PROJECT)
+# Generate SPIFFS image only when the selected partition table defines
+# a "storage" partition. This avoids hard failures on partition tables
+# that intentionally omit SPIFFS.
+set(_BASALT_STORAGE_PARTITION_FOUND FALSE)
+if(DEFINED PARTITION_TABLE_CSV_PATH AND EXISTS "${PARTITION_TABLE_CSV_PATH}")
+    file(READ "${PARTITION_TABLE_CSV_PATH}" _BASALT_PARTITION_CSV_RAW)
+    string(REGEX MATCH "(^|\\n)[ \t]*storage[ \t]*," _BASALT_STORAGE_MATCH "${_BASALT_PARTITION_CSV_RAW}")
+    if(_BASALT_STORAGE_MATCH)
+        set(_BASALT_STORAGE_PARTITION_FOUND TRUE)
+    endif()
+endif()
+
+if(_BASALT_STORAGE_PARTITION_FOUND)
+    spiffs_create_partition_image(storage spiffs FLASH_IN_PROJECT)
+else()
+    message(STATUS "Skipping SPIFFS image: partition table has no 'storage' partition.")
+endif()
