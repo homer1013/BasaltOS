@@ -25,3 +25,7 @@
   - `BASALT_STM32_PORT`
   - `BASALT_PIC16_PORT`
 - If a port is not configured/present, runtime status is reported as `skipped` with explicit reason.
+- PIC16 live bench update:
+  - Detected Curiosity Nano debug UART: `/dev/ttyACM1` (`Microchip nEDBG CMSIS-DAP`).
+  - Matrix run with `BASALT_PIC16_PORT=/dev/ttyACM1` reports runtime `fail` (`serial probe returned no data`), which indicates no active shell firmware on the target at probe time.
+  - Curiosity mass-storage programmer status observed at `/run/media/homer/CURIOSITY/STATUS.TXT` (`Status: Ready`).

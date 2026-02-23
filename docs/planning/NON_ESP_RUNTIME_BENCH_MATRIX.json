@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-02-23T20:23:17Z",
+  "generated_utc": "2026-02-23T20:38:00Z",
   "driver_stack": [
     "gpio",
     "uart",
@@ -36,12 +36,16 @@
       "platform": "pic16",
       "board": "curiosity_nano_pic16f13145",
       "port_env": "BASALT_PIC16_PORT",
-      "port": "",
+      "port": "/dev/ttyACM1",
       "configure_status": "pass",
-      "runtime_status": "skipped",
-      "runtime_note": "no serial port configured",
+      "runtime_status": "fail",
+      "runtime_note": "serial probe returned no data",
       "configure_log": "/tmp/non_esp_runtime_pic16_configure.log",
-      "runtime_probe": {}
+      "runtime_probe": {
+        "ok": false,
+        "bytes": 0,
+        "snippet": ""
+      }
     }
   ]
 }
