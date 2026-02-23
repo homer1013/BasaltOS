@@ -20,6 +20,7 @@
       "shell_min",
       "shell_full",
       "display_ssd1306",
+      "tft_parallel_uno",
       "imu",
       "rtc",
       "dht22",

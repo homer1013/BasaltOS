@@ -16,6 +16,7 @@
     "adc",
     "pwm",
     "timer",
+    "tft_parallel_uno",
     "wifi",
     "bluetooth",
     "remote_node",
@@ -32,6 +33,23 @@
     "spi_miso": "MISO",
     "spi_sclk": "SCK",
     "spi_cs": "D10",
+    "lcd_d0": "D8",
+    "lcd_d1": "D9",
+    "lcd_d2": "D2",
+    "lcd_d3": "D3",
+    "lcd_d4": "D4",
+    "lcd_d5": "D5",
+    "lcd_d6": "D6",
+    "lcd_d7": "D7",
+    "lcd_rd": "A0",
+    "lcd_wr": "A1",
+    "lcd_rs": "A2",
+    "lcd_cs": "A3",
+    "lcd_rst": "A4",
+    "touch_xp": "D6",
+    "touch_xm": "A2",
+    "touch_yp": "A1",
+    "touch_ym": "D7",
     "led": "D13",
     "button": -1
   },
@@ -56,6 +74,91 @@
         "D13"
       ],
       "type": "output"
+    },
+    "lcd_d0": {
+      "description": "UNO shield LCD data bit 0",
+      "alternatives": ["D8"],
+      "type": "output"
+    },
+    "lcd_d1": {
+      "description": "UNO shield LCD data bit 1",
+      "alternatives": ["D9"],
+      "type": "output"
+    },
+    "lcd_d2": {
+      "description": "UNO shield LCD data bit 2",
+      "alternatives": ["D2"],
+      "type": "output"
+    },
+    "lcd_d3": {
+      "description": "UNO shield LCD data bit 3",
+      "alternatives": ["D3"],
+      "type": "output"
+    },
+    "lcd_d4": {
+      "description": "UNO shield LCD data bit 4",
+      "alternatives": ["D4"],
+      "type": "output"
+    },
+    "lcd_d5": {
+      "description": "UNO shield LCD data bit 5",
+      "alternatives": ["D5"],
+      "type": "output"
+    },
+    "lcd_d6": {
+      "description": "UNO shield LCD data bit 6",
+      "alternatives": ["D6"],
+      "type": "output"
+    },
+    "lcd_d7": {
+      "description": "UNO shield LCD data bit 7",
+      "alternatives": ["D7"],
+      "type": "output"
+    },
+    "lcd_rd": {
+      "description": "UNO shield LCD RD",
+      "alternatives": ["A0"],
+      "type": "output"
+    },
+    "lcd_wr": {
+      "description": "UNO shield LCD WR",
+      "alternatives": ["A1"],
+      "type": "output"
+    },
+    "lcd_rs": {
+      "description": "UNO shield LCD RS/DC",
+      "alternatives": ["A2"],
+      "type": "output"
+    },
+    "lcd_cs": {
+      "description": "UNO shield LCD CS",
+      "alternatives": ["A3"],
+      "type": "output"
+    },
+    "lcd_rst": {
+      "description": "UNO shield LCD reset",
+      "alternatives": ["A4"],
+      "type": "output"
+    },
+    "touch_xp": {
+      "description": "Resistive touch XP",
+      "alternatives": ["D6"],
+      "type": "bidirectional"
+    },
+    "touch_xm": {
+      "description": "Resistive touch XM",
+      "alternatives": ["A2"],
+      "type": "bidirectional"
+    },
+    "touch_yp": {
+      "description": "Resistive touch YP",
+      "alternatives": ["A1"],
+      "type": "bidirectional"
+    },
+    "touch_ym": {
+      "description": "Resistive touch YM",
+      "alternatives": ["D7"],
+      "type": "bidirectional"
     }
   },
   "sdkconfig": [

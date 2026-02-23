@@ -1,0 +1,1069 @@
+{
+  "version": "1.0.0",
+  "generator": "tools/generate_hal_maturity_report.py",
+  "ports": [
+    {
+      "port": "esp32",
+      "adapter_count": 9,
+      "status_counts": {
+        "real_with_optional_gaps": 2,
+        "real": 7
+      },
+      "total_enosys": 3,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/esp32/hal_adc.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 1,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/esp32/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/esp32/hal_i2c.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/esp32/hal_i2s.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/esp32/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/esp32/hal_rmt.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/esp32/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/esp32/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/esp32/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 2,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "esp32c3",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 8,
+        "contract_only": 2,
+        "real_with_optional_gaps": 1
+      },
+      "total_enosys": 2,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/esp32c3/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/esp32c3/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/esp32c3/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/esp32c3/hal_i2c.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/esp32c3/hal_i2s.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/esp32c3/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/esp32c3/hal_rmt.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/esp32c3/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/esp32c3/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/esp32c3/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/esp32c3/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 2,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "esp32c6",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 8,
+        "contract_only": 2,
+        "real_with_optional_gaps": 1
+      },
+      "total_enosys": 2,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/esp32c6/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/esp32c6/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/esp32c6/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/esp32c6/hal_i2c.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/esp32c6/hal_i2s.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/esp32c6/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/esp32c6/hal_rmt.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/esp32c6/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/esp32c6/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/esp32c6/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/esp32c6/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 2,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "esp32h2",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 5,
+        "contract_only": 2,
+        "real_with_optional_gaps": 4
+      },
+      "total_enosys": 11,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/esp32h2/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/esp32h2/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/esp32h2/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/esp32h2/hal_i2c.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 4,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/esp32h2/hal_i2s.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 1,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/esp32h2/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/esp32h2/hal_rmt.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/esp32h2/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/esp32h2/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/esp32h2/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/esp32h2/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "esp32pico",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 5,
+        "contract_only": 2,
+        "real_with_optional_gaps": 4
+      },
+      "total_enosys": 11,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/esp32pico/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/esp32pico/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/esp32pico/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/esp32pico/hal_i2c.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 4,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/esp32pico/hal_i2s.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 1,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/esp32pico/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/esp32pico/hal_rmt.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/esp32pico/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/esp32pico/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/esp32pico/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/esp32pico/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "esp32s2",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 5,
+        "contract_only": 2,
+        "real_with_optional_gaps": 4
+      },
+      "total_enosys": 11,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/esp32s2/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/esp32s2/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/esp32s2/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/esp32s2/hal_i2c.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 4,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/esp32s2/hal_i2s.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 1,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/esp32s2/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/esp32s2/hal_rmt.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/esp32s2/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/esp32s2/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/esp32s2/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/esp32s2/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "esp32s3",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 8,
+        "contract_only": 2,
+        "real_with_optional_gaps": 1
+      },
+      "total_enosys": 2,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/esp32s3/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/esp32s3/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/esp32s3/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/esp32s3/hal_i2c.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/esp32s3/hal_i2s.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/esp32s3/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/esp32s3/hal_rmt.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/esp32s3/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/esp32s3/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/esp32s3/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/esp32s3/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 2,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "esp8266",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 5,
+        "contract_only": 2,
+        "real_with_optional_gaps": 4
+      },
+      "total_enosys": 11,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/esp8266/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/esp8266/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/esp8266/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/esp8266/hal_i2c.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 4,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/esp8266/hal_i2s.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 1,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/esp8266/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/esp8266/hal_rmt.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/esp8266/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/esp8266/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/esp8266/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/esp8266/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "pic16",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 5,
+        "contract_only": 2,
+        "real_with_optional_gaps": 4
+      },
+      "total_enosys": 11,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/pic16/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/pic16/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/pic16/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/pic16/hal_i2c.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 4,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/pic16/hal_i2s.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 1,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/pic16/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/pic16/hal_rmt.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/pic16/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/pic16/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/pic16/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/pic16/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "ra4m1",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 5,
+        "contract_only": 2,
+        "real_with_optional_gaps": 4
+      },
+      "total_enosys": 11,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/ra4m1/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/ra4m1/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/ra4m1/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/ra4m1/hal_i2c.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 4,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/ra4m1/hal_i2s.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 1,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/ra4m1/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/ra4m1/hal_rmt.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/ra4m1/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/ra4m1/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/ra4m1/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/ra4m1/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "rp2040",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 5,
+        "contract_only": 2,
+        "real_with_optional_gaps": 4
+      },
+      "total_enosys": 11,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/rp2040/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/rp2040/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/rp2040/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/rp2040/hal_i2c.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 4,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/rp2040/hal_i2s.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 1,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/rp2040/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/rp2040/hal_rmt.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/rp2040/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/rp2040/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/rp2040/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/rp2040/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        }
+      ]
+    },
+    {
+      "port": "stm32",
+      "adapter_count": 11,
+      "status_counts": {
+        "real": 5,
+        "contract_only": 2,
+        "real_with_optional_gaps": 4
+      },
+      "total_enosys": 11,
+      "adapters": [
+        {
+          "adapter": "hal_adc",
+          "path": "basalt_hal/ports/stm32/hal_adc.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_fs",
+          "path": "basalt_hal/ports/stm32/hal_fs.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_gpio",
+          "path": "basalt_hal/ports/stm32/hal_gpio.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2c",
+          "path": "basalt_hal/ports/stm32/hal_i2c.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 4,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_i2s",
+          "path": "basalt_hal/ports/stm32/hal_i2s.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 1,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_pwm",
+          "path": "basalt_hal/ports/stm32/hal_pwm.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_rmt",
+          "path": "basalt_hal/ports/stm32/hal_rmt.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_spi",
+          "path": "basalt_hal/ports/stm32/hal_spi.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_sys",
+          "path": "basalt_hal/ports/stm32/hal_sys.c",
+          "status": "contract_only",
+          "enosys_count": 0,
+          "placeholder_translation_unit": true
+        },
+        {
+          "adapter": "hal_timer",
+          "path": "basalt_hal/ports/stm32/hal_timer.c",
+          "status": "real",
+          "enosys_count": 0,
+          "placeholder_translation_unit": false
+        },
+        {
+          "adapter": "hal_uart",
+          "path": "basalt_hal/ports/stm32/hal_uart.c",
+          "status": "real_with_optional_gaps",
+          "enosys_count": 3,
+          "placeholder_translation_unit": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "port_count": 12,
+    "adapter_count": 130,
+    "status_counts": {
+      "real_with_optional_gaps": 37,
+      "real": 71,
+      "contract_only": 22
+    },
+    "total_enosys_returns": 97
+  }
+}

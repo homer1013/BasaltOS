@@ -269,6 +269,7 @@ RUNTIME_STATUS_HINTS: Dict[str, Tuple[str, str]] = {
     "bluetooth": ("partial", "Runtime hooks exist; board/setup dependent."),
     "rtc": ("partial", "MicroPython API is available; hardware validation varies."),
     "display_ssd1306": ("partial", "Basic runtime API exists; hardware-specific tuning may be needed."),
+    "tft_parallel_uno": ("partial", "Uno R4 parallel-TFT runtime backend exists with bench shell contract."),
     "imu": ("config-only", "Currently a configuration/diagnostic gate."),
     "dht22": ("config-only", "Currently a configuration/diagnostic gate."),
     "mic": ("config-only", "Currently a configuration/diagnostic gate."),
@@ -1780,6 +1781,8 @@ def default_drivers_for_board(board_profile: Optional[BoardProfile]) -> Set[str]
         selected.add("uart")
     if "tft" in caps:
         selected.add("tft")
+    if "tft_parallel_uno" in caps:
+        selected.add("tft_parallel_uno")
     selected.add("fs_spiffs")
     if "psram" in caps:
         selected.add("psram")

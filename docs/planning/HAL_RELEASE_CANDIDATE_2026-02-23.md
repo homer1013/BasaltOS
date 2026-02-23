@@ -3,6 +3,8 @@
 ## Scope
 - Freeze HAL stabilization tranche with complete adapter coverage across all tracked ports.
 - Record final gate status and bench evidence before release candidate tagging.
+- Superseded by graduation snapshot:
+  - `docs/planning/HAL_RELEASE_GRADUATION_2026-02-23.md`
 
 ## HAL Coverage Snapshot
 - Source: `docs/planning/HAL_ADAPTER_MATRIX.md`

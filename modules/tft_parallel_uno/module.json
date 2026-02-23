@@ -1,0 +1,99 @@
+{
+  "id": "tft_parallel_uno",
+  "name": "TFT Parallel UNO Shield",
+  "description": "8-bit parallel TFT runtime profile for UNO-form-factor shields (MCUFRIEND-style) on Uno R4.",
+  "platforms": [
+    "renesas_ra"
+  ],
+  "default_enabled": false,
+  "provides": [
+    "display",
+    "touch"
+  ],
+  "depends": [
+    "gpio"
+  ],
+  "conflicts": [
+    "tft"
+  ],
+  "constraints": {},
+  "defines": [
+    "BASALT_ENABLE_TFT_PARALLEL_UNO"
+  ],
+  "pins": [
+    "lcd_d0",
+    "lcd_d1",
+    "lcd_d2",
+    "lcd_d3",
+    "lcd_d4",
+    "lcd_d5",
+    "lcd_d6",
+    "lcd_d7",
+    "lcd_rd",
+    "lcd_wr",
+    "lcd_rs",
+    "lcd_cs",
+    "lcd_rst",
+    "touch_xp",
+    "touch_xm",
+    "touch_yp",
+    "touch_ym"
+  ],
+  "pin_requirements": {
+    "lcd_d0": {"required": true, "description": "LCD data bit 0"},
+    "lcd_d1": {"required": true, "description": "LCD data bit 1"},
+    "lcd_d2": {"required": true, "description": "LCD data bit 2"},
+    "lcd_d3": {"required": true, "description": "LCD data bit 3"},
+    "lcd_d4": {"required": true, "description": "LCD data bit 4"},
+    "lcd_d5": {"required": true, "description": "LCD data bit 5"},
+    "lcd_d6": {"required": true, "description": "LCD data bit 6"},
+    "lcd_d7": {"required": true, "description": "LCD data bit 7"},
+    "lcd_rd": {"required": true, "description": "LCD read strobe"},
+    "lcd_wr": {"required": true, "description": "LCD write strobe"},
+    "lcd_rs": {"required": true, "description": "LCD register-select (data/command)"},
+    "lcd_cs": {"required": true, "description": "LCD chip-select"},
+    "lcd_rst": {"required": true, "description": "LCD reset"},
+    "touch_xp": {"required": false, "description": "Resistive touch XP"},
+    "touch_xm": {"required": false, "description": "Resistive touch XM"},
+    "touch_yp": {"required": false, "description": "Resistive touch YP"},
+    "touch_ym": {"required": false, "description": "Resistive touch YM"}
+  },
+  "configuration_options": [
+    {
+      "id": "panel_driver",
+      "name": "Parallel Panel Driver",
+      "type": "select",
+      "options": ["MCUFRIEND_AUTO", "ILI9486", "ILI9488", "HX8357", "ST7796"],
+      "default": "MCUFRIEND_AUTO"
+    },
+    {
+      "id": "panel_width",
+      "name": "Panel Width",
+      "type": "number",
+      "default": 320,
+      "min": 128,
+      "max": 480
+    },
+    {
+      "id": "panel_height",
+      "name": "Panel Height",
+      "type": "number",
+      "default": 480,
+      "min": 128,
+      "max": 800
+    },
+    {
+      "id": "touch_enabled",
+      "name": "Enable Resistive Touch",
+      "type": "boolean",
+      "default": true
+    }
+  ],
+  "runtime": {
+    "backend": "uno_parallel"
+  },
+  "source_files": [
+    "modules/tft_parallel_uno/runtime/uno_r4_tft_parallel_runtime/uno_r4_tft_parallel_runtime.ino"
+  ],
+  "header_files": []
+}

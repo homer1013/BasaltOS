@@ -7,8 +7,8 @@
     "adapter_completeness": "docs/planning/HAL_PLATFORM_ADAPTER_COMPLETENESS.json"
   },
   "summary": {
-    "modules_total": 35,
-    "modules_with_dependencies": 25,
+    "modules_total": 36,
+    "modules_with_dependencies": 26,
     "unique_dependencies": 6,
     "hal_dependencies": 5,
     "non_hal_dependencies": 1,
@@ -54,6 +54,13 @@
     },
     {
       "module_id": "rmt",
+      "dependency": "gpio",
+      "dependency_type": "hal_primitive",
+      "risk": "none",
+      "blocking_ports": []
+    },
+    {
+      "module_id": "tft_parallel_uno",
       "dependency": "gpio",
       "dependency_type": "hal_primitive",
       "risk": "none",
@@ -678,6 +685,24 @@
       "analysis": [
         {
           "dependency": "spi",
+          "dependency_type": "hal_primitive",
+          "risk": "none",
+          "blocking_ports": []
+        }
+      ],
+      "has_unmapped_dependency": false,
+      "has_coverage_gap": false
+    },
+    {
+      "id": "tft_parallel_uno",
+      "name": "TFT Parallel UNO Shield",
+      "path": "modules/tft_parallel_uno/module.json",
+      "depends": [
+        "gpio"
+      ],
+      "analysis": [
+        {
+          "dependency": "gpio",
           "dependency_type": "hal_primitive",
           "risk": "none",
           "blocking_ports": []

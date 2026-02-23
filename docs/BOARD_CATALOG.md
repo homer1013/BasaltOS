@@ -97,7 +97,7 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 | pic16 | curiosity_nano_pic16f13145 | curiosity_nano_pic16f13145 | Curiosity Nano PIC16F13145 | Microchip | PIC 8-bit | PIC16 | PIC16F13145 | 13 |
 | pic16 | pic16f873_minimal | pic16f873-minimal | PIC16F873 Minimal (Generic) | Microchip | PIC 8-bit | PIC16 | PIC16F873 | 12 |
 | renesas_ra | arduino_uno_r4_minima | arduino_uno_r4_minima | Arduino Uno R4 Minima (RA4M1) | Arduino | ARM Cortex-M | RA4 | Renesas RA4M1 | 11 |
-| renesas_ra | arduino_uno_r4_wifi | arduino_uno_r4_wifi | Arduino Uno R4 WiFi (RA4M1) | Arduino | ARM Cortex-M | RA4 | Renesas RA4M1 | 13 |
+| renesas_ra | arduino_uno_r4_wifi | arduino_uno_r4_wifi | Arduino Uno R4 WiFi (RA4M1) | Arduino | ARM Cortex-M | RA4 | Renesas RA4M1 | 14 |
 | renesas_ra | ek_ra4m1 | ek_ra4m1 | Renesas EK-RA4M1 | Renesas | ARM Cortex-M | Renesas RA | R7FA4M1AB3CFM | 11 |
 | renesas_rx | rx65n_envision_kit | rx65n_envision_kit | Renesas RX65N Envision Kit | Renesas | Renesas RX 32-bit | RX65 | Renesas RX65N | 12 |
 | renesas_rx | rx72n_envision_kit | rx72n_envision_kit | Renesas RX72N Envision Kit | Renesas | Renesas RX 32-bit | Renesas RX | R5F572NN | 11 |
@@ -108,4 +108,4 @@ Auto-generated from `boards/*/*/board.json` using `tools/generate_board_catalog.
 | rp2040 | sparkfun_thing_plus_rp2040 | sparkfun_thing_plus_rp2040 | SparkFun Thing Plus RP2040 | SparkFun | ARM Cortex-M0+ | RP2040 | RP2040 | 11 |
 | stm32 | blackpill_f411ce | blackpill_f411ce | STM32 Black Pill F411CE | WeAct | ARM Cortex-M | STM32F4 | STM32F411CEU6 | 12 |
 | stm32 | nucleo_f401re | nucleo_f401re | ST Nucleo-F401RE | STMicroelectronics | ARM Cortex-M | STM32F4 | STM32F401RE | 12 |
-| stm32 | nucleo_f446re | nucleo_f446re | ST Nucleo-F446RE | STMicroelectronics | ARM Cortex-M | STM32F4 | STM32F446RE | 11 |
+| stm32 | nucleo_f446re | nucleo_f446re | ST Nucleo-F446RE | STMicroelectronics | ARM Cortex-M | STM32F4 | STM32F446RE | 12 |

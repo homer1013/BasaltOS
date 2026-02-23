@@ -333,7 +333,7 @@
       "architecture": "ARM Cortex-M",
       "family": "RA4",
       "mcu": "Renesas RA4M1",
-      "caps_count": 13
+      "caps_count": 14
     },
     {
       "platform": "renesas_ra",
@@ -454,7 +454,7 @@
       "architecture": "ARM Cortex-M",
       "family": "STM32F4",
       "mcu": "STM32F446RE",
-      "caps_count": 11
+      "caps_count": 12
     }
   ]
 }
