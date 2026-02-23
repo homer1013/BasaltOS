@@ -16,6 +16,11 @@
   - `tools/generate_non_esp_runtime_bench_matrix.py`
 - Drift smoke:
   - `tools/tests/non_esp_runtime_bench_matrix_drift_smoke.sh`
+- Optional live hardware lane:
+  - `tools/tests/pic16_live_runtime_smoke.sh`
+  - Writes:
+    - `docs/planning/NON_ESP_RUNTIME_BENCH_LIVE_2026-02-23.json`
+    - `docs/planning/NON_ESP_RUNTIME_BENCH_LIVE_2026-02-23.md`
 
 ## Notes
 - Configure contract is always validated for the requested stack:
@@ -25,6 +30,9 @@
   - `BASALT_STM32_PORT`
   - `BASALT_PIC16_PORT`
 - If a port is not configured/present, runtime status is reported as `skipped` with explicit reason.
+- Optional live lane behavior:
+  - `SKIP` when Curiosity hardware is absent.
+  - `PASS/FAIL` when hardware is present (port + programmer probe path).
 - PIC16 live bench update:
   - Detected Curiosity Nano debug UART: `/dev/ttyACM1` (`Microchip nEDBG CMSIS-DAP`).
   - Raw serial probe at `/dev/ttyACM1` returns no shell bytes from target firmware.

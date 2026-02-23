@@ -1,0 +1,59 @@
+{
+  "generated_utc": "2026-02-23T20:58:34Z",
+  "driver_stack": [
+    "gpio",
+    "uart",
+    "i2c",
+    "spi",
+    "timer",
+    "pwm",
+    "shell_full"
+  ],
+  "rows": [
+    {
+      "platform": "rp2040",
+      "board": "raspberry_pi_pico",
+      "port_env": "BASALT_RP2040_PORT",
+      "port": "",
+      "configure_status": "pass",
+      "runtime_status": "skipped",
+      "runtime_note": "no serial port configured",
+      "configure_log": "/tmp/non_esp_runtime_rp2040_configure.log",
+      "runtime_probe": {},
+      "programmer_probe": {}
+    },
+    {
+      "platform": "stm32",
+      "board": "nucleo_f446re",
+      "port_env": "BASALT_STM32_PORT",
+      "port": "",
+      "configure_status": "pass",
+      "runtime_status": "skipped",
+      "runtime_note": "no serial port configured",
+      "configure_log": "/tmp/non_esp_runtime_stm32_configure.log",
+      "runtime_probe": {},
+      "programmer_probe": {}
+    },
+    {
+      "platform": "pic16",
+      "board": "curiosity_nano_pic16f13145",
+      "port_env": "BASALT_PIC16_PORT",
+      "port": "/dev/ttyACM1",
+      "configure_status": "pass",
+      "runtime_status": "pass",
+      "runtime_note": "programmer channel ready (serial telemetry unavailable)",
+      "configure_log": "/tmp/non_esp_runtime_pic16_configure.log",
+      "runtime_probe": {
+        "ok": false,
+        "bytes": 0,
+        "snippet": ""
+      },
+      "programmer_probe": {
+        "disk_present": true,
+        "status_file": "/run/media/homer/CURIOSITY/STATUS.TXT",
+        "status_ready": true,
+        "status_line": "Status: Ready."
+      }
+    }
+  ]
+}
