@@ -18,6 +18,9 @@
   - `tools/tests/non_esp_hero_bringup_smoke.sh`
 - Evidence log:
   - `/tmp/non_esp_hero_bringup_2026-02-23.log`
+- Runtime matrix artifacts:
+  - `docs/planning/NON_ESP_RUNTIME_BENCH_MATRIX.json`
+  - `docs/planning/NON_ESP_RUNTIME_BENCH_MATRIX.md`
 
 ## Result
 - All three hero boards passed configure + generated-artifact contract checks.

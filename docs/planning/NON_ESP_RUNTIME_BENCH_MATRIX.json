@@ -1,0 +1,47 @@
+{
+  "generated_utc": "2026-02-23T20:23:17Z",
+  "driver_stack": [
+    "gpio",
+    "uart",
+    "i2c",
+    "spi",
+    "timer",
+    "pwm",
+    "shell_full"
+  ],
+  "rows": [
+    {
+      "platform": "rp2040",
+      "board": "raspberry_pi_pico",
+      "port_env": "BASALT_RP2040_PORT",
+      "port": "",
+      "configure_status": "pass",
+      "runtime_status": "skipped",
+      "runtime_note": "no serial port configured",
+      "configure_log": "/tmp/non_esp_runtime_rp2040_configure.log",
+      "runtime_probe": {}
+    },
+    {
+      "platform": "stm32",
+      "board": "nucleo_f446re",
+      "port_env": "BASALT_STM32_PORT",
+      "port": "",
+      "configure_status": "pass",
+      "runtime_status": "skipped",
+      "runtime_note": "no serial port configured",
+      "configure_log": "/tmp/non_esp_runtime_stm32_configure.log",
+      "runtime_probe": {}
+    },
+    {
+      "platform": "pic16",
+      "board": "curiosity_nano_pic16f13145",
+      "port_env": "BASALT_PIC16_PORT",
+      "port": "",
+      "configure_status": "pass",
+      "runtime_status": "skipped",
+      "runtime_note": "no serial port configured",
+      "configure_log": "/tmp/non_esp_runtime_pic16_configure.log",
+      "runtime_probe": {}
+    }
+  ]
+}

@@ -24,9 +24,15 @@ Start practical enablement work from confirmed Arduino Uno R4 WiFi + 3.5" resist
     - `tools/tests/configure_tft_parallel_uno_smoke.sh`
 - Added dedicated Uno-parallel runtime backend sketch:
   - `modules/tft_parallel_uno/runtime/uno_r4_tft_parallel_runtime/uno_r4_tft_parallel_runtime.ino`
+  - Includes calibration persistence command surface:
+    - `cal show|reset|set x0 x1 y0 y1|save|load|clear`
+  - Calibration persistence is stored in EEPROM-backed struct (`BCAL` magic, versioned payload).
 - Added end-to-end Uno bench validation gate:
   - `tools/tests/uno_r4_tft_parallel_bench_smoke.sh`
   - Validates compile + upload + serial command contract (`help`, `lcd id`, `fill red`, `fill blue`)
+  - Also validates calibration persistence round-trip (`cal save`, `cal load`).
+  - Supports optional visual assertion hook when camera + `ffmpeg` are available:
+    - `BASALT_CAMERA_DEVICE=/dev/videoN`
 
 ## Current state
 - Basalt now has a first-class Uno-parallel module contract (`tft_parallel_uno`) so Uno R4 + MCUFRIEND-style shield configuration no longer depends on `--allow-unsupported`.
@@ -40,5 +46,5 @@ Start practical enablement work from confirmed Arduino Uno R4 WiFi + 3.5" resist
   - Observed serial contract includes `lcd id: 0x6814` and `ok: fill red|blue`.
 
 ## Next enablement steps
-1. Fold optional resistive-touch calibration persistence into a reusable module-level helper.
-2. Add camera-frame assertion hooks for automated visual deltas (currently serial-contract only).
+1. Split touch calibration math into shared helper for reuse by future RA boards.
+2. Add deterministic camera backend dependency in CI image to activate visual assertions by default.

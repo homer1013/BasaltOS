@@ -10,9 +10,10 @@
   - `docs/planning/HAL_PORT_MATURITY_REPORT.md`
 
 ## Gate results
-- `tools/tests/main_hardening_smoke_bundle.sh`: PASS (`49/49`)
+- `tools/tests/main_hardening_smoke_bundle.sh`: PASS (`50/50`)
 - `tools/tests/non_esp_hero_bringup_smoke.sh`: PASS
 - `tools/tests/uno_r4_tft_parallel_bench_smoke.sh`: PASS
+- `tools/tests/non_esp_runtime_bench_matrix_drift_smoke.sh`: PASS
 
 ## Bench evidence
 - Uno R4 parallel TFT bench smoke log:
@@ -23,5 +24,7 @@
 ## Outcome
 - HAL release tranche is graduation-ready for the current plan scope:
   - Uno R4 parallel TFT runtime path is first-class (`tft_parallel_uno`).
+  - Uno runtime includes touch calibration persistence (`cal save/load/clear`).
   - Non-ESP hero bring-up matrix has automated validation coverage.
+  - Non-ESP runtime bench matrix publishing is in place (configure always, serial probe where available).
   - HAL maturity report is now tracked with drift protection.
