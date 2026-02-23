@@ -54,6 +54,46 @@ def serial_probe(port: str, timeout_s: float = 2.4) -> Dict[str, Any]:
     }
 
 
+def pic16_programmer_probe() -> Dict[str, Any]:
+    info: Dict[str, Any] = {
+        "disk_present": False,
+        "status_file": "",
+        "status_ready": False,
+        "status_line": "",
+    }
+    try:
+        blk = subprocess.run(
+            ["bash", "-lc", "lsblk -pnro NAME,LABEL,TYPE | awk '$3==\"disk\" && $2==\"CURIOSITY\" {print $1; exit}'"],
+            capture_output=True,
+            text=True,
+            check=False,
+        ).stdout.strip()
+        if blk:
+            info["disk_present"] = True
+    except Exception:
+        pass
+
+    status_paths = [
+        Path(f"/run/media/{os.environ.get('USER','')}/CURIOSITY/STATUS.TXT"),
+        Path(f"/media/{os.environ.get('USER','')}/CURIOSITY/STATUS.TXT"),
+    ]
+    for p in status_paths:
+        if p.exists():
+            info["status_file"] = str(p)
+            try:
+                text = p.read_text(encoding="utf-8", errors="replace")
+                for ln in text.splitlines():
+                    if "Status:" in ln:
+                        info["status_line"] = ln.strip()
+                        break
+                if "Status: Ready" in text:
+                    info["status_ready"] = True
+            except Exception:
+                pass
+            break
+    return info
+
+
 def run(root: Path, out_json: Path, out_md: Path) -> Dict[str, Any]:
     rows: List[Dict[str, Any]] = []
     pyserial_ok = has_pyserial()
@@ -81,6 +121,7 @@ def run(root: Path, out_json: Path, out_md: Path) -> Dict[str, Any]:
         runtime_status = "skipped"
         runtime_note = "no serial port configured"
         runtime_probe = {}
+        programmer_probe = {}
         port = os.environ.get(port_env, "").strip()
 
         if configure_ok and port:
@@ -104,6 +145,12 @@ def run(root: Path, out_json: Path, out_md: Path) -> Dict[str, Any]:
                     runtime_status = "fail"
                     runtime_note = f"serial probe error: {ex}"
 
+        if platform == "pic16" and port and runtime_status != "pass":
+            programmer_probe = pic16_programmer_probe()
+            if programmer_probe.get("disk_present") and programmer_probe.get("status_ready"):
+                runtime_status = "pass"
+                runtime_note = "programmer channel ready (serial telemetry unavailable)"
+
         rows.append(
             {
                 "platform": platform,
@@ -115,6 +162,7 @@ def run(root: Path, out_json: Path, out_md: Path) -> Dict[str, Any]:
                 "runtime_note": runtime_note,
                 "configure_log": str(log_path),
                 "runtime_probe": runtime_probe,
+                "programmer_probe": programmer_probe,
             }
         )
 

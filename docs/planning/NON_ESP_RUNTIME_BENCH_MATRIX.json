@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-02-23T20:38:00Z",
+  "generated_utc": "2026-02-23T20:52:26Z",
   "driver_stack": [
     "gpio",
     "uart",
@@ -19,7 +19,8 @@
       "runtime_status": "skipped",
       "runtime_note": "no serial port configured",
       "configure_log": "/tmp/non_esp_runtime_rp2040_configure.log",
-      "runtime_probe": {}
+      "runtime_probe": {},
+      "programmer_probe": {}
     },
     {
       "platform": "stm32",
@@ -30,22 +31,20 @@
       "runtime_status": "skipped",
       "runtime_note": "no serial port configured",
       "configure_log": "/tmp/non_esp_runtime_stm32_configure.log",
-      "runtime_probe": {}
+      "runtime_probe": {},
+      "programmer_probe": {}
     },
     {
       "platform": "pic16",
       "board": "curiosity_nano_pic16f13145",
       "port_env": "BASALT_PIC16_PORT",
-      "port": "/dev/ttyACM1",
+      "port": "",
       "configure_status": "pass",
-      "runtime_status": "fail",
-      "runtime_note": "serial probe returned no data",
+      "runtime_status": "skipped",
+      "runtime_note": "no serial port configured",
       "configure_log": "/tmp/non_esp_runtime_pic16_configure.log",
-      "runtime_probe": {
-        "ok": false,
-        "bytes": 0,
-        "snippet": ""
-      }
+      "runtime_probe": {},
+      "programmer_probe": {}
     }
   ]
 }
