@@ -4,6 +4,7 @@
 //   hal/include/hal/hal_i2c.h
 
 #include <errno.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -14,6 +15,7 @@
 
 #include "driver/i2c.h"
 #include "esp_err.h"
+#include "hal_errno.h"
 
 // -----------------------------------------------------------------------------
 // Private implementation type stored inside hal_i2c_t opaque storage
@@ -24,6 +26,7 @@ typedef struct {
     uint32_t freq_hz;
     int sda_pin;
     int scl_pin;
+    bool driver_owner;
     bool initialized;
 } hal_i2c_impl_t;
 
@@ -38,20 +41,10 @@ static inline hal_i2c_impl_t *I(hal_i2c_t *i2c) {
 // Helpers
 // -----------------------------------------------------------------------------
 
-static inline int esp_err_to_errno(esp_err_t err) {
-    switch (err) {
-        case ESP_OK: return 0;
-        case ESP_ERR_INVALID_ARG: return -EINVAL;
-        case ESP_ERR_INVALID_STATE: return -EALREADY;
-        case ESP_ERR_NO_MEM: return -ENOMEM;
-        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
-        default: return -EIO;
-    }
-}
-
 static inline TickType_t ms_to_ticks(uint32_t timeout_ms) {
-    // If timeout_ms==0, let the driver do a "no wait" attempt where supported.
-    return (timeout_ms == 0) ? 0 : pdMS_TO_TICKS(timeout_ms);
+    if (timeout_ms == 0) return 0;
+    if (timeout_ms == UINT32_MAX) return portMAX_DELAY;
+    return pdMS_TO_TICKS(timeout_ms);
 }
 
 static inline bool valid_addr7(uint8_t addr) {
@@ -74,6 +67,7 @@ int hal_i2c_init(hal_i2c_t *i2c, int bus, uint32_t freq_hz, int sda_pin, int scl
     h->freq_hz = freq_hz;
     h->sda_pin = sda_pin;
     h->scl_pin = scl_pin;
+    h->driver_owner = false;
 
     i2c_config_t conf = {0};
     conf.mode = I2C_MODE_MASTER;
@@ -84,12 +78,14 @@ int hal_i2c_init(hal_i2c_t *i2c, int bus, uint32_t freq_hz, int sda_pin, int scl
     conf.master.clk_speed = freq_hz;
 
     esp_err_t e1 = i2c_param_config((i2c_port_t)bus, &conf);
-    if (e1 != ESP_OK) return esp_err_to_errno(e1);
+    if (e1 != ESP_OK) return hal_esp_err_to_errno(e1);
 
     // Last two args are RX/TX buffer sizes for slave mode; set 0 for master mode.
     esp_err_t e2 = i2c_driver_install((i2c_port_t)bus, I2C_MODE_MASTER, 0, 0, 0);
-    if (e2 != ESP_OK && e2 != ESP_ERR_INVALID_STATE) {
-        return esp_err_to_errno(e2);
+    if (e2 == ESP_OK) {
+        h->driver_owner = true;
+    } else if (e2 != ESP_ERR_INVALID_STATE) {
+        return hal_esp_err_to_errno(e2);
     }
 
     h->initialized = true;
@@ -101,9 +97,13 @@ int hal_i2c_deinit(hal_i2c_t *i2c) {
     hal_i2c_impl_t *h = I(i2c);
     if (!h->initialized) return -EINVAL;
 
-    esp_err_t e = i2c_driver_delete((i2c_port_t)h->port);
+    esp_err_t e = ESP_OK;
+    if (h->driver_owner) {
+        e = i2c_driver_delete((i2c_port_t)h->port);
+    }
+    h->driver_owner = false;
     h->initialized = false;
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 }
 
 int hal_i2c_set_freq(hal_i2c_t *i2c, uint32_t freq_hz) {
@@ -125,7 +125,7 @@ int hal_i2c_set_freq(hal_i2c_t *i2c, uint32_t freq_hz) {
         h->freq_hz = freq_hz;
         return 0;
     }
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 }
 
 int hal_i2c_probe(hal_i2c_t *i2c, uint8_t addr, uint32_t timeout_ms) {
@@ -144,7 +144,7 @@ int hal_i2c_probe(hal_i2c_t *i2c, uint8_t addr, uint32_t timeout_ms) {
 
     if (e != ESP_OK) {
         i2c_cmd_link_delete(cmd);
-        return esp_err_to_errno(e);
+        return hal_esp_err_to_errno(e);
     }
 
     esp_err_t ex = i2c_master_cmd_begin((i2c_port_t)h->port, cmd, ms_to_ticks(timeout_ms));
@@ -153,7 +153,7 @@ int hal_i2c_probe(hal_i2c_t *i2c, uint8_t addr, uint32_t timeout_ms) {
     if (ex == ESP_OK) return 0;
 
     if (ex == ESP_ERR_TIMEOUT) return -ETIMEDOUT;
-    if (ex == ESP_ERR_INVALID_STATE) return -EALREADY;
+    if (ex == ESP_ERR_INVALID_STATE) return -EBUSY;
     if (ex == ESP_ERR_INVALID_ARG) return -EINVAL;
 
     return -ENODEV;
@@ -167,6 +167,7 @@ int hal_i2c_write(hal_i2c_t *i2c, uint8_t addr,
     if (!h->initialized) return -EINVAL;
     if (!valid_addr7(addr)) return -EINVAL;
     if (!data && len > 0) return -EINVAL;
+    if (len > (size_t)INT_MAX) return -EMSGSIZE;
 
     esp_err_t e = i2c_master_write_to_device(
         (i2c_port_t)h->port,
@@ -176,7 +177,7 @@ int hal_i2c_write(hal_i2c_t *i2c, uint8_t addr,
         ms_to_ticks(timeout_ms)
     );
 
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
     return (int)len;
 }
 
@@ -188,6 +189,8 @@ int hal_i2c_read(hal_i2c_t *i2c, uint8_t addr,
     if (!h->initialized) return -EINVAL;
     if (!valid_addr7(addr)) return -EINVAL;
     if (!data && len > 0) return -EINVAL;
+    if (len > (size_t)INT_MAX) return -EMSGSIZE;
+
 
     esp_err_t e = i2c_master_read_from_device(
         (i2c_port_t)h->port,
@@ -197,7 +200,7 @@ int hal_i2c_read(hal_i2c_t *i2c, uint8_t addr,
         ms_to_ticks(timeout_ms)
     );
 
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
     return (int)len;
 }
 
@@ -211,6 +214,8 @@ int hal_i2c_write_read(hal_i2c_t *i2c, uint8_t addr,
     if (!valid_addr7(addr)) return -EINVAL;
     if (!wdata && wlen > 0) return -EINVAL;
     if (!rdata && rlen > 0) return -EINVAL;
+    if (rlen > (size_t)INT_MAX) return -EMSGSIZE;
+
 
     esp_err_t e = i2c_master_write_read_device(
         (i2c_port_t)h->port,
@@ -222,6 +227,6 @@ int hal_i2c_write_read(hal_i2c_t *i2c, uint8_t addr,
         ms_to_ticks(timeout_ms)
     );
 
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
     return (int)rlen;
 }

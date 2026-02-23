@@ -4,31 +4,49 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import re
 from pathlib import Path
 from typing import Any, Dict, List, Set
 
-
-PRIMITIVES: List[str] = [
-    "adc",
-    "fs",
-    "gpio",
-    "i2c",
-    "pwm",
-    "spi",
-    "sys",
-    "timer",
-    "uart",
-]
+PRIMITIVE_RE = re.compile(r"^hal_([a-z0-9_]+)\.h$")
 
 
-def discover_ports(root: Path) -> List[Dict[str, Any]]:
+def discover_primitives(root: Path) -> List[str]:
+    include_dir = root / "basalt_hal" / "include" / "hal"
+    primitives: List[str] = []
+    for hdr in sorted(include_dir.glob("hal_*.h")):
+        m = PRIMITIVE_RE.match(hdr.name)
+        if not m:
+            continue
+        prim = m.group(1)
+        if prim == "types":
+            continue
+        primitives.append(prim)
+    return primitives
+
+
+def is_impl_for_primitive(src: Path, primitive: str) -> bool:
+    text = src.read_text(encoding="utf-8")
+    if text.lstrip().startswith("#pragma once"):
+        return False
+    if "BASALT_HAL_UNSUPPORTED_STUB" in text:
+        return False
+    return f"hal_{primitive}_" in text
+
+
+def discover_ports(root: Path, primitives: List[str]) -> List[Dict[str, Any]]:
     ports_root = root / "basalt_hal" / "ports"
     out: List[Dict[str, Any]] = []
     for port_dir in sorted([p for p in ports_root.iterdir() if p.is_dir()]):
-        files = {p.name for p in port_dir.glob("hal_*.c")}
-        present = sorted([p for p in PRIMITIVES if f"hal_{p}.c" in files])
-        missing = sorted([p for p in PRIMITIVES if f"hal_{p}.c" not in files])
-        if len(present) == len(PRIMITIVES):
+        present: List[str] = []
+        missing: List[str] = []
+        for primitive in primitives:
+            src = port_dir / f"hal_{primitive}.c"
+            if src.exists() and is_impl_for_primitive(src, primitive):
+                present.append(primitive)
+            else:
+                missing.append(primitive)
+        if len(present) == len(primitives):
             status = "complete"
         elif len(present) == 0:
             status = "missing"
@@ -47,25 +65,25 @@ def discover_ports(root: Path) -> List[Dict[str, Any]]:
     return out
 
 
-def write_csv(rows: List[Dict[str, Any]], out_path: Path) -> None:
+def write_csv(rows: List[Dict[str, Any]], primitives: List[str], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    fields = ["port", "status"] + [f"has_{p}" for p in PRIMITIVES]
+    fields = ["port", "status"] + [f"has_{p}" for p in primitives]
     with out_path.open("w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fields)
         w.writeheader()
         for r in rows:
             row = {"port": r["port"], "status": r["status"]}
             present_set: Set[str] = set(r["present"])
-            for p in PRIMITIVES:
+            for p in primitives:
                 row[f"has_{p}"] = "yes" if p in present_set else "no"
             w.writerow(row)
 
 
-def write_json(rows: List[Dict[str, Any]], out_path: Path) -> None:
+def write_json(rows: List[Dict[str, Any]], primitives: List[str], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     summary = {
         "port_count": len(rows),
-        "primitive_count": len(PRIMITIVES),
+        "primitive_count": len(primitives),
         "status_counts": {
             "complete": sum(1 for r in rows if r["status"] == "complete"),
             "partial": sum(1 for r in rows if r["status"] == "partial"),
@@ -80,14 +98,14 @@ def write_json(rows: List[Dict[str, Any]], out_path: Path) -> None:
     payload = {
         "version": "1.0.0",
         "generator": "tools/generate_hal_adapter_matrix.py",
-        "primitives": PRIMITIVES,
+        "primitives": primitives,
         "summary": summary,
         "rows": rows,
     }
     out_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
-def write_md(rows: List[Dict[str, Any]], out_path: Path) -> None:
+def write_md(rows: List[Dict[str, Any]], primitives: List[str], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     complete = sum(1 for r in rows if r["status"] == "complete")
     partial = sum(1 for r in rows if r["status"] == "partial")
@@ -100,7 +118,7 @@ def write_md(rows: List[Dict[str, Any]], out_path: Path) -> None:
     lines.append("## Summary")
     lines.append("")
     lines.append(f"- Ports discovered: {len(rows)}")
-    lines.append(f"- HAL primitives tracked: {len(PRIMITIVES)}")
+    lines.append(f"- HAL primitives tracked: {len(primitives)}")
     lines.append(f"- Complete adapters: {complete}")
     lines.append(f"- Partial adapters: {partial}")
     lines.append(f"- Missing adapters: {missing}")
@@ -123,19 +141,20 @@ def main() -> int:
     args = ap.parse_args()
 
     root = Path(__file__).resolve().parent.parent
-    rows = discover_ports(root)
+    primitives = discover_primitives(root)
+    rows = discover_ports(root, primitives)
     rows.sort(key=lambda x: x["port"])
 
     csv_out = (root / args.csv_out).resolve()
     json_out = (root / args.json_out).resolve()
     md_out = (root / args.md_out).resolve()
 
-    write_csv(rows, csv_out)
-    write_json(rows, json_out)
-    write_md(rows, md_out)
+    write_csv(rows, primitives, csv_out)
+    write_json(rows, primitives, json_out)
+    write_md(rows, primitives, md_out)
 
     print(f"[hal-matrix] ports: {len(rows)}")
-    print(f"[hal-matrix] primitives: {len(PRIMITIVES)}")
+    print(f"[hal-matrix] primitives: {len(primitives)}")
     print(f"[hal-matrix] wrote: {csv_out}")
     print(f"[hal-matrix] wrote: {json_out}")
     print(f"[hal-matrix] wrote: {md_out}")

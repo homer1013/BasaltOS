@@ -2134,6 +2134,11 @@ def main() -> int:
     ap.add_argument("--upload-programmer", default=None, help="AVR: programmer id")
     ap.add_argument("--upload-baud", type=int, default=None, help="AVR: upload baud rate")
     ap.add_argument("--upload-port", default=None, help="AVR: serial/USB port")
+    ap.add_argument(
+        "--allow-unsupported",
+        action="store_true",
+        help="allow drivers outside board capability restrictions (experimental bring-up mode)",
+    )
     ap.add_argument("--outdir", default=str(gen_dir), help="output directory (default: config/generated)")
     args = ap.parse_args()
 
@@ -2392,6 +2397,12 @@ def main() -> int:
 
     selected_applets = sorted(dict.fromkeys([norm_slug(x) for x in selected_applets if norm_slug(x)]))
     selected_market_apps = sorted(dict.fromkeys([norm_slug(x) for x in selected_market_apps if norm_slug(x)]))
+
+    if args.allow_unsupported and allow is not None:
+        eprint("[configure] WARNING: --allow-unsupported enabled; bypassing board capability restriction.")
+        if board_profile:
+            eprint(f"[configure] WARNING: board={board_profile.platform}/{board_profile.board_dir}")
+        allow = None
 
     # Resolve drivers
     try:

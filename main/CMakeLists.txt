@@ -7,6 +7,7 @@ endif()
 idf_component_register(
     SRCS
         "app_main.c"
+        "bus_manager.c"
         "smoke_test.c"
         "tft_console.c"
         "mpy_runtime.c"

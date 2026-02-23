@@ -8,6 +8,7 @@
 
 #include "driver/ledc.h"
 #include "esp_err.h"
+#include "hal_errno.h"
 
 typedef struct {
     ledc_mode_t speed_mode;
@@ -27,16 +28,6 @@ static inline hal_pwm_impl_t *P(hal_pwm_t *pwm) {
     return (hal_pwm_impl_t *)pwm->_opaque;
 }
 
-static inline int esp_err_to_errno(esp_err_t err) {
-    switch (err) {
-        case ESP_OK: return 0;
-        case ESP_ERR_INVALID_ARG: return -EINVAL;
-        case ESP_ERR_INVALID_STATE: return -EALREADY;
-        case ESP_ERR_NO_MEM: return -ENOMEM;
-        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
-        default: return -EIO;
-    }
-}
 
 static inline ledc_timer_bit_t map_resolution(int bits) {
     if (bits <= 8) return LEDC_TIMER_8_BIT;
@@ -46,7 +37,11 @@ static inline ledc_timer_bit_t map_resolution(int bits) {
     if (bits <= 12) return LEDC_TIMER_12_BIT;
     if (bits <= 13) return LEDC_TIMER_13_BIT;
     if (bits <= 14) return LEDC_TIMER_14_BIT;
+#ifdef LEDC_TIMER_15_BIT
     return LEDC_TIMER_15_BIT;
+#else
+    return LEDC_TIMER_14_BIT;
+#endif
 }
 
 static inline uint32_t duty_max(ledc_timer_bit_t res) {
@@ -78,7 +73,7 @@ int hal_pwm_init(hal_pwm_t *pwm,
         .clk_cfg = LEDC_AUTO_CLK,
     };
     esp_err_t e = ledc_timer_config(&timer_cfg);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     ledc_channel_config_t chan_cfg = {
         .gpio_num = gpio_pin,
@@ -90,7 +85,7 @@ int hal_pwm_init(hal_pwm_t *pwm,
         .hpoint = 0,
     };
     e = ledc_channel_config(&chan_cfg);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     p->initialized = true;
     return 0;
@@ -104,7 +99,7 @@ int hal_pwm_deinit(hal_pwm_t *pwm) {
     esp_err_t e = ledc_stop(p->speed_mode, p->channel, 0);
     p->initialized = false;
     p->started = false;
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 }
 
 int hal_pwm_set_duty_percent(hal_pwm_t *pwm, float duty_percent) {
@@ -119,10 +114,10 @@ int hal_pwm_set_duty_percent(hal_pwm_t *pwm, float duty_percent) {
     uint32_t duty = (uint32_t)((duty_percent / 100.0f) * (float)max);
 
     esp_err_t e = ledc_set_duty(p->speed_mode, p->channel, duty);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     e = ledc_update_duty(p->speed_mode, p->channel);
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 }
 
 int hal_pwm_set_freq(hal_pwm_t *pwm, uint32_t freq_hz) {
@@ -151,7 +146,7 @@ int hal_pwm_stop(hal_pwm_t *pwm) {
     if (!p->initialized) return -EINVAL;
 
     esp_err_t e = ledc_stop(p->speed_mode, p->channel, 0);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     p->started = false;
     return 0;

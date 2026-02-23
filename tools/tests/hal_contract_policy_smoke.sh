@@ -36,8 +36,12 @@ if not rows:
 unexpected_status = []
 unacked_partial = []
 unacked_missing = []
+stale_partial_acks = []
+stale_missing_acks = []
 count_partial = 0
 count_missing = 0
+partial_ports = set()
+missing_ports = set()
 
 for row in rows:
     port = str(row.get("port") or "")
@@ -57,10 +61,12 @@ for row in rows:
 
     if status == "partial":
         count_partial += 1
+        partial_ports.add(port)
         if port not in ack_partial:
             unacked_partial.append(port)
     elif status == "missing":
         count_missing += 1
+        missing_ports.add(port)
         if port not in ack_missing:
             unacked_missing.append(port)
 
@@ -70,6 +76,17 @@ if unacked_partial:
     raise SystemExit(f"FAIL: unacknowledged partial HAL ports: {sorted(unacked_partial)}")
 if unacked_missing:
     raise SystemExit(f"FAIL: unacknowledged missing HAL ports: {sorted(unacked_missing)}")
+
+for port in sorted(ack_partial):
+    if port not in partial_ports:
+        stale_partial_acks.append(port)
+for port in sorted(ack_missing):
+    if port not in missing_ports:
+        stale_missing_acks.append(port)
+if stale_partial_acks:
+    raise SystemExit(f"FAIL: stale acknowledged_partial_ports entries: {stale_partial_acks}")
+if stale_missing_acks:
+    raise SystemExit(f"FAIL: stale acknowledged_missing_ports entries: {stale_missing_acks}")
 
 summary = matrix.get("summary") or {}
 status_counts = summary.get("status_counts") or {}

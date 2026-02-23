@@ -14,6 +14,7 @@
 
 #include "driver/i2s_std.h"
 #include "esp_err.h"
+#include "hal_errno.h"
 #include "freertos/FreeRTOS.h"
 
 typedef struct {
@@ -37,17 +38,6 @@ static inline hal_i2s_impl_t *I(hal_i2s_t *i2s) {
     return (hal_i2s_impl_t *)i2s->_opaque;
 }
 
-static inline int esp_err_to_errno(esp_err_t err) {
-    switch (err) {
-        case ESP_OK: return 0;
-        case ESP_ERR_INVALID_ARG: return -EINVAL;
-        case ESP_ERR_INVALID_STATE: return -EALREADY;
-        case ESP_ERR_NO_MEM: return -ENOMEM;
-        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
-        case ESP_ERR_NOT_SUPPORTED: return -ENOTSUP;
-        default: return -EIO;
-    }
-}
 
 static i2s_data_bit_width_t map_bits(int bits) {
     if (bits <= 16) return I2S_DATA_BIT_WIDTH_16BIT;
@@ -88,7 +78,7 @@ int hal_i2s_diag_init(hal_i2s_t *i2s,
 
     esp_err_t ret = i2s_new_channel(&chan_cfg, &h->tx, &h->rx);
     if (ret != ESP_OK) {
-        return esp_err_to_errno(ret);
+        return hal_esp_err_to_errno(ret);
     }
 
     i2s_std_slot_config_t slot_cfg = I2S_STD_PHILIPS_SLOT_DEFAULT_CONFIG(
@@ -118,7 +108,7 @@ int hal_i2s_diag_init(hal_i2s_t *i2s,
         (void)i2s_del_channel(h->rx);
         h->tx = NULL;
         h->rx = NULL;
-        return esp_err_to_errno(ret);
+        return hal_esp_err_to_errno(ret);
     }
 
     ret = i2s_channel_init_std_mode(h->rx, &std_cfg);
@@ -128,7 +118,7 @@ int hal_i2s_diag_init(hal_i2s_t *i2s,
         (void)i2s_del_channel(h->rx);
         h->tx = NULL;
         h->rx = NULL;
-        return esp_err_to_errno(ret);
+        return hal_esp_err_to_errno(ret);
     }
 
     ret = i2s_channel_enable(h->tx);
@@ -137,7 +127,7 @@ int hal_i2s_diag_init(hal_i2s_t *i2s,
         (void)i2s_del_channel(h->rx);
         h->tx = NULL;
         h->rx = NULL;
-        return esp_err_to_errno(ret);
+        return hal_esp_err_to_errno(ret);
     }
     ret = i2s_channel_enable(h->rx);
     if (ret != ESP_OK) {
@@ -146,7 +136,7 @@ int hal_i2s_diag_init(hal_i2s_t *i2s,
         (void)i2s_del_channel(h->rx);
         h->tx = NULL;
         h->rx = NULL;
-        return esp_err_to_errno(ret);
+        return hal_esp_err_to_errno(ret);
     }
 
     h->tx_ready = true;
@@ -265,7 +255,7 @@ int hal_i2s_diag_loopback(hal_i2s_t *i2s,
     if (ret != ESP_OK) {
         free(tx_buf);
         free(rx_buf);
-        return esp_err_to_errno(ret);
+        return hal_esp_err_to_errno(ret);
     }
 
     size_t read = 0;
@@ -273,7 +263,7 @@ int hal_i2s_diag_loopback(hal_i2s_t *i2s,
     if (ret != ESP_OK && ret != ESP_ERR_TIMEOUT) {
         free(tx_buf);
         free(rx_buf);
-        return esp_err_to_errno(ret);
+        return hal_esp_err_to_errno(ret);
     }
 
     memset(out, 0, sizeof(*out));

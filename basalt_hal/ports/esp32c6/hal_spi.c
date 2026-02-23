@@ -1,6 +1,7 @@
 // BasaltOS ESP32-C6 HAL - SPI
 
 #include <errno.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -11,6 +12,7 @@
 
 #include "driver/spi_master.h"
 #include "esp_err.h"
+#include "hal_errno.h"
 
 typedef struct {
     spi_host_device_t host;
@@ -30,17 +32,6 @@ _Static_assert(sizeof(hal_spi_impl_t) <= sizeof(((hal_spi_t *)0)->_opaque),
 
 static inline hal_spi_impl_t *S(hal_spi_t *spi) {
     return (hal_spi_impl_t *)spi->_opaque;
-}
-
-static inline int esp_err_to_errno(esp_err_t err) {
-    switch (err) {
-        case ESP_OK: return 0;
-        case ESP_ERR_INVALID_ARG: return -EINVAL;
-        case ESP_ERR_INVALID_STATE: return -EALREADY;
-        case ESP_ERR_NO_MEM: return -ENOMEM;
-        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
-        default: return -EIO;
-    }
 }
 
 static inline TickType_t ms_to_ticks(uint32_t timeout_ms) {
@@ -83,7 +74,7 @@ int hal_spi_init(hal_spi_t *spi,
     if (e == ESP_OK) {
         s->bus_owner = true;
     } else if (e != ESP_ERR_INVALID_STATE) {
-        return esp_err_to_errno(e);
+        return hal_esp_err_to_errno(e);
     }
 
     spi_device_interface_config_t dev_cfg = {0};
@@ -99,7 +90,7 @@ int hal_spi_init(hal_spi_t *spi,
             (void)spi_bus_free(s->host);
             s->bus_owner = false;
         }
-        return esp_err_to_errno(e);
+        return hal_esp_err_to_errno(e);
     }
 
     s->initialized = true;
@@ -137,10 +128,11 @@ int hal_spi_set_freq(hal_spi_t *spi, uint32_t freq_hz) {
 
     spi_device_handle_t new_dev = NULL;
     esp_err_t e = spi_bus_remove_device(s->dev);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
+    s->dev = NULL;
 
     e = spi_bus_add_device(s->host, &cfg, &new_dev);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     s->dev = new_dev;
     s->freq_hz = freq_hz;
@@ -161,10 +153,11 @@ int hal_spi_set_mode(hal_spi_t *spi, hal_spi_mode_t mode) {
 
     spi_device_handle_t new_dev = NULL;
     esp_err_t e = spi_bus_remove_device(s->dev);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
+    s->dev = NULL;
 
     e = spi_bus_add_device(s->host, &cfg, &new_dev);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     s->dev = new_dev;
     s->mode = mode;
@@ -181,6 +174,7 @@ int hal_spi_transfer(hal_spi_t *spi,
     if (!s->initialized || !s->dev) return -EINVAL;
     if (len == 0) return 0;
     if (!tx && !rx) return -EINVAL;
+    if (len > ((size_t)INT_MAX / 8U)) return -EMSGSIZE;
 
     spi_transaction_t t = {0};
     t.length = (int)(len * 8);
@@ -193,7 +187,7 @@ int hal_spi_transfer(hal_spi_t *spi,
         (void)ms_to_ticks(timeout_ms);
         return -ETIMEDOUT;
     }
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 }
 
 int hal_spi_write(hal_spi_t *spi,

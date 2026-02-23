@@ -11,6 +11,7 @@
 
 #include "driver/gpio.h"
 #include "esp_err.h"
+#include "hal_errno.h"
 #include "esp_attr.h"
 
 // -----------------------------------------------------------------------------
@@ -42,17 +43,6 @@ static inline hal_gpio_impl_t *G(hal_gpio_t *g) {
 // -----------------------------------------------------------------------------
 // Helpers
 // -----------------------------------------------------------------------------
-
-static inline int esp_err_to_errno(esp_err_t err) {
-    switch (err) {
-        case ESP_OK: return 0;
-        case ESP_ERR_INVALID_ARG: return -EINVAL;
-        case ESP_ERR_INVALID_STATE: return -EALREADY;
-        case ESP_ERR_NO_MEM: return -ENOMEM;
-        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
-        default: return -EIO;
-    }
-}
 
 static inline bool gpio_valid(int pin) {
     return GPIO_IS_VALID_GPIO((gpio_num_t)pin);
@@ -97,7 +87,7 @@ static int apply_config(hal_gpio_impl_t *g) {
             return -EINVAL;
     }
 
-    int rc = esp_err_to_errno(gpio_config(&cfg));
+    int rc = hal_esp_err_to_errno(gpio_config(&cfg));
     if (rc != 0) return rc;
 
     // Drive strength (only meaningful for output-capable pins)
@@ -180,7 +170,7 @@ int hal_gpio_deinit(hal_gpio_t *gpio) {
 
     esp_err_t e = gpio_reset_pin((gpio_num_t)g->pin);
     g->initialized = false;
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 }
 
 int hal_gpio_set_mode(hal_gpio_t *gpio, hal_gpio_mode_t mode) {
@@ -233,7 +223,7 @@ int hal_gpio_write(hal_gpio_t *gpio, int value) {
     // For safety, require output/open-drain mode to write
     if (g->mode == HAL_GPIO_INPUT) return -EPERM;
 
-    return esp_err_to_errno(gpio_set_level((gpio_num_t)g->pin, value ? 1 : 0));
+    return hal_esp_err_to_errno(gpio_set_level((gpio_num_t)g->pin, value ? 1 : 0));
 }
 
 int hal_gpio_toggle(hal_gpio_t *gpio) {
@@ -244,7 +234,7 @@ int hal_gpio_toggle(hal_gpio_t *gpio) {
     if (g->mode == HAL_GPIO_INPUT) return -EPERM;
 
     int lvl = gpio_get_level((gpio_num_t)g->pin);
-    return esp_err_to_errno(gpio_set_level((gpio_num_t)g->pin, lvl ? 0 : 1));
+    return hal_esp_err_to_errno(gpio_set_level((gpio_num_t)g->pin, lvl ? 0 : 1));
 }
 
 int hal_gpio_set_irq(hal_gpio_t *gpio,
@@ -259,7 +249,7 @@ int hal_gpio_set_irq(hal_gpio_t *gpio,
     if (!s_isr_service_installed) {
         esp_err_t ie = gpio_install_isr_service(0);
         if (ie != ESP_OK && ie != ESP_ERR_INVALID_STATE) {
-            return esp_err_to_errno(ie);
+            return hal_esp_err_to_errno(ie);
         }
         s_isr_service_installed = true;
     }
@@ -282,11 +272,11 @@ int hal_gpio_set_irq(hal_gpio_t *gpio,
 
     // Configure trigger
     esp_err_t e1 = gpio_set_intr_type((gpio_num_t)g->pin, map_irq_type(trig));
-    if (e1 != ESP_OK) return esp_err_to_errno(e1);
+    if (e1 != ESP_OK) return hal_esp_err_to_errno(e1);
 
     // Add handler (passes impl pointer)
     esp_err_t e2 = gpio_isr_handler_add((gpio_num_t)g->pin, gpio_isr_thunk, (void *)g);
-    if (e2 != ESP_OK) return esp_err_to_errno(e2);
+    if (e2 != ESP_OK) return hal_esp_err_to_errno(e2);
 
     g->irq_configured = true;
 
@@ -307,7 +297,7 @@ int hal_gpio_irq_enable(hal_gpio_t *gpio, int enable) {
 
     esp_err_t e = enable ? gpio_intr_enable((gpio_num_t)g->pin)
                          : gpio_intr_disable((gpio_num_t)g->pin);
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 }
 
 int hal_gpio_get_caps(int pin, uint32_t *caps) {

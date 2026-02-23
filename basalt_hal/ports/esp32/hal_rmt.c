@@ -12,6 +12,7 @@
 
 #include "driver/gpio.h"
 #include "esp_err.h"
+#include "hal_errno.h"
 #include "esp_rom_sys.h"
 #include "esp_timer.h"
 
@@ -33,16 +34,6 @@ static inline hal_rmt_impl_t *R(hal_rmt_t *rmt) {
     return (hal_rmt_impl_t *)rmt->_opaque;
 }
 
-static inline int esp_err_to_errno(esp_err_t err) {
-    switch (err) {
-        case ESP_OK: return 0;
-        case ESP_ERR_INVALID_ARG: return -EINVAL;
-        case ESP_ERR_INVALID_STATE: return -EALREADY;
-        case ESP_ERR_NO_MEM: return -ENOMEM;
-        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
-        default: return -EIO;
-    }
-}
 
 static int hal_capture_gpio(int pin,
                             uint32_t window_ms,
@@ -107,18 +98,18 @@ int hal_rmt_init(hal_rmt_t *rmt,
     if (h->enable_tx) {
         if (h->tx_pin < 0) return -EINVAL;
         esp_err_t ret = gpio_reset_pin((gpio_num_t)h->tx_pin);
-        if (ret != ESP_OK) return esp_err_to_errno(ret);
+        if (ret != ESP_OK) return hal_esp_err_to_errno(ret);
         ret = gpio_set_direction((gpio_num_t)h->tx_pin, GPIO_MODE_OUTPUT);
-        if (ret != ESP_OK) return esp_err_to_errno(ret);
+        if (ret != ESP_OK) return hal_esp_err_to_errno(ret);
         (void)gpio_set_level((gpio_num_t)h->tx_pin, 0);
         h->tx_ready = true;
     }
     if (h->enable_rx) {
         if (h->rx_pin < 0) return -EINVAL;
         esp_err_t ret = gpio_reset_pin((gpio_num_t)h->rx_pin);
-        if (ret != ESP_OK) return esp_err_to_errno(ret);
+        if (ret != ESP_OK) return hal_esp_err_to_errno(ret);
         ret = gpio_set_direction((gpio_num_t)h->rx_pin, GPIO_MODE_INPUT);
-        if (ret != ESP_OK) return esp_err_to_errno(ret);
+        if (ret != ESP_OK) return hal_esp_err_to_errno(ret);
         h->rx_ready = true;
     }
     h->initialized = true;

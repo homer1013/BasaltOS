@@ -1,182 +1,81 @@
-#pragma once
-/*
- * BasaltOS Hardware Abstraction Layer - UART
- *
- * Portable UART contract used by BasaltOS.
- *
- * Rules:
- *  - No vendor SDK headers here (ESP-IDF, Pico SDK, STM32 HAL, etc.)
- *  - Consistent error model:
- *      0 / -errno for config calls
- *      bytes / -errno for send/recv calls
- *  - Blocking behavior must be explicit via timeout_ms
- */
-
+#include <errno.h>
 #include <stdint.h>
-#include <stddef.h>
-#include "hal/hal_types.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* ------------------------------------------------------------
- * UART configuration types
- * ------------------------------------------------------------ */
-
-typedef enum {
-    HAL_UART_PARITY_NONE = 0,
-    HAL_UART_PARITY_EVEN,
-    HAL_UART_PARITY_ODD,
-} hal_uart_parity_t;
-
-typedef enum {
-    HAL_UART_STOP_BITS_1 = 0,
-    HAL_UART_STOP_BITS_2,
-} hal_uart_stop_bits_t;
-
-typedef enum {
-    HAL_UART_DATA_BITS_5 = 5,
-    HAL_UART_DATA_BITS_6 = 6,
-    HAL_UART_DATA_BITS_7 = 7,
-    HAL_UART_DATA_BITS_8 = 8,
-} hal_uart_data_bits_t;
-
-typedef enum {
-    HAL_UART_FLOW_NONE = 0,
-    HAL_UART_FLOW_RTS_CTS,
-    HAL_UART_FLOW_XON_XOFF,
-} hal_uart_flow_t;
-
-/* ------------------------------------------------------------
- * UART init configuration (optional helper)
- * ------------------------------------------------------------ */
+#include "hal/hal_pwm.h"
 
 typedef struct {
-    uint32_t baud;                 // e.g. 115200
-    hal_uart_data_bits_t data_bits;
-    hal_uart_stop_bits_t stop_bits;
-    hal_uart_parity_t parity;
-    hal_uart_flow_t flow;
-} hal_uart_config_t;
+    int channel;
+    int gpio_pin;
+    uint32_t freq_hz;
+    int duty_resolution_bits;
+    int duty_permil;
+    int initialized;
+    int running;
+} hal_pwm_impl_t;
 
-/* Recommended default config */
-static inline hal_uart_config_t hal_uart_config_default(uint32_t baud) {
-    hal_uart_config_t c;
-    c.baud = baud;
-    c.data_bits = HAL_UART_DATA_BITS_8;
-    c.stop_bits = HAL_UART_STOP_BITS_1;
-    c.parity = HAL_UART_PARITY_NONE;
-    c.flow = HAL_UART_FLOW_NONE;
-    return c;
+_Static_assert(sizeof(hal_pwm_impl_t) <= sizeof(((hal_pwm_t *)0)->_opaque),
+               "hal_pwm_t opaque storage too small for hal_pwm_impl_t");
+
+static inline hal_pwm_impl_t *P(hal_pwm_t *pwm) {
+    return (hal_pwm_impl_t *)pwm->_opaque;
 }
 
-/* ------------------------------------------------------------
- * API
- * ------------------------------------------------------------ */
-
-/**
- * @brief Initialize a UART peripheral.
- *
- * @param u     UART handle storage (caller-provided)
- * @param bus   Platform UART index (e.g. 0,1,2)
- * @param baud  Baud rate (e.g. 115200)
- *
- * @return 0 on success, -errno on failure
- *
- * Notes:
- *  - Minimal profile required
- *  - Non-blocking configuration call
- */
-int hal_uart_init(hal_uart_t *u, int bus, uint32_t baud);
-
-/**
- * @brief Initialize UART with a full configuration (optional).
- *
- * @return 0 on success, -errno on failure
- *
- * Platforms may return -ENOSYS if only basic init is supported.
- */
-int hal_uart_init_ex(hal_uart_t *u, int bus, const hal_uart_config_t *cfg);
-
-/**
- * @brief Deinitialize the UART peripheral.
- */
-int hal_uart_deinit(hal_uart_t *u);
-
-/**
- * @brief Send bytes over UART.
- *
- * @param timeout_ms  0 = nonblocking attempt
- *                    >0 = block up to timeout
- *                    UINT32_MAX = block "forever" (platform-defined)
- *
- * @return bytes sent on success, -errno on failure
- *
- * Thread-safety:
- *  - ISR: No
- *  - Blocking: Yes (depending on timeout)
- */
-int hal_uart_send(hal_uart_t *u,
-                  const uint8_t *buf,
-                  size_t len,
-                  uint32_t timeout_ms);
-
-/**
- * @brief Receive bytes over UART.
- *
- * @param timeout_ms  0 = nonblocking attempt
- *                    >0 = block up to timeout
- *                    UINT32_MAX = block "forever" (platform-defined)
- *
- * @return bytes received on success, -errno on failure
- *
- * Thread-safety:
- *  - ISR: No
- *  - Blocking: Yes (depending on timeout)
- */
-int hal_uart_recv(hal_uart_t *u,
-                  uint8_t *buf,
-                  size_t len,
-                  uint32_t timeout_ms);
-
-/**
- * @brief Flush the TX path (ensure all bytes are transmitted).
- *
- * @return 0 on success, -errno on failure
- *
- * May block until drained.
- */
-int hal_uart_flush(hal_uart_t *u);
-
-/**
- * @brief Query number of bytes available to read without blocking.
- *
- * @param avail receives number of readable bytes
- *
- * @return 0 on success, -errno on failure
- */
-int hal_uart_available(hal_uart_t *u, size_t *avail);
-
-/**
- * @brief Set baud rate after initialization.
- */
-int hal_uart_set_baud(hal_uart_t *u, uint32_t baud);
-
-/**
- * @brief Configure flow control (RTS/CTS or XON/XOFF) if supported.
- *
- * Platforms that do not support flow control may return -ENOSYS.
- */
-int hal_uart_set_flow(hal_uart_t *u, hal_uart_flow_t flow);
-
-/**
- * @brief Send a UART break condition (optional).
- *
- * Platforms that do not support this may return -ENOSYS.
- */
-int hal_uart_set_break(hal_uart_t *u, uint32_t duration_ms);
-
-#ifdef __cplusplus
+int hal_pwm_init(hal_pwm_t *pwm,
+                 int channel,
+                 int gpio_pin,
+                 uint32_t freq_hz,
+                 int duty_resolution_bits) {
+    if (!pwm || channel < 0 || gpio_pin < 0 || freq_hz == 0) return -EINVAL;
+    if (duty_resolution_bits < 1 || duty_resolution_bits > 16) return -EINVAL;
+    hal_pwm_impl_t *impl = P(pwm);
+    impl->channel = channel;
+    impl->gpio_pin = gpio_pin;
+    impl->freq_hz = freq_hz;
+    impl->duty_resolution_bits = duty_resolution_bits;
+    impl->duty_permil = 0;
+    impl->initialized = 1;
+    impl->running = 0;
+    return 0;
 }
-#endif
+
+int hal_pwm_deinit(hal_pwm_t *pwm) {
+    if (!pwm) return -EINVAL;
+    hal_pwm_impl_t *impl = P(pwm);
+    if (!impl->initialized) return -EINVAL;
+    impl->initialized = 0;
+    impl->running = 0;
+    return 0;
+}
+
+int hal_pwm_set_duty_percent(hal_pwm_t *pwm, float duty_percent) {
+    if (!pwm) return -EINVAL;
+    if (duty_percent < 0.0f || duty_percent > 100.0f) return -EINVAL;
+    hal_pwm_impl_t *impl = P(pwm);
+    if (!impl->initialized) return -EINVAL;
+    impl->duty_permil = (int)(duty_percent * 10.0f);
+    return 0;
+}
+
+int hal_pwm_set_freq(hal_pwm_t *pwm, uint32_t freq_hz) {
+    if (!pwm || freq_hz == 0) return -EINVAL;
+    hal_pwm_impl_t *impl = P(pwm);
+    if (!impl->initialized) return -EINVAL;
+    impl->freq_hz = freq_hz;
+    return 0;
+}
+
+int hal_pwm_start(hal_pwm_t *pwm) {
+    if (!pwm) return -EINVAL;
+    hal_pwm_impl_t *impl = P(pwm);
+    if (!impl->initialized) return -EINVAL;
+    impl->running = 1;
+    return 0;
+}
+
+int hal_pwm_stop(hal_pwm_t *pwm) {
+    if (!pwm) return -EINVAL;
+    hal_pwm_impl_t *impl = P(pwm);
+    if (!impl->initialized) return -EINVAL;
+    impl->running = 0;
+    return 0;
+}

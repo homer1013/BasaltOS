@@ -8,6 +8,7 @@
 //   bytes / -errno for send/recv calls
 
 #include <errno.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -18,6 +19,7 @@
 
 #include "driver/uart.h"
 #include "esp_err.h"
+#include "hal_errno.h"
 
 // -----------------------------------------------------------------------------
 // Private implementation type stored inside hal_uart_t opaque storage
@@ -26,6 +28,7 @@
 typedef struct {
     uart_port_t port;
     uint32_t baud;
+    bool driver_owner;
     bool initialized;
     hal_uart_flow_t flow;
 
@@ -50,17 +53,6 @@ static inline const hal_uart_impl_t *UC(const hal_uart_t *u) {
 // -----------------------------------------------------------------------------
 // Helpers
 // -----------------------------------------------------------------------------
-
-static inline int esp_err_to_errno(esp_err_t err) {
-    switch (err) {
-        case ESP_OK: return 0;
-        case ESP_ERR_INVALID_ARG: return -EINVAL;
-        case ESP_ERR_INVALID_STATE: return -EALREADY;
-        case ESP_ERR_NO_MEM: return -ENOMEM;
-        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
-        default: return -EIO;
-    }
-}
 
 static inline TickType_t ms_to_ticks(uint32_t timeout_ms) {
     if (timeout_ms == 0) return 0;
@@ -117,7 +109,7 @@ static int apply_pins(hal_uart_impl_t *u, const hal_uart_config_t *cfg) {
         pin_or_nochange(cfg->rts_pin),
         pin_or_nochange(cfg->cts_pin)
     );
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     u->tx_pin  = cfg->tx_pin;
     u->rx_pin  = cfg->rx_pin;
@@ -132,7 +124,7 @@ static int apply_flow_ctrl(hal_uart_impl_t *u, hal_uart_flow_t flow) {
     switch (flow) {
         case HAL_UART_FLOW_NONE:
             e = uart_set_hw_flow_ctrl(u->port, UART_HW_FLOWCTRL_DISABLE, 0);
-            if (e != ESP_OK) return esp_err_to_errno(e);
+            if (e != ESP_OK) return hal_esp_err_to_errno(e);
 #ifdef uart_set_sw_flow_ctrl
             (void)uart_set_sw_flow_ctrl(u->port, false, 0, 0);
 #endif
@@ -144,14 +136,14 @@ static int apply_flow_ctrl(hal_uart_impl_t *u, hal_uart_flow_t flow) {
             // If user didn't set pins, this still "enables" HW flow, but you may
             // not have RTS/CTS connected. That’s fine; it’s a hardware wiring issue.
             e = uart_set_hw_flow_ctrl(u->port, UART_HW_FLOWCTRL_CTS_RTS, 122);
-            if (e != ESP_OK) return esp_err_to_errno(e);
+            if (e != ESP_OK) return hal_esp_err_to_errno(e);
             u->flow = flow;
             return 0;
 
         case HAL_UART_FLOW_XON_XOFF:
 #ifdef uart_set_sw_flow_ctrl
             e = uart_set_sw_flow_ctrl(u->port, true, 80, 20);
-            if (e != ESP_OK) return esp_err_to_errno(e);
+            if (e != ESP_OK) return hal_esp_err_to_errno(e);
             (void)uart_set_hw_flow_ctrl(u->port, UART_HW_FLOWCTRL_DISABLE, 0);
             u->flow = flow;
             return 0;
@@ -171,10 +163,21 @@ static int uart_install_if_needed(hal_uart_impl_t *u) {
     const int tx_buf_sz = 2048;
 
     esp_err_t e = uart_driver_install(u->port, rx_buf_sz, tx_buf_sz, 0, NULL, 0);
-    if (e != ESP_OK && e != ESP_ERR_INVALID_STATE) {
-        return esp_err_to_errno(e);
+    if (e == ESP_OK) {
+        u->driver_owner = true;
+    } else if (e == ESP_ERR_INVALID_STATE) {
+        u->driver_owner = false;
+    } else {
+        return hal_esp_err_to_errno(e);
     }
     return 0;
+}
+
+static void uart_rollback_driver_if_owned(hal_uart_impl_t *u) {
+    if (u->driver_owner) {
+        (void)uart_driver_delete(u->port);
+        u->driver_owner = false;
+    }
 }
 
 static int uart_apply_config(hal_uart_impl_t *u, const hal_uart_config_t *cfg) {
@@ -187,18 +190,24 @@ static int uart_apply_config(hal_uart_impl_t *u, const hal_uart_config_t *cfg) {
     c.source_clk = UART_SCLK_DEFAULT;
 
     esp_err_t e = uart_param_config(u->port, &c);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     int rc = uart_install_if_needed(u);
     if (rc != 0) return rc;
 
     // Apply pin routing (optional)
     rc = apply_pins(u, cfg);
-    if (rc != 0) return rc;
+    if (rc != 0) {
+        uart_rollback_driver_if_owned(u);
+        return rc;
+    }
 
     // Apply flow control
     rc = apply_flow_ctrl(u, cfg->flow);
-    if (rc != 0) return rc;
+    if (rc != 0) {
+        uart_rollback_driver_if_owned(u);
+        return rc;
+    }
 
     u->baud = cfg->baud;
     return 0;
@@ -216,6 +225,7 @@ int hal_uart_init(hal_uart_t *u, int bus, uint32_t baud) {
     hal_uart_impl_t *iu = U(u);
 
     iu->port = (uart_port_t)bus;
+    iu->driver_owner = false;
     iu->initialized = false;
 
     hal_uart_config_t cfg = hal_uart_config_default(baud);
@@ -236,6 +246,7 @@ int hal_uart_init_ex(hal_uart_t *u, int bus, const hal_uart_config_t *cfg) {
     hal_uart_impl_t *iu = U(u);
 
     iu->port = (uart_port_t)bus;
+    iu->driver_owner = false;
     iu->initialized = false;
 
     int rc = uart_apply_config(iu, cfg);
@@ -250,9 +261,13 @@ int hal_uart_deinit(hal_uart_t *u) {
     hal_uart_impl_t *iu = U(u);
     if (!iu->initialized) return -EINVAL;
 
-    esp_err_t e = uart_driver_delete(iu->port);
+    esp_err_t e = ESP_OK;
+    if (iu->driver_owner) {
+        e = uart_driver_delete(iu->port);
+    }
+    iu->driver_owner = false;
     iu->initialized = false;
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 }
 
 int hal_uart_send(hal_uart_t *u,
@@ -263,13 +278,15 @@ int hal_uart_send(hal_uart_t *u,
     hal_uart_impl_t *iu = U(u);
     if (!iu->initialized) return -EINVAL;
     if (!buf && len > 0) return -EINVAL;
+    if (len > (size_t)INT_MAX) return -EMSGSIZE;
+
 
     int written = uart_write_bytes(iu->port, (const char *)buf, (int)len);
     if (written < 0) return -EIO;
 
     if (timeout_ms != 0) {
         esp_err_t e = uart_wait_tx_done(iu->port, ms_to_ticks(timeout_ms));
-        if (e != ESP_OK) return esp_err_to_errno(e);
+        if (e != ESP_OK) return hal_esp_err_to_errno(e);
     }
 
     return written;
@@ -283,6 +300,8 @@ int hal_uart_recv(hal_uart_t *u,
     hal_uart_impl_t *iu = U(u);
     if (!iu->initialized) return -EINVAL;
     if (!buf && len > 0) return -EINVAL;
+    if (len > (size_t)INT_MAX) return -EMSGSIZE;
+
 
     int rd = uart_read_bytes(iu->port, buf, (uint32_t)len, ms_to_ticks(timeout_ms));
     if (rd < 0) return -EIO;
@@ -295,11 +314,11 @@ int hal_uart_flush(hal_uart_t *u) {
     if (!iu->initialized) return -EINVAL;
 
     esp_err_t e = uart_wait_tx_done(iu->port, portMAX_DELAY);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     // Flush RX as well (common expectation of "flush")
     e = uart_flush_input(iu->port);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     return 0;
 }
@@ -311,7 +330,7 @@ int hal_uart_available(hal_uart_t *u, size_t *avail) {
 
     size_t n = 0;
     esp_err_t e = uart_get_buffered_data_len(iu->port, &n);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     *avail = n;
     return 0;
@@ -324,7 +343,7 @@ int hal_uart_set_baud(hal_uart_t *u, uint32_t baud) {
     if (baud == 0) return -EINVAL;
 
     esp_err_t e = uart_set_baudrate(iu->port, (int)baud);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     iu->baud = baud;
     return 0;
@@ -348,10 +367,10 @@ int hal_uart_set_break(hal_uart_t *u, uint32_t duration_ms) {
 
 #ifdef uart_tx_break
     esp_err_t e = uart_tx_break(iu->port, (int)bits);
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 #elif defined(uart_set_break)
     esp_err_t e = uart_set_break(iu->port, (int)bits);
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 #else
     (void)bits;
     return -ENOSYS;

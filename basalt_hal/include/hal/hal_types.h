@@ -54,7 +54,7 @@ extern "C" {
 #endif
 
 #ifndef HAL_SPI_HANDLE_BYTES
-#define HAL_SPI_HANDLE_BYTES    32
+#define HAL_SPI_HANDLE_BYTES    64
 #endif
 
 #ifndef HAL_TIMER_HANDLE_BYTES

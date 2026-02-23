@@ -7,6 +7,7 @@
 #include "hal/hal_timer.h"
 
 #include "esp_err.h"
+#include "hal_errno.h"
 #include "esp_timer.h"
 
 typedef struct {
@@ -24,17 +25,6 @@ _Static_assert(sizeof(hal_timer_impl_t) <= sizeof(((hal_timer_t *)0)->_opaque),
 
 static inline hal_timer_impl_t *T(hal_timer_t *timer) {
     return (hal_timer_impl_t *)timer->_opaque;
-}
-
-static inline int esp_err_to_errno(esp_err_t err) {
-    switch (err) {
-        case ESP_OK: return 0;
-        case ESP_ERR_INVALID_ARG: return -EINVAL;
-        case ESP_ERR_INVALID_STATE: return -EALREADY;
-        case ESP_ERR_NO_MEM: return -ENOMEM;
-        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
-        default: return -EIO;
-    }
 }
 
 static void timer_cb_thunk(void *arg) {
@@ -67,7 +57,7 @@ int hal_timer_init(hal_timer_t *timer,
     };
 
     esp_err_t e = esp_timer_create(&args, &t->h);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     t->initialized = true;
     return 0;
@@ -85,7 +75,7 @@ int hal_timer_deinit(hal_timer_t *timer) {
     esp_err_t e = esp_timer_delete(t->h);
     t->h = NULL;
     t->initialized = false;
-    return esp_err_to_errno(e);
+    return hal_esp_err_to_errno(e);
 }
 
 int hal_timer_start(hal_timer_t *timer) {
@@ -101,7 +91,7 @@ int hal_timer_start(hal_timer_t *timer) {
     esp_err_t e = t->periodic
         ? esp_timer_start_periodic(t->h, t->period_us)
         : esp_timer_start_once(t->h, t->period_us);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     t->running = true;
     return 0;
@@ -114,7 +104,7 @@ int hal_timer_stop(hal_timer_t *timer) {
     if (!t->running) return 0;
 
     esp_err_t e = esp_timer_stop(t->h);
-    if (e != ESP_OK) return esp_err_to_errno(e);
+    if (e != ESP_OK) return hal_esp_err_to_errno(e);
 
     t->running = false;
     return 0;

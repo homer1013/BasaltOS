@@ -56,6 +56,7 @@
 #include "hal/hal_uart.h"
 
 #include "tft_console.h"
+#include "bus_manager.h"
 #include "runtime_dispatch.h"
 
 #define BASALT_PROMPT "basalt> "
@@ -402,6 +403,25 @@
 
 static const char *TAG = "basalt";
 static int g_uart_num = CONFIG_ESP_CONSOLE_UART_NUM;
+
+static bool __attribute__((unused)) bsh_i2c_master_ensure(uint32_t freq_hz, const char *owner, char *err, size_t err_len) {
+    if (BASALT_PIN_I2C_SDA < 0 || BASALT_PIN_I2C_SCL < 0) {
+        if (err && err_len) {
+            snprintf(err, err_len, "invalid I2C pins (sda=%d scl=%d)", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
+        }
+        return false;
+    }
+
+    i2c_config_t cfg = {
+        .mode = I2C_MODE_MASTER,
+        .sda_io_num = BASALT_PIN_I2C_SDA,
+        .scl_io_num = BASALT_PIN_I2C_SCL,
+        .sda_pullup_en = GPIO_PULLUP_ENABLE,
+        .scl_pullup_en = GPIO_PULLUP_ENABLE,
+        .master.clk_speed = freq_hz,
+    };
+    return basalt_bus_i2c_master_ensure(I2C_NUM_0, &cfg, owner, err, err_len);
+}
 
 static void basalt_uart_write(const char *buf, int len) {
     if (len <= 0 || !buf) return;
@@ -1962,10 +1982,9 @@ static bool bsh_mcp2515_spi_ensure(char *err, size_t err_len) {
         .sclk_io_num = BASALT_PIN_SPI_SCLK,
         .quadwp_io_num = -1,
         .quadhd_io_num = -1,
+        .max_transfer_sz = 256,
     };
-    esp_err_t ret = spi_bus_initialize(SPI2_HOST, &bus_cfg, SPI_DMA_CH_AUTO);
-    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) {
-        if (err && err_len) snprintf(err, err_len, "spi bus init failed (%s)", esp_err_to_name(ret));
+    if (!basalt_bus_spi_ensure(SPI2_HOST, &bus_cfg, SPI_DMA_CH_AUTO, "mcp2515", err, err_len)) {
         return false;
     }
 
@@ -1975,7 +1994,7 @@ static bool bsh_mcp2515_spi_ensure(char *err, size_t err_len) {
         .spics_io_num = BASALT_PIN_CAN_CS,
         .queue_size = 1,
     };
-    ret = spi_bus_add_device(SPI2_HOST, &dev_cfg, &s_mcp2515_dev);
+    esp_err_t ret = spi_bus_add_device(SPI2_HOST, &dev_cfg, &s_mcp2515_dev);
     if (ret != ESP_OK) {
         if (err && err_len) snprintf(err, err_len, "spi add device failed (%s)", esp_err_to_name(ret));
         return false;
@@ -2289,32 +2308,7 @@ static const char *bsh_imu_name_from_id(uint8_t who) {
 
 static bool bsh_imu_i2c_ensure(char *err, size_t err_len) {
     if (s_imu_i2c_ready) return true;
-    if (BASALT_PIN_I2C_SDA < 0 || BASALT_PIN_I2C_SCL < 0) {
-        if (err && err_len) snprintf(err, err_len, "invalid I2C pins (sda=%d scl=%d)", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
-        return false;
-    }
-    i2c_config_t cfg = {
-        .mode = I2C_MODE_MASTER,
-        .sda_io_num = BASALT_PIN_I2C_SDA,
-        .scl_io_num = BASALT_PIN_I2C_SCL,
-        .sda_pullup_en = GPIO_PULLUP_ENABLE,
-        .scl_pullup_en = GPIO_PULLUP_ENABLE,
-        .master.clk_speed = 400000,
-    };
-    esp_err_t ret = i2c_param_config(I2C_NUM_0, &cfg);
-    if (ret != ESP_OK) {
-        if (err && err_len) snprintf(err, err_len, "i2c_param_config failed (%s)", esp_err_to_name(ret));
-        return false;
-    }
-    ret = i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0);
-    if (ret == ESP_ERR_INVALID_STATE) {
-        s_imu_i2c_ready = true;
-        return true;
-    }
-    if (ret != ESP_OK) {
-        if (err && err_len) snprintf(err, err_len, "i2c_driver_install failed (%s)", esp_err_to_name(ret));
-        return false;
-    }
+    if (!bsh_i2c_master_ensure(400000, "imu", err, err_len)) return false;
     s_imu_i2c_ready = true;
     return true;
 }
@@ -2820,32 +2814,7 @@ static uint8_t bsh_bme280_addr(void) {
 
 static bool bsh_bme280_i2c_ensure(char *err, size_t err_len) {
     if (s_bme280_i2c_ready) return true;
-    if (BASALT_PIN_I2C_SDA < 0 || BASALT_PIN_I2C_SCL < 0) {
-        if (err && err_len) snprintf(err, err_len, "invalid I2C pins (sda=%d scl=%d)", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
-        return false;
-    }
-    i2c_config_t cfg = {
-        .mode = I2C_MODE_MASTER,
-        .sda_io_num = BASALT_PIN_I2C_SDA,
-        .scl_io_num = BASALT_PIN_I2C_SCL,
-        .sda_pullup_en = GPIO_PULLUP_ENABLE,
-        .scl_pullup_en = GPIO_PULLUP_ENABLE,
-        .master.clk_speed = 400000,
-    };
-    esp_err_t ret = i2c_param_config(I2C_NUM_0, &cfg);
-    if (ret != ESP_OK) {
-        if (err && err_len) snprintf(err, err_len, "i2c_param_config failed (%s)", esp_err_to_name(ret));
-        return false;
-    }
-    ret = i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0);
-    if (ret == ESP_ERR_INVALID_STATE) {
-        s_bme280_i2c_ready = true;
-        return true;
-    }
-    if (ret != ESP_OK) {
-        if (err && err_len) snprintf(err, err_len, "i2c_driver_install failed (%s)", esp_err_to_name(ret));
-        return false;
-    }
+    if (!bsh_i2c_master_ensure(400000, "bme280", err, err_len)) return false;
     s_bme280_i2c_ready = true;
     return true;
 }
@@ -2981,32 +2950,7 @@ static bool bsh_ads1115_is_continuous(void) {
 
 static bool bsh_ads1115_i2c_ensure(char *err, size_t err_len) {
     if (s_ads1115_i2c_ready) return true;
-    if (BASALT_PIN_I2C_SDA < 0 || BASALT_PIN_I2C_SCL < 0) {
-        if (err && err_len) snprintf(err, err_len, "invalid I2C pins (sda=%d scl=%d)", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
-        return false;
-    }
-    i2c_config_t cfg = {
-        .mode = I2C_MODE_MASTER,
-        .sda_io_num = BASALT_PIN_I2C_SDA,
-        .scl_io_num = BASALT_PIN_I2C_SCL,
-        .sda_pullup_en = GPIO_PULLUP_ENABLE,
-        .scl_pullup_en = GPIO_PULLUP_ENABLE,
-        .master.clk_speed = 400000,
-    };
-    esp_err_t ret = i2c_param_config(I2C_NUM_0, &cfg);
-    if (ret != ESP_OK) {
-        if (err && err_len) snprintf(err, err_len, "i2c_param_config failed (%s)", esp_err_to_name(ret));
-        return false;
-    }
-    ret = i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0);
-    if (ret == ESP_ERR_INVALID_STATE) {
-        s_ads1115_i2c_ready = true;
-        return true;
-    }
-    if (ret != ESP_OK) {
-        if (err && err_len) snprintf(err, err_len, "i2c_driver_install failed (%s)", esp_err_to_name(ret));
-        return false;
-    }
+    if (!bsh_i2c_master_ensure(400000, "ads1115", err, err_len)) return false;
     s_ads1115_i2c_ready = true;
     return true;
 }
@@ -3150,32 +3094,7 @@ static bool bsh_mcp23017_default_output(void) {
 
 static bool bsh_mcp23017_i2c_ensure(char *err, size_t err_len) {
     if (s_mcp23017_i2c_ready) return true;
-    if (BASALT_PIN_I2C_SDA < 0 || BASALT_PIN_I2C_SCL < 0) {
-        if (err && err_len) snprintf(err, err_len, "invalid I2C pins (sda=%d scl=%d)", BASALT_PIN_I2C_SDA, BASALT_PIN_I2C_SCL);
-        return false;
-    }
-    i2c_config_t cfg = {
-        .mode = I2C_MODE_MASTER,
-        .sda_io_num = BASALT_PIN_I2C_SDA,
-        .scl_io_num = BASALT_PIN_I2C_SCL,
-        .sda_pullup_en = GPIO_PULLUP_ENABLE,
-        .scl_pullup_en = GPIO_PULLUP_ENABLE,
-        .master.clk_speed = 400000,
-    };
-    esp_err_t ret = i2c_param_config(I2C_NUM_0, &cfg);
-    if (ret != ESP_OK) {
-        if (err && err_len) snprintf(err, err_len, "i2c_param_config failed (%s)", esp_err_to_name(ret));
-        return false;
-    }
-    ret = i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0);
-    if (ret == ESP_ERR_INVALID_STATE) {
-        s_mcp23017_i2c_ready = true;
-        return true;
-    }
-    if (ret != ESP_OK) {
-        if (err && err_len) snprintf(err, err_len, "i2c_driver_install failed (%s)", esp_err_to_name(ret));
-        return false;
-    }
+    if (!bsh_i2c_master_ensure(400000, "mcp23017", err, err_len)) return false;
     s_mcp23017_i2c_ready = true;
     return true;
 }
@@ -6743,9 +6662,9 @@ static void basalt_sd_init(void) {
         .max_transfer_sz = 4096,
     };
 
-    esp_err_t ret = spi_bus_initialize(host.slot, &bus_cfg, SDSPI_DEFAULT_DMA);
-    if (ret != ESP_OK) {
-        ESP_LOGE(TAG, "SD SPI bus init failed (%s)", esp_err_to_name(ret));
+    char bus_err[128];
+    if (!basalt_bus_spi_ensure(host.slot, &bus_cfg, SDSPI_DEFAULT_DMA, "sd", bus_err, sizeof(bus_err))) {
+        ESP_LOGE(TAG, "SD SPI bus init failed: %s", bus_err);
         return;
     }
 
@@ -6760,10 +6679,9 @@ static void basalt_sd_init(void) {
     };
 
     sdmmc_card_t *card = NULL;
-    ret = esp_vfs_fat_sdspi_mount(BASALT_FS_SD_MOUNT_POINT, &host, &slot_cfg, &mount_cfg, &card);
+    esp_err_t ret = esp_vfs_fat_sdspi_mount(BASALT_FS_SD_MOUNT_POINT, &host, &slot_cfg, &mount_cfg, &card);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "SD mount failed (%s)", esp_err_to_name(ret));
-        spi_bus_free(host.slot);
         return;
     }
 

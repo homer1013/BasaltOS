@@ -13,9 +13,11 @@
 
 #include "esp_log.h"
 #include "esp_err.h"
+#include "sdkconfig.h"
 
 // Board-generated pin assignments and feature gates
 #include "basalt_config.h"
+#include "bus_manager.h"
 
 // -----------------------------------------------------------------------------
 // Display selection
@@ -56,8 +58,12 @@
 #endif
 #define BASALT_TFT_ENABLE (BASALT_ENABLE_TFT ? 1 : 0)
 
-// Use SPI2 as baseline TFT host across ESP32 targets in current IDF toolchains.
+// CYD-class ESP32 boards commonly keep SD on SPI2 and TFT on SPI3.
+#if defined(CONFIG_IDF_TARGET_ESP32)
+#define BASALT_TFT_HOST SPI3_HOST
+#else
 #define BASALT_TFT_HOST SPI2_HOST
+#endif
 #ifdef BASALT_PIN_TFT_MOSI
     #define BASALT_TFT_MOSI BASALT_PIN_TFT_MOSI
 #else
@@ -865,7 +871,11 @@ bool tft_console_init(void) {
         .quadhd_io_num = -1,
         .max_transfer_sz = BASALT_TFT_WIDTH * FONT_H * 2,
     };
-    ESP_ERROR_CHECK(spi_bus_initialize(BASALT_TFT_HOST, &buscfg, SPI_DMA_CH_AUTO));
+    char bus_err[128];
+    if (!basalt_bus_spi_ensure(BASALT_TFT_HOST, &buscfg, SPI_DMA_CH_AUTO, "tft", bus_err, sizeof(bus_err))) {
+        ESP_LOGE(TAG, "TFT SPI bus init failed: %s", bus_err);
+        return false;
+    }
 
     spi_device_interface_config_t devcfg = {
         .clock_speed_hz = BASALT_TFT_CLK_HZ,

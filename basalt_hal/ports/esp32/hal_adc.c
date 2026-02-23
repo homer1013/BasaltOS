@@ -7,6 +7,7 @@
 #include "hal/hal_adc.h"
 
 #include "esp_err.h"
+#include "hal_errno.h"
 #include "esp_adc/adc_oneshot.h"
 
 typedef struct {
@@ -25,16 +26,6 @@ static inline hal_adc_impl_t *A(hal_adc_t *adc) {
     return (hal_adc_impl_t *)adc->_opaque;
 }
 
-static inline int esp_err_to_errno(esp_err_t err) {
-    switch (err) {
-        case ESP_OK: return 0;
-        case ESP_ERR_INVALID_ARG: return -EINVAL;
-        case ESP_ERR_INVALID_STATE: return -EALREADY;
-        case ESP_ERR_NO_MEM: return -ENOMEM;
-        case ESP_ERR_TIMEOUT: return -ETIMEDOUT;
-        default: return -EIO;
-    }
-}
 
 static inline adc_atten_t map_atten(hal_adc_atten_t atten) {
     switch (atten) {
@@ -58,7 +49,7 @@ static int apply_channel_cfg(hal_adc_impl_t *a) {
         .atten = a->atten,
         .bitwidth = a->bitwidth,
     };
-    return esp_err_to_errno(adc_oneshot_config_channel(a->unit, a->channel, &cfg));
+    return hal_esp_err_to_errno(adc_oneshot_config_channel(a->unit, a->channel, &cfg));
 }
 
 int hal_adc_init(hal_adc_t *adc,
@@ -87,7 +78,7 @@ int hal_adc_init(hal_adc_t *adc,
         .ulp_mode = ADC_ULP_MODE_DISABLE,
     };
     esp_err_t ret = adc_oneshot_new_unit(&init_cfg, &a->unit);
-    if (ret != ESP_OK) return esp_err_to_errno(ret);
+    if (ret != ESP_OK) return hal_esp_err_to_errno(ret);
 
     int rc = apply_channel_cfg(a);
     if (rc != 0) {
@@ -107,7 +98,7 @@ int hal_adc_init_pin(hal_adc_t *adc,
     adc_unit_t unit = ADC_UNIT_1;
     adc_channel_t ch = ADC_CHANNEL_0;
     esp_err_t ret = adc_oneshot_io_to_channel(gpio_num, &unit, &ch);
-    if (ret != ESP_OK) return esp_err_to_errno(ret);
+    if (ret != ESP_OK) return hal_esp_err_to_errno(ret);
     return hal_adc_init(adc, (int)unit, (int)ch, atten, width_bits);
 #else
     (void)adc;
@@ -125,7 +116,7 @@ int hal_adc_deinit(hal_adc_t *adc) {
     esp_err_t ret = adc_oneshot_del_unit(a->unit);
     a->unit = NULL;
     a->initialized = false;
-    return esp_err_to_errno(ret);
+    return hal_esp_err_to_errno(ret);
 }
 
 int hal_adc_set_atten(hal_adc_t *adc, hal_adc_atten_t atten) {
@@ -150,7 +141,7 @@ int hal_adc_read_raw(hal_adc_t *adc, int *raw_out) {
     if (!a->initialized || !a->unit) return -EINVAL;
     int raw = 0;
     esp_err_t ret = adc_oneshot_read(a->unit, a->channel, &raw);
-    if (ret != ESP_OK) return esp_err_to_errno(ret);
+    if (ret != ESP_OK) return hal_esp_err_to_errno(ret);
     *raw_out = raw;
     return 0;
 }
