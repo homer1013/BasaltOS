@@ -10,21 +10,19 @@
     "required_adapter_count": 8,
     "required_board_count": 25,
     "status_counts": {
-      "partial": 1,
-      "complete": 7
+      "complete": 8
     },
     "contract_state_counts": {
-      "pass_acknowledged_partial": 1,
-      "pass": 7
+      "pass": 8
     },
     "blocking_gaps": 0
   },
   "rows": [
     {
       "port": "esp32",
-      "status": "partial",
-      "contract_state": "pass_acknowledged_partial",
-      "reason": "Partial adapter is explicitly acknowledged in HAL policy.",
+      "status": "complete",
+      "contract_state": "pass",
+      "reason": "Adapter is complete for required platform.",
       "required_board_count": 7,
       "required_boards": [
         "cyd",
@@ -35,14 +33,9 @@
         "m5stack_core2",
         "m5stickc_plus2"
       ],
-      "present_count": 5,
-      "missing_count": 4,
-      "missing_primitives": [
-        "fs",
-        "spi",
-        "sys",
-        "timer"
-      ]
+      "present_count": 9,
+      "missing_count": 0,
+      "missing_primitives": []
     },
     {
       "port": "esp32c3",

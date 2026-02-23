@@ -3,12 +3,12 @@
   "generator": "tools/generate_hal_adapter_matrix.py",
   "primitives": [
     "adc",
-    "fs",
     "gpio",
     "i2c",
+    "i2s",
     "pwm",
+    "rmt",
     "spi",
-    "sys",
     "timer",
     "uart"
   ],
@@ -16,41 +16,30 @@
     "port_count": 12,
     "primitive_count": 9,
     "status_counts": {
-      "complete": 11,
-      "partial": 1,
+      "complete": 12,
+      "partial": 0,
       "missing": 0
     },
-    "ports_with_missing_primitives": [
-      {
-        "port": "esp32",
-        "missing": [
-          "fs",
-          "spi",
-          "sys",
-          "timer"
-        ]
-      }
-    ]
+    "ports_with_missing_primitives": []
   },
   "rows": [
     {
       "port": "esp32",
-      "status": "partial",
-      "present_count": 5,
-      "missing_count": 4,
+      "status": "complete",
+      "present_count": 9,
+      "missing_count": 0,
       "present": [
         "adc",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
+        "spi",
+        "timer",
         "uart"
       ],
-      "missing": [
-        "fs",
-        "spi",
-        "sys",
-        "timer"
-      ]
+      "missing": []
     },
     {
       "port": "esp32c3",
@@ -59,12 +48,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],
@@ -77,12 +66,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],
@@ -95,12 +84,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],
@@ -113,12 +102,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],
@@ -131,12 +120,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],
@@ -149,12 +138,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],
@@ -167,12 +156,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],
@@ -185,12 +174,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],
@@ -203,12 +192,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],
@@ -221,12 +210,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],
@@ -239,12 +228,12 @@
       "missing_count": 0,
       "present": [
         "adc",
-        "fs",
         "gpio",
         "i2c",
+        "i2s",
         "pwm",
+        "rmt",
         "spi",
-        "sys",
         "timer",
         "uart"
       ],

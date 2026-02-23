@@ -14,8 +14,6 @@
     "partial",
     "missing"
   ],
-  "acknowledged_partial_ports": [
-    "esp32"
-  ],
+  "acknowledged_partial_ports": [],
   "acknowledged_missing_ports": []
 }

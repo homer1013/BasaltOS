@@ -9,11 +9,20 @@ All notable changes to this project are documented in this file.
 - New CYD smoke tests:
   - `tools/tests/cyd_config_parity_smoke.sh` (CLI vs API output parity gate)
   - `tools/tests/cyd_esp32_build_smoke.sh` (generate + ESP32 build path)
+- HAL completion tranche:
+  - all tracked HAL adapter ports now provide concrete primitives (`adc/gpio/i2c/i2s/pwm/rmt/spi/timer/uart`) with no unsupported stub inventory remaining.
+  - live Uno R4 WiFi TFT bench validation pass captured with serial and camera evidence (`/dev/video2` bench path).
 
 ### Changed
 - Local web configurator wizard step container is schema-driven (step labels/count from shared contract), removing hardcoded 4-step control assumptions.
 - Board taxonomy filter labels and "all" option text are now sourced from shared board-filter schema for CLI/web parity.
 - Configurator API generation now aligns with CLI serializers for applet JSON shape, macro emission, slug ordering, and config payload structure.
+- HAL planning and release contracts updated to reflect full adapter completion:
+  - `docs/planning/HAL_ADAPTER_MATRIX.*`
+  - `docs/planning/HAL_PLATFORM_ADAPTER_COMPLETENESS.*`
+  - `docs/planning/HAL_UNSUPPORTED_STUB_INVENTORY.*`
+  - `docs/planning/DRIVER_HAL_DEPENDENCY_MAP.*`
+  - `docs/planning/HAL_CONTRACT_POLICY.json`
 
 ### Fixed
 - `tools/configure.py` no longer crashes when `--outdir` is outside repository root.

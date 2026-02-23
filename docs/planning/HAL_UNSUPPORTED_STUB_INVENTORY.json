@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "generator": "tools/generate_hal_unsupported_stub_inventory.py",
+  "summary": {
+    "stub_file_count": 0,
+    "port_count_with_stubs": 0
+  },
+  "rows": [],
+  "by_port": {}
+}
