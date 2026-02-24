@@ -4,9 +4,9 @@ Current cross-repo release alignment snapshot.
 
 | Repo | Release | Status | Notes |
 | --- | --- | --- | --- |
-| BasaltOS | v0.1.1 | synced | Main tag/release baseline |
-| BasaltOS_Platform | v0.1.1 | synced | Governance + release sync docs aligned |
-| BasaltOS_PlatformIO | v0.1.1 | synced | Bootstrap CI and release sync docs aligned |
+| BasaltOS | v0.1.2-rc4-configurator-m5-bench-20260224 | synced | Main tag/release published |
+| BasaltOS_Platform | v0.1.2-rc4-configurator-m5-bench-20260224 | in_progress | Pending platform sync follow-up |
+| BasaltOS_PlatformIO | v0.1.2-rc4-configurator-m5-bench-20260224 | in_progress | Pending platformio sync follow-up |
 
 ## Update Rule
 

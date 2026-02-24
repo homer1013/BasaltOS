@@ -227,11 +227,15 @@
         .wizard-steps {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 12px;
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 10px;
+            z-index: 20;
+            border: 1px solid #e2e8f0;
         }
 
         .step {
@@ -239,6 +243,13 @@
             text-align: center;
             position: relative;
             padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .step:hover {
+            background: #f8fafc;
         }
 
         .step:not(:last-child)::after {
@@ -293,6 +304,8 @@
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             height: fit-content;
+            position: sticky;
+            top: 108px;
         }
 
         .sidebar h3 {
@@ -443,10 +456,116 @@
 
         .content-section {
             display: none;
+            animation: stepFadeIn 0.18s ease-in;
         }
 
         .content-section.active {
             display: block;
+        }
+
+        @keyframes stepFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .flow-context {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0 0 14px 0;
+            padding: 10px 12px;
+            border: 1px solid #dbeafe;
+            background: #f8fbff;
+            border-radius: 10px;
+        }
+
+        .flow-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid #bfdbfe;
+            color: #1e3a8a;
+            background: #eff6ff;
+        }
+
+        .flow-pill.warn {
+            color: #92400e;
+            border-color: #fdba74;
+            background: #ffedd5;
+        }
+
+        .flow-progress {
+            margin: 0 0 14px 0;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            padding: 10px 12px;
+            background: #f8fbff;
+        }
+
+        .flow-progress-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 12px;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .flow-progress-track {
+            height: 10px;
+            background: #dbeafe;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .flow-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #3b82f6, #22c55e);
+            transition: width 0.25s ease;
+        }
+
+        .flow-progress-meta-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .flow-save-chip {
+            border: 1px solid #bfdbfe;
+            background: #eff6ff;
+            color: #1e3a8a;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .flow-alert {
+            display: none;
+            margin: 0 0 14px 0;
+            border: 1px solid #fdba74;
+            background: #fff7ed;
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #7c2d12;
+            font-size: 13px;
+        }
+
+        .flow-alert.active {
+            display: block;
+        }
+
+        .flow-alert-actions {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .board-details {
@@ -853,6 +972,13 @@
             gap: 15px;
             margin-bottom: 20px;
             flex-wrap: wrap;
+            position: sticky;
+            top: 120px;
+            z-index: 12;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 8px;
         }
 
         .module-filters input[type="text"] {
@@ -938,8 +1064,15 @@
             justify-content: space-between;
             gap: 15px;
             margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #e2e8f0;
+            padding: 14px;
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            background: rgba(248, 250, 252, 0.96);
+            position: sticky;
+            bottom: 10px;
+            z-index: 25;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(2px);
         }
 
         .step-guidance {
@@ -949,7 +1082,7 @@
             border-radius: 8px;
             padding: 10px 12px;
             color: #334155;
-            font-size: 13px;
+            font-size: 14px;
             min-height: 46px;
             display: flex;
             align-items: center;
@@ -963,6 +1096,35 @@
             background: #fff5f5;
             border-color: #fed7d7;
             color: #9b2c2c;
+        }
+
+        .step-tip {
+            margin: 10px 0 16px;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            background: #f8fbff;
+            padding: 10px 12px;
+            font-size: 13px;
+            color: #334155;
+        }
+
+        .step-tip strong {
+            color: #1e3a8a;
+        }
+
+        .kbd-hint {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .kbd-hint code {
+            background: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 1px 6px;
+            font-size: 11px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
         }
 
         .action-controls {
@@ -989,6 +1151,18 @@
 
         .btn-primary:hover {
             background: #5568d3;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary:disabled {
+            opacity: 1;
+            background: #cbd5e1;
+            color: #475569;
+            border: 1px solid #94a3b8;
         }
 
         .btn-secondary {
@@ -1620,9 +1794,21 @@
                 grid-template-columns: 1fr;
             }
 
+            .sidebar {
+                position: static;
+                top: auto;
+            }
+
+            .wizard-steps {
+                position: static;
+                top: auto;
+            }
+
             .action-buttons {
                 flex-direction: column;
                 align-items: stretch;
+                position: static;
+                bottom: auto;
             }
 
             .action-controls {
@@ -1667,7 +1853,9 @@
                     <div class="landing-cta">
                         <button id="btn-start-config" class="btn btn-success" type="button">Start Configuring</button>
                         <button id="btn-start-esp32" class="btn btn-secondary" type="button">Quick Start: ESP32</button>
+                        <button id="btn-resume-last" class="btn btn-secondary" type="button" style="display:none;">Resume Last Session</button>
                     </div>
+                    <div id="resume-last-meta" style="margin-top:8px; font-size:12px; color:#475569; display:none;"></div>
                     <div class="landing-stat">
                         <div class="landing-stat-box"><strong id="stat-platforms">0</strong>Platforms</div>
                         <div class="landing-stat-box"><strong id="stat-boards">0</strong>Boards</div>
@@ -1711,6 +1899,19 @@
                 <div class="step-title">Generate</div>
             </div>
         </div>
+        <div class="flow-progress">
+            <div class="flow-progress-head">
+                <span id="flow-progress-title">Step Progress</span>
+                <span class="flow-progress-meta-wrap">
+                    <span id="flow-progress-meta">0%</span>
+                    <span id="flow-save-chip" class="flow-save-chip">Saved just now</span>
+                </span>
+            </div>
+            <div class="flow-progress-track">
+                <div id="flow-progress-fill" class="flow-progress-fill"></div>
+            </div>
+        </div>
+        <div id="flow-alert" class="flow-alert"></div>
 
         <div class="config-panel">
             <!-- Sidebar -->
@@ -1759,10 +1960,19 @@
 
             <!-- Main Content -->
             <div class="main-content">
+                <div id="flow-context" class="flow-context"></div>
                 <!-- Step 1: Board Selection -->
                 <div id="step-1" class="content-section active">
+                    <h2 style="margin-bottom: 10px;">Choose Platform and Board</h2>
                     <div class="alert alert-info">
-                        <strong>Welcome!</strong> Select a platform and board to get started with your BasaltOS configuration.
+                        <strong>Welcome.</strong> Start by selecting your exact board so driver defaults and validation rules match your hardware.
+                    </div>
+                    <div class="step-tip">
+                        <strong>Quick flow:</strong> pick manufacturer/family, click your board in the left list, then continue to Drivers.
+                        <div style="margin-top:8px;">
+                            <button id="btn-quick-m5" class="btn btn-secondary" type="button" style="padding:7px 10px; font-size:12px;">Use M5Stack Plus2 (Quick Pick)</button>
+                        </div>
+                        <div class="kbd-hint">Shortcuts: <code>Alt+1</code>..<code>Alt+4</code> navigate steps, <code>Ctrl+G</code> generate on Step 4.</div>
                     </div>
                     <div id="memory-step1-panel" class="memory-panel"></div>
 
@@ -1805,6 +2015,9 @@
                     <h2 style="margin-bottom: 20px;">Select Drivers</h2>
                     <div class="alert alert-info">
                         Enable or disable drivers based on your application needs. Runtime options are configured in the next step.
+                    </div>
+                    <div class="step-tip">
+                        <strong>Tip:</strong> start with <em>Essential</em>, then add only what you need. If warnings appear, use <em>Apply Quick Fixes</em>.
                     </div>
 
                     <div class="module-filters">
@@ -1860,6 +2073,9 @@
                     <h2 style="margin-bottom: 20px;">Runtime Options</h2>
                     <div class="alert alert-info">
                         Choose starter applets and market apps for this build. Pin mapping is available below as an optional advanced section.
+                    </div>
+                    <div class="step-tip">
+                        <strong>Tip:</strong> keep this step minimal first, then add applets incrementally and re-check memory bars.
                     </div>
                     <div id="memory-step3-panel" class="memory-panel"></div>
 
@@ -1973,6 +2189,9 @@
                     <h2 style="margin-bottom: 20px;">Generate Configuration</h2>
                     <div class="alert alert-success">
                         <strong>Configuration Complete!</strong> Review your settings and generate the configuration files.
+                    </div>
+                    <div class="step-tip">
+                        <strong>Final pass:</strong> confirm validation is clean, generate files, then use Build/Flash controls below.
                     </div>
 
                     <div style="margin-top: 30px;">
@@ -3541,6 +3760,7 @@
             const shell = document.getElementById('configurator-shell');
             if (landing) landing.style.display = 'block';
             if (shell) shell.style.display = 'none';
+            updateResumeCta();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -3873,6 +4093,8 @@
             selectedSilicon = String(params.get('silicon') || '').trim();
             pendingBoardIdFromUrl = String(params.get('board') || '').trim();
             pendingSearchFromUrl = String(params.get('q') || '').trim();
+            pendingOpenFromUrl = String(params.get('open') || '').trim().toLowerCase();
+            pendingStepFromUrl = Number(params.get('step') || '0') || 0;
             boardPerfEnabled = String(params.get('debug_perf') || '').trim() === '1';
         }
 
@@ -5191,6 +5413,16 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 stepEl.addEventListener('click', () => {
                     const target = Number(stepEl.dataset.step || '1');
                     if (target >= 1 && target <= FINAL_STEP) {
+                        if (target > currentStep) {
+                            for (let s = currentStep; s < target; s++) {
+                                const readiness = getCurrentStepReadiness(s);
+                                if (!readiness.ready) {
+                                    notify(readiness.reason, 'warning');
+                                    updateStepGuidance();
+                                    return;
+                                }
+                            }
+                        }
                         currentStep = target;
                         updateWizardSteps();
                     }
@@ -5276,6 +5508,8 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         let taxonomyOptions = null;
         let pendingBoardIdFromUrl = '';
         let pendingSearchFromUrl = '';
+        let pendingOpenFromUrl = '';
+        let pendingStepFromUrl = 0;
         let loadedPlatformForModules = '';
         let loadedPlatformForMarket = '';
         let moduleStates = {};
@@ -5283,11 +5517,134 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         let serialReader = null;
         let serialWriter = null;
         let serialReadAbort = false;
+        const CONFIG_DRAFT_KEY = 'basalt.configurator.draft.v1';
+        let lastDraftSavedAt = 0;
         let avrSettings = {
             clock: { freq_hz: 16000000 },
             fuses: { lfuse: '', hfuse: '', efuse: '', lock: '' },
             upload: { method: 'bootloader', fqbn: 'arduino:avr:mega', mcu: 'atmega2560', programmer: 'wiring', baud: 115200, port: '' }
         };
+
+        function loadConfigDraft() {
+            try {
+                const raw = window.localStorage.getItem(CONFIG_DRAFT_KEY);
+                if (!raw) return null;
+                const parsed = JSON.parse(raw);
+                return parsed && typeof parsed === 'object' ? parsed : null;
+            } catch (_err) {
+                return null;
+            }
+        }
+
+        function saveConfigDraft() {
+            try {
+                const enabledDrivers = modules.filter(m => m.enabled).map(m => m.id);
+                const enabledApplets = Object.keys(appletStates || {}).filter(k => !!appletStates[k]);
+                const enabledMarketApps = Object.keys(marketAppStates || {}).filter(k => !!marketAppStates[k]);
+                const draft = {
+                    ts: Date.now(),
+                    step: currentStep,
+                    platform: selectedPlatform || '',
+                    board_id: selectedBoard?.id || '',
+                    manufacturer: selectedManufacturer || '',
+                    architecture: selectedArchitecture || '',
+                    family: selectedFamily || '',
+                    silicon: selectedSilicon || '',
+                    q: String(document.getElementById('board-search')?.value || ''),
+                    enabled_drivers: enabledDrivers,
+                    applets: enabledApplets,
+                    market_apps: enabledMarketApps
+                };
+                window.localStorage.setItem(CONFIG_DRAFT_KEY, JSON.stringify(draft));
+                lastDraftSavedAt = Date.now();
+            } catch (_err) {}
+        }
+
+        function updateResumeCta() {
+            const btn = document.getElementById('btn-resume-last');
+            const meta = document.getElementById('resume-last-meta');
+            if (!btn || !meta) return;
+            const draft = loadConfigDraft();
+            if (!draft || !draft.board_id) {
+                btn.style.display = 'none';
+                meta.style.display = 'none';
+                meta.textContent = '';
+                return;
+            }
+            const when = draft.ts ? new Date(draft.ts).toLocaleString() : 'earlier';
+            btn.style.display = 'inline-block';
+            meta.style.display = 'block';
+            meta.textContent = `Resume saved session: ${draft.board_id} (${when})`;
+        }
+
+        async function resumeLastSession() {
+            const draft = loadConfigDraft();
+            if (!draft) {
+                notify('No saved session found yet.', 'warning');
+                updateResumeCta();
+                return;
+            }
+            selectedPlatform = String(draft.platform || '');
+            selectedManufacturer = String(draft.manufacturer || '');
+            selectedArchitecture = String(draft.architecture || '');
+            selectedFamily = String(draft.family || '');
+            selectedSilicon = String(draft.silicon || '');
+            pendingBoardIdFromUrl = String(draft.board_id || '');
+            pendingSearchFromUrl = String(draft.q || '');
+
+            const platformSel = document.getElementById('platform-select');
+            if (platformSel) platformSel.value = selectedPlatform;
+            const searchInput = document.getElementById('board-search');
+            if (searchInput) searchInput.value = pendingSearchFromUrl;
+
+            await refreshTaxonomyOptionsFromApi().catch(err => {
+                console.warn('Failed to refresh taxonomy options:', err);
+            });
+            await refreshBoardsForCurrentFilters({ force: true });
+            populateBoardList();
+
+            if (pendingBoardIdFromUrl) {
+                const target = allBoardsFlat().find(b => String(b?.id || '') === pendingBoardIdFromUrl);
+                if (target) {
+                    await selectBoard(target, null);
+                    populateBoardList();
+                }
+            }
+
+            const enabledDriverSet = new Set(Array.isArray(draft.enabled_drivers) ? draft.enabled_drivers.map(String) : []);
+            if (enabledDriverSet.size > 0 && selectedBoard) {
+                const caps = boardCapabilitiesSet(selectedBoard);
+                modules.forEach(m => {
+                    m.enabled = enabledDriverSet.has(String(m.id)) && moduleAllowed(m, caps);
+                });
+            }
+            if (Array.isArray(draft.applets) && selectedBoard) {
+                const allowed = new Set(availableAppletsForBoard(selectedBoard));
+                appletStates = {};
+                draft.applets.forEach(id => {
+                    const key = String(id);
+                    if (allowed.has(key)) appletStates[key] = true;
+                });
+            }
+            if (Array.isArray(draft.market_apps) && selectedBoard) {
+                const allowed = new Set(availableMarketAppsForBoard(selectedBoard).map(x => x.id));
+                marketAppStates = {};
+                draft.market_apps.forEach(id => {
+                    const key = String(id);
+                    if (allowed.has(key)) marketAppStates[key] = true;
+                });
+            }
+
+            populateModuleGrid();
+            renderSelectedAppsVisibility();
+            renderRuntimeOptionsPanel();
+            updateMemoryEstimatePanels();
+            currentStep = Math.max(1, Math.min(FINAL_STEP, Number(draft.step) || 1));
+            enterConfigurator(currentStep);
+            notify('Resumed previous session.', 'success');
+            saveConfigDraft();
+            updateResumeCta();
+        }
 
         // Initialize
         async function init() {
@@ -5326,6 +5683,11 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             renderRuntimeOptionsPanel();
             bindAdvancedPinConfigToggle();
             attachEventListeners();
+            updateResumeCta();
+            if (pendingOpenFromUrl === 'config') {
+                const startStep = Math.max(1, Math.min(FINAL_STEP, pendingStepFromUrl || 1));
+                enterConfigurator(startStep);
+            }
             const flasherBtn = document.getElementById('btn-refresh-flasher');
             if (flasherBtn) {
                 flasherBtn.addEventListener('click', () => refreshWebFlasher());
@@ -5393,6 +5755,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             updateMemoryEstimatePanels();
             refreshSerialTerminalVisibility();
             notify('Welcome to BasaltOS Configurator.', 'success', 1800);
+            saveConfigDraft();
         }
 
         function buildBoardGroups(filteredBoards) {
@@ -5722,6 +6085,18 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 ensureBoardVisibleForKeyboard(boardKeyboardIndex);
                 const selectedEl = document.getElementById(boardItemElementId(selectedBoard.id));
                 syncRenderedBoardSelection(selectedBoard.id, selectedEl || null);
+            } else if (boardKeyboardFlatItems.length === 1) {
+                const onlyBoard = boardKeyboardFlatItems[0];
+                queueMicrotask(async () => {
+                    if (selectedBoard && String(selectedBoard.id) === String(onlyBoard.id)) return;
+                    try {
+                        await selectBoard(onlyBoard, null);
+                        populateBoardList();
+                        notify(`Auto-selected board: ${onlyBoard.name}`, 'success', 1400);
+                    } catch (err) {
+                        console.warn('Auto-select single board failed:', err);
+                    }
+                });
             }
             renderHardwarePath();
             persistFilterStateToUrl();
@@ -5816,6 +6191,60 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             renderHardwarePath();
             persistFilterStateToUrl();
             updateStepGuidance();
+        }
+
+        async function quickPickBoardByName(patterns = []) {
+            const wantsEsp32 = selectedPlatform !== 'esp32';
+            if (wantsEsp32) {
+                selectedManufacturer = '';
+                selectedArchitecture = '';
+                selectedFamily = '';
+                selectedSilicon = '';
+                selectedPlatform = 'esp32';
+                const platformSel = document.getElementById('platform-select');
+                if (platformSel) platformSel.value = 'esp32';
+                await refreshModulesForPlatform('esp32');
+                await refreshMarketCatalogForPlatform('esp32');
+            }
+            await refreshTaxonomyOptionsFromApi().catch(err => {
+                console.warn('Failed to refresh taxonomy options:', err);
+            });
+            await refreshBoardsForCurrentFilters({ force: true });
+            populateBoardList();
+            const regs = patterns.map(p => new RegExp(String(p), 'i'));
+            const target = allBoardsFlat().find(b => regs.some(r => r.test(String(b?.name || '')) || r.test(String(b?.id || ''))));
+            if (!target) {
+                notify('Quick pick board not found in current catalog.', 'warning');
+                return;
+            }
+            await selectBoard(target, null);
+            populateBoardList();
+            notify(`Quick-picked board: ${target.name}`, 'success');
+        }
+
+        async function applyQuickStartEsp32() {
+            selectedManufacturer = 'Espressif';
+            selectedArchitecture = '';
+            selectedFamily = '';
+            selectedSilicon = '';
+            selectedPlatform = 'esp32';
+            const platformSel = document.getElementById('platform-select');
+            if (platformSel) platformSel.value = 'esp32';
+            await refreshModulesForPlatform('esp32');
+            await refreshMarketCatalogForPlatform('esp32');
+            selectedBoard = null;
+            const boardDetails = document.getElementById('board-details');
+            if (boardDetails) boardDetails.style.display = 'none';
+            await refreshTaxonomyOptionsFromApi().catch(err => {
+                console.warn('Failed to refresh taxonomy options:', err);
+                taxonomyOptions = null;
+            });
+            await refreshBoardsForCurrentFilters({ force: true });
+            populateBoardList();
+            populateModuleGrid();
+            renderSelectedAppsVisibility();
+            updateLandingStats();
+            enterConfigurator(1);
         }
 
         function moduleAllowed(module, caps) {
@@ -6770,6 +7199,7 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
         function updateStepGuidance() {
             const hint = document.getElementById('step-guidance');
             const btnNext = document.getElementById('btn-next');
+            const btnPrev = document.getElementById('btn-prev');
             if (!hint || !btnNext) return;
             const labels = {
                 1: 'Platform & Board',
@@ -6777,18 +7207,114 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
                 3: 'Runtime Options',
                 4: 'Generate'
             };
+            const stepTitle = wizardSteps[currentStep - 1]?.title || labels[currentStep] || 'Flow';
+            const nextTitle = wizardSteps[currentStep]?.title || labels[currentStep + 1] || 'Next';
+            const prevTitle = wizardSteps[currentStep - 2]?.title || labels[currentStep - 1] || 'Previous';
             const readiness = getCurrentStepReadiness(currentStep);
             const finalBlocked = currentStep === FINAL_STEP && hasBlockingErrors({ includePins: isAdvancedPinConfigOpen() });
             hint.classList.toggle('error', !readiness.ready);
             const msg = finalBlocked ? 'Fix blocking validation errors before generating files.' : readiness.reason;
-            hint.innerHTML = `<strong>Step ${currentStep} - ${labels[currentStep] || 'Flow'}:</strong>&nbsp;${msg}`;
+            hint.innerHTML = `<strong>Step ${currentStep} - ${stepTitle}:</strong>&nbsp;${msg}`;
             if (currentStep < FINAL_STEP) {
                 btnNext.disabled = !readiness.ready;
                 btnNext.title = readiness.ready ? '' : readiness.reason;
+                btnNext.textContent = `Next: ${nextTitle} →`;
             } else {
                 btnNext.disabled = false;
                 btnNext.title = '';
             }
+            if (btnPrev) {
+                btnPrev.textContent = currentStep > 1 ? `← Back: ${prevTitle}` : '← Previous';
+            }
+        }
+
+        function maybeScrollActiveSectionIntoView() {
+            const section = document.querySelector('.content-section.active');
+            if (!section) return;
+            const rect = section.getBoundingClientRect();
+            if (rect.top < 90 || rect.top > (window.innerHeight * 0.55)) {
+                try {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } catch (_err) {
+                    section.scrollIntoView();
+                }
+            }
+        }
+
+        function updateFlowContext() {
+            const host = document.getElementById('flow-context');
+            if (!host) return;
+            const enabledDriverCount = Array.isArray(modules) ? modules.filter(m => m.enabled).length : 0;
+            const starterCount = Array.isArray(applets) ? applets.filter(a => appletStates[a]).length : 0;
+            const marketCount = Array.isArray(marketApps) ? marketApps.filter(a => marketAppStates[a]).length : 0;
+            const boardText = selectedBoard ? selectedBoard.name : 'No board selected yet';
+            const boardClass = selectedBoard ? '' : ' warn';
+            host.innerHTML = [
+                `<span class="flow-pill${boardClass}">Board: ${boardText}</span>`,
+                `<span class="flow-pill">Platform: ${(selectedPlatform || '—').toUpperCase()}</span>`,
+                `<span class="flow-pill">Drivers: ${enabledDriverCount}</span>`,
+                `<span class="flow-pill">Apps: ${starterCount} starter / ${marketCount} market</span>`
+            ].join('');
+        }
+
+        function updateFlowProgress() {
+            const fill = document.getElementById('flow-progress-fill');
+            const title = document.getElementById('flow-progress-title');
+            const meta = document.getElementById('flow-progress-meta');
+            const saveChip = document.getElementById('flow-save-chip');
+            if (!fill || !title || !meta) return;
+            const stepTitle = wizardSteps[currentStep - 1]?.title || `Step ${currentStep}`;
+            const pct = Math.max(0, Math.min(100, Math.round((currentStep / Math.max(1, FINAL_STEP)) * 100)));
+            const readiness = getCurrentStepReadiness(currentStep);
+            title.textContent = `${stepTitle} ${readiness.ready ? 'ready' : 'needs attention'}`;
+            meta.textContent = `Step ${currentStep}/${FINAL_STEP} (${pct}%)`;
+            fill.style.width = `${pct}%`;
+            if (saveChip) {
+                if (lastDraftSavedAt > 0) {
+                    saveChip.textContent = `Saved ${new Date(lastDraftSavedAt).toLocaleTimeString()}`;
+                } else {
+                    saveChip.textContent = 'Not saved yet';
+                }
+            }
+        }
+
+        function updateFlowAlert() {
+            const alertEl = document.getElementById('flow-alert');
+            if (!alertEl) return;
+            if (selectedBoard) {
+                alertEl.classList.remove('active');
+                alertEl.innerHTML = '';
+                return;
+            }
+            const stepsBlocked = currentStep >= 2;
+            alertEl.classList.toggle('active', stepsBlocked);
+            if (!stepsBlocked) {
+                alertEl.innerHTML = '';
+                return;
+            }
+            alertEl.innerHTML = [
+                '<strong>Board required:</strong> pick a board in Step 1 to unlock Drivers, Runtime, and Generate.',
+                '<div class="flow-alert-actions">',
+                '<button id="btn-alert-m5-quick" class="btn btn-secondary" type="button" style="padding:7px 10px; font-size:12px;">Quick Pick: M5Stack Plus2</button>',
+                '<button id="btn-alert-esp32-quick" class="btn btn-secondary" type="button" style="padding:7px 10px; font-size:12px;">Quick Start ESP32</button>',
+                '<button id="btn-alert-go-step1" class="btn btn-primary" type="button" style="padding:7px 10px; font-size:12px;">Go To Step 1</button>',
+                '</div>'
+            ].join('');
+            const btnM5 = document.getElementById('btn-alert-m5-quick');
+            const btnEsp = document.getElementById('btn-alert-esp32-quick');
+            const btnStep1 = document.getElementById('btn-alert-go-step1');
+            if (btnM5) {
+                btnM5.onclick = async () => {
+                    await quickPickBoardByName(['M5StickC Plus2', 'M5StackC Plus2', 'M5StickC', 'm5stickc_plus2']);
+                    currentStep = 1;
+                    updateWizardSteps();
+                };
+            }
+            if (btnEsp) btnEsp.onclick = async () => applyQuickStartEsp32();
+            if (btnStep1) btnStep1.onclick = () => {
+                currentStep = 1;
+                updateWizardSteps();
+            };
         }
 
         function collectCurrentConfigPayload() {
@@ -6899,6 +7425,11 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             }
             renderBuildHealthBar();
             updateStepGuidance();
+            updateFlowContext();
+            updateFlowProgress();
+            updateFlowAlert();
+            saveConfigDraft();
+            maybeScrollActiveSectionIntoView();
         }
 
         function nextStep() {
@@ -7078,37 +7609,58 @@ ${JSON.stringify(templateDriverConfig(template), null, 2)}</pre>
             });
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') toggleOverflowMenu(false);
+                const activeTag = String(document.activeElement?.tagName || '').toLowerCase();
+                const isTyping = activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select' || document.activeElement?.isContentEditable;
+                if (isTyping) return;
+
+                if (e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+                    if (['1', '2', '3', '4'].includes(e.key)) {
+                        e.preventDefault();
+                        const target = Number(e.key);
+                        if (target >= 1 && target <= FINAL_STEP) {
+                            if (target > currentStep) {
+                                for (let s = currentStep; s < target; s++) {
+                                    const readiness = getCurrentStepReadiness(s);
+                                    if (!readiness.ready) {
+                                        notify(readiness.reason, 'warning');
+                                        updateStepGuidance();
+                                        return;
+                                    }
+                                }
+                            }
+                            currentStep = target;
+                            updateWizardSteps();
+                        }
+                    }
+                }
+
+                if (e.ctrlKey && !e.shiftKey && !e.altKey && !e.metaKey && String(e.key).toLowerCase() === 'g') {
+                    if (currentStep === FINAL_STEP) {
+                        e.preventDefault();
+                        generateFiles();
+                    }
+                }
             });
 
             const startBtn = document.getElementById('btn-start-config');
             if (startBtn) startBtn.addEventListener('click', () => enterConfigurator(1));
-            const startEsp32Btn = document.getElementById('btn-start-esp32');
-            if (startEsp32Btn) {
-                startEsp32Btn.addEventListener('click', async () => {
-                    selectedManufacturer = 'Espressif';
-                    selectedArchitecture = '';
-                    selectedFamily = '';
-                    selectedSilicon = '';
-                    selectedPlatform = 'esp32';
-                    const platformSel = document.getElementById('platform-select');
-                    if (platformSel) platformSel.value = 'esp32';
-                    await refreshModulesForPlatform('esp32');
-                    await refreshMarketCatalogForPlatform('esp32');
-                    selectedBoard = null;
-                    const boardDetails = document.getElementById('board-details');
-                    if (boardDetails) boardDetails.style.display = 'none';
-                    await refreshTaxonomyOptionsFromApi().catch(err => {
-                        console.warn('Failed to refresh taxonomy options:', err);
-                        taxonomyOptions = null;
-                    });
-                    await refreshBoardsForCurrentFilters({ force: true });
-                    populateBoardList();
-                    populateModuleGrid();
-                    renderSelectedAppsVisibility();
-                    updateLandingStats();
-                    enterConfigurator(1);
+            const quickM5Btn = document.getElementById('btn-quick-m5');
+            if (quickM5Btn) {
+                quickM5Btn.addEventListener('click', async () => {
+                    await quickPickBoardByName([
+                        'M5StickC Plus2',
+                        'M5StackC Plus2',
+                        'M5StickC',
+                        'm5stickc_plus2'
+                    ]);
                 });
             }
+            const startEsp32Btn = document.getElementById('btn-start-esp32');
+            if (startEsp32Btn) {
+                startEsp32Btn.addEventListener('click', async () => applyQuickStartEsp32());
+            }
+            const resumeBtn = document.getElementById('btn-resume-last');
+            if (resumeBtn) resumeBtn.addEventListener('click', async () => resumeLastSession());
             const topOpenBtn = document.getElementById('btn-open-config');
             if (topOpenBtn) topOpenBtn.addEventListener('click', () => enterConfigurator());
             const topHomeBtn = document.getElementById('btn-home');

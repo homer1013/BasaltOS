@@ -154,6 +154,19 @@ async function run() {
     if (count > 0) await expect(await toggles.first().isDisabled(), 'toggle expected disabled without board');
   });
 
+  await test('direct step URL shows board-required recovery actions', async () => {
+    const u = new URL(BASE);
+    u.searchParams.set('open', 'config');
+    u.searchParams.set('step', '2');
+    await page.goto(u.toString(), { waitUntil: 'domcontentloaded' });
+    await page.waitForSelector('#configurator-shell', { state: 'visible', timeout: 15000 });
+    await page.waitForSelector('#step-2.content-section.active', { timeout: 10000 });
+    await page.waitForSelector('#flow-alert.active', { timeout: 10000 });
+    await expect(await page.locator('#btn-alert-m5-quick').isVisible(), 'missing M5 quick action');
+    await expect(await page.locator('#btn-alert-esp32-quick').isVisible(), 'missing ESP32 quick action');
+    await expect(await page.locator('#btn-alert-go-step1').isVisible(), 'missing step1 recovery action');
+  });
+
   results.push({ name: 'no pageerror exceptions', ok: pageErrors.length === 0, error: pageErrors.join(' | ') });
   for (const r of results) console.log(`${r.ok ? 'PASS' : 'FAIL'}: ${r.name}${r.ok ? '' : ` -> ${r.error}`}`);
   await browser.close();

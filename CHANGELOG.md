@@ -28,6 +28,30 @@ All notable changes to this project are documented in this file.
 - `tools/configure.py` no longer crashes when `--outdir` is outside repository root.
 - ESP32 build no longer fails when partition table omits `storage`; SPIFFS image generation is now conditionally skipped.
 
+## v0.1.2-rc4-configurator-m5-bench-20260224 - 2026-02-24
+
+### Added
+- M5StickC Plus2 TFT bench smoke gate: `tools/tests/m5stickc_plus2_tft_bench_smoke.sh` (configure/build/flash + serial assertions).
+- ESP32 shell TFT diagnostics command surface:
+  - `tft status`
+  - `tft clear`
+  - `tft fill <black|white|red|green|blue>`
+  - `tft text <x> <y> <text>`
+
+### Changed
+- ESP32 board bootstrap now asserts board `pwr_hold` pin at startup when defined, improving display/power bring-up on M5StickC Plus2 class boards.
+- HAL bench evidence doc extended with M5StickC Plus2 runtime/flash validation details and command-level proof.
+- Local configurator UX polish pass:
+  - sticky step header/action bar/sidebar behavior,
+  - board-required guardrails in steps 2-4 with quick actions,
+  - dynamic step labels + flow context/progress cues,
+  - Home "Resume Last Session" draft persistence path,
+  - quick-pick lane for M5Stack Plus2.
+
+### Fixed
+- `tft status` parser behavior in ESP32 shell now handles monitor/serial trailing whitespace cleanly.
+- Configurator e2e harness robustness for board selection and direct-step recovery actions.
+
 ## v0.1.1 - 2026-02-13
 
 ### Added

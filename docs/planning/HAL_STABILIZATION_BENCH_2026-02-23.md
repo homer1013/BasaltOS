@@ -107,3 +107,28 @@ Build artifacts:
   - Header text: `Basalt UNO R4 bench`
   - Prompt text includes: `shell + paint + cal + flappy`
   - Shell status line includes: `Uno serial help`
+
+## Post-Closure Bench Validation (2026-02-23 15:55 local, M5StickC Plus2)
+- Target board: M5StickC Plus2 (ESP32-PICO-V3-02) on `/dev/ttyACM0`
+- Camera source available for live bench visibility: `/dev/video2`
+
+### Runtime and Bring-up Evidence
+- Boot logs (idf monitor) include:
+  - `board bootstrap: asserted pwr_hold GPIO4`
+  - `tft: TFT console ready (135x240)`
+  - `Basalt OS booted. Type 'help'.`
+- Shell diagnostics command surface now includes:
+  - `tft [status|clear|fill <black|white|red|green|blue>|text <x> <y> <text>]`
+- Live shell command responses observed:
+  - `tft status` -> `tft: ready`
+  - `tft fill red` -> `ok: tft fill red`
+  - `tft fill blue` -> `ok: tft fill blue`
+  - `tft text 0 0 BASALT TFT OK` -> `ok: tft text`
+  - `devcheck` includes `devcheck: tft_console=ready`
+
+### Bench Gate
+- Added bench smoke: `tools/tests/m5stickc_plus2_tft_bench_smoke.sh`
+  - Full path: configure -> build -> flash -> serial assertions.
+  - Fast path for already-flashed firmware:
+    - `BASALT_SKIP_FLASH=1 BASALT_SKIP_CONFIGURE=1 tools/tests/m5stickc_plus2_tft_bench_smoke.sh /dev/ttyACM0`
+  - Latest run result: `PASS: M5StickC Plus2 TFT bench smoke checks`

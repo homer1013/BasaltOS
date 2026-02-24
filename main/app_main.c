@@ -152,6 +152,9 @@
 #ifndef BASALT_PIN_UART_RX
 #define BASALT_PIN_UART_RX -1
 #endif
+#ifndef BASALT_PIN_PWR_HOLD
+#define BASALT_PIN_PWR_HOLD -1
+#endif
 #ifndef BASALT_CFG_UART_UART_NUM
 #define BASALT_CFG_UART_UART_NUM 0
 #endif
@@ -520,6 +523,7 @@ static const bsh_cmd_help_t k_bsh_help[] = {
     {"led_test", "led_test [pin]", "Blink/test LED pins (helps identify working LED pin)"},
     {"devcheck", "devcheck [full]", "Quick sanity checks for LED, UI, and filesystems"},
     {"drivers", "drivers", "Show configured driver status and implementation level"},
+    {"tft", "tft [status|clear|fill <black|white|red|green|blue>|text <x> <y> <text>]", "TFT diagnostics and forced draw primitives"},
 #if BASALT_SHELL_LEVEL >= 3
     {"edit", "edit <file>", "Simple line editor (.save/.quit)"},
 #endif
@@ -1753,6 +1757,74 @@ static void bsh_cmd_led_test(const char *arg) {
 }
 
 static void bsh_cmd_drivers(void);
+
+static bool bsh_tft_parse_color(const char *name, uint16_t *color) {
+    if (!name || !color) return false;
+    if (strcmp(name, "black") == 0) { *color = 0x0000; return true; }
+    if (strcmp(name, "white") == 0) { *color = 0xFFFF; return true; }
+    if (strcmp(name, "red") == 0) { *color = 0xF800; return true; }
+    if (strcmp(name, "green") == 0) { *color = 0x07E0; return true; }
+    if (strcmp(name, "blue") == 0) { *color = 0x001F; return true; }
+    return false;
+}
+
+static void bsh_cmd_tft(char *arg) {
+#if BASALT_ENABLE_TFT
+    while (arg && (*arg == ' ' || *arg == '\t' || *arg == '\r' || *arg == '\n')) arg++;
+    if (!arg || !arg[0]) {
+        basalt_printf("tft: %s\n", tft_console_is_ready() ? "ready" : "not-ready");
+        return;
+    }
+    char *op = strtok(arg, " \t\r\n");
+    if (!op) {
+        basalt_printf("usage: tft status|clear|fill <black|white|red|green|blue>|text <x> <y> <text>\n");
+        return;
+    }
+    if (strcmp(op, "status") == 0) {
+        basalt_printf("tft: %s\n", tft_console_is_ready() ? "ready" : "not-ready");
+        return;
+    }
+    if (strcmp(op, "clear") == 0) {
+        tft_console_clear();
+        basalt_printf("ok: tft clear\n");
+        return;
+    }
+    if (strcmp(op, "fill") == 0) {
+        char *name = strtok(NULL, " \t\r\n");
+        uint16_t color = 0;
+        if (!bsh_tft_parse_color(name, &color)) {
+            basalt_printf("usage: tft fill <black|white|red|green|blue>\n");
+            return;
+        }
+        tft_console_draw_rect(0, 0, 4096, 4096, color, true);
+        basalt_printf("ok: tft fill %s\n", name);
+        return;
+    }
+    if (strcmp(op, "text") == 0) {
+        char *xs = strtok(NULL, " \t\r\n");
+        char *ys = strtok(NULL, " \t\r\n");
+        char *msg = strtok(NULL, "");
+        if (!xs || !ys || !msg || !bsh_is_number(xs) || !bsh_is_number(ys)) {
+            basalt_printf("usage: tft text <x> <y> <text>\n");
+            return;
+        }
+        int x = (int)strtol(xs, NULL, 10);
+        int y = (int)strtol(ys, NULL, 10);
+        while (*msg == ' ' || *msg == '\t') msg++;
+        if (!msg[0]) {
+            basalt_printf("usage: tft text <x> <y> <text>\n");
+            return;
+        }
+        tft_console_write_at(x, y, msg);
+        basalt_printf("ok: tft text\n");
+        return;
+    }
+    basalt_printf("usage: tft status|clear|fill <black|white|red|green|blue>|text <x> <y> <text>\n");
+#else
+    (void)arg;
+    basalt_printf("tft: unavailable (enable tft driver)\n");
+#endif
+}
 
 static void bsh_cmd_devcheck(const char *arg) {
     const bool full = (arg && strcmp(arg, "full") == 0);
@@ -6077,6 +6149,9 @@ static void bsh_handle_line(char *line) {
         bsh_cmd_devcheck(arg);
     } else if (strcmp(cmd, "drivers") == 0) {
         bsh_cmd_drivers();
+    } else if (strcmp(cmd, "tft") == 0) {
+        char *arg = strtok(NULL, "");
+        bsh_cmd_tft(arg);
     } else if (strcmp(cmd, "edit") == 0) {
 #if BASALT_SHELL_LEVEL >= 3
         char *arg = strtok(NULL, " \t\r\n");
@@ -6762,6 +6837,19 @@ static void basalt_autorun_market_apps(void) {
 #endif
 }
 
+static void basalt_board_bootstrap(void) {
+#if BASALT_PIN_PWR_HOLD >= 0
+    esp_err_t ret = gpio_reset_pin((gpio_num_t)BASALT_PIN_PWR_HOLD);
+    if (ret == ESP_OK) ret = gpio_set_direction((gpio_num_t)BASALT_PIN_PWR_HOLD, GPIO_MODE_OUTPUT);
+    if (ret == ESP_OK) ret = gpio_set_level((gpio_num_t)BASALT_PIN_PWR_HOLD, 1);
+    if (ret == ESP_OK) {
+        ESP_LOGI(TAG, "board bootstrap: asserted pwr_hold GPIO%d", BASALT_PIN_PWR_HOLD);
+    } else {
+        ESP_LOGW(TAG, "board bootstrap: pwr_hold GPIO%d failed (%s)", BASALT_PIN_PWR_HOLD, esp_err_to_name(ret));
+    }
+#endif
+}
+
 
 void app_main(void) {
     esp_err_t ret = nvs_flash_init();
@@ -6770,6 +6858,7 @@ void app_main(void) {
         ESP_ERROR_CHECK(nvs_flash_init());
     }
 
+    basalt_board_bootstrap();
     basalt_console_init();
     basalt_fs_init();
     basalt_sd_init();
