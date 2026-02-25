@@ -29,7 +29,18 @@ async function waitReady(page) {
 
 async function openConfigurator(page) {
   await waitReady(page);
-  await page.click('#btn-open-config');
+  const shellVisible = await page.evaluate(() => {
+    const el = document.getElementById('configurator-shell');
+    return !!el && getComputedStyle(el).display !== 'none';
+  });
+  if (!shellVisible) {
+    const startVisible = await page.locator('#btn-start-config').isVisible().catch(() => false);
+    if (startVisible) {
+      await page.click('#btn-start-config');
+    } else {
+      await page.click('#btn-open-config');
+    }
+  }
   await page.waitForFunction(() => {
     const el = document.getElementById('configurator-shell');
     return !!el && getComputedStyle(el).display !== 'none';
@@ -111,6 +122,8 @@ async function run() {
 
   await test('url query restores picker state and selected board', async () => {
     const u = new URL(BASE);
+    u.searchParams.set('open', 'config');
+    u.searchParams.set('step', '1');
     u.searchParams.set('platform', 'esp32');
     u.searchParams.set('manufacturer', 'Espressif');
     u.searchParams.set('architecture', 'RISC-V');

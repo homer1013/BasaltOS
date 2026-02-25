@@ -140,24 +140,24 @@
         }
 
         .landing-home {
-            background: #ffffff;
+            background: linear-gradient(160deg, #ffffff 0%, #f8fbff 100%);
             color: #1f2937;
             border: 1px solid #dbeafe;
             border-radius: 16px;
-            padding: 28px;
+            padding: 34px;
             margin-bottom: 24px;
-            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
         }
 
         .landing-grid {
             display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 18px;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 22px;
             align-items: stretch;
         }
 
         .landing-hero h1 {
-            font-size: 34px;
+            font-size: clamp(34px, 4vw, 42px);
             line-height: 1.1;
             margin-bottom: 12px;
             letter-spacing: -0.01em;
@@ -165,8 +165,10 @@
 
         .landing-hero p {
             color: #475569;
+            font-size: 15px;
+            line-height: 1.5;
             max-width: 60ch;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .landing-cta {
@@ -177,9 +179,9 @@
 
         .landing-card {
             border: 1px solid #dbeafe;
-            background: #f8fbff;
+            background: #fafdff;
             border-radius: 12px;
-            padding: 14px;
+            padding: 16px;
         }
 
         .landing-card h3 {
@@ -192,7 +194,8 @@
 
         .landing-card ul {
             list-style: none;
-            font-size: 13px;
+            font-size: 14px;
+            line-height: 1.45;
             color: #334155;
             display: grid;
             gap: 6px;
@@ -209,14 +212,15 @@
             border-radius: 10px;
             background: #eff6ff;
             border: 1px solid #bfdbfe;
-            padding: 8px;
+            padding: 10px;
             text-align: center;
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .landing-stat-box strong {
             display: block;
-            font-size: 18px;
+            font-size: 24px;
             color: #1d4ed8;
         }
 
@@ -1857,8 +1861,8 @@
                     </div>
                     <div id="resume-last-meta" style="margin-top:8px; font-size:12px; color:#475569; display:none;"></div>
                     <div class="landing-stat">
-                        <div class="landing-stat-box"><strong id="stat-platforms">0</strong>Platforms</div>
-                        <div class="landing-stat-box"><strong id="stat-boards">0</strong>Boards</div>
+                        <div class="landing-stat-box"><strong id="stat-platforms">…</strong>Platforms</div>
+                        <div class="landing-stat-box"><strong id="stat-boards">…</strong>Boards</div>
                     </div>
                 </div>
                 <div class="landing-card">
@@ -3315,6 +3319,7 @@
         let platforms = [];
         let boards = {};
         let boardsAll = {};
+        let apiCatalogLoaded = false;
         let boardApiFilterCache = {};
         let boardApiRequestSeq = 0;
         let modules = [];
@@ -3742,10 +3747,20 @@
         function updateLandingStats() {
             const platformCount = document.getElementById('stat-platforms');
             const boardCount = document.getElementById('stat-boards');
+            if (!apiCatalogLoaded) {
+                if (platformCount) platformCount.textContent = '…';
+                if (boardCount) boardCount.textContent = '…';
+                return;
+            }
             const platformTotal = Array.isArray(platforms) ? platforms.length : 0;
-            const boardTotal = Object.values(boards || {}).reduce((sum, list) => {
+            let boardTotal = Object.values(boards || {}).reduce((sum, list) => {
                 return sum + (Array.isArray(list) ? list.length : 0);
             }, 0);
+            if (!boardTotal) {
+                boardTotal = Object.values(boardsAll || {}).reduce((sum, list) => {
+                    return sum + (Array.isArray(list) ? list.length : 0);
+                }, 0);
+            }
             if (platformCount) platformCount.textContent = String(platformTotal);
             if (boardCount) boardCount.textContent = String(boardTotal);
         }
@@ -4330,6 +4345,7 @@
             }
 
             try {
+                apiCatalogLoaded = false;
                 platforms = await apiFetchJson('/api/platforms');
 
                 boards = {};
@@ -4359,11 +4375,13 @@
 
                 marketCatalog = [];
                 loadedPlatformForMarket = '';
+                apiCatalogLoaded = true;
 
                 return true;
             } catch (err) {
                 console.error('Failed to load from API:', err);
                 showPlatformError(`Failed to load /api/platforms: ${err.message || err}`);
+                apiCatalogLoaded = false;
                 return false;
             }
         }

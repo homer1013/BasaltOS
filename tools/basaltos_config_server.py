@@ -948,9 +948,21 @@ print("[uart_echo] done")
             "_rst", "_bl", "_led", "_pwm"
         )
         input_suffixes = ("_rx", "_miso", "_irq", "_int", "_button")
+        input_tokens = (
+            "btn_",
+            "_btn",
+            "button",
+            "_adc",
+            "adc_",
+            "mic_data",
+            "_sense",
+            "_sensor",
+        )
         if s.endswith(output_suffixes):
             return "output"
         if s.endswith(input_suffixes):
+            return "input"
+        if any(tok in s for tok in input_tokens):
             return "input"
         return "bidirectional"
 
@@ -998,7 +1010,11 @@ print("[uart_echo] done")
                     if 6 <= value <= 11 and board_default_pins.get(sval) != value:
                         errors.append(f"{sval}: GPIO{value} is reserved for SPI flash and cannot be used.")
                     io_type = self._signal_io_type(board, sval)
-                    if io_type in {"output", "bidirectional"} and 34 <= value <= 39:
+                    if (
+                        io_type in {"output", "bidirectional"}
+                        and 34 <= value <= 39
+                        and board_default_pins.get(sval) != value
+                    ):
                         errors.append(f"{sval}: GPIO{value} is input-only on ESP32.")
 
             pin_usage.setdefault(value, []).append(sval)
@@ -1431,13 +1447,29 @@ def _run_esp32_idf(action: str, port: str | None = None) -> tuple[subprocess.Com
 
 
 def _serial_ports_status() -> dict:
+    def _is_supported_serial_path(dev: str) -> bool:
+        raw = str(dev or "").strip()
+        if not raw:
+            return False
+        if os.name == "nt":
+            return bool(re.match(r"^COM\d+$", raw, flags=re.IGNORECASE))
+        # Restrict to common USB-serial style nodes to avoid selecting host
+        # pseudo ports such as /dev/ttyS* for local flashing.
+        return (
+            raw.startswith("/dev/ttyUSB")
+            or raw.startswith("/dev/ttyACM")
+            or raw.startswith("/dev/cu.usb")
+            or raw.startswith("/dev/cu.SLAB")
+            or raw.startswith("/dev/tty.usb")
+        )
+
     def detect_serial_ports() -> List[str]:
         found: set[str] = set()
         try:
             from serial.tools import list_ports as pyserial_list_ports  # type: ignore
             for p in pyserial_list_ports.comports():
                 dev = str(getattr(p, "device", "") or "").strip()
-                if dev:
+                if _is_supported_serial_path(dev):
                     found.add(dev)
         except Exception:
             pass
